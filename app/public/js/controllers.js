@@ -43,10 +43,11 @@ insectIdentifierControllers.controller('UploadInsectCtrl', ['$scope', 'Search', 
 	  }
 ]);
 
+
 insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', '$location', '$http', 
 	'$localStorage', '$cookies',
 	  function($scope, Search, $location, $http, $localStorage, $cookies) {
-			
+	
 	  		// save the insect to the scope
 	  		$scope.prevUrl=Search.get().prevUrl;
 			$scope.insect=Search.get().insect;
@@ -119,29 +120,71 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 						alert("item saved to the collection"); 			
 		 			});
 				} else 
-					alert ("item already in collection");
-	 	 			
-	 	 							
+					alert ("item already in collection");					
 	 		};
 	 	
 			$scope.collection=function() {
 				$scope.location.path('collection');
 			};		
 			$scope.new_search=function() {
+				$localStorage.collection["returningFromDetailPage"]="1";
 	 			$scope.location.path("search");
 	 			
 			};		
   }]);
 
-insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$location', '$http',
-	  function($scope, Search, $location, $http) {
-	  		$("#results").hide();
+insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$location', '$http', '$localStorage',
+	  function($scope, Search, $location, $http, $localStorage) {
+	  	
+	  			// Pagination
+	 		$scope.itemsPerPage = 5;
+   		$scope.currentPage = 0;
+			$scope.pagedInsects = [];
+			
+			$scope.setPagedInsects = function(insects) {
+					
+					
+				$scope.nroOfPages = insects.length / $scope.itemsPerPage;
+  				if (!isInt($scope.nroOfPages) ) {
+  					$scope.nroOfPages = Math.floor($scope.nroOfPages); 
+  					$scope.nroOfPages++;
+  				}
+  				console.log("nroofpages: "+$scope.nroOfPages);
+  				
+				// loop through nro of pages
+				for (var i = 0; i < $scope.nroOfPages; i++) {
+					// loop through nro of insects per page						
+					for (var j = 0; j < $scope.itemsPerPage; j++) {
+						if (j == 0) {
+							$scope.pagedInsects[i] = [];							
+						}						
+						$scope.pagedInsects[i].push(insects[i*$scope.itemsPerPage + j]);
+					}	
+				}
+					
+			}	  		
+	  		
+	  		if ($localStorage.collection['returningFromDetailPage'] == '1') {
+	  			console.log('returning from detail page');
+	  			$localStorage.collection['returningFromDetailPage'] = 0;
+	  			$scope.searchResults="showResults";	
+	  			var insects = $localStorage.collection['insects'];
+	  			$scope.setPagedInsects(insects);
+	  				  			
+	  			// main image
+	  			var imgs = [];
+	  			for (var i=0; i<insects.length; i++) {
+						imgs.push(insects[i].images[0]);  		
+		  			}
+		  		$scope.imgs = imgs;
+		  		$scope.mainImageUrl=insects[0];
+	  		}
 	  		$scope.location=$location;
+	 
 	 		
 	 		$scope.search = function(query) {
 	 			console.log("query: "+query);
-				
-			 			
+							 			
 	 			if (query =="" || typeof query == 'undefined') {
 	 				console.log("query is empty");
 	 				query = {};
@@ -155,14 +198,17 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 		  		$http({
 			   	url: '/insect/search', 
 		 			method: "GET",
-		 			params: {primaryColor: query.primaryColor, secondaryColor: query.secondaryColor, 
+		 			params: { primaryColor: query.primaryColor, secondaryColor: query.secondaryColor, 
 		 				category: query.category, legs: query.legs }
 		 		}).success(function (data) {
 		 			
 		 			console.log("receiving search results.")
 		 			$scope.mainImageUrl = "not-available";
 		 			$scope.insect=data[0];
-		 			$scope.insects = data;
+		 			$scope.insects = data;			
+		 			$localStorage.collection['insects'] = data;			
+  					$scope.setPagedInsects(data);
+  					  					
 		 			var imgs=[];
 		  	   	// make a list of image urls
 		  			var len=data.length;
@@ -171,12 +217,15 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 		  			}
 		  			$scope.imgs = imgs;
 		  			console.log("showing search results");
+
 		  			if (data.length > 0)
 		  				$scope.searchResults="showResults";	
 		  			else 
 		  				$scope.searchResults="noResults";				 			
 		 		}); 					
 			};
+			
+					
 	  	   $scope.setImage = function(insect) {
 				
 				$scope.mainImageUrl=insect.images[0];
@@ -190,6 +239,40 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 	  	   	Search.set(obj);
 				$scope.location.path('insect');
 	    	};
+	    	
+			$scope.range = function (start, end) {
+        		var ret = [];
+        		if (!end) {
+            	end = start;
+            	start = 0;
+        		}
+        		for (var i = start; i < end; i++) {
+            	ret.push(i);
+        		}
+        		return ret;
+    		};	    	
+	    	
+	    	$scope.prevPage = function () {
+        		if ($scope.currentPage > 0) {
+            	$scope.currentPage--;
+        		}
+    		};
+    
+    		$scope.nextPage = function () {
+        		if ($scope.currentPage < $scope.pagedInsects.length - 1) {
+            	$scope.currentPage++;
+        		}
+    		};
+    
+    		$scope.setPage = function () {
+        		$scope.currentPage = this.n;
+    		};
+    		
+ 		   function isInt(value) {
+ 				 return !isNaN(value) && 
+         	parseInt(Number(value)) == value && 
+         	!isNaN(parseInt(value, 10));
+			}		
 }]);
   
   
@@ -266,8 +349,15 @@ insectIdentifierControllers.controller('MainCtrl', ['$scope', 'Search', '$locati
   			$scope.upload=function() {
 				$scope.location.path('insect/upload');
 			}
+				// pagination controls
+					$scope.currentPage = 1;
+					$scope.totalItems = 30;
+					$scope.entryLimit = 8; // items per page
+					$scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
   }]);
-  
+
+
+
 insectIdentifierControllers.controller('CollectionCtrl', ['$scope', 'Search', '$location', 
 '$http', '$localStorage', "$cookies",
 	function($scope, Search, $location, $http, $localStorage, $cookies) {

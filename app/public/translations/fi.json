@@ -24,10 +24,11 @@
 	"VIOLET": "violetti",
 	"YELLOW": "keltainen",
 	"ANT": "muurahainen",
+	"BEE": "mehiläinen",
 	"BEETLE": "kovakuoriainen", 
 	"BUTTERFLY": "perhonen",
 	"CATERPILLAR": "tuhatjalkainen",
-	"BEE": "kärpänen",
+	"BEE": "mehiläinen",
 	"SPIDER": "hämähäkki",
 	"PRIMARYCOLOR": "Ensisijainen väri",
 	"SECONDARYCOLOR": "Toissijainen väri",
@@ -52,7 +53,13 @@
 	"RETURNTOCOLLECTION": "Palaa kokoelmaan",
 	"NORESULTS": "Ei tuloksia",
 	"ENGLISHNAME": "Englantilainen nimi",
-	"FINNISHNAME": "Suomalainen nimi"
+	"FINNISHNAME": "Suomalainen nimi",
+	"PHOTOREQUIRED": "Valokuva on pakollinen.",
+	"LEGSREQUIRED": "Jalkojen lukumäärä on pakollinen.",
+	"CATEGORYREQUIRED": "Kategoria on pakollinen.",
+	"PRIMARYCOLORREQUIRED": "Pääväri on pakollinen.",
+	"SECONDARYCOLORREQUIRED": "Toisisijainen väri on pakollinen.",
+	"LATINNAMEREQUIRED": "Latinalainen nimi on pakollinen."
 
 	
 }

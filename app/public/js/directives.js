@@ -71,9 +71,28 @@ myApp.directive('header', function () {
 					 $scope.lang=lang;
 				 	 $route.reload();																																																																																																																																																																																																																																																																																																												
 				    		
-				}
+				}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				
 				  
         }]
     }
 });
 
+myApp.directive('englishname', ['$q', function($q) {
+  return {
+    require: 'ngModel',
+    link: function(scope, elm, attrs, ctrl, $q) {
+      console.log("englishname directive called.");
+      ctrl.$validators.englishname = function(modelValue, viewValue, $q) {
+		  var def = $q.defer();
+        
+        if (ctrl.$isEmpty(modelValue)) {																																																																																		
+           	 																																																																																																																																																														
+          def.reject();
+        } else {
+        	def.resolve();																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						
+        	}
+        return def.promise;
+      };
+    }
+  };
+}]);

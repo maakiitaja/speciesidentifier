@@ -2,7 +2,8 @@
 
 <div ng-repeat="insects in localStorage.collection">
 	<div ng-if="insects.length > 0">
-		<h2 ng-if="insects[0].category == 'Beetle'">{{translations.Ant}}</h2>
+		<h2 ng-if="insects[0].category == 'Ant'">{{translations.Ant}}</h2>
+		<h2 ng-if="insects[0].category == 'Beetle'">{{translations.Bee}}</h2>
 		<h2 ng-if="insects[0].category == 'Beetle'">{{translations.Beetle}}</h2>
 		<h2 ng-if="insects[0].category == 'Butterfly'">{{translations.Butterfly}}</h2>
 		<h2 ng-if="insects[0].category == 'Caterpillar'">{{translations.Caterpillar}}</h2>
