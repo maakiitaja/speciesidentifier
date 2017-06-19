@@ -76,10 +76,13 @@ insectIdentifierApp.factory('Auth', ['$cookies', function ($cookies) {
             set: function (user) {
                 // you can retrive a user setted from another page, like login sucessful page.
                 var existing_cookie_user = $cookies.get('current.user');
+                if ( Array.isArray(existing_cookie_user))
+                	console.log('existing_user is an array');
                 console.log('Auth set user parameter: '+JSON.stringify(user));
-                _user =  user || existing_cookie_user;
-                console.log('Auth set _user: '+_user);
-                $cookies.put('current.user', JSON.stringify(user));
+                console.log('Auth set user parameter: '+user.username);
+                //_user =  user || existing_cookie_user;
+
+                $cookies.put('current.user', user);
             },
 
             remove: function () {

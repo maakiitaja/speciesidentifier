@@ -1,4 +1,7 @@
 
+<br>
+
+<h1>{{translations.SEARCHPAGE}}</h1>
 <form ng-submit='search(query)' align="center"> 
 	<table align="center">
 	<tr><td  align="center">{{translations.CATEGORY}}:</td>
@@ -64,16 +67,23 @@
    </select>   
 	</td></tr>
 	<br>  
-	<tr><td  align="center">
+	</table>
+	<br>
+	<table align="center">
+	<tr ><td>
  	<input type="submit" class="button button1" value="{{translations.SEARCH}}" />
  	</td></tr>
+ 	</table>
 
-</table>
- 	
 </form>
 
 <p ng-model="searchResults" value={{searchResults}}></p>
 <div ng-switch="searchResults" align="center">
+
+		<div ng-switch-when="noResults">		
+	
+			<h2>{{translations.NORESULTS}}	</h2>
+		</div>
   		<div ng-switch-when="showResults">
   			<h2>{{translations.RESULTS}}</h2>
 		
@@ -123,7 +133,5 @@
 
 		<input id="identify" type="button" class="button button-blue" value="{{translations.IDENTIFY}}" ng-click="insectDetail()"/>  
   	</div>
-	<div ng-switch-when="noResults">
-		{{translations.NORESULTS}}	
-	</div>
+	
   	</div>

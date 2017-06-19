@@ -1,7 +1,90 @@
 <div align="center">
-	<a href="#/main">{{translations.HOME}}</a>
-	{{currentUser.username}}
-   <a ng-if="currentUser" href="logout"> {{translations.LOGOUT}}</a>
-   <a ng-if="!currentUser" href="login"> {{translations.LOGIN}}</a>
-	{{translations.LANGUAGE}} <div class="text" ng-if="lang=='en'">En <a href="" ng-click="setLanguage('fi')">Fi</a></div> <div class="text" ng-if="lang=='fi'"><a href="" ng-click="setLanguage('en')">En</a> Fi</div>    
+
+	<!--<a href="#/main">{{translations.HOME}}</a>
+	{{translations.LANGUAGE}}: <div class="text" ng-if="lang=='en'">En <a href="" ng-click="setLanguage('fi')">Fi</a></div> <div class="text" ng-if="lang=='fi'"><a href="" ng-click="setLanguage('en')">En</a> Fi</div>
+		<div class="text" ng-if="currentUser"> {{currentUser.username}},</div>
+   <a ng-if="currentUser" href="logout">{{translations.LOGOUT}}</a>
+   <a ng-if="!currentUser" href="login"> {{translations.LOGIN}}</a>    
+	<br>-->
+
+<!--
+	<table align="center">
+	<tr><td>
+   <ul id="sddm">
+     <li><a href="" ng-click="search()" >
+        {{translations.SEARCH}}</a>
+     </li>
+     </li>
+     <li><a href="" ng-click="collection()" >{{translations.COLLECTION}}</a></li>
+     <li><a href="" ng-click="upload()" >{{translations.UPLOAD}}</a></li>
+     <li ng-if="currentUser"><a href="" ng-click="modify(currentUser)" >{{translations.MODIFY}}</a></li>
+     <li>
+	<a href="" 
+        onmouseover="mopen('m2')" 
+        onmouseout="mcancelclosetime('menu-2')" ng-if="lang=='en'">{{translations.LANGUAGE}}</a>
+        <a href="" 
+        onmouseover="mopen('m3')" 
+        onmouseout="mcancelclosetime('menu-3')" ng-if="lang=='fi'">{{translations.LANGUAGE}}</a> 		 
+
+        <a id="m2" ng-if="lang=='en'" href="" onmouseover="mcancelclosetime('m2')" 
+            onmouseout="mclosetime('m2')" ng-click="setLanguage('fi')">Fi</a>
+        <a  id="m3" ng-if="lang=='fi'" onmouseover="mcancelclosetime('m3')" 
+            onmouseout="mclosetime('m3')"  href=""  ng-click="setLanguage('en')">En</a>      
 </div>
+     </li>
+     		
+     <li ng-if="currentUser" ><a href="logout">{{currentUser.username}}, {{translations.LOGOUT}}</a></li>
+     <li ng-if="!currentUser"><a href="login"> {{translations.LOGIN}}</a></li>  
+	  </ul>
+	  </td></tr>		
+	  <div style="clear:both"></div>-->
+
+
+
+<ul class="nav">
+    <li id="settings">
+        <a href="#"><img src="settings.png" /></a>
+    </li>
+    <li width="300">
+        <a  ng-click="search()" width="300">{{translations.SEARCH}}</a>
+    </li>
+    <li>
+        <a ng-click="collection()">{{translations.COLLECTION}}</a>
+    </li>
+    <li><a ng-if="currentUser" href="" ng-click="upload()" >{{translations.UPLOAD}}</a></li>
+    <li ng-if="currentUser">
+	<a href="" ng-click="modify(currentUser)" >{{translations.MODIFY}}</a>
+    </li>
+<!--
+    <li id="search">
+        <form action="" method="get">
+            <input type="text" name="search_text" id="search_text" placeholder="Search"/>
+            <input type="button" name="search_button" id="search_button"></a>
+        </form>
+    </li>	
+-->
+     <li id="options">
+       
+	<a onmouseover="mopen('o1')" 
+        onmouseout="mclosetime('options-1')" ng-if="lang=='en'">EN {{translations.LANGUAGE}}</a>
+	<a onmouseover="mopen('o2')" 
+        onmouseout="mclosetime('options-2')" ng-if="lang=='fi'">FI {{translations.LANGUAGE}}</a>
+        <ul id="submenu" class="subnav" >
+ 	    <li><a id="o1" onclick="mclose('o1')" onmouseover="mcancelclosetime('o1')" 
+            onmouseout="mclosetime('o1')" ng-if="lang=='en'"  ng-click="setLanguage('fi')">Fi</a></li>
+            <li><a id="o2" onclick="mclose('o2')" onmouseover="mcancelclosetime('o2')" 
+            onmouseout="mclosetime('o2')" ng-if="lang=='fi'" ng-click="setLanguage('en')">En</a></li>
+	</ul>
+    </li>
+    
+    <li ng-if="currentUser" >
+	<a href="logout">{{currentUser.username}}, {{translations.LOGOUT}}</a>
+    </li>
+    <li ng-if="!currentUser">
+	<a href="login"> {{translations.LOGIN}}</a>
+    </li>     
+</ul>
+	  
+</div>
+
+

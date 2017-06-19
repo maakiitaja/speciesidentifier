@@ -53,26 +53,40 @@ myApp.directive('header', function () {
 					console.log('no lang chosen.');
 					$cookies.put('lang', 'en');	    	
 		    	}
+		    	
+				$scope.collection=function() {
+					$scope.location.path('collection');
+				}
+				$scope.search=function() {
+					$scope.location.path('search');
+				}
+  				$scope.upload=function() {
+					$scope.location.path('insect/upload');
+				}
+				$scope.modify=function(currentUser) {
+					$scope.location.path('insect/uploadList').search({'currentUser': currentUser});
+				}
+				$scope.setLanguage = function(lang) {
+					 $cookies.put('lang', lang);
+					 console.log('lang: '+lang);
+					 TranslationService.getTranslation($scope, $cookies.get('lang'), '');
+					 $scope.lang=lang;
+				 	 $route.reload();			
+			}		
 
 		    	TranslationService.getTranslation($scope, $cookies.get('lang'), '');
 		    			    	
 		    	UserRestService.requestCurrentUser(function (data) {
 	      	 	console.log("header Ctrl user: "+JSON.stringify(data));
    	    		Auth.set(data);
-   	    		$scope.currentUser = $cookies.get('current.user');
-   	    			
-   	    		console.log("scope.user: "+$scope.currentUser);
+   	    		$scope.currentUser = JSON.parse(JSON.stringify(data));
+   	    		var tmp = JSON.parse(JSON.stringify(data));
+   	    		console.log('tmp: '+tmp);	
+   	    		console.log('tmp.username: '+ tmp.username);
+   	    		console.log("header currentuser: "+$scope.currentUser);
+   	    		console.log("header currentuser.username: "+$scope.currentUser.username);
        		});
-				
-				$scope.setLanguage = function(lang) {
-					 $cookies.put('lang', lang);
-					 console.log('lang: '+lang);
-					 TranslationService.getTranslation($scope, $cookies.get('lang'), '');
-					 $scope.lang=lang;
-				 	 $route.reload();																																																																																																																																																																																																																																																																																																												
-				    		
-				}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				
-				  
+		  
         }]
     }
 });

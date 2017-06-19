@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var multer = require('multer');
 var im = require('imagemagick');
-var LocalStrategy = require('passport-local').Strategy;
 
 var storage	=	multer.diskStorage({
   destination: function (req, file, callback) {
@@ -49,7 +48,6 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
-
 
 // img path
 var imgPath = __dirname+'/public/images/Carabus nemoralis lehtokiitäjäinen tv20130514_009.jpg';
@@ -95,8 +93,6 @@ module.exports = function(app, passport) {
 app.post('/populate_db', upload.fields([{ name: 'db', maxCount: 1 }, { name: 'userPhotos', maxCount: 100 }]), function(req, res) {
 	req.files['db'][0].filename;
 	fs.readFile(req.files['db'][0].destination+req.files['db'][0].filename, 'utf8', function (err, data) {
-	
-		
 		 var insects = JSON.parse(data);
 		 var i = 0;
 		 console.log('insects.length: '+ insects.length);
@@ -109,28 +105,19 @@ app.post('/populate_db', upload.fields([{ name: 'db', maxCount: 1 }, { name: 'us
         		
         	}
     	}	 
-	 
-	
 		// empty the collection
 	 	Insect.remove(function (err) {
 	    	 if (err) throw err;
 			 for (var i=0; i< insects.length; i++) {
-		 		var insect = insects[i]; 
-	
-		
-				
+		 		var insect = insects[i];
 		 		var newInsect = new Insect();
-		 		
-			
 				newInsect.names=[];
 				for (var j = 0; j < insect['names'].length; j++) {
 					var translation={};
 					translation.name=insect['names'][j].name;
 					translation.language=insect['names'][j].language;
 					newInsect.names.push(translation);							
-				}				
-				
-					
+				}	
 				newInsect.latinName=insect['LatinName'];
 				newInsect.legs=insect['Legs'];
 				newInsect.territory=insect['Territory'];
@@ -139,8 +126,7 @@ app.post('/populate_db', upload.fields([{ name: 'db', maxCount: 1 }, { name: 'us
 				newInsect.wiki=insect['Wiki'];
 				newInsect.images.push(insect['Image']);
 				newInsect.category=insect['Category'];
-				
-		 		
+		
 		 		console.log('newInsect: '+newInsect);
 		 		newInsect.save(function (err) {
 		 			if (err) throw err;
@@ -169,7 +155,6 @@ app.post('/populate_db', upload.fields([{ name: 'db', maxCount: 1 }, { name: 'us
 });
 });
 
-
 app.get('/populate_db', function(req, res) {
 	 console.log('populate_db');
 
@@ -188,11 +173,9 @@ app.get('/populate_db', function(req, res) {
     		for (var name in insects[i]) {
         		console.log("Item name: "+name);
         		console.log("Prop: "+insects[i][name]);
-        		
         	}
     	}	 
-	 
-	
+
 		// empty the collection
 	 	Insect.remove(function (err) {
 	    	 if (err) throw err;
@@ -201,26 +184,28 @@ app.get('/populate_db', function(req, res) {
 	
 		 		var newInsect = new Insect();
 		 				
-				newInsect.names=[];
+				newInsect.translations=[];
+				console.log("writing translations");
 				for (var j = 0; j < insect['names'].length; j++) {
-					var translation={};
-					translation.name=insect['names'][j].name;
-					translation.language=insect['names'][j].language;
-					newInsect.names.push(translation);							
-				}				
 				
+					newInsect.translations.push({"language": insect['names'][j].language, 
+						"name": insect['names'][j].name});							
+				}
+				console.log('newinsect translations: '+newInsect.translations);				
+				newInsect.userId = "1"; // default
 				newInsect.latinName=insect['LatinName'];
 				newInsect.legs=insect['Legs'];
 				newInsect.territory=insect['Territory'];
 				newInsect.primaryColor=insect['PrimaryColor'];
 				newInsect.secondaryColor=insect['SecondaryColor'];
 				newInsect.wiki=insect['Wiki'];
+				newInsect.images = [];
 				var images = insect['Images'].split(',');
+				
 				for (var ind in images) {
 					console.log('image name: '+images[ind]);
 					newInsect.images.push(images[ind]);	
 				}
-				
 				
 				newInsect.category=insect['Category'];
 			
@@ -228,6 +213,9 @@ app.get('/populate_db', function(req, res) {
 		 		newInsect.save(function (err) {
 		 			if (err) throw err;
 		 			console.log('Insect saved');
+		 			console.log(JSON.parse(JSON.stringify(newInsect)));
+		 			console.log(newInsect.translations[0].name);
+		 			console.log(newInsect.latinName);
 		 		});
 				
 				//thumb picture
@@ -245,22 +233,7 @@ app.get('/populate_db', function(req, res) {
 				}			 		
 	     }
  	 });  		 
-	 
-	 console.log("dirname: "+__dirname);
-    // thumb picture
-	/*for (var i = 0; i< insectLength; i++) {
-		var file = insects[i];
-		console.log("destination: "+__dirname+"/public/"+file['Image']);
-		im.resize({
-  			srcPath: __dirname+"/public/"+file['Image'],
-  			dstPath: __dirname+"/public/"+file['Image']+"_thumb.jpg",
-  			width:   100,
-  			height: 100
-		}, function(err, stdout, stderr) {
-  		if (err) throw err;
-  			console.log('resized file: '+__dirname+"/public/"+file['Image']);
-		});		
-	}*/
+
 	 res.redirect('/#/main');
 	  	
  });	
@@ -295,7 +268,6 @@ app.get('/insect/search', function (req, res) {
 		console.log(JSON.stringify(insects));
 		res.send(insects);
 	});
-	
 }); 
  
  app.get('/insect/list', function(req, res) {
@@ -308,9 +280,7 @@ app.get('/insect/search', function (req, res) {
 			console.log('found insects: '+insects);
 			res.send(insects);    	
     	});
-    	
  });
- 
  
  app.get('/collection/list', function(req, res) {
 	 	if (req.isAuthenticated()) {
@@ -318,6 +288,9 @@ app.get('/insect/search', function (req, res) {
 	    		if (err) {
 					console.log(err);
 				} 
+				if (compendium== null) {
+					res.send(null);
+				} else {
 	    		    	
 				console.log('found compendium: '+compendium);
 				console.log("insects in compendium: "+JSON.stringify(compendium.insects));
@@ -330,11 +303,10 @@ app.get('/insect/search', function (req, res) {
 					console.log("results: "+results);
 					res.send(results);
 				});
-			
-    		});
+				}
+			});
     	}
-    		
- });
+});
 
 app.get("/collection/remove", function (req, res) {
 
@@ -349,7 +321,6 @@ app.get("/collection/remove", function (req, res) {
 		});	
 	});
 }); 
-
 
 /* Upload insect */
 app.post('/insect/populate', upload.array('userPhotos', 100), function(req, res) {
@@ -370,72 +341,189 @@ app.post('/insect/populate', upload.array('userPhotos', 100), function(req, res)
 	res.redirect('#/main');
 });
 
-/* Upload insect */
-app.post('/insect/insert', upload.array('userPhotos', 10), function(req, res) {
-	console.log("uploading insect");
-	var newInsect = new Insect();
-	
-	console.log("image: "+req.files[0]);
-	if (req.files.length>1) {
-		console.log("image2: "+req.files[1]);
-		
-	}
-	for (var ind in req.files) {
-		console.log("file ind: "+ind);
-		newInsect.images.push('images/'+req.files[ind].originalname);	
-	}
-	//console.log("image name: "+req.file.originalname);
+/* Load user's uploaded insects */
+app.get('/uploadList', function(req, res) {
+	console.log('userId: '+req.query.userId);
+	Insect.find({'userId': req.query.userId}).exec(function (err, insects) {
+    	if (err) {
+			console.log(err);
+		} 
+    		    		
+		console.log('found insects: '+insects);
+		res.send(insects);    	
+    });	
+})
 
-	console.log("wiki: "+req.body.wiki);
-	newInsect.latinName=req.body.latinName;
-	newInsect.legs=req.body.legs;
-	newInsect.territory=req.body.territory;
-	newInsect.primaryColor=req.body.primaryColor;
-	newInsect.secondaryColor=req.body.secondaryColor;
-	newInsect.wiki=req.body.wiki;
-	
-	var translations=[];
-	translations.push({"language": "en", "name": req.body.enName});
-	translations.push({"language": "fi", "name": req.body.fiName});
-	newInsect.names=translations;
-	
-	if (req.body.imageLinks) {
-		console.log("imagelinks: "+req.body.imageLinks);
-		var imageUrls = req.body.imageLinks.split(',');	
-		
-		for (var ind in imageUrls)		
-			newInsect.images.push(imageUrls[ind]);
-	}
-	newInsect.category=req.body.category;
-		
-	// thumb picture
-	for (var i = 0; i< req.files.length; i++) {
-		var file = req.files[i];
-		console.log("destination: "+file.destination+file.filename);
-		im.resize({
-  			srcPath: file.destination+file.filename,
-  			dstPath: file.destination+file.filename+"_thumb.jpg",
-  			width:   100,
-  			height: 100
-		}, function(err, stdout, stderr) {
-  		if (err) throw err;
-  			console.log('resized file: '+file.filename);
-		});		
-	}
-	
-		
- 	console.log('newInsect: '+newInsect);
- 	newInsect.save(function (err) {
- 		if (err) throw err;
- 		console.log('Insect saved');
- 		res.redirect("/#/main");
- 	});	
-
+/* Load an insect */
+app.get('/insect/load', function(req, res) {
+	Insect.find({'userId': req.query.userId}).exec(function(err, results) {
+		if (err) throw err;
+		console.log("results: "+results);
+		insect = results;
+		res.send(results);
+	});
 });
 
- 
+/* Upload or modify insect */
+app.post('/insect/insert', upload.array('userPhotos', 10), function(req, res) {
+	console.log("uploading or modifying insect");
+	console.log("isupload: "+req.body.isUpload);
+	console.log("insectId: "+req.body.insectId);
+	console.log('userId:' +req.user.id);
+	
 
- 
+	var isUpload = req.body.isUpload;
+	var handleUpload = function(req, res, insect) {
+		if (req.files.length> 1 ) {
+			console.log("image2: "+req.files[1]);
+		}
+
+		console.log("wiki: "+req.body.wiki);
+		insect.latinName=req.body.latinName;
+		insect.legs=req.body.legs;
+		insect.primaryColor=req.body.primaryColor;
+		insect.secondaryColor=req.body.secondaryColor;
+		insect.wiki=req.body.wiki;
+		insect.category=req.body.category;
+		insect.userId=req.user.id;
+		console.log('insect.translations: '+insect.translations);
+	
+		if (isUpload) {
+			console.log('adding new translations');
+			console.log(insect);
+			insect.translations = [];
+			insect.translations.push({"language": "en", "name": req.body.enName});
+			insect.translations.push({"language": "fi", "name": req.body.fiName});
+		} else {
+			console.log('updating names.');
+			console.log('insect.translations[0]: '+insect.translations[0]);
+			console.log('insect.translations[0].name: '+insect.translations[0].name);
+			insect.translations[0].name = req.body.enName;
+			insect.translations[1].name = req.body.fiName;		
+		}
+		console.log('insect.translations: '+insect.translations);
+		console.log('insect.translations[0]: '+insect.translations[0]);
+		console.log('insect.translations[0].name: '+insect.translations[0].name);
+		
+		console.log('read body variables.');
+	
+		if (req.body.imageLinks) {
+			console.log("imagelinks: "+req.body.imageLinks);
+			var imageUrls = req.body.imageLinks.split(',');	
+		
+			for (var ind in imageUrls)		
+				insect.images.push(imageUrls[ind]);
+		}
+		console.log('creating thumb picture');
+		// thumb picture
+		for (var i = 0; i< req.files.length; i++) {
+			var file = req.files[i];
+			console.log("destination: "+file.destination+file.filename);
+			im.resize({
+  				srcPath: file.destination+file.filename,
+  				dstPath: file.destination+file.filename+"_thumb.jpg",
+  				width:   150,
+  				height: 150
+			}, function(err, stdout, stderr) {
+  			if (err) throw err;
+  				console.log('resized file: '+file.filename);
+			});		
+		}
+		
+ 		if (isUpload == '1') {
+ 			console.log('saving insect');
+ 			insect.save(function (err) {
+ 				if (err) throw err;
+ 				console.log('Insect saved');
+ 				console.log('insect: '+insect);
+ 				res.redirect("/#/main");
+ 			});
+ 		}	else {
+ 			console.log("updating insect")
+ 			var update = {"wiki": insect.wiki,
+				"category": insect.category,
+				"primaryColor": insect.primaryColor,
+				"secondaryColor": insect.secondaryColor,
+				"legs": insect.legs,
+				"images": insect.images,
+				"latinName": insect.latinName,
+				"imageLinks": insect.imageLinks,
+				"translations": insect.translations };
+ 			var conditions = {"_id": insect._id};
+ 			var options = { multi: true } ;
+ 			var callback = function callback (err, numAffected) {
+  				// numAffected is the number of updated documents
+  				if (err) throw err;
+  				console.log("insect updated");
+  				res.redirect("/#/main");
+			};
+			
+			 Insect.update(conditions, update, options, callback);
+		}
+	}
+	
+		if (isUpload == '0') {
+			console.log('modifying insect');
+			/* Modify */
+			Insect.find({'_id': req.body.insectId}).exec(function(err, results) {
+				if (err) throw err;
+				var insect = results[0];
+			
+			console.log(insect);
+			
+			console.log('removing selected images');
+			/* Remove selected images */		
+			console.log('insect.images:'+insect.images);
+			var removedPhotoInd =0;
+			console.log("images.length: "+insect.images.length);
+			var imagesLength = insect.images.length;
+			for (var i = 0; i < imagesLength; i++) {
+				var ind = i - removedPhotoInd;
+				var photo = insect.images[ind];
+				console.log("photo: "+photo);
+				console.log("photo in body: "+req.body[photo]);
+				
+				if (req.body[photo]) {
+					console.log('removing photo: '+photo);
+							
+					insect.images.splice(ind,1);
+					removedPhotoInd++;
+					console.log('insect\'s images: '+insect.images);		
+				}
+				
+			}
+		
+			console.log("adding new images ");
+			// add possible new images
+			for (var i = 0; i< req.files.length; i++) {
+				console.log("req.files: "+req.files[i].originalname);
+				/* check duplicates */
+				var isDuplicate = false;
+				for (var j = 0; j < insect.images.length; j++) {
+					if (insect.images[j] == req.files[i].originalname) 
+						isDuplicate = true;
+				}
+				if (!isDuplicate)
+					insect.images.push('images/'+req.files[i].originalname);
+				else 
+					console.log("found duplicate: "+req.files[i].originalname);	
+			}	
+			handleUpload(req, res, insect);
+		});
+		
+	} else {
+		console.log('uploading insect');
+		var insect = new Insect();
+		insect.images = [];
+		for (var ind in req.files) {
+			console.log("file ind: "+ind);
+			console.log("req.files[ind].originalname"+req.files[ind].originalname);
+			insect.images.push('images/'+req.files[ind].originalname);	
+		}	
+		handleUpload(req,res, insect);
+	}
+});
+
  app.get('/collection/insert', function(req, res) {
 		console.log('searching user by email');
 		console.log('user: '+req.user);
@@ -503,8 +591,6 @@ app.post('/insect/insert', upload.array('userPhotos', 10), function(req, res) {
 			res.send(null);
 	});
 
-
-	
 	 // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
@@ -549,11 +635,11 @@ app.post('/insect/insert', upload.array('userPhotos', 10), function(req, res) {
     app.get('/login', function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
-    }); //
+        res.render('login.ejs', { message: req.flash('error') }); 
+    });
     
     // process the login form
-    app.post('/login', passport.authenticate('local-login', {
+    app.post('/login', passport.authenticate('login', {
         successRedirect : '/#/main', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
@@ -569,72 +655,15 @@ app.post('/insect/insert', upload.array('userPhotos', 10), function(req, res) {
     app.get('/signup', function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', { message: req.flash('error') });
     }); //
 
     // process the signup form
-    /*app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/signup', passport.authenticate('signup', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
-    }));*/ //
-    
-    passport.use('signup', new LocalStrategy({
-    	passReqToCallback : true },
-  	 		function (req, email, password, username, done) {
-    	findOrCreateUser = function() {
-    	console.log('email:'+email);
-    	console.log('req.email:'+req.email);
-      // find a user in Mongo with provided username
-      User.findOne({'email':email},function(err, user) {
-        // In case of any error return
-        if (err){
-          console.log('Error in SignUp: '+err);
-          return done(err);
-        }
-        // already exists
-        if (user) {
-          console.log('User already exists');
-          //res.render('signup.ejs', {});
-          return done(null, false, 
-			             
-            req.flash('message','User Already Exists'));
-        } else {
-          // if there is no user with that email
-          // create the user
-          var newUser = new User();
-          // set the user's local credentials
-          newUser.username = username;
-          newUser.password = createHash(password);
-          newUser.email = req.param('email');
-          //newUser.firstName = req.param('firstName');
-          //newUser.lastName = req.param('lastName');
- 
-          // save the user
-          newUser.save(function(err) {
-            if (err){
-              console.log('Error in Saving user: '+err);  
-              throw err;  
-            }
-            console.log('User Registration succesful');    
- 				// render the page and pass in any flash data if it exists
-        		//res.render('profile.ejs', { message: req.flash('loginMessage') });             
-            return done(null, newUser);
-          });
-        }
-      });
-    };
-     
-    // Delay the execution of findOrCreateUser and execute 
-    // the method in the next tick of the event loop
-    process.nextTick(findOrCreateUser);
-  })
-);
-
-    // Generates hash using bCrypt
-    var createHash = function(password){
-        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-}
+    }));
 
     // process the signup form
     // app.post('/signup', do all our passport stuff here);

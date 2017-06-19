@@ -1,7 +1,7 @@
 <table align="center">
 <tr> <td align="center">
 
-<div ng-repeat="translation in insect.names">
+<div ng-repeat="translation in insect.translations">
 	<p ng-if="translation.language==lang">
 		{{translations.NAME}}: {{translation.name}}	
 	</p>
@@ -43,7 +43,7 @@
 <div ng-switch="prevUrl">
   <div ng-switch-when="#/list">
      <input type="button" class="button button-blue" value="{{translations.NEWSEARCH}}" ng-click="new_search()"/>
-		<input type="button" class="button" value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()"/>
+     <input ng-if="currentUser" type="button" class="button" value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()"/>
   </div>
   <div ng-switch-when="#/collection">
      <input type="button" class="button button-blue" value="{{translations.RETURNTOCOLLECTION}}" ng-click="collection()"/>

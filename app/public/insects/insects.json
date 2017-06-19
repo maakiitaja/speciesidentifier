@@ -324,18 +324,7 @@
 "Images": "images/Absidia schoenherri metsäsylkikuoriainen tv20110619_002.jpg",
 "Wiki": "Absidia_schoenherri"
 },
-{
-"names":	[{	"language":	"fi",
-	"name": "Tummasylkikuoriainen"}],
-"LatinName": "Cantharis obscura",
-"Category":	"Beetle",
-"Legs":	"6",
-"PrimaryColor": "Black",
-"SecondaryColor": "Yellow",
-"Territory": "",
-"Images": "images/Cantharis obscura tummasylkikuoriainen tv20140530_010.jpg",
-"Wiki": "Cantharis_obscura"
-},
+
 {
 "names":	[{	"language":	"fi",
 	"name": "Hakasylkikuoriainen"}],
@@ -1020,18 +1009,6 @@
 },
 {
 "names":	[{	"language":	"fi",
-	"name": "Metsäsylkikuoriainen"}],
-"LatinName": "Absidia schoenherri",
-"Category":	"Beetle",
-"Legs":	"6",
-"PrimaryColor": "Black",
-"SecondaryColor": "Orange",
-"Territory": "",
-"Images": "images/Absidia schoenherri metsäsylkikuoriainen tv20110619_002.jpg",
-"Wiki": "Absidia_schoenherri"
-},
-{
-"names":	[{	"language":	"fi",
 	"name": "Kirjosylkikuoriainen"}],
 "LatinName": "Cantharis figurata",
 "Category":	"Beetle",
@@ -1053,18 +1030,8 @@
 "Territory": "",
 "Images": "images/Cantharis obscura tummasylkikuoriainen tv20140530_010.jpg",
 "Wiki": "Cantharis_obscura"
-},{
-"names":	[{	"language":	"fi",
-	"name": "Hakasylkikuoriainen"}],
-"LatinName": "Rhagonycha lignosa",
-"Category":	"Beetle",
-"Legs":	"6",
-"PrimaryColor": "Brown",
-"SecondaryColor": "Black",
-"Territory": "",
-"Images": "images/Rhagonycha lignosa.jpeg",
-"Wiki": "Rhagonycha_lignosa"
-},{
+},
+{
 "names":	[{	"language":	"fi",
 	"name": "Nummikiitäjäinen"}],
 "LatinName": "Cicindela sylvatica",

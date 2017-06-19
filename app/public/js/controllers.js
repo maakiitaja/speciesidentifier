@@ -5,44 +5,135 @@
 
 var insectIdentifierControllers = angular.module('insectIdentifierControllers', []);
 
+insectIdentifierControllers.controller('UploadListCtrl', ['$scope', 'Search', '$location', '$http', '$localStorage', 
+	function ($scope, Search, $location, $http, $localStorage) {
+		
+		console.log('uploadlist ctrl current User:'+$location.search().currentUser._id);
+		$http({
+		  	url: '/uploadList', 
+			method: "GET",
+			params: {userId: $location.search().currentUser._id}
+			}).success(function(data) {
+				//alert("received uploaded insects");
+				console.log('received insects images: '+data[0].images);
+				console.log('1st insect: '+data[0].latinName);
+				
+				// order by category
+				var list = {};		
+				var categories = [];
+				var listLength = 0;
+				console.log('data.length: '+data.length);
+				console.log('data: '+data);
+				
+				for (var i = 0; i < data.length; i++) {
+					// check if the category exists
+					var categoryExists = false;
+					for (var j = 0; j < listLength; j++) {
+						console.log('list[data[i].category]: '+list[data[i].category]);
+						if (list[data[i].category]) {
+							console.log('category: '+data[i].category+' exists.');
+							categoryExists = true;
+							break;						
+						}	
+					}					
+					
+						
+					if (!categoryExists) {
+						
+						console.log("adding a category: "+data[i].category);
+						list[data[i].category] = [];
+						
+						
+					}
+					console.log("adding an item: "+data[i]);
+					listLength++;
+					list[data[i].category].push(data[i]);
+						
+					
+					console.log(list[data[i].category]);
+					//console.log("category's "+data[i].category+" "+i+"st item:"+list[data[i].category][i]);					
+				}
+				console.log(JSON.stringify(list['Butterfly']));
+				console.log(JSON.stringify(list));
+				$scope.uploadList = list;
+				$scope.insect = data[0];
+		 });		
+		
+		$scope.upload = function(insect) {
+			
+			$scope.location.path('insect/upload').search({'insect': insect, 'fromUploadListPage': '1'});
+		}
+	}
+	
+]);
+
 insectIdentifierControllers.controller('UploadInsectCtrl', ['$scope', 'Search', '$location', '$http', '$localStorage',
 	  function($scope, Search, $location, $http, $localStorage) {
 	  		// create a blank object to handle form data.
+      	
+      	if ($location.search().fromUploadListPage == '1') {
+      		console.log('filling loaded insect\'s fields');
       
-			$scope.uploadFile = function(){
+				var insect = $location.search().insect;		
+				console.log(insect);
+				$scope.insect = insect;
+				console.log('insect.translations: '+insect.translations);
+				console.log('insect.translations[0]: '+insect.translations[0]);
+				console.log('insect.translations[0].name: '+insect.translations[0].name);
+				
+				if (insect.translations.length > 0) {
+					$scope.enName = insect.translations[0].name;
+					$scope.fiName = insect.translations[1].name;
+				}
+				$scope.latinName = insect.latinName;
+				$scope.wiki = insect.wiki;
+				$scope.primaryColor = insect.primaryColor;
+				$scope.secondaryColor = insect.secondaryColor;
+				$scope.legs = '0'+insect.legs;
+				$scope.category = insect.category;
+				$scope.uploadedPhotos = insect.images;
+				$scope.isRequired = false;	
+				console.log("uploadedphotos: "+$scope.uploadedPhotos);
+												
+				$scope.insectId = insect._id;
+				$scope.isUpload = '0';
+				$scope.photos = [];
 			
-			     var file = $scope.myFile;
-			     var uploadUrl = "/insect/insert";
-			     var fd = new FormData();
-			     console.log("file: "+file);
-			     fd.append('userPhotos', userPhotos);
-				  fd.append('fiName', fiName);
-					fd.append('enName', enName);
-					fd.append('latinName', latinName);
-					fd.append('imageLinks', imageLinks);
-					fd.append('category', category);
-					fd.append('legs', legs);
-					fd.append('wiki', wiki);
-					fd.append('primaryColor', primaryColor);
-					fd.append('secondaryColor', secondaryColor);		
-			     $http.post(uploadUrl,fd, {
-			         transformRequest: angular.identity,
-			         headers: {'Content-Type': undefined}
-			     })
-			     .success(function(){
-			       console.log("success!!");
-			       $scope.location.path("#/main");
-			     })
-			     .error(function(){
-			     		window.alert("File upload failed.");
-			       console.log("error!!");
-			     });
-			 };      
-      
-   
+				for (var i = 0; i< insect.images.length; i++)
+					$scope.photos.push({name: insect.images[i], 'checked': '0'});
+				
+				console.log('scope.photos: '+$scope.photos);
+				console.log('scope.photos[0].name: '+$scope.photos[0].name);
+				
+				$scope.checkPhotoRequired = function(photo) {
+					// check if the clicked remove checkbox is non-ticked
+					console.log('photo: '+photo);
+					console.log('photo.name: '+photo.name);
+					console.log('photo.checked: '+photo.checked);
+					
+					if (photo.checked) {
+	
+						// loop remove-checkboxes
+						var isRequired = true;
+						for (var i =  0; i < $scope.photos.length; i++) {
+							if (!$scope.photos[i].checked) {
+								console.log('found non-ticked photo checkbox');
+								$scope.isRequired = false;
+							}														
+						}
+						$scope.isRequired = isRequired;	
+					} else {
+						console.log('found the clicked checkbox to be non-ticked.');
+						$scope.isRequired = false;					
+					}
+				}
+		 	}	
+			else {
+				$scope.isUpload = '1';
+				$scope.isRequired = '1';
+			}
 	  }
 ]);
-
 
 insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', '$location', '$http', 
 	'$localStorage', '$cookies',
@@ -59,13 +150,23 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 	  		var wikilink="https://"+$cookies.get("lang")+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&"+
 	  			"explaintext=&titles="+$scope.insect.wiki+'&callback=?';
 	  		$.getJSON(wikilink, function(data) {
-	  				var pages=data.query.pages;
-	    			for (var prop in pages) {
-	    				var description = JSON.stringify(data.query.pages[prop].extract);
-	    			}
-					$scope.description=JSON.stringify(description);
+	  				if (data.query) {
+	  					var pages=data.query.pages;
+	    				for (var prop in pages) {
+	    					var description = JSON.stringify(data.query.pages[prop].extract);
+	    				}
+	    				 
+	    				console.log(description);
+	    				var res=description.replace("\"", '');
+	    				res=description.replace("\"", '');
+	    				res= res.replace("\\", '');
+	    				console.log(res);
+	    			
+						$scope.description=res;
+					}
 	  		});
 	  		var insect = $scope.insect;
+	  		console.log(insect.images);
  			$scope.mainImageUrl = insect.images[0];
  				 						
 			$scope.setImage = function(img) {		
@@ -117,18 +218,18 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 		    			method: "GET",
 		    			params: {insectId: $scope.insect._id}
 		 			}).success(function(data) {
-						alert("item saved to the collection"); 			
+						alert($scope.translations.ITEMSAVED); 			
 		 			});
 				} else 
-					alert ("item already in collection");					
+					alert ($scope.translations.ITEMALREADYINCOLLECTION);					
 	 		};
 	 	
 			$scope.collection=function() {
 				$scope.location.path('collection');
 			};		
 			$scope.new_search=function() {
-				$localStorage.collection["returningFromDetailPage"]="1";
-	 			$scope.location.path("search");
+				
+	 			$scope.location.path("search").search({"returningFromDetailPage": "1"});
 	 			
 			};		
   }]);
@@ -136,21 +237,21 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$location', '$http', '$localStorage',
 	  function($scope, Search, $location, $http, $localStorage) {
 	  	
-	  			// Pagination
+	  		// Pagination
 	 		$scope.itemsPerPage = 5;
    		$scope.currentPage = 0;
 			$scope.pagedInsects = [];
 			
 			$scope.setPagedInsects = function(insects) {
-					
-					
+
 				$scope.nroOfPages = insects.length / $scope.itemsPerPage;
   				if (!isInt($scope.nroOfPages) ) {
   					$scope.nroOfPages = Math.floor($scope.nroOfPages); 
   					$scope.nroOfPages++;
   				}
   				console.log("nroofpages: "+$scope.nroOfPages);
-  				
+  				// clear paged insects
+				$scope.pagedInsects = [];
 				// loop through nro of pages
 				for (var i = 0; i < $scope.nroOfPages; i++) {
 					// loop through nro of insects per page						
@@ -164,18 +265,18 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 					
 			}	  		
 	  		
-	  		if ($localStorage.collection['returningFromDetailPage'] == '1') {
+	  		if ($location.search().returningFromDetailPage == '1') {
 	  			console.log('returning from detail page');
-	  			$localStorage.collection['returningFromDetailPage'] = 0;
+	  			
 	  			$scope.searchResults="showResults";	
-	  			var insects = $localStorage.collection['insects'];
+	  			var insects = $localStorage.searchResults;
 	  			$scope.setPagedInsects(insects);
 	  				  			
 	  			// main image
 	  			var imgs = [];
 	  			for (var i=0; i<insects.length; i++) {
 						imgs.push(insects[i].images[0]);  		
-		  			}
+		  		}
 		  		$scope.imgs = imgs;
 		  		$scope.mainImageUrl=insects[0];
 	  		}
@@ -186,13 +287,10 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 	 			console.log("query: "+query);
 							 			
 	 			if (query =="" || typeof query == 'undefined') {
+	 				$scope.searchResults = "Please, provide search parameters";
 	 				console.log("query is empty");
-	 				query = {};
-	 				query.primaryColor = "";
-	 				query.secondaryColor = "";
-	 				query.category = "";
-	 				query.legs = "";
-	 			}
+	 	
+	 			} else {
 	 					 			
 				// get a list of beetles
 		  		$http({
@@ -204,25 +302,29 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 		 			
 		 			console.log("receiving search results.")
 		 			$scope.mainImageUrl = "not-available";
-		 			$scope.insect=data[0];
-		 			$scope.insects = data;			
-		 			$localStorage.collection['insects'] = data;			
-  					$scope.setPagedInsects(data);
+					console.log("search results:"+data+" with length: "+data.length);
+					if (data.length == 0) {
+						$scope.searchResults="noResults";
+					} else {		
+			 			$scope.insect=data[0];
+				 			$scope.insects = data;	
+			 			$localStorage.searchResults = data;
+		 						
+  						$scope.setPagedInsects(data);
   					  					
-		 			var imgs=[];
-		  	   	// make a list of image urls
-		  			var len=data.length;
-		  			for (var i=0; i<len; i++) {
-						imgs.push(data[i].images[0]);  		
-		  			}
-		  			$scope.imgs = imgs;
-		  			console.log("showing search results");
+			 			var imgs=[];
+				  	   	// make a list of image urls
+			  			var len = data.length;
+			  			for (var i=0; i<len; i++) {
+							imgs.push(data[i].images[0]);  		
+			  			}
+			  			$scope.imgs = imgs;
+			  			console.log("showing search results");
+						$scope.searchResults="showResults";
 
-		  			if (data.length > 0)
-		  				$scope.searchResults="showResults";	
-		  			else 
-		  				$scope.searchResults="noResults";				 			
-		 		}); 					
+					}
+		 		}); 		
+		 		}			
 			};
 			
 					
@@ -276,7 +378,7 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 }]);
   
   
-  insectIdentifierControllers.controller('ListCtrl', ['$scope', 'Search', '$http', '$location',
+insectIdentifierControllers.controller('ListCtrl', ['$scope', 'Search', '$http', '$location',
   function($scope, Search, $http, $location) {
 
 	
@@ -373,8 +475,6 @@ insectIdentifierControllers.controller('CollectionCtrl', ['$scope', 'Search', '$
 			
 			for (var ind in data) {
 				var insect = data[ind];
-				
-				
 				var duplicate  = 0;
 				console.log("localStorage: "+JSON.stringify($localStorage));
 				var t = $localStorage.collection[insect.category];
@@ -388,8 +488,7 @@ insectIdentifierControllers.controller('CollectionCtrl', ['$scope', 'Search', '$
 						console.log("found duplicate between localstorage and server data");
 						// found duplicate
 						duplicate = true;																					
-					}
-					
+					}	
 				}				
 				if (!duplicate)	
 					$localStorage.collection[insect.category].push(insect);
@@ -397,7 +496,7 @@ insectIdentifierControllers.controller('CollectionCtrl', ['$scope', 'Search', '$
 			console.log(JSON.stringify($localStorage.collection['Butterfly']));
 				    				
 		}).error(function(){
-			window.alert("Refreshing insect collection failed.");		   
+			window.alert($scope.translations.REFRESHINGCOLLECTION);		   
 		});		
 		
 		$scope.location=$location;

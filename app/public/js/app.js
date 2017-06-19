@@ -46,7 +46,7 @@ insectIdentifierApp.config(['$routeProvider',
 			controller: 'InsectDetailCtrl'      
       }).
       when('/main', {
-      		templateUrl: 'partials/main_menu.html',
+      		templateUrl: 'partials/search.html',
       		controller: 'MainCtrl'
       }).
       when('/collection', {
@@ -56,6 +56,10 @@ insectIdentifierApp.config(['$routeProvider',
       when('/insect/upload', {
       	templateUrl: 'partials/upload-insect.html',
       	controller: 'UploadInsectCtrl'
+      }).
+      when('/insect/uploadList', {
+      	templateUrl: 'partials/upload-list.html',
+      	controller: 'UploadListCtrl'
       }).
          otherwise({
         redirectTo: '/phones'

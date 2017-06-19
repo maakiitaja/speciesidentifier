@@ -1,237 +1,437 @@
-/* app css stylesheet */
+	/* app css stylesheet */
+	/* Javascript menu */
+	#sddm
+	{	margin: 0;
+		padding: 0;
+		z-index: 30}
+
+	#sddm li
+	{	margin: 0;
+		padding: 0;
+		list-style: none;
+		float: left;
+		font: bold 11px arial}
+
+	#sddm li a
+	{	display: block;
+		margin: 0 1px 0 0;
+		padding: 4px 10px;
+		width: 100px;
+		background: #5970B2;
+		color: #FFF;
+		text-align: center;
+		text-decoration: none}
+
+	#sddm li a:hover
+	{	background: #49A3FF}
+
+	#sddm div
+	{	position: absolute;
+		visibility: hidden;
+		margin: 0;
+		padding: 0;
+		background: #EAEBD8;
+		border: 1px solid #5970B2}
+
+		#sddm div a
+		{	position: relative;
+			display: block;
+			margin: 0;
+			padding: 5px 10px;
+			width: auto;
+			white-space: nowrap;
+			text-align: left;
+			text-decoration: none;
+			background: #EAEBD8;
+			color: #2875DE;
+			font: 11px arial}
+
+		#sddm div a:hover
+		{	background: #49A3FF;
+			color: #FFF}
+
+	/* End of javascript menu */
+
+	body {
+	  padding-top: 20px;
+	}
+	.button {
+	    background-color: #4CAF50; /* Green */
+	    border: none;
+	    color: white;
+	    padding: 15px 32px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	}
+	.button-orange {background-color:orange;}
+	.button-yellow {background-color:yellow;}
+	.button-blue {background-color: #008CBA;} /* Blue */
+	.button-red {background-color:red;}
+
+	input.ng-invalid {
+	    background-color: red;
+	}
+	input.ng-valid {
+	    background-color: lightgreen;
+	}
+
+	.insect-images {
+	  background-color: white;
+	  /*width: 450px;*/
+	  width: 100%;
+	  max-width: 100%;
+	  /*height: 450px;*/
+	  overflow: hidden;
+	  position: relative;
+	  float: left;
+	}
+
+	* {
+	    box-sizing: border-box;
+	}
+
+	.row::after {
+	    content: "";
+	    clear: both;
+	    display: table;
+	}
+	[class*="col-"] {
+	    float: left;
+	    padding: 15px;
+	}
+	/* For mobile phones: */
+	[class*="col-"] {
+	    width: 100%;
+	}
+	 
+	.menu ul {
+	    list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	}
+	.menu li {
+	    padding: 8px;
+	    margin-bottom: 7px;
+	    background-color: #33b5e5;
+	    color: #ffffff;
+	    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	}
+	.menu li:hover {
+	    background-color: #0099cc;
+	}
+	.aside {
+	    background-color: #33b5e5;
+	    padding: 15px;
+	    color: #ffffff;
+	    text-align: center;
+	    font-size: 14px;
+	    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	} 
+	 
+	.header {
+
+	    background-color: #9933cc;
+
+	    color: #ffffff;
+
+	    padding: 15px;
+
+	} 
+	 
+	.footer {
+	    background-color: #0099cc;
+	    color: #ffffff;
+	    text-align: center;
+	    font-size: 12px;
+	    padding: 15px;
+	} 
+	 
+	.insect-image {
+	  background-color: white;
+	  /*width: 450px;*/
+	  width: 100%;
+	  max-width: 100%:
+	  /*height: 450px;*/
+	  overflow: hidden;
+	  position: relative;
+	}
+
+	select {
+		margin:5px;
+	}
+
+	form { 
+	margin: 0 auto; 
+	width:550px;
+	text-align: center;
+	}
+
+	.phones {
+	  list-style: none;
+	}
+	.text {
+		display:inline;	
+	}
+	.thumb {
+	  float: left;
+	  margin: -0.5em 1em 1.5em 0;
+	  padding-bottom: 1em;
+	  height: 100px;
+	  width: 100px;
+	}
+
+	.phones li {
+	  clear: both;
+	  height: 115px;
+	  padding-top: 15px;
+	}
+
+	/** Detail View **/
+	img.phone {
+	  float: left;
+	  margin-right: 3em;
+	  margin-bottom: 2em;
+	  background-color: white;
+	  padding: 2em;
+	  height: 400px;
+	  width: 400px;
+	  display: none;
+	}
 
 
 
-body {
-  padding-top: 20px;
-}
-.button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-.button-orange {background-color:orange;}
-.button-yellow {background-color:yellow;}
-.button-blue {background-color: #008CBA;} /* Blue */
-.button-red {background-color:red;}
+	img.phone:first-child {
+	  display: block;
+	}
+	ul.insect-thumbs {
+	  margin: 0;
+	  list-style: none;
+	}
 
-input.ng-invalid {
-    background-color: red;
-}
-input.ng-valid {
-    background-color: lightgreen;
-}
+	ul.insect-thumbs li {
+	  border: 1px solid black;
+	  display: inline-block;
+	  margin: 1em;
+	  background-color: white;
+	}
 
-.insect-images {
-  background-color: white;
-  width: 450px;
-  height: 450px;
-  overflow: hidden;
-  position: relative;
-  float: left;
-}
+	ul.insect-thumbs img {
+	  height: 150px;
+	  width: 150px;
+	  padding: 0em;
+	}
 
-* {
-    box-sizing: border-box;
-}
+	ul.insect-thumbs img:hover {
+	  cursor: pointer;
+	}
 
-.row::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-[class*="col-"] {
-    float: left;
-    padding: 15px;
-}
-/* For mobile phones: */
-[class*="col-"] {
-    width: 100%;
-}
- 
-.menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-.menu li {
-    padding: 8px;
-    margin-bottom: 7px;
-    background-color: #33b5e5;
-    color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-.menu li:hover {
-    background-color: #0099cc;
-}
-.aside {
-    background-color: #33b5e5;
-    padding: 15px;
-    color: #ffffff;
-    text-align: center;
-    font-size: 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-} 
- 
-.header {
+	ul.phone-thumbs {
+	  margin: 0;
+	  list-style: none;
+	}
 
-    background-color: #9933cc;
+	ul.phone-thumbs li {
+	  border: 1px solid black;
+	  display: inline-block;
+	  margin: 1em;
+	  background-color: white;
+	}
 
-    color: #ffffff;
+	ul.phone-thumbs img {
+	  height: 100px;
+	  width: 100px;
+	  padding: 1em;
+	}
 
-    padding: 15px;
-
-} 
- 
-.footer {
-    background-color: #0099cc;
-    color: #ffffff;
-    text-align: center;
-    font-size: 12px;
-    padding: 15px;
-} 
- 
-.insect-image {
-  background-color: white;
-  width: 450px;
-  height: 450px;
-  overflow: hidden;
-  position: relative;
-}
-
-form { 
-margin: 0 auto; 
-width:550px;
-text-align: center;
-}
-
-.phones {
-  list-style: none;
-}
-.text {
-	display:inline;	
-}
-.thumb {
-  float: left;
-  margin: -0.5em 1em 1.5em 0;
-  padding-bottom: 1em;
-  height: 100px;
-  width: 100px;
-}
-
-.phones li {
-  clear: both;
-  height: 115px;
-  padding-top: 15px;
-}
-
-/** Detail View **/
-img.phone {
-  float: left;
-  margin-right: 3em;
-  margin-bottom: 2em;
-  background-color: white;
-  padding: 2em;
-  height: 400px;
-  width: 400px;
-  display: none;
-}
+	ul.phone-thumbs img:hover {
+	  cursor: pointer;
+	}
 
 
+	ul.specs {
+	  clear: both;
+	  margin: 0;
+	  padding: 0;
+	  list-style: none;
+	}
 
-img.phone:first-child {
-  display: block;
-}
-ul.insect-thumbs {
-  margin: 0;
-  list-style: none;
-}
+	ul.specs > li{
+	  display: inline-block;
+	  width: 200px;
+	  vertical-align: top;
+	}
 
-ul.insect-thumbs li {
-  border: 1px solid black;
-  display: inline-block;
-  margin: 1em;
-  background-color: white;
-}
+	ul.specs > li > span{
+	  font-weight: bold;
+	  font-size: 1.2em;
+	}
 
-ul.insect-thumbs img {
-  height: 150px;
-  width: 150px;
-  padding: 0em;
-}
+	ul.specs dt {
+	  font-weight: bold;
+	}
 
-ul.insect-thumbs img:hover {
-  cursor: pointer;
-}
+	h1 {
+	  border-bottom: 1px solid gray;
+	  align: "center";
+	  width:"70%";
+	}
 
-ul.phone-thumbs {
-  margin: 0;
-  list-style: none;
-}
+	#m2,#m3 {
+		visibility: hidden;
+	}
 
-ul.phone-thumbs li {
-  border: 1px solid black;
-  display: inline-block;
-  margin: 1em;
-  background-color: white;
-}
+	/** From bootstrap */
 
-ul.phone-thumbs img {
-  height: 100px;
-  width: 100px;
-  padding: 1em;
-}
+	.pagination{height:40px;margin:20px 0;}
+	.pagination ul{display:inline-block;*display:inline;*zoom:1;margin-left:0;margin-bottom:0;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);}
+	.pagination ul>li{display:inline;}
+	.pagination ul>li>a,.pagination ul>li>span{float:left;padding:0 14px;line-height:38px;text-decoration:none;background-color:#ffffff;border:1px solid #dddddd;border-left-width:0;}
+	.pagination ul>li>a:hover,.pagination ul>.active>a,.pagination ul>.active>span{background-color:#f5f5f5;}
+	.pagination ul>.active>a,.pagination ul>.active>span{color:#999999;cursor:default;}
+	.pagination ul>.disabled>span,.pagination ul>.disabled>a,.pagination ul>.disabled>a:hover{color:#999999;background-color:transparent;cursor:default;}
+	.pagination ul>li:first-child>a,.pagination ul>li:first-child>span{border-left-width:1px;-webkit-border-radius:3px 0 0 3px;-moz-border-radius:3px 0 0 3px;border-radius:3px 0 0 3px;}
+	.pagination ul>li:last-child>a,.pagination ul>li:last-child>span{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;}
+	.pagination-centered{text-align:center;}
+	.pagination-right{text-align:right;}
 
-ul.phone-thumbs img:hover {
-  cursor: pointer;
-}
+	.pull-right{float:right;}
+
+	/* End of bootstrap */
+
+	/* From https://designmodo.com/create-drop-down-menu-search-box/ */
+
+	@import url(http://fonts.googleapis.com/css?family=Montserrat);
+	 
+	* {
+	    margin: 0;
+	    padding: 0;
+	}
+
+	.nav {
+	    background: #232323;
+	    height: 60px;
+	    display: inline-block;
+	}
+	 
+	.nav li {
+	    float: left;
+	    list-style-type: none;
+	    position: relative;
+	background: #232323;
+	
+	}
+	#options a{
+	    background: #232323;
+	}
+
+	.nav li a {
+	    font-size: 16px;
+	    color: white;	
+	    display: block;
+	    line-height: 60px;
+	    padding: 0 26px;
+	    text-decoration: none;
+	    border-left: 1px solid #2e2e2e;
+	    font-family: Montserrat, sans-serif;
+	    text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+	}
+	.nav li a:hover {
+	    background-color: #2e2e2e;
+	}
+	 
+	#settings a {
+	    padding: 18px;
+	    height: 24px;
+	    font-size: 10px;
+	    line-height: 24px;
+	}	
+
+	#search {
+	    width: 357px;
+	    margin: 4px;
+	}
+	#search_text{
+	    width: 297px;
+	    padding: 15px 0 15px 20px;
+	    font-size: 16px;
+	    font-family: Montserrat, sans-serif;
+	    border: 0 none;
+	    height: 52px;
+	    margin-right: 0;
+	    color: white;
+	    outline: none;
+	    background: #1f7f5c;
+	    float: left;
+	    box-sizing: border-box;
+	    transition: all 0.15s;
+	}
+	::-webkit-input-placeholder { /* WebKit browsers */
+	    color: white;
+	}
+	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	    color: white;
+	}
+	::-moz-placeholder { /* Mozilla Firefox 19+ */
+	    color: white;
+	}
+	:-ms-input-placeholder { /* Internet Explorer 10+ */
+	    color: white;
+	}
+	#search_text:focus {
+	    background: rgb(64, 151, 119);
+	}
+	#search_button {
+	    border: 0 none;
+	    background: #1f7f5c url(search.png) center no-repeat;
+	    width: 60px;
+	    float: left;
+	    padding: 0;
+	    text-align: center;
+	    height: 52px;
+	    cursor: pointer;
+	}
+
+	#options a, #options2 a{
+	    border-left: 0 none;
+	}
+	#options>a, #options2>a {
+	/**    background-image: url(triangle.png);**/
+	    background-position: 85% center;
+	    background-repeat: no-repeat;
+	    padding-right: 42px;
+	}
+	.subnav {
+	    visibility: hidden;
+	    position: absolute;
+	    top: 110%;
+	    right: 0;
+	    width: 100px;
+	    height: auto;
+	    opacity: 0;
+	    transition: all 0.5s;
+	    background: #232323;
+	}
+
+	.subnav li {
+	    float: left;
+	}
+	.subnav li a {
+	    border-bottom: 1px solid #2e2e2e;
+	}
+
+	#options:hover .subnav  {
+	    visibility: visible;
+	    top: 90%;
+	    opacity: 1;
+	}
+	#o1, #o2 {
+		visibility:visible;
+	}
+	#submenu:hover {
+		visibility:visible;
+	}
 
 
-ul.specs {
-  clear: both;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.specs > li{
-  display: inline-block;
-  width: 200px;
-  vertical-align: top;
-}
-
-ul.specs > li > span{
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-ul.specs dt {
-  font-weight: bold;
-}
-
-h1 {
-  border-bottom: 1px solid gray;
-}
-
-/** From bootstrap */
-
-.pagination{height:40px;margin:20px 0;}
-.pagination ul{display:inline-block;*display:inline;*zoom:1;margin-left:0;margin-bottom:0;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);}
-.pagination ul>li{display:inline;}
-.pagination ul>li>a,.pagination ul>li>span{float:left;padding:0 14px;line-height:38px;text-decoration:none;background-color:#ffffff;border:1px solid #dddddd;border-left-width:0;}
-.pagination ul>li>a:hover,.pagination ul>.active>a,.pagination ul>.active>span{background-color:#f5f5f5;}
-.pagination ul>.active>a,.pagination ul>.active>span{color:#999999;cursor:default;}
-.pagination ul>.disabled>span,.pagination ul>.disabled>a,.pagination ul>.disabled>a:hover{color:#999999;background-color:transparent;cursor:default;}
-.pagination ul>li:first-child>a,.pagination ul>li:first-child>span{border-left-width:1px;-webkit-border-radius:3px 0 0 3px;-moz-border-radius:3px 0 0 3px;border-radius:3px 0 0 3px;}
-.pagination ul>li:last-child>a,.pagination ul>li:last-child>span{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;}
-.pagination-centered{text-align:center;}
-.pagination-right{text-align:right;}
-
-.pull-right{float:right;}
-
-/* End of bootstrap */
+	/* End of https://designmodo.com/create-drop-down-menu-search-box/ */
