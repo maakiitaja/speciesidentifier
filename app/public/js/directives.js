@@ -85,9 +85,37 @@ myApp.directive('header', function () {
    	    		console.log('tmp.username: '+ tmp.username);
    	    		console.log("header currentuser: "+$scope.currentUser);
    	    		console.log("header currentuser.username: "+$scope.currentUser.username);
+			
        		});
 		  
         }]
+    }
+});
+
+myApp.directive('connectivity', function () {       
+    return {
+        link: function(scope, element, attrs) {   
+
+            element.bind("load" , function(e) { 
+
+                // success, "onload" catched
+                // now we can do specific stuff:
+  
+                console.log('this.id: '+this.id);
+		var id = '';
+		console.log('scope: '+scope);
+		console.log('scope.mainimageUrl: '+scope.mainImageUrl);
+		var isMainImage = false;
+		if (this.id == 'mainimage') {
+			id = scope.currentMainImageUrl;
+			isMainImage=true;
+		}
+		else 
+			id = this.id;
+		
+		checkconnectivity(id, isMainImage);
+            });
+        }
     }
 });
 

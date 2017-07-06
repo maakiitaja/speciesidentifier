@@ -9,6 +9,7 @@
 <!--<script src="js/prefixfree-1.0.7.js" type="text/javascript"></script>-->
 
 <script src="js/menu.js"></script>
+<script src="js/connectivity.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -25,17 +26,131 @@
   <script src="js/directives.js"></script>
     
   <style>
-  @media only screen and (min-width: 768px) {
-    /* For desktop: */
+  	/* styles for browsers with larger than 1000px width */
+   @media only screen and (min-width: 1000px) {
     .col-3 {width: 30%;}
-    .col-6 {width: 70%;}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														%;}
+    .col-6 {width: 70%;}
+
+  	#collection div, #search-menu div, #options div, #upload div, #search-menu div,#upload div, #modify div, #logout div, #login div{
+		display: inline;
+	}
+	
+	table.center{
+		margin-left:auto;
+		margin-right:auto;	
+	}
+
+	img.insect-detail {
+		max-width: 100%;
+		max-height: 100%;
+	}
+}
+
+  @media only screen and (max-width: 1000px) and (min-width:768px) {
+    	/* For desktop: */
+       .col-3 {width: 30%;}
+       .col-6 {width: 70%;}
+	 
+	#collection div, #upload div, #search-menu div, #options div {
+		display: inline;
+	}
+
+	table.center{
+		margin-left:auto;
+		margin-right:auto;	
+	}
+
+	h1 {
+		margin:0px;
+	}
+
+	img.insect-detail {
+		max-width: 500px;
+		max-height: 500px;
+	}
+}			
+
+	@media only screen and (min-width: 500px) and (max-width: 768px) {		
+
+		table.center{
+			margin-left:5%;
+			margin-right:5%;
+		}
+
+		#options, #login, #logout {
+			display: inline;
+		}
+
+		#header li {
+			max-width:50px;
+		}
+
+		#options {
+			max-width: 200px;
+		}
+
+		.subnav li {
+			max-width: 200px;
+		}
+
+		h1 {
+			margin:20px;
+		}
+		img.insect-detail {
+			max-width: 400px;
+			max-height: 400px;
+		}
+	}	
+	
+	@media only screen and (min-width: 400px) and (max-width: 500px){		
+
+		table.center{
+			margin-left:2%;
+			margin-right:2%;
+		}
+
+		#options, #login, #logout {
+			display: inline;
+		}
+
+		#header li {
+			max-width:50px;
+		}
+
+		h1 {
+			margin:20px;
+		}
+
+		#options {
+			max-width: 200px;
+		}
+	
+		.subnav li {
+			max-width: 200px;
+		}
+
+		img.insect-detail {
+			max-width: 300px;
+			max-height: 300px;
+		}
+
+	}
+
+	@media only screen and (min-width: 320px) and (max-width: 400px) {		
+		img.insect-detail {
+			max-width: 200px;
+			max-height: 200px;
+		}
+
+		#options, #login, #logout {
+			display: inline;
+		}
+	}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										
+
    </style>
 }
 </head>
 <body ng-app="insectIdentifierApp">
-  
-
-
 	<div header></div>
    
   <div class="view-container">

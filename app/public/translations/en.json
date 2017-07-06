@@ -1,4 +1,9 @@
 {  
+	"NEXT": "Next",
+	"PREVIOUS" : "Previous",
+	"REMOVEDINSECTFROMCOLLECTION" : "Insect removed from collection",
+	"FAILEDTOREMOVEINSECTFROMCOLLECTION": "Failed to remove insect from collection",
+	"REMOVEFROMCOLLECTION": "Remove from collection",	
 	"REFRESHINGCOLLECTION": "Refreshing insect collection failed.",	
 	"ITEMALREADYINCOLLECTION": "item already in collection",
 	"ITEMSAVED": "Item saved to the collection",

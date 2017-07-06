@@ -15,8 +15,10 @@ insectIdentifierControllers.controller('UploadListCtrl', ['$scope', 'Search', '$
 			params: {userId: $location.search().currentUser._id}
 			}).success(function(data) {
 				//alert("received uploaded insects");
-				console.log('received insects images: '+data[0].images);
-				console.log('1st insect: '+data[0].latinName);
+				if (data[0]) {
+					console.log('received insects images: '+data[0].images);
+					console.log('1st insect: '+data[0].latinName);
+				}
 				
 				// order by category
 				var list = {};		
@@ -72,6 +74,7 @@ insectIdentifierControllers.controller('UploadInsectCtrl', ['$scope', 'Search', 
 	  		// create a blank object to handle form data.
       	
       	if ($location.search().fromUploadListPage == '1') {
+		$location.search().fromUploadListPage = 0;
       		console.log('filling loaded insect\'s fields');
       
 				var insect = $location.search().insect;		
@@ -138,11 +141,21 @@ insectIdentifierControllers.controller('UploadInsectCtrl', ['$scope', 'Search', 
 insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', '$location', '$http', 
 	'$localStorage', '$cookies',
 	  function($scope, Search, $location, $http, $localStorage, $cookies) {
-	
-	  		// save the insect to the scope
-	  		$scope.prevUrl=Search.get().prevUrl;
-			$scope.insect=Search.get().insect;
+			
+			if ($localStorage.connected!='1') {
+				$scope.connected=0;	
+				console.log('detailctrl: not connected');				
+			} else {
+				$scope.connected=1;
+				console.log('detailctrl: connected');
+			}
+			$scope.localStorage = $localStorage;
+		
+			// save the insect to the scope
+	  		$scope.prevUrl=$location.search().prevUrl;
+			$scope.insect=$location.search().insect;
 			console.log('prevUrl: '+$scope.prevUrl);
+			console.log('insect: '+$scope.insect);
 			$scope.lang=$cookies.get('lang');
 	  		$scope.location=$location;
 	  	  		
@@ -150,33 +163,146 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 	  		var wikilink="https://"+$cookies.get("lang")+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&"+
 	  			"explaintext=&titles="+$scope.insect.wiki+'&callback=?';
 	  		$.getJSON(wikilink, function(data) {
-	  				if (data.query) {
-	  					var pages=data.query.pages;
+	  			if (data.query) {
+	  				var pages=data.query.pages;
 	    				for (var prop in pages) {
 	    					var description = JSON.stringify(data.query.pages[prop].extract);
 	    				}
 	    				 
-	    				console.log(description);
-	    				var res=description.replace("\"", '');
-	    				res=description.replace("\"", '');
-	    				res= res.replace("\\", '');
-	    				console.log(res);
-	    			
-						$scope.description=res;
-					}
+		    			console.log(description);
+		    			var res=description.replace("\"", '');
+		    			res=description.replace("\"", '');
+		    			res= res.replace("\\", '');
+		    			console.log(res);
+		    			
+					$scope.description=res;
+				}
 	  		});
+
 	  		var insect = $scope.insect;
 	  		console.log(insect.images);
- 			$scope.mainImageUrl = insect.images[0];
- 				 						
-			$scope.setImage = function(img) {		
-				$scope.mainImageUrl=img;					  			
-	    	};
-	  		
+			$scope.mainImageUrl = insect.images[0];
+				
+			$scope.pic = function(index) {
+				window.alert('pic '+$scope.insect.images[index]+' :'+$localStorage[$scope.insect.images[index]]);
+			}			
+			$scope.setImage = function (img) {
+				if ($localStorage.connected != '1') {
+					$scope.mainImageUrl = img;
+					console.log('setImage (not connected)');
+					console.log($scope.mainImageUrl);
+				}
+				else
+					$scope.mainImageUrl = img;			
+			}
+		
+			$scope.setImageUrl = function (img) {
+				if ($localStorage.getItem('connected') != '1')	{
+					var url = $localStorage.getItem(img);
+					console.log('url: '+url);
+					img = url;
+					// loop through thumb images
+				}
+			}
+
+			$scope.getBase64FromImage =function(id,name) {
+			    console.log('getbase64fromimageurl, id: '+id+' and name: '+name);
+			    var img = getImg(id,name);
+			    		    
+				/*	
+			    var img = new Image();
+			    if (name!= id) {
+				/* load image from the server 
+				img.src = name;
+				console.log('image : '+img);
+	
+			    }   else  
+			        img = document.getElementById(id);
+				*/
+
+			    img.setAttribute('crossOrigin', 'anonymous');
+
+			    img.onload = function () {
+				console.log('img.onload');
+			        var canvas = document.createElement("canvas");
+				console.log('this.width: '+this.width+' this.height: '+this.height);
+				
+				// thumb.jpg
+				console.log('name.substring: '+name.substring(name.length-9,name.length));
+				if (name.substring(name.length-9,name.length) == 'thumb.jpg') {
+					// resize
+					img.width =150;
+	                        	img.height = 150;
+					canvas.width = 150;
+					canvas.heigth = 150;
+				} else {
+				        canvas.width =this.width;
+				       	canvas.height =this.height;
+				}
+				
+			        var ctx = canvas.getContext("2d");
+			        ctx.drawImage(this, 0, 0);
+
+			        var dataURL = canvas.toDataURL("image/png");
+
+			        alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+
+				// set to localstorage
+				//name = name.replace(/^ ', "");
+	
+				console.log('saving image with name: '+name+' to localstorage');
+				$localStorage[name] = dataURL;
+				var tmp = $localStorage[name];
+				console.log('saved item: '+tmp);
+				//console.log(JSON.stringify($localStorage));
+    			};
+}
+			$scope.saveImagesToLocalStorage = function() {
+				/* loop through insect's images */	
+				console.log('saving images to local storage');	
+					
+				for (var i = 0; i < $scope.insect.images.length; i++) {
+					// full pics
+					console.log('before saving image to localstorage');
+					$scope.getBase64FromImage('mainimage', $scope.insect.images[i],$localStorage);
+					console.log('after saving image to localstorage');
+					
+					// thumbs
+					if ($scope.insect.images.length > 1) {
+						$scope.getBase64FromImage($scope.insect.images[i]+"_thumb.jpg",$scope.insect.images[i]+"_thumb.jpg", $localStorage);
+						console.log('saved thumb to localstorage');
+					}
+					else {
+						$scope.getBase64FromImage('mainimage',$scope.insect.images[i]+"_thumb.jpg", $localStorage);
+						console.log('saved and resized thumb to localstorage');
+					}		
+				}
+			}
+
+			$scope.removeFromCollection = function(insect) {
+				$http({
+			   		url: '/collection/remove', 
+		 			method: "GET",
+		 			params: { _id: insect._id }
+		 		}).success(function(data) {
+					console.log('data: '+data);
+					if (data == 'success') {
+						console.log('removed insect: '+insect.latinName +' from collection');
+						alert ($translations.REMOVEDINSECTFROMCOLLECTION);
+					}	
+					else {
+						alert ($translations.FAILEDTOREMOVEINSECTFROMCOLLECTION);
+						console.log('failed to remove insect');
+					}
+				});
+			}  		
 	 		$scope.add_to_collection=function() {
-				var insectsByCategory = {'Ant': [], 'Beetle':[], 'Butterfly': [], 'Caterpillar': [], 'Spider': []};
+				var insectsByCategory = {'Ant': [], 'Bee': [], 'Beetle':[], 'Butterfly': [], 'Caterpillar': [], 'Spider': []};
 				var duplicate = 0;
+				
+				$localStorage.collection =null;
 	 			if ($localStorage.collection) {
+					console.log('category: '+$scope.insect.category);
 	 				if ($localStorage.collection[$scope.insect.category].length > 0) {
 		 						 				
 		 				var duplicate = 0;
@@ -197,11 +323,15 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 							}
 							
 						}				
-						if (!duplicate)	
+						if (!duplicate)	{
 							$localStorage.collection[$scope.insect.category].push($scope.insect);
+							console.log('not a duplicate');
+							$scope.saveImagesToLocalStorage();
+						}
 					}
 					else {
-						$localStorage.collection[$scope.insect.category].push($scope.insect);											
+						$localStorage.collection[$scope.insect.category].push($scope.insect);				console.log('found no insects int the category: '+$localStorage.collection[$scope.insect.category]);				
+						$scope.saveImagesToLocalStorage();
 					} 
 						 			
 				}
@@ -209,6 +339,8 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 					$localStorage.collection=[];
 					$localStorage.collection = insectsByCategory;
 					$localStorage.collection[$scope.insect.category].push($scope.insect); 
+					console.log('initialized localstorage');
+					$scope.saveImagesToLocalStorage();
 								
 	 			}
 	 			// save to the server
@@ -237,10 +369,18 @@ insectIdentifierControllers.controller('InsectDetailCtrl', ['$scope', 'Search', 
 insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$location', '$http', '$localStorage',
 	  function($scope, Search, $location, $http, $localStorage) {
 	  	
-	  		// Pagination
-	 		$scope.itemsPerPage = 5;
+		// Pagination
+	 	$scope.itemsPerPage = 8;
    		$scope.currentPage = 0;
-			$scope.pagedInsects = [];
+		$scope.pagedInsects = [];
+		$scope.localStorage= $localStorage;
+			
+			$scope.savetest = function() {
+				savetest('abs.thumb.jpg');
+			}
+			$scope.onchange = function() {
+				console.log('onchange');
+			}
 			
 			$scope.setPagedInsects = function(insects) {
 
@@ -281,7 +421,6 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 		  		$scope.mainImageUrl=insects[0];
 	  		}
 	  		$scope.location=$location;
-	 
 	 		
 	 		$scope.search = function(query) {
 	 			console.log("query: "+query);
@@ -319,6 +458,7 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 							imgs.push(data[i].images[0]);  		
 			  			}
 			  			$scope.imgs = imgs;
+						$scope.mainImageUrl = data[0].images[0];
 			  			console.log("showing search results");
 						$scope.searchResults="showResults";
 
@@ -334,12 +474,9 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 				$scope.insect=insect;
 	    	};
 	  	   $scope.insectDetail = function() {
-	  	   	var obj = {};
-	  	   	obj.insect = angular.copy($scope.insect);
-	  	   	obj.prevUrl = "#/list";
-	  	   	
-	  	   	Search.set(obj);
-				$scope.location.path('insect');
+	  	   
+	  	   	$location.path('insect').search({insect: $scope.insect, prevUrl: "#/list"});
+
 	    	};
 	    	
 			$scope.range = function (start, end) {
@@ -461,39 +598,64 @@ insectIdentifierControllers.controller('MainCtrl', ['$scope', 'Search', '$locati
 
 
 insectIdentifierControllers.controller('CollectionCtrl', ['$scope', 'Search', '$location', 
-'$http', '$localStorage', "$cookies",
-	function($scope, Search, $location, $http, $localStorage, $cookies) {
+'$http', '$localStorage', "$cookies", function($scope, Search, $location, $http, $localStorage, $cookies) {
+	$scope.switchConnected = function() {
+		if ($localStorage.connected == '0')	
+			 $localStorage.connected = '1';
+		else 
+			$localStorage.connected = '0';
+	}
+
+		$scope.connected=$localStorage.connected;
+		console.log('connected: '+$localStorage.connected);
+		
+		$scope.localStorage = $localStorage;
+		$scope.tmp = "";
+		var name = 'abc d';
+		//console.log("$localstorage.abc d: "+$localStorage.name);
+		var name = 'images/Scarabaeidae-Lehtisarviset tv20100621_081.jpg_thumb.jpg';
+		console.log("$localStorage.name:" +$localStorage[name]);
+		console.log("$scope.$localStorage.name:"+$scope.localStorage[name]);
+
+		//console.log(JSON.stringify($localStorage));
 
 		$scope.lang=$cookies.get('lang');
+		$scope.upload=function() {
+			console.log('upload');			
+//			$scope.location.path('insect/upload');
+		}
 		
 		if ($localStorage.collection ==  null) {	  	
-				$localStorage.collection = $scope.insectsByCategory;
+			$localStorage.collection = $scope.insectsByCategory;
 		}
-
+		
 		$http.get('/collection/list').success(function(data) {
 			// add items to the localstorage by category
 			
 			for (var ind in data) {
 				var insect = data[ind];
 				var duplicate  = 0;
-				console.log("localStorage: "+JSON.stringify($localStorage));
+				//console.log("localStorage: "+JSON.stringify($localStorage));
 				var t = $localStorage.collection[insect.category];
-				console.log(t.length);
-				console.log(t[0].name);
+				//console.log(t.length);
+				//console.log(t[0].name);
 				for (var i = 0; i < t.length; i++) {
 					var lsInsect = t[i];
-					console.log(lsInsect.name);
+					//console.log(lsInsect.name);
 					
 					if (lsInsect.name == insect.name) {
-						console.log("found duplicate between localstorage and server data");
+						//console.log("found duplicate between localstorage and server data");
 						// found duplicate
 						duplicate = true;																					
 					}	
 				}				
-				if (!duplicate)	
+				if (!duplicate)	{
+					// add thumbs from localstorage as needed
+					
 					$localStorage.collection[insect.category].push(insect);
+				}
 			}			
-			console.log(JSON.stringify($localStorage.collection['Butterfly']));
+			
 				    				
 		}).error(function(){
 			window.alert($scope.translations.REFRESHINGCOLLECTION);		   
@@ -501,13 +663,14 @@ insectIdentifierControllers.controller('CollectionCtrl', ['$scope', 'Search', '$
 		
 		$scope.location=$location;
 		$scope.localStorage=$localStorage;
+			
 		$scope.viewDetail = function(insect) {
-	   	var obj = {};
-  	   	obj.insect = angular.copy(insect);
-  	   	obj.prevUrl = "#/collection";
-  	   	Search.set(obj);
-			$scope.location.path('insect');
-		};
+		   	var obj = {};
+  		   	obj.insect = angular.copy(insect);
+  		   	obj.prevUrl = "#/collection";
+  		   	Search.set(obj);
+			$scope.location.path('insect').search({insect: insect, prevUrl: "#/collection"});
+		};  
 		
-  		
+				
   }]);

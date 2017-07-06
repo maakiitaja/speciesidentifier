@@ -1,14 +1,19 @@
 
 <br>
-
+<!--
+<input type ="button" value="thumb.jpg" ng-click="savetest()"/>-->
 <h1>{{translations.SEARCHPAGE}}</h1>
-<form ng-submit='search(query)' align="center"> 
-	<table align="center">
-	<tr><td  align="center">{{translations.CATEGORY}}:</td>
-	<td>
+<form ng-submit='search(query)'  > 
+	<div class="flex-center">
+	<ul id="flex-table" class="flex-table">
+	<li>
+	{{translations.CATEGORY}}:
+	</li>
+	<li>
+
    <select name="category" ng-model="query.category">
    	<option value=""></option> 
-		<option value="Ant">{{translations.ANT}}</option>
+	<option value="Ant">{{translations.ANT}}</option>
      	<option value="Bee">{{translations.BEE}}</option>		        
      	<option value="Beetle">{{translations.BEETLE}}</option>
      	<option value="Butterfly">{{translations.BUTTERFLY}}</option>
@@ -16,10 +21,10 @@
    	<option value="Spider">{{translations.SPIDER}}</option>
       
    </select>
-   </td></tr>
+</li>
    
-	<tr><td  align="center"> {{translations.PRIMARYCOLOR}}:</td>
-	<td>
+	<li> {{translations.PRIMARYCOLOR}}:</li>
+	<li>
    <select name="primaryColor" ng-model="query.primaryColor">
    	<option value=""></option>
      <option value="Black">{{translations.BLACK}}</option>
@@ -36,9 +41,9 @@
      <option value="Violet">{{translations.VIOLET}}</option>
      <option value="Yellow">{{translations.YELLOW}}</option>
    </select>
-   </td></tr>
-   <tr><td  align="center">{{translations.SECONDARYCOLOR}}:</td>
-   <td> 
+   </li>
+   <li>{{translations.SECONDARYCOLOR}}:</li>
+   <li> 
    <select name="secondaryColor" ng-model="query.secondaryColor">
 		<option value=""></option> 
 		<option value="Black">{{translations.BLACK}}</option>
@@ -55,30 +60,26 @@
      <option value="White">{{translations.WHITE}}</option>
      <option value="Yellow">{{translations.YELLOW}}</option>
       </select>
-	</td></tr>
-	<tr><td  align="center"> {{translations.NUMBEROFLEGS}}:</td>
-	<td  align="center"> 
+	</li>
+	<li> {{translations.NUMBEROFLEGS}}:</li>
+	<li> 
    <select name="legs" ng-model="query.legs">
    	<option value=""></option> 
-     <option value="2">2</option>
      <option value="4">4</option>
      <option value="6">6</option>
      <option value="8">8</option>
    </select>   
-	</td></tr>
-	<br>  
-	</table>
-	<br>
-	<table align="center">
-	<tr ><td>
- 	<input type="submit" class="button button1" value="{{translations.SEARCH}}" />
- 	</td></tr>
- 	</table>
+	</li>
+</ul>
+</div>
 
+ 	<br>  
+	<br>
+<input type="submit" class="button button1 centered" value="{{translations.SEARCH}}" />
 </form>
 
 <p ng-model="searchResults" value={{searchResults}}></p>
-<div ng-switch="searchResults" align="center">
+<div ng-switch="searchResults">
 
 		<div ng-switch-when="noResults">		
 	
@@ -86,32 +87,23 @@
 		</div>
   		<div ng-switch-when="showResults">
   			<h2>{{translations.RESULTS}}</h2>
-		
+		<div class="horizontal-table" style="max-width:1000px">
 		<div class="row">	
-		<div class="col-3">
-		<div class="insect-image">
-			 <img ng-src="{{img}}" 
-			 	class="phone" ng-repeat="img in imgs" 
-			 	ng-class="{active: mainImageUrl==img}"/>																																																											
-		</div> 
-		</div>
+			<div class="col-6">
+
+			<ul class="insect-thumbs">
+		  		<li ng-repeat="insect in pagedInsects[currentPage] | filter: {category: query.category} | filter: {primaryColor: query.primaryColor} | filter: {secondaryColor: query.secondaryColor} | filter:{legs:query.legs}">
+				    	<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="setImage(insect)" alt={{insect.latinName}}/>
+		  		</li>
+			</ul>
 		
-		<div class="col-6">
-		<div align="middle">
-		
-		<ul class="insect-thumbs">
-	  		<li ng-repeat="insect in pagedInsects[currentPage] | filter: {category: query.category} | filter: {primaryColor: query.primaryColor} | filter: {secondaryColor: query.secondaryColor} | filter:{legs:query.legs} ">
-	    	<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="setImage(insect)" alt={{insect.latinName}}/>
-	  		</li>
-		</ul>
-		
-		<table>
+			<table class="pagination-center">
 			<tfoot>
 			<td colspan="6">
                         <div class="pagination pull-right">
                             <ul>
                                 <li ng-class="{disabled: currentPage == 0}">
-                                    <a href ng-click="prevPage()">« Prev</a>
+                                    <a href ng-click="prevPage()">« {{translations.PREVIOUS}}</a>
                                 </li>
                                 <li ng-repeat="n in range(pagedInsects.length)"
                                     ng-class="{active: n == currentPage}"
@@ -119,19 +111,24 @@
                                     <a href ng-bind="n + 1">1</a>
                                 </li>
                                 <li ng-class="{disabled: currentPage == pagedInsects.length - 1}">
-                                    <a href ng-click="nextPage()">Next »</a>
+                                    <a href ng-click="nextPage()">{{translations.NEXT}} »</a>
                                 </li>
                             </ul>
                         </div>
-                    </td>
-        			</tfoot>
-    					   </table>
+            		</td>
+        		</tfoot>
+    		   	</table>
    
+			</div> <!--end of 1st col -->
+			<div class="col-3">
+			    <img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active:	mainImageUrl==img}">																																																											
+			</div> 
+		</div> <!-- end of row -->
 		</div>
-		</div>
-		</div>
+		
 
-		<input id="identify" type="button" class="button button-blue" value="{{translations.IDENTIFY}}" ng-click="insectDetail()"/>  
-  	</div>
+		<input id="identify" type="button" class="button button-blue centered" value="{{translations.IDENTIFY}}" ng-click="insectDetail()"/>  
+  </div>
+</div>
 	
-  	</div>
+  	

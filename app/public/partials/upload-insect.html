@@ -5,18 +5,20 @@
 <div ng-if="isUpload==0">
 <h1>{{translations.MODIFYPAGE}}</h1>
 </div>
-<form align="center" action="/insect/insert" name="myForm" enctype="multipart/form-data" method="post">
-	<table align="center">
-	<tr align="center"><td width="">{{translations.ENGLISHNAME}}: </td><td><input type="text" value="{{enName}}" name="enName" ng-model="enName" /> 
-	</tr>
-	<tr align="center"><td width="">{{translations.FINNISHNAME}}: </td><td><input type="text" value="{{fiName}}" name="fiName" ng-model="fiName"/> 	</td></tr>
-	<tr align="center"><td width="">{{translations.LATINNAME}}: (*)</td><td> <input type="text" name="latinName" ng-model="latinName" required/></td>
+<form action="/insect/insert" name="myForm" enctype="multipart/form-data" method="post">
+	<div class="flex-center">
+	<ul id="flex-table" class="flex-table">
+
+	<li>{{translations.ENGLISHNAME}}: </li><li style="min-width:200px"><input type="text" value="{{enName}}" name="enName" ng-model="enName" /> 
+	</li>
+	<li>{{translations.FINNISHNAME}}: </li><li><input type="text" value="{{fiName}}" name="fiName" ng-model="fiName"/> 	</li>
+	<li>{{translations.LATINNAME}}: (*)</li><li> <input type="text" name="latinName" ng-model="latinName" required/></li>
 	<!--<td><span ng-show="myForm.latinName.$touched && myForm.latinName.$invalid">{{translations.LATINNAMEREQUIRED}}</span></td>-->	
-	</tr>
 	
-	<tr align="center"><td width="">	{{translations.CATEGORY}}: (*)</td>
-		<td>
-      <select type="select" value="{{category}}" name="category" ng-model="category" required>
+	
+	<li>	{{translations.CATEGORY}}: (*)</li>
+	<li>
+      <select value="{{category}}" name="category" ng-model="category" required>
       	<option value=""></option>
 			<option value="Ant">{{translations.ANT}}</option>      
 			<option value="Bee">{{translations.BEE}}</option>  
@@ -25,12 +27,12 @@
 	     	<option value="Caterpillar">{{translations.CATERPILLAR}}</option>        
 	   	<option value="Spider">{{translations.SPIDER}}</option> 	      
 	   </select>
-	</td>
-	<td><span ng-show="myForm.category.$touched && myForm.category.$invalid">{{translations.CATEGORYREQUIRED}}</span></td>
-	</tr>
+	</li>
+	<span ng-show="myForm.category.$touched && myForm.category.$invalid">{{translations.CATEGORYREQUIRED}}</span>
+
 	   
-	<tr align="center"><td width=""> {{translations.PRIMARYCOLOR}}: (*)</td>
-      <td>
+	<li> {{translations.PRIMARYCOLOR}}: (*)</li>
+      <li>
       <select name="primaryColor" value="{{primaryColor}}" ng-model="primaryColor" required>
       	<option value=""></option>
         <option value="Black">{{translations.BLACK}}</option>
@@ -46,11 +48,11 @@
         <option value="Violet">{{translations.VIOLET}}</option>
         <option value="White">{{translations.WHITE}}</option>
         <option value="Yellow">{{translations.YELLOW}}</option>
-      </select></td>
-      <td><span ng-show="myForm.primaryColor.$touched && myForm.primaryColor.$invalid">{{translations.PRIMARYCOLORREQUIRED}}</span></td>
-     </tr>
-      <tr><td width=""> {{translations.SECONDARYCOLOR}}: (*)</td> 
-      <td>
+      </select></li>
+      <span ng-show="myForm.primaryColor.$touched && myForm.primaryColor.$invalid">{{translations.PRIMARYCOLORREQUIRED}}</span>
+
+      <li> {{translations.SECONDARYCOLOR}}: (*)</li> 
+      <li>
      <select name="secondaryColor" value="{{secondaryColor}}"  ng-model="secondaryColor" required>
 				<option value=""></option>
 			  <option value="Black">{{translations.BLACK}}</option>
@@ -66,10 +68,11 @@
 			  <option value="Violet">{{translations.VIOLET}}</option>
 			  <option value="White">{{translations.WHITE}}</option>
 			  <option value="Yellow">{{translations.YELLOW}}</option>
-		</td>
-		<td><span ng-show="myForm.secondaryColor.$touched && myForm.secondaryColor.$invalid">{{translations.SECONDARCOLORYREQUIRED}}</span></td></tr>
-		<tr align="center"><td width=""> {{translations.NUMBEROFLEGS}}: (*)</td>
-		<td> 
+</select>
+		</li>
+		<span ng-show="myForm.secondaryColor.$touched && myForm.secondaryColor.$invalid">{{translations.SECONDARCOLORYREQUIRED}}</span>
+		<li> {{translations.NUMBEROFLEGS}}: (*)</li>
+		<li> 
       <select name="legs" value="{{legs}}" ng-model="legs" required>
       	<option value=""></option>
         <option value="02">2</option>
@@ -77,46 +80,48 @@
         <option value="06">6</option>
         <option value="08">8</option>
       </select>   
-	</td>
-	<td><span ng-show="myForm.legs.$touched && myForm.legs.$invalid">{{translations.LEGSREQUIRED}}</span></td>	
-	</tr>
-	<tr align="center"><td width="">	{{translations.WIKIENTRY}}:</td>
-	<td> <input type="text" name="wiki" ng-model="wiki"/>
-	</td></tr>
+	</li>
+	<span ng-show="myForm.legs.$touched && myForm.legs.$invalid">{{translations.LEGSREQUIRED}}</span>
+
+	<li>	{{translations.WIKIENTRY}}:</li>
+	<li> <input type="text" name="wiki" ng-model="wiki"/>
+	</li>
 	
-	<tr align="center"><td>  	
-	{{translations.IMAGELINKS}}:</td>  
-  	<td>
+	<li>  	
+	{{translations.IMAGELINKS}}:</li>  
+  	<li>
   	<textarea name="imageLinks" ng-model="imageLinks"></textarea>
-  	</td></tr>  	
+  	</li>  	
   	
-  	<tr align="center">
-	  <td width=""> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</td>
-	  <td>
+  	<li> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</li>
+	  <li>
  	  <input type="file" name="userPhotos" file-model="myFile" ng-required="isRequired" multiple/>
-  	  </td>
-	  <td><span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span></td>  	
-  	</tr>
-  	<tr><td>
-  	<div  ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
-  	<ul class="insect-thumbs">
-		<li><img src="{{photo.name+'_thumb.jpg'}}" />
-		<input type='checkbox' name="{{photo.name}}" ng-model="photo.checked" ng-click="checkPhotoRequired(photo)"/>Remove		
-		</li>
-  	</ul>
-  	</div>
-	
-	</td></tr>
+  	  </li>
+	  <span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
+
+ 
  	<input type="hidden" name="isUpload" value="{{isUpload}}" ng-model="isUpload"/>
  	<input type="hidden" name="insectId" value="{{insectId}}" ng-model="insectId"/>
 
   	<br>
 	<br>
 	<br>
-	</table>
+	</ul>
+	
+	<div  ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
+		<div class="horizontal-table">
+	    		<ul id="horizontal-list-table">
+				<ul class="insect-thumbs">
+					<img ng-src="{{photo.name+'_thumb.jpg'}}" alt={{insect.latinName}} />
+					<input type='checkbox' name="{{photo.name}}" ng-model="photo.checked" ng-click="checkPhotoRequired(photo)"/>Remove</li>
+				</ul>
+	   	 	</ul>
+	  	</div>
+  	</div>
 	<br>
-	<table align="center" >
+	<table class="center">
 	<tr><td>
+
 		<div ng-if="isUpload==1">
 		<input ng-click="uploadFile()" type="submit" class="button" value="{{translations.UPLOAD}}">
 		</div>

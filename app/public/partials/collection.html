@@ -1,6 +1,7 @@
 <h1>{{translations.COLLECTIONPAGE}}</h1>
-
-<div ng-repeat="insects in localStorage.collection">
+<p> connected: {{connected}}</p>
+<input type="button" value="switchConnected" ng-click="switchConnected()"/>
+<div ng-repeat="insects in localStorage.collection" class="centered">
 	<div ng-if="insects.length > 0">
 		<h2 ng-if="insects[0].category == 'Ant'">{{translations.ANT}}</h2>
 		<h2 ng-if="insects[0].category == 'Bee'">{{translations.BEE}}</h2>
@@ -8,7 +9,7 @@
 		<h2 ng-if="insects[0].category == 'Butterfly'">{{translations.BUTTERFLY}}</h2>
 		<h2 ng-if="insects[0].category == 'Caterpillar'">{{translations.CATERPILLAR}}</h2>
 		<h2 ng-if="insects[0].category == 'Spider'">{{translations.SPIDER}}</h2>
-		<ul align="center" class="insect-thumbs">
+		<ul class="insect-thumbs">
 			<li ng-repeat="insect in insects">
 				<div ng-repeat="translation in insect.translations">
 					<p ng-if="translation.language==lang">
@@ -18,7 +19,13 @@
 					{{insect.latinName}}
 					</p>
 				</div>
-				<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)"/>
+				<div style="display:none">
+				{{tmp = insect.images[0]+'_thumb.jpg'}}
+				
+				</div>
+				<img ng-if="connected==1" id="{{insect.images[0]+'_thumb.jpg'}}" ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
+				<img ng-if="connected==0" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}" ng-src="{{localStorage[tmp]}}" ng-click="viewDetail(insect)" />	
+	
 			</li>
 		</ul>
 	</div>

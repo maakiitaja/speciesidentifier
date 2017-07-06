@@ -312,13 +312,27 @@ app.get("/collection/remove", function (req, res) {
 
 	console.log("searching user's compendium");
 	Compendium.findOne({'_user': req.user.id}, function(err, compendium) {
-		compendium.insects=[];
-		console.log("saving compendium");
-		compendium.save(function (err) {
-			console.log("compendium:"+compendium);
-			console.log('saved compendium. ');
-			res.redirect('#/main');		
-		});	
+		if (!compendium) 
+			res.send('fail');
+		console.log('found insects in compendium: '+compendium.insects);
+		var success = false;
+		for (var i = 0; i < compendium.insects.length; i++) {
+			if(compendium.insects[i]._id == req.query._id) {
+				compendium.splice(i,1);
+				success = true;
+				break;
+			}
+		}
+		if (success){
+			compendium.save(function (err) {
+				console.log("compendium:"+compendium);
+				console.log('saved compendium. ');
+				res.send('success');
+			});
+		} else {
+			console.log('failed to locate insect in compendium');
+			res.send("fail");
+		} 
 	});
 }); 
 
@@ -363,6 +377,8 @@ app.get('/insect/load', function(req, res) {
 		res.send(results);
 	});
 });
+
+
 
 /* Upload or modify insect */
 app.post('/insect/insert', upload.array('userPhotos', 10), function(req, res) {
@@ -660,7 +676,7 @@ app.post('/insect/insert', upload.array('userPhotos', 10), function(req, res) {
 
     // process the signup form
     app.post('/signup', passport.authenticate('signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/#/main', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));

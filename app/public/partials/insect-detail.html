@@ -1,58 +1,79 @@
-<table align="center">
-<tr> <td align="center">
+<br>
 
-<div ng-repeat="translation in insect.translations">
-	<p ng-if="translation.language==lang">
-		{{translations.NAME}}: {{translation.name}}	
-	</p>
-</div>
-<p> {{translations.LATINNAME}}: {{insect.latinName}}</p>
+<table class="center" >
 
+<tr><td>
+	<p>{{translations.DESCRIPTION}}: {{description}}</p>
 </td></tr>
 
-<tr><td align="center"><p>{{translations.DESCRIPTION}}: {{description}}</p></td></tr>
-<tr><td align="center">
+<tr><td>
+	<p> {{translations.LATINNAME}}: {{insect.latinName}}</p>
+</td></tr>
+
+<tr><td>
+
+<div ng-if="insect.images.length > 1"> 
+
+	<img ng-if="connected==1" ng-src="{{img}}" id="mainimage" ng-repeat="img in insect.images" 
+	 	ng-class="{active: mainImageUrl==img}" class="insect-detail" />
+	<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimage" ng-repeat="img in insect.images" 
+	 	ng-class="{active: mainImageUrl==img}" class="insect-detail" />
 	
-	<div ng-if="insect.images.length > 1"> 
-
-		<div class="insect-images">
-			 <img ng-src="{{img}}" 
-			 	class="phone" ng-repeat="img in insect.images" 
-			 	ng-class="{active: mainImageUrl==img}"/>
-		</div>
+	<div ng-repeat="translation in insect.translations">
+		<p ng-if="translation.language==lang">
+			{{translations.NAME}}: {{translation.name}}	
+		</p>
 	</div>
-	<div ng-if="insect.images.length ==1">
-		<div class="insect-image">
+</div>
 
-			 <img ng-src="{{insect.images[0]}}" 
-			 	class="phone"/>
-		</div>
+<div ng-if="insect.images.length ==1">
+	<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="mainimage" class="insect-detail active" />
+	<img ng-if="connected==0" ng-src="{{localStorage[insect.images[0]]}}" id="mainimage" class="insect-detail active" />
+	<div ng-repeat="translation in insect.translations">
+		<p ng-if="translation.language==lang">
+		{{translations.NAME}}: {{translation.name}}	
+		</p>
 	</div>
-	<div ng-if="insect.images.length > 1">
-		<ul class="insect-thumbs">
-		  	<li ng-repeat="img in insect.images">
-		 		<img ng-src="{{img+'_thumb.jpg'}}" ng-click="setImage(img)"/>
-		  	</li>
-		</ul>
-	</div>
- </td></tr> 
 
-<p ng-model="prevUrl" value={{prevUrl}}></p>
-<tr><td align="center">
+</div>
+</tr></td>
+
+</table>
+
+<div class="horizontal-table" ng-if="insect.images.length > 1">
+    <ul id="horizontal-list-table">
+	<ul class="insect-thumbs">
+		<li ng-repeat="img in insect.images">
+		<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}" ng-click="setImage(img)" alt={{insect.latinName}} />
+		<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}" id="{{img+'_thumb.jpg_not_connected'}}" ng-click="setImage(img)" alt={{insect.latinName}} /></li>
+	</ul>
+    </ul>
+</div>
+
 <br>
-<div ng-switch="prevUrl">
+
+<div ng-switch="prevUrl" class="center">
   <div ng-switch-when="#/list">
+	<table class="center">
+	<tr><td>
      <input type="button" class="button button-blue" value="{{translations.NEWSEARCH}}" ng-click="new_search()"/>
      <input ng-if="currentUser" type="button" class="button" value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()"/>
+	</td></tr></table>
   </div>
   <div ng-switch-when="#/collection">
-     <input type="button" class="button button-blue" value="{{translations.RETURNTOCOLLECTION}}" ng-click="collection()"/>
-  </div>
-  <div ng-switch-default>
-     <h1>Switch</h1>
-     <p>Select topic from the dropdown, to switch the content of this DIV.</p>
-  </div>
-</div>
+<table class="center">
+    <tr><td>
+     <input type="button" class="button button-blue centered" value="{{translations.RETURNTOCOLLECTION}}" ng-click="collection()"/ >
+</td>
+<td>
+     <input type="button" class="button button-red centered" value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)"/ >
 </td></tr>
 
 </table>
+  </div>
+</div>
+
+
+
+
+
