@@ -45,36 +45,15 @@ myApp.directive('header', function () {
         controller: ['$scope', '$filter', '$cookies', 'UserRestService', 'Auth', 'TranslationService', 
         		'$location','$route',
         		function ($scope, $filter,	$cookies, UserRestService, Auth, TranslationService, $location, $route) {
-		    	console.log('header directive.');
-		    	$scope.location=$location;
-				$scope.lang=$cookies.get('lang');
-				
-		    	if (!$cookies.get('lang')) {
+			if (!$cookies.get('lang')) {
 					console.log('no lang chosen.');
 					$cookies.put('lang', 'en');	    	
 		    	}
-		    	
-				$scope.collection=function() {
-					$scope.location.path('collection');
-				}
-				$scope.search=function() {
-					$scope.location.path('search');
-				}
-  				$scope.upload=function() {
-					$scope.location.path('insect/upload');
-				}
-				$scope.modify=function(currentUser) {
-					$scope.location.path('insect/uploadList').search({'currentUser': currentUser});
-				}
-				$scope.setLanguage = function(lang) {
-					 $cookies.put('lang', lang);
-					 console.log('lang: '+lang);
-					 TranslationService.getTranslation($scope, $cookies.get('lang'), '');
-					 $scope.lang=lang;
-				 	 $route.reload();			
-			}		
-
-		    	TranslationService.getTranslation($scope, $cookies.get('lang'), '');
+		    	console.log('header directive.');
+		    	$scope.location=$location;
+				$scope.lang=$cookies.get('lang');
+			
+			TranslationService.getTranslation($scope, $cookies.get('lang'), '');
 		    			    	
 		    	UserRestService.requestCurrentUser(function (data) {
 	      	 	console.log("header Ctrl user: "+JSON.stringify(data));
@@ -85,7 +64,35 @@ myApp.directive('header', function () {
    	    		console.log('tmp.username: '+ tmp.username);
    	    		console.log("header currentuser: "+$scope.currentUser);
    	    		console.log("header currentuser.username: "+$scope.currentUser.username);
-			
+
+		    	
+		    	
+				$scope.collection=function() {
+					$scope.location.path('collection');
+				}
+				$scope.search=function() {
+					$scope.location.path('search');
+				}
+  				$scope.upload=function() {
+					$scope.location.path('insect/upload');
+				}
+				$scope.addObservation=function(currentUser) {
+					$scope.location.path('search').search({'fromObservationPage':'1', 'currentUser': currentUser});
+				}
+				$scope.browseObservation=function(currentUser) {
+					$scope.location.path('browseObservations').search({'currentUser': currentUser});
+				}
+				$scope.modify=function(currentUser) {
+					$scope.location.path('insect/uploadList').search({'currentUser': currentUser});
+				}
+				$scope.setLanguage = function(lang) {
+					 $cookies.put('lang', lang);
+					 console.log('lang: '+lang);
+					 TranslationService.getTranslation($scope, $cookies.get('lang'), '');
+					 $scope.lang=lang;
+				 	 $route.reload();			
+				}		
+
        		});
 		  
         }]

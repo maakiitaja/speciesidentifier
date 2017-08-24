@@ -5,6 +5,70 @@
 
 var insectIdentifierControllers = angular.module('insectIdentifierControllers', []);
 
+insectIdentifierControllers.controller('BrowseObservationsCtrl', ['$scope', 'Search', '$location', '$http', '$localStorage', 
+	function ($scope, Search, $location, $http, $localStorage) {
+		console.log('browse observation ctrl');
+		
+		// init datepicker
+		var weekday = [$scope.translations.MONDAY, $scope.translations.TUESDAY, $scope.translations.WEDNESDAY, 
+$scope.translations.THURSDAY, $scope.translations.FRIDAY, $scope.translations.SATURDAY, $scope.translations.SUNDAY];
+		var monthtime = [$scope.translations.JANUARY, $scope.translations.FEBRUARY, $scope.translations.MARCH, $scope.translations.APRIL, $scope.translations.MAY, $scope.translations.JUNE, $scope.translations.JULY, $scope.translations.AUGUST, $scope.translations.SEPTEMBER, $scope.translations.OCTOBER, $scope.translations.NOVEMBER, $scope.translations.DECEMBER];
+			
+		init_times(monthtime, weekday); 
+		init_close($scope.translations.CLOSE);
+
+		$scope.searchObservations= function(query) {
+			// convert the date to javascript date
+			// YYYY-MM-DD
+			var formattedDate=document.getElementById('startDate').value;
+			var startDate = new Date();
+			startDate.setYear(formattedDate.substring(0,4));
+			startDate.setMonth(formattedDate.substring(5,7));
+			startDate.setDate(formattedDate.substring(8,10));
+			
+			formattedDate=document.getElementById('endDate').value;;
+			var endDate = new Date();
+			endDate.setYear(formattedDate.substring(0,4));
+			endDate.setMonth(formattedDate.substring(5,7));
+			endDate.setDate(formattedDate.substring(8,10));
+
+			$http({
+		  		url: '/observation/browse', 
+				method: "GET",
+				params: {userId: $location.search().currentUser._id, location: query.location, country: query.country, place: query.place, startDate: query.startDate, endDate: query.endDate, name: query.name, language: query.language, category: query.category, nofarm: query.nofarm, organicFarm: query.organicFarm, nonOrganicFarm: query.nonOrganicFarm }
+			}).success(function(data) {
+				console.log('received observations: '+JSON.stringify(data));
+				$scope.observations = data;
+				for (var i = 0; i < data.length; i++) {
+					var formattedDate = new Date();
+					var rawDate = new Date(data[i].date);
+					console.log('rawdate: '+rawDate);
+					/*formattedDate.setYear(rawDate.getYear());
+					formattedDate.setMonth(rawDate.getMonth());
+					formattedDate.setDate(rawDate.getDate());*/
+					var formattedDate = ds_format_date(rawDate.getDate(), rawDate.getMonth(), rawDate.getYear());	
+					console.log('year: '+rawDate.getYear());
+					console.log('formatted date: '+formattedDate);
+					$scope.observations[i].date = formattedDate;
+					if (data[i].farm) {
+						if (data[i].organicFarm) 	
+							$scope.observations[i].farmType= $scope.translations.ORGANICTYPE;
+						else 
+							$scope.observations[i].farmType = $scope.translations.NONORGANICTYPE;
+					} else
+						$scope.observations[i].farmType = $scope.translations.NOFARM;
+				}				
+				
+				if (data) 
+
+					$scope.searchResults = "showResults";
+				else
+					$scope.searchResults = "noResults";
+			});
+		}
+	}
+]);
+
 insectIdentifierControllers.controller('UploadListCtrl', ['$scope', 'Search', '$location', '$http', '$localStorage', 
 	function ($scope, Search, $location, $http, $localStorage) {
 		
@@ -374,6 +438,77 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
    		$scope.currentPage = 0;
 		$scope.pagedInsects = [];
 		$scope.localStorage= $localStorage;
+		$scope.selectExistingObservation = '0';
+		$scope.place = "addobservationplace"; // default to add a new observation place
+
+		$scope.toggleElements = function(elem, deactivated) {
+			console.log('elem: '+elem+' hidden: '+deactivated);
+			if (elem=='observationplace') {
+				console.log('showing observationplace');
+				$scope.place="selectobservation";
+				$scope.selectExistingObservation = '1';
+			}
+			else {
+				console.log('showing addobservation');
+				$scope.place="addobservationplace";
+				$scope.selectExistingObservation = '0';
+			}
+			
+		}
+
+		$scope.toggleFarmType = function() {
+			var farmtype = document.getElementById('organicfarm');
+			var nonorganicfarm = document.getElementById('nonorganicfarm');
+			if (farmtype.disabled) {
+				nonorganicfarm.disabled = false;
+				farmtype.visibility = 'visible';
+			}
+			else {
+				nonorganicfarm.disabled = true;
+				farmtype.visibility = 'hidden';
+			}
+				
+		}
+
+		$scope.addObservation = function(query) {
+			var params;
+			// convert the date to javascript date
+			// YYYY-MM-DD
+
+			var formattedDate=document.getElementById('date').value;
+			console.log('formatteddate: '+formattedDate);
+			var date = new Date();
+			date.setYear(formattedDate.substring(0,4));
+			date.setMonth(formattedDate.substring(5,7));
+			date.setDate(formattedDate.substring(8,10));
+			console.log('latinname: '+query.observationLatinName);
+			console.log('insectId: '+query.insectId);
+			
+			if ($scope.selectExistingObservation == '1') {
+				console.log('adding observation with existing place');
+				console.log('observationplace id: '+query.observationPlace);
+				params = {insectId: document.getElementById('insectId').value, user: $location.search().currentUser, date: date, count: query.count, observationPlaceId: query.observationPlace, latinName: query.observationLatinName }; 
+			}
+			else {
+				console.log('adding an observation without existing place');
+				console.log('organicfarm: '+document.getElementById('organicFarm').checked);
+				console.log('nonorganicfarm: '+document.getElementById('nonOrganicFarm').checked);
+				console.log('nofarm: '+document.getElementById('nofarm').checked);
+
+				console.log('insectId:'+document.getElementById('insectId').value);
+				console.log('query.country: '+query.country);
+				params = {country: query.country, location: query.location, count: query.count, date: date, place: query.place, organicFarm: document.getElementById('organicFarm').checked, nonOrganicFarm: document.getElementById('nonOrganicFarm').checked, user: $location.search().currentUser, latinName: query.observationLatinName, insectId: document.getElementById('insectId').value};			
+			}
+
+			$http({	url: '/observation/add', 
+		 		method: "POST",
+		 		params: params
+		 	}).success(function (data) {
+				alert('added an observation');
+			});
+		}
+			
+			$scope.fromObservationPage = $location.search().fromObservationPage;
 			
 			$scope.savetest = function() {
 				savetest('abs.thumb.jpg');
@@ -405,6 +540,54 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 					
 			}	  		
 	  		
+			if ($location.search().fromObservationPage == '1') {	
+				$scope.fromObservationPage = 1;
+				$location.search().fromObservationPage = 0;
+				// init datepicker
+				var weekday = [$scope.translations.MONDAY, $scope.translations.TUESDAY, $scope.translations.WEDNESDAY, 
+$scope.translations.THURSDAY, $scope.translations.FRIDAY, $scope.translations.SATURDAY, $scope.translations.SUNDAY];
+				var monthtime = [$scope.translations.JANUARY, $scope.translations.FEBRUARY, $scope.translations.MARCH, $scope.translations.APRIL, $scope.translations.MAY, $scope.translations.JUNE, $scope.translations.JULY, $scope.translations.AUGUST, $scope.translations.SEPTEMBER, $scope.translations.OCTOBER, $scope.translations.NOVEMBER, $scope.translations.DECEMBER];
+				
+				init_times(monthtime, weekday); 
+				init_close($scope.translations.CLOSE);
+
+				console.log('returning from observation page');
+				console.log('user: '+$location.search().currentUser);
+
+				// fetch for user's stored observation places
+				// get a list of beetles
+		  		$http({
+			   		url: '/observationplace/list', 
+		 			method: "GET",
+		 			params: { user: $location.search().currentUser }
+		 		}).success(function (data) {
+					alert('received observation places'+ data);
+					
+									
+					console.log('showing observation places');
+					console.log('data: '+JSON.stringify(data));
+					var observationPlaceFormatted = [];
+					for (var i = 0; i < data.length; i++) {
+						var text = data[i].country+', '+data[i].location+', '+data[i].place;
+						if (data[i].organicFarm) {
+							console.log('organic farm');
+							text = text.concat(', '+$scope.translations.ORGANICFARM);
+							console.log('modfied text: '+text);
+						}
+						else if (data[i].farm && !data[i].organicFarm) {
+							console.log('non organic farm');
+							text = text.concat(', '+$scope.translations.NONORGANICFARM);
+							console.log('modified text: '+text);
+						}
+						console.log('country: '+data[i].country+', organicfarm: '+data[i].organicFarm+', '+data[i].place+', '+data[i].location+', farm: '+data[i].farm);	
+						observationPlaceFormatted.push({summary: text, id: data[i]._id});			
+						
+					}		
+					console.log('observation places formatted: '+JSON.stringify(observationPlaceFormatted));
+					$scope.observationPlaces = observationPlaceFormatted;
+				});
+			}
+
 	  		if ($location.search().returningFromDetailPage == '1') {
 	  			console.log('returning from detail page');
 	  			
@@ -415,7 +598,7 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 	  			// main image
 	  			var imgs = [];
 	  			for (var i=0; i<insects.length; i++) {
-						imgs.push(insects[i].images[0]);  		
+					imgs.push(insects[i].images[0]);  		
 		  		}
 		  		$scope.imgs = imgs;
 		  		$scope.mainImageUrl=insects[0];
@@ -424,7 +607,7 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 	 		
 	 		$scope.search = function(query) {
 	 			console.log("query: "+query);
-							 			
+						 			
 	 			if (query =="" || typeof query == 'undefined') {
 	 				$scope.searchResults = "Please, provide search parameters";
 	 				console.log("query is empty");
@@ -436,7 +619,7 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 			   	url: '/insect/search', 
 		 			method: "GET",
 		 			params: { primaryColor: query.primaryColor, secondaryColor: query.secondaryColor, 
-		 				category: query.category, legs: query.legs }
+		 				category: query.category, legs: query.legs, latinName: query.latinName }
 		 		}).success(function (data) {
 		 			
 		 			console.log("receiving search results.")
@@ -462,16 +645,26 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
 			  			console.log("showing search results");
 						$scope.searchResults="showResults";
 
+						// in case coming from observation page
+						// and search narrowed by name
+						console.log('query.latinName: '+query.latinName);
+						if (query.latinName != '' && $scope.fromObservationPage == '1') {
+							console.log('setting latin name for add observation form');
+							document.getElementById('observationLatinName').value = query.latinName;
+							document.getElementById('insectId').value=data[0]._id;
+						}
+
+
 					}
 		 		}); 		
-		 		}			
+		 		} /* end of search*/			
 			};
-			
-					
-	  	   $scope.setImage = function(insect) {
+			   $scope.setImage = function(insect) {
 				
 				$scope.mainImageUrl=insect.images[0];
 				$scope.insect=insect;
+				if ($scope.fromObservationPage == '1')
+					document.getElementById('observationLatinName').value = insect.latinName;
 	    	};
 	  	   $scope.insectDetail = function() {
 	  	   
@@ -511,7 +704,9 @@ insectIdentifierControllers.controller('SearchCtrl', ['$scope', 'Search', '$loca
  				 return !isNaN(value) && 
          	parseInt(Number(value)) == value && 
          	!isNaN(parseInt(value, 10));
-			}		
+			}
+					
+	  			
 }]);
   
   

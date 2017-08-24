@@ -44,8 +44,10 @@ insectIdentifierServices.factory('TranslationService', ['$resource', 'Search', f
          		var obj = Search.get();
          		obj.translations=data;
          		Search.set(obj);
-         		if ($scope)
-            		$scope.translations = data;
+         		if ($scope) {
+				console.log('setting translations for scope');		
+	            		$scope.translations = data;
+			}
          	});
      		}
      	}

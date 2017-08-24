@@ -3,14 +3,16 @@ var insectIdentifierAnimations = angular.module('insectIdentifierAnimations', ['
 insectIdentifierAnimations.animation('.phone', function() {
 
   var animateUp = function(element, className, done) {
+	console.log("animate up,element: "+element);
     if(className != 'active') {
+	console.log("animate up: classname not active");
       return;
     }
     element.css({
-      position: 'absolute',
+      position: 'relative',
       top: 500,
       left: 0,
-      display: 'block'
+      //display: 'block'
     });
 
     jQuery(element).animate({
@@ -25,15 +27,17 @@ insectIdentifierAnimations.animation('.phone', function() {
   }
 
   var animateDown = function(element, className, done) {
+	console.log('animate down, element: '+element);
     if(className != 'active') {
+	console.log('animate down: classname != active');
       return;
     }
     element.css({
-      position: 'absolute',
+      position: 'relative',
       left: 0,
       top: 0
     });
-
+	
     jQuery(element).animate({
       top: -500
     }, done);

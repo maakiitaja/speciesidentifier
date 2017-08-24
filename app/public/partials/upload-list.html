@@ -1,0 +1,27 @@
+<h1>{{translations.UPLOADLIST}}</h1>
+
+<div ng-repeat="insects in uploadList" class="centered">
+	<div ng-if="insects.length > 0">
+		<h2 ng-if="insects[0].category == 'Ant'">{{translations.ANT}}</h2>
+		<h2 ng-if="insects[0].category == 'Bee'">{{translations.BEE}}</h2>
+		<h2 ng-if="insects[0].category == 'Beetle'">{{translations.BEETLE}}</h2>
+		<h2 ng-if="insects[0].category == 'Butterfly'">{{translations.BUTTERFLY}}</h2>
+		<h2 ng-if="insects[0].category == 'Caterpillar'">{{translations.CATERPILLAR}}</h2>
+		<h2 ng-if="insects[0].category == 'Spider'">{{translations.SPIDER}}</h2>
+		<ul align="center" class="insect-thumbs">
+			<li ng-repeat="insect in insects">
+				
+				<div ng-repeat="translation in insect.translations">
+					<p ng-if="translation.language==lang">
+					{{translation.name}}
+					</p>
+				
+				</div>
+				<p>
+					{{insect.latinName}}
+				</p>
+				<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="upload(insect)"/>
+			</li>
+		</ul>
+	</div>
+</div>  

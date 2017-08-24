@@ -61,7 +61,11 @@ insectIdentifierApp.config(['$routeProvider',
       	templateUrl: 'partials/upload-list.html',
       	controller: 'UploadListCtrl'
       }).
-         otherwise({
+      when('/browseObservations', {
+      	templateUrl: 'partials/browse-observations.html',
+	controller: 'BrowseObservationsCtrl',
+      }).
+        otherwise({
         redirectTo: '/phones'
       });
   }]);
