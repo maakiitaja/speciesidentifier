@@ -17,6 +17,7 @@ insectIdentifierServices.factory('Insect', ['$resource',
       query: {method:'GET', params:{categoryName:'kovakuoriaiset'}, isArray:true}
     });
   }]);
+
 insectIdentifierServices.factory('Search', function() {
  var savedData = {}
  
@@ -65,6 +66,68 @@ insectIdentifierApp.factory('UserRestService', ['$http', function($http) {
 			});
 		}
 	}	
+}]);
+
+insectIdentifierApp.factory('SearchService', ['$http', function($http) {
+	return {
+		search: function($scope, $localStorage, query) {
+			console.log("query: "+query);
+					 			
+ 			if (query =="" || typeof query == 'undefined') {
+ 				$scope.searchResults = "Please, provide search parameters";
+ 				console.log("query is empty");
+ 	
+ 			} else {
+ 					 			
+			// get a list of beetles
+	  		$http({
+		   	url: '/insect/search', 
+	 			method: "GET",
+	 			params: { primaryColor: query.primaryColor, secondaryColor: query.secondaryColor, 
+	 				category: query.category, legs: query.legs, latinName: query.latinName }
+	 		}).success(function (data) {
+	 			
+	 			console.log("receiving search results.")
+	 			$scope.mainImageUrl = "not-available";
+				console.log("search results:"+data+" with length: "+data.length);
+				if (data.length == 0) {
+					$scope.searchResults="noResults";
+				} else {		
+		 			$scope.insect=data[0];
+			 			$scope.insects = data;	
+		 			$localStorage.searchResults = data;
+	 						
+					$scope.setPagedInsects(data);
+				  					
+		 			var imgs=[];
+			  	   	// make a list of image urls
+		  			var len = data.length;
+		  			for (var i=0; i<len; i++) {
+						imgs.push(data[i].images[0]);  		
+		  			}
+		  			$scope.imgs = imgs;
+					$scope.mainImageUrl = data[0].images[0];
+		  			
+					// in case coming from observation page
+					// and search narrowed by name
+					console.log('query.latinName: '+query.latinName);
+					if (query.latinName != '' && $scope.fromObservationPage == '1') {
+						console.log('setting latin name for add observation form');
+						if (query.latinName !== undefined && query.latinName != 'undefined') {
+							document.getElementById('observationLatinName').value = query.latinName;
+						}
+						document.getElementById('insectId').value=data[0]._id;
+					}	
+
+					console.log("showing search results");
+					$scope.searchResults="showResults";
+					
+
+				}
+	 		}); 		
+	 		} /* end of search*/	
+		}
+	}
 }]);
 
 insectIdentifierApp.factory('Auth', ['$cookies', function ($cookies) {

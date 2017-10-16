@@ -5,21 +5,29 @@
   <title>Insect identifier</title>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="stylesheets/app.css">
-  <link rel="stylesheet" href="stylesheets/animations.css">	
-<!--<script src="js/prefixfree-1.0.7.js" type="text/javascript"></script>-->
 
-<script src="js/datepicker"></script>
+  <!-- for logging styles-->
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome
+ -->
+<script src="js/datepicker.js"></script>
 <script src="js/menu.js"></script>
+<script src="js/pagination.js"></script>
+<script src="js/util.js"></script>
 <script src="js/connectivity.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
-  <script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+
 <!--load datepicker after the document has loaded -->
 <script type="text/javascript">$(document).ready(function () { 
    var url = "js/datepicker.js";
 	$.getScript( url, function() {
 		console.log('loaded datepicker.js');
 	});
-});</script>
+});
+</script>
+
   <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -154,6 +162,7 @@
   <tr><td id="ds_calclass">
   </td></tr>
   </table>
+
   <div header> </div>
 
   <div class="view-container">

@@ -6,7 +6,6 @@ var ObservationSchema = new Schema({
 	country: String,
 	county: String,
 	location: String, /* point of compass or middle */
-	farm: Boolean,
 	organicFarm: Boolean,
 	place: String,	
 	user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},

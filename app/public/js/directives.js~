@@ -43,39 +43,40 @@ myApp.directive('header', function () {
         replace: true,
         templateUrl: "../partials/header.html",
         controller: ['$scope', '$filter', '$cookies', 'UserRestService', 'Auth', 'TranslationService', 
-		'$location','$route', '$localStorage',
-		function ($scope, $filter, $cookies, UserRestService, Auth, TranslationService, $location, $route, $localStorage) {
-			if (!$cookies.get('lang')) {
-					console.log('no lang chosen.');
-					$cookies.put('lang', 'en');	    	
-		    	}
+        		'$location','$route',
+        		function ($scope, $filter,	$cookies, UserRestService, Auth, TranslationService, $location, $route) {
 		    	console.log('header directive.');
 		    	$scope.location=$location;
 				$scope.lang=$cookies.get('lang');
-		
+			
 			TranslationService.getTranslation($scope, $cookies.get('lang'), '');
 		    			    	
 		    	UserRestService.requestCurrentUser(function (data) {
-		      	 	console.log("header Ctrl user: "+JSON.stringify(data));
-		    		Auth.set(data);
-		    		$scope.currentUser = JSON.parse(JSON.stringify(data));
-		    		var tmp = JSON.parse(JSON.stringify(data));
-		    		console.log('tmp: '+tmp);	
-		    		console.log('tmp.username: '+ tmp.username);
-		    		console.log("header currentuser: "+$scope.currentUser);
-		    		console.log("header currentuser.username: "+$scope.currentUser.username);
+	      	 	console.log("header Ctrl user: "+JSON.stringify(data));
+   	    		Auth.set(data);
+   	    		$scope.currentUser = JSON.parse(JSON.stringify(data));
+   	    		var tmp = JSON.parse(JSON.stringify(data));
+   	    		console.log('tmp: '+tmp);	
+   	    		console.log('tmp.username: '+ tmp.username);
+   	    		console.log("header currentuser: "+$scope.currentUser);
+   	    		console.log("header currentuser.username: "+$scope.currentUser.username);
 
+		    	if (!$cookies.get('lang')) {
+					console.log('no lang chosen.');
+					$cookies.put('lang', 'en');	    	
+		    	}
+		    	
 				$scope.collection=function() {
 					$scope.location.path('collection');
 				}
 				$scope.search=function() {
 					$scope.location.path('search');
 				}
-				$scope.upload=function() {
+  				$scope.upload=function() {
 					$scope.location.path('insect/upload');
 				}
 				$scope.addObservation=function(currentUser) {
-					$scope.location.path('addObservations').search({'currentUser': currentUser});
+					$scope.location.path('search').search({'fromObservationPage':'1', 'currentUser': currentUser});
 				}
 				$scope.browseObservation=function(currentUser) {
 					$scope.location.path('browseObservations').search({'currentUser': currentUser});
@@ -89,13 +90,12 @@ myApp.directive('header', function () {
 					 TranslationService.getTranslation($scope, $cookies.get('lang'), '');
 					 $scope.lang=lang;
 				 	 $route.reload();			
-				}	
-				$scope.login = function() {
-					$scope.location.path('login');
-				}
-       			});  
-        	}]
-    	}
+				}		
+
+       		});
+		  
+        }]
+    }
 });
 
 myApp.directive('connectivity', function () {       

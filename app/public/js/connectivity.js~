@@ -1,4 +1,4 @@
-/*window.ononline=online;
+window.ononline=online;
 window.onoffline=offline;
 var localStorage = window.localStorage; 
 
@@ -6,27 +6,12 @@ function online() {
 	console.log('online');
 	connected = true;
 	localStorage.setItem('connected', '1');
-	console.log('localstorage.connected: '+localStorage.connected);
 }
 
 function offline() {
 	connected = false;
 	console.log('offline');
 	localStorage.setItem('connected', '0');
-	console.log('localstorage.connected: '+localStorage.connected);
-}*/
-
-function connectivity(status, $scope, $localStorage) {
-	if (status == false) {
-		$scope.connected = 0;
-		$localStorage.connected = 0;
-		console.log('detailctrl: not connected');
-	}
-	else {
-		$scope.connected = 1;
-		$localStorage.connected = 1;
-		console.log('detailctrl: connected');
-	}
 }
 
 function checkconnectivity(id, isMainImage) {
@@ -59,7 +44,7 @@ function checkconnectivity(id, isMainImage) {
 }
 
 function savetest(name) {
-	console.log('name.substring: '+name.substring(name.length-9,name.length));
+	console.log('name.substring: '+name.substring(name.length-1-9,name.length-1));
 	if (name.substring(name.length-1-9,name.length-1) == 'thumb.jpg') {
 		console.log('name consists thumb.jpg');
 	

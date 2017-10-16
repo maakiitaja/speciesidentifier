@@ -1,4 +1,4 @@
-<h1> {{translations.BROWSEOBSERVATIONS}}</h1>
+<h1 id="browseObservationHeader"> {{translations.BROWSEOBSERVATIONS}}</h1>
 <form ng-submit='searchObservations(query)'  > 
 	<div class="flex-center">
 	<ul id="flex-table" class="flex-table">
@@ -161,12 +161,22 @@
 			<input type="text" ng-model="query.place" />
 		</li>
 		<li>
-			{{translations.FARMTYPE}}:
+			{{translations.PLACETYPE}}:
 		</li>
 		<li>
-			<input type="radio" name="farmtype" value="{{translations.NOFARM}}" ng-model="query.nofarm" checked/> {{translations.NOFARM}}
-			<input type="radio" name="farmtype" value="{{translations.ORGANICFARM}}" ng-model="query.organicFarm"> {{translations.ORGANICFARM}}	
-			<input type="radio" name="farmtype" value="{{translations.NONORGANICFARM}}" ng-model="query.nonOrganicFarm"/>	{{translations.NONORGANICFARM}}
+			
+			<input type="radio" id="noFarmType" value="{{translations.NO}}" name="typeselection" ng-click="showByType('0')" checked=true/> {{translations.NO}}
+			<input type="radio" id="byFarmType" value="{{translations.YES}}" name="typeselection" ng-click="showByType('1')"/> {{translations.YES}}
+			
+			<div ng-switch="typeSelection">
+				<div ng-switch-when="byType">
+					<input type="radio" id="nofarm" name="farmtype" value="{{translations.NOFARM}}" ng-model="query.nofarm" checked=true/> {{translations.NOFARM}}
+					<input type="radio" id="organicFarm" name="farmtype" value="{{translations.ORGANICFARM}}" ng-model="query.organicFarm"> {{translations.ORGANICFARM}}	
+					<input type="radio" id="nonOrganicFarm" name="farmtype" value="{{translations.NONORGANICFARM}}" ng-model="query.nonOrganicFarm"/>	{{translations.NONORGANICFARM}}
+					
+				</div>	
+			</div>
+			
 		</li>
 			
 		<li><h3>{{translations.TIMESPECIFIC}}:</h3></li><li></li>
@@ -174,50 +184,61 @@
 			{{translations.STARTDATE}}(*):
 		</li>
 		<li>
-			<input onclick="ds_sh(this);" id="startDate" name="date" readonly="readonly" style="cursor: text" ng-model="query.startDate" required/>
+			<input ng-click="ds_sh_search('startDate')" id="startDate" name="startdate" style="cursor: text" ng-model="query.startDate" ng-required="dateRequired.startDate"/>
 		</li>
 		<li>
 			{{translations.ENDDATE}}(*):
 		</li>
 		<li>
-			<input onclick="ds_sh(this);" id="endDate" name="enddate" readonly="readonly" style="cursor: text" ng-model="query.endDate" required/>
+			<input ng-click="ds_sh_search('endDate')" id="endDate" name="enddate" style="cursor: text" ng-model="query.endDate" ng-required="dateRequired.endDate"/>
 		</li>
 	
 		<li><h3>{{translations.INSECTSPECIFIC}}:</h3></li><li></li>
-
-		<li> {{translations.CATEGORY}}: </li>
-		<li>	<select name="category" ng-model="query.category">
-				<option value=""></option> 
-				<option value="Ant">{{translations.ANT}}</option>
-			     	<option value="Bee">{{translations.BEE}}</option>		        
-			     	<option value="Beetle">{{translations.BEETLE}}</option>
-			     	<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-     				<option value="Caterpillar">{{translations.CATERPILLAR}}</option>        
-   				<option value="Spider">{{translations.SPIDER}}</option>
-			</select>
-		</li>
-		
-		<li> {{translations.NAME}}: </li>
 		<li>
-			<input type="text" ng-model="query.name"/>
+			{{translations.SEARCH}}:
+		</li>
+		<li>
+			<input type="radio" id="byCategory" value="{{translations.CATEGORY}}" name="insectsearchselection" ng-click="toggleInsectSearch('0')"/> {{translations.CATEGORY}}
+			<input type="radio" id="byName" value="{{translations.NAME}}" name="insectsearchselection" ng-click="toggleInsectSearch('1')"/> {{translations.NAME}}
+
+			<div ng-switch="insectSearchSelection">
 			
-		</li>	
-		<li>  {{translations.LANGUAGE}}: </li>
-		<li>
-			<select name="language" ng-model="query.language">
-				<option value=""></option> 
-				<option value="latin">{{translations.LATIN}}</option>
-     				<option value="EN">{{translations.ENGLAND}}</option>        
-   				<option value="FI">{{translations.FINLAND}}</option>
-			</select>
+				<div ng-switch-when="byCategory">
+						<select name="category" ng-model="query.category" >
+						<option value=""></option> 
+						<option value="Ant">{{translations.ANT}}</option>
+							<option value="Bee">{{translations.BEE}}</option>		        
+							<option value="Beetle">{{translations.BEETLE}}</option>
+							<option value="Butterfly">{{translations.BUTTERFLY}}</option>
+							<option value="Caterpillar">{{translations.CATERPILLAR}}</option>        
+						<option value="Spider">{{translations.SPIDER}}</option>
+						</select>					
+				</div>
+				
+				<div ng-switch-when="byName">
+					{{translations.NAME}}: (*)  <input type="text" ng-model="query.name" required/>
+					<br>
+						
+					{{translations.LANGUAGE}}: (*)
+					
+					<select name="language" ng-model="query.language" required>
+						<option value=""></option> 
+						<option value="Latin">{{translations.LATIN}}</option>
+							<option value="EN">{{translations.ENGLISH}}</option>        
+						<option value="FI">{{translations.FINNISH}}</option>
+					</select>
+				
+				</div>
+			</div>
+			</li>
 		</li>
-
+	
 	</ul>
 	</div>
 
 	<br>
-	<input type="submit" class="button button1 centered" value="{{translations.SEARCH}}" />
-
+	<input type="submit" name="search" class="button button1 centered" value="{{translations.SEARCH}}" />
+</form>
 <!-- 
 place specific:
 location
@@ -237,12 +258,12 @@ history:
 date | insectname | category
 -->
 
-<p ng-model="searchResults" value={{searchResults}}></p>
+<p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
 <div ng-switch="searchResults">
-	<div ng-switch-when="noResults">
+	<div ng-switch-when="noResults" id="noResults">
 		<h2>{{translations.NORESULTS}}</h2>
 	</div>
-	<div ng-switch-when="showResults">
+	<div ng-switch-when="showResults" id="showResults">
 		<h2>{{translations.RESULTS}}</h2>
 	<div class="flex-center-wide">
 		
@@ -256,7 +277,7 @@ date | insectname | category
 			<li class="heading"> <b>{{translations.FARMTYPE}}</b> </li>
 			
 		</ul>
-		<ul ng-repeat="observation in observations" id="flex-table-7-col" class="flex-table"> 
+		<ul ng-repeat="observation in observations" name="table-data" id="flex-table-7-col" class="flex-table"> 
 			<li> {{observation.latinName}}</li>
 			<li> {{observation.date}}</li>
 			<li> {{observation.count}}</li>
@@ -269,4 +290,4 @@ date | insectname | category
 	</div>
 </div>
 </div>
-</form>
+

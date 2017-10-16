@@ -1,13 +1,13 @@
-<h1>{{translations.UPLOADLIST}}</h1>
+<h1 id="uploadList">{{translations.UPLOADLIST}}</h1>
 
 <div ng-repeat="insects in uploadList" class="centered">
 	<div ng-if="insects.length > 0">
-		<h2 ng-if="insects[0].category == 'Ant'">{{translations.ANT}}</h2>
-		<h2 ng-if="insects[0].category == 'Bee'">{{translations.BEE}}</h2>
-		<h2 ng-if="insects[0].category == 'Beetle'">{{translations.BEETLE}}</h2>
-		<h2 ng-if="insects[0].category == 'Butterfly'">{{translations.BUTTERFLY}}</h2>
-		<h2 ng-if="insects[0].category == 'Caterpillar'">{{translations.CATERPILLAR}}</h2>
-		<h2 ng-if="insects[0].category == 'Spider'">{{translations.SPIDER}}</h2>
+		<h2 id='Ant' ng-if="insects[0].category == 'Ant'">{{translations.ANT}}</h2>
+		<h2 id='Bee' ng-if="insects[0].category == 'Bee'">{{translations.BEE}}</h2>
+		<h2 id='Beetle' ng-if="insects[0].category == 'Beetle'">{{translations.BEETLE}}</h2>
+		<h2 id='Butterfly' ng-if="insects[0].category == 'Butterfly'">{{translations.BUTTERFLY}}</h2>
+		<h2 id='Caterpillar' ng-if="insects[0].category == 'Caterpillar'">{{translations.CATERPILLAR}}</h2>
+		<h2 id='Spider' ng-if="insects[0].category == 'Spider'">{{translations.SPIDER}}</h2>
 		<ul align="center" class="insect-thumbs">
 			<li ng-repeat="insect in insects">
 				
@@ -20,7 +20,7 @@
 				<p>
 					{{insect.latinName}}
 				</p>
-				<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="upload(insect)"/>
+				<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" id="{{insect.latinName}}" ng-click="upload(insect)"/>
 			</li>
 		</ul>
 	</div>

@@ -1,5 +1,5 @@
 <p margin-top="2em"/>
-<div ng-if="isUpload==1">
+<div ng-if="isUpload==1" id="upload-title">
 <h1>{{translations.UPLOADPAGE}}</h1>
 </div>
 <div ng-if="isUpload==0">
@@ -9,16 +9,16 @@
 	<div class="flex-center">
 	<ul id="flex-table" class="flex-table">
 
-	<li>{{translations.ENGLISHNAME}}: </li><li style="min-width:200px"><input type="text" value="{{enName}}" name="enName" ng-model="enName" /> 
+	<li>{{translations.ENGLISHNAME}}: </li><li style="min-width:200px"><input id="englishName" type="text" value="{{enName}}" name="enName" ng-model="enName" /> 
 	</li>
-	<li>{{translations.FINNISHNAME}}: </li><li><input type="text" value="{{fiName}}" name="fiName" ng-model="fiName"/> 	</li>
-	<li>{{translations.LATINNAME}}: (*)</li><li> <input type="text" name="latinName" ng-model="latinName" required/></li>
+	<li>{{translations.FINNISHNAME}}: </li><li><input id="finnishName" type="text" value="{{fiName}}" name="fiName" ng-model="fiName"/> 	</li>
+	<li>{{translations.LATINNAME}}: (*)</li><li> <input id="latinName" type="text" name="latinName" ng-model="latinName" required/></li>
 	<!--<td><span ng-show="myForm.latinName.$touched && myForm.latinName.$invalid">{{translations.LATINNAMEREQUIRED}}</span></td>-->	
 	
 	
 	<li>	{{translations.CATEGORY}}: (*)</li>
 	<li>
-      <select value="{{category}}" name="category" ng-model="category" required>
+      <select id="category" value="{{category}}" name="category" ng-model="category" required>
       	<option value=""></option>
 			<option value="Ant">{{translations.ANT}}</option>      
 			<option value="Bee">{{translations.BEE}}</option>  
@@ -33,7 +33,7 @@
 	   
 	<li> {{translations.PRIMARYCOLOR}}: (*)</li>
       <li>
-      <select name="primaryColor" value="{{primaryColor}}" ng-model="primaryColor" required>
+      <select id="primaryColor" name="primaryColor" value="{{primaryColor}}" ng-model="primaryColor" required>
       	<option value=""></option>
         <option value="Black">{{translations.BLACK}}</option>
         <option value="Blue">{{translations.BLUE}}</option>
@@ -53,7 +53,7 @@
 
       <li> {{translations.SECONDARYCOLOR}}: (*)</li> 
       <li>
-     <select name="secondaryColor" value="{{secondaryColor}}"  ng-model="secondaryColor" required>
+     <select id="secondaryColor" name="secondaryColor" value="{{secondaryColor}}"  ng-model="secondaryColor" required>
 				<option value=""></option>
 			  <option value="Black">{{translations.BLACK}}</option>
 			  <option value="Blue">{{translations.BLUE}}</option>
@@ -73,7 +73,7 @@
 		<span ng-show="myForm.secondaryColor.$touched && myForm.secondaryColor.$invalid">{{translations.SECONDARCOLORYREQUIRED}}</span>
 		<li> {{translations.NUMBEROFLEGS}}: (*)</li>
 		<li> 
-      <select name="legs" value="{{legs}}" ng-model="legs" required>
+      <select id="legs" name="legs" value="{{legs}}" ng-model="legs" required>
       	<option value=""></option>
         <option value="02">2</option>
         <option value="04">4</option>
@@ -84,35 +84,36 @@
 	<span ng-show="myForm.legs.$touched && myForm.legs.$invalid">{{translations.LEGSREQUIRED}}</span>
 
 	<li>	{{translations.WIKIENTRY}}:</li>
-	<li> <input type="text" name="wiki" ng-model="wiki"/>
+	<li> <input id="wiki" type="text" name="wiki" ng-model="wiki"/>
 	</li>
 	
 	<li>  	
 	{{translations.IMAGELINKS}}:</li>  
   	<li>
-  	<textarea name="imageLinks" ng-model="imageLinks"></textarea>
+  	<textarea id="imageLinks" name="imageLinks" ng-model="imageLinks"></textarea>
   	</li>  	
   	
   	<li> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</li>
 	  <li>
- 	  <input type="file" name="userPhotos" file-model="myFile" ng-required="isRequired" multiple/>
+ 	  <input type="file" id="userPhotos" name="userPhotos" file-model="myFile" ng-required="isRequired" multiple/>
   	  </li>
 	  <span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
 
  
- 	<input type="hidden" name="isUpload" value="{{isUpload}}" ng-model="isUpload"/>
- 	<input type="hidden" name="insectId" value="{{insectId}}" ng-model="insectId"/>
+ 	<input type="hidden" id="isUpload" name="isUpload" value="{{isUpload}}" ng-model="isUpload"/>
+ 	<input type="hidden" id="insectId" name="insectId" value="{{insectId}}" ng-model="insectId"/>
 
   	<br>
 	<br>
 	<br>
 	</ul>
 	
-	<div  ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
+	<div ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
 		<div class="horizontal-table">
 	    		<ul id="horizontal-list-table">
 				<ul class="insect-thumbs">
-					<img ng-src="{{photo.name+'_thumb.jpg'}}" alt={{insect.latinName}} />
+					<li>
+					<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
 					<input type='checkbox' name="{{photo.name}}" ng-model="photo.checked" ng-click="checkPhotoRequired(photo)"/>Remove</li>
 				</ul>
 	   	 	</ul>
@@ -123,10 +124,10 @@
 	<tr><td>
 
 		<div ng-if="isUpload==1">
-		<input ng-click="uploadFile()" type="submit" class="button" value="{{translations.UPLOAD}}">
+		<input id="uploadSubmit" type="submit" class="button" value="{{translations.UPLOAD}}">
 		</div>
 		<div ng-if="isUpload==0">
-		<input ng-click="uploadFile()" type="submit" class="button" value="{{translations.SAVE}}">
+		<input id="updateSubmit" ng-click="uploadFile()" type="submit" class="button" value="{{translations.SAVE}}">
 		</div>
 		
   	</td></tr>

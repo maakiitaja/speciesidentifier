@@ -4,7 +4,7 @@
 
 var insectIdentifierApp = angular.module('insectIdentifierApp', [
   'ngRoute',
-  'insectIdentifierAnimations',
+  //'insectIdentifierAnimations',
   'insectIdentifierControllers',
   //'insectIdentifierFilters',
   'insectIdentifierServices',
@@ -12,6 +12,23 @@ var insectIdentifierApp = angular.module('insectIdentifierApp', [
   'ngCookies'
 ]);
  
+/* Listen for online and offline events. 
+https://stackoverflow.com/questions/16242389/how-to-check-internet-connection-in-angularjs
+*/
+insectIdentifierApp.run(function($window, $rootScope) {
+      $rootScope.online = navigator.onLine;
+      $window.addEventListener("offline", function() {
+        $rootScope.$apply(function() {
+          $rootScope.online = false;
+        });
+      }, false);
+
+      $window.addEventListener("online", function() {
+        $rootScope.$apply(function() {
+          $rootScope.online = true;
+        });
+      }, false);
+});
 
 insectIdentifierApp.config(['$locationProvider',
   	function ($locationProvider) {
@@ -42,12 +59,12 @@ insectIdentifierApp.config(['$routeProvider',
       	controller: 'ListCtrl'
       }).
       when('/insect', {
-			templateUrl: 'partials/insect-detail.html',
-			controller: 'InsectDetailCtrl'      
+		templateUrl: 'partials/insect-detail.html',
+		controller: 'InsectDetailCtrl'      
       }).
       when('/main', {
       		templateUrl: 'partials/search.html',
-      		controller: 'MainCtrl'
+      		controller: 'SearchCtrl'
       }).
       when('/collection', {
       		templateUrl: 'partials/collection.html',
@@ -64,6 +81,30 @@ insectIdentifierApp.config(['$routeProvider',
       when('/browseObservations', {
       	templateUrl: 'partials/browse-observations.html',
 	controller: 'BrowseObservationsCtrl',
+      }).
+      when('/addObservations', {
+      	templateUrl: 'partials/search.html',
+	controller: 'AddObservationsCtrl',
+      }).
+      when('/login', {
+      	templateUrl: 'partials/login.html',
+	controller: 'LoggingCtrl',
+      }).
+      when('/logout', {
+      	templateUrl: 'partials/search.html',
+	controller: 'LoggingCtrl',
+      }).
+      when('/signup', {
+      	templateUrl: 'partials/signup.html',
+	controller: 'LoggingCtrl',
+      }).
+      when('/login-failure', {
+      	templateUrl: 'partials/login.html',
+	controller: 'LoggingFailureCtrl',
+      }).
+      when('/signup-failure', {
+      	templateUrl: 'partials/signup.html',
+	controller: 'LoggingFailureCtrl',
       }).
         otherwise({
         redirectTo: '/phones'

@@ -71,6 +71,13 @@
 	/*opacity: 0.5;*/
 	
 }
+#farmtype {
+	visibility: hidden;
+}
+
+#organicfarm, #nonorganicfarm {
+	disabled:true;
+}
 	body {
 	  padding-top: 20px;
 	}
@@ -152,7 +159,12 @@
 	  margin: 5px;
 	  background-color: white;
 	}
-
+	ul.insect-thumbs-detail img {
+	  min-height: 150px;
+	  min-width: 150px;
+	  height: 150px;
+	  width: 150px;
+	}
 	ul.insect-thumbs img{
 	  /*min-height: 150px;
 	  min-width: 150px;
@@ -175,16 +187,29 @@
 	list-style:none;
 
 }
-
 .flex-center {
   display:table;
 margin: 0 auto;
 text-align:center;
    max-width:500px;
 }
+.flex-center-wide {
+  display:table;
+margin: 0 auto;
+text-align:center;
+   max-width:1000px;
+}
 
 #flex-table li {
 	flex: 1 1 40%;
+
+}
+#flex-table-3-col li {
+	flex: 1 2 30%;
+
+}
+#flex-table-7-col li {
+	flex: 1 7 10%;
 
 }
 
@@ -248,11 +273,15 @@ text-align:center;
 	[class*="col-"] {
 	    width: 100%;
 	}
-	#collection div, #login div,#logout div, #search-menu div, #upload div, #modify div, #login div,#logout div, #options div {
+	#collection div, #login div,#logout div, #search-menu div, #upload div, #modify div, #login div,#logout div, #options div, #browse div {
 		display:none;
 	}
-	#login,#logout, #options {
+
+	#options, #login,#logout {
 		float:right;
+	}
+	.options-float-none {
+		float:none;
 	}
 	#modify img:hover {
 		src: "images/modify-hover";
@@ -448,6 +477,10 @@ table.center td {
     width: 80%;
 
 }
+
+#observationplace {
+	visibility: visible;
+}
 	.nav {
 	    width:100%;
 	    background: #232323;
@@ -573,6 +606,77 @@ table.center td {
 	#o1, #o2 {
 		visibility:hidden;
 	}
+	/* https://www.thoughtco.com/fade-in-and-out-with-css3-3467006 */
+
+	@keyframes fadeOut {
+	  to {
+	    opacity: 0;
+	  }
+	}
+
+	.fade-in {
+	  opacity: 0;
+	  animation: fadeIn 2s ease-in 1 forwards;
+	}
+
+	.fade-out {
+	  opacity: 1;
+	  animation: fadeOut 2s ease-in 1 forwards;
+	}
+
+	.is-paused {
+	  animation-play-state: paused;
+	}
 	
 
 	/* End of https://designmodo.com/create-drop-down-menu-search-box/ */
+
+/*  */
+
+/* start of datepicker: http://www.javascriptkit.com/script/script2/dyndateselector.shtml */
+
+.ds_box {
+	background-color: #FFF;
+	border: 1px solid #000;
+	position: absolute;
+	z-index: 32767;
+}
+
+.ds_tbl {
+	background-color: #FFF;
+}
+
+.ds_head {
+	background-color: #333;
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: 2px;
+}
+
+.ds_subhead {
+	background-color: #CCC;
+	color: #000;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	width: 32px;
+}
+
+.ds_cell {
+	background-color: #EEE;
+	color: #000;
+	font-size: 13px;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.ds_cell:hover {
+	background-color: #F3F3F3;
+} /* This hover code won't work for IE */
+/* end of datepicker */
