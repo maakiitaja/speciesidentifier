@@ -1,0 +1,33 @@
+<div class="container">
+
+<div class="col-sm-6 col-sm-offset-3">
+
+    <h1><span class="fa fa-sign-in"></span> {{translations.LOGIN}}</h1>
+
+    <!-- show any messages that come back with authentication -->
+    
+    <div id="message" ng-if='message != ""' class="alert alert-danger">{{message}}</div>
+
+    <!-- LOGIN FORM -->
+    <form action="/login" method="post">
+        <div class="form-group">
+            <label>{{translations.EMAIL}}</label>
+            <input type="text" class="form-control" id="email" name="email"/>
+        </div>
+        <div class="form-group">
+            <label>{{translations.PASSWORD}}</label>
+            <input type="password" class="form-control" id="password" name="password"/>
+        </div>
+
+        <button type="submit" id="submit" name="submit" class="btn btn-warning btn-lg">{{translations.SUBMIT}}</button>
+    </form>
+
+    <hr>
+
+    <p>{{translations.NEEDACCOUNT}} <a href="#/signup">{{translations.SIGNUP}}</a></p>
+    <p>{{translations.ORGO}} <a href="#/main">{{translations.HOME}}</a>.</p>
+
+</div>
+
+</div>
+

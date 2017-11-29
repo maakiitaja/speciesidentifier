@@ -67,8 +67,12 @@
        .col-3 {width: 30%;}
        .col-6 {width: 70%;}
 	 
-	#collection div, #browse div, #upload div, #search-menu div, #options div {
+	#collection div, #browse div, #upload div, #search-menu div, #options div, #modify div{
 		display: inline;
+	}
+	
+	#modify div.menu-description {
+		display: none;
 	}
 
 	table.center{
@@ -101,14 +105,14 @@
 			margin-right:5%;
 		}
 
-		#options, #login, #logout {
+		#observation div, #options div, #search-menu div, #collection div, #upload div, #modify div, #options div, #login div, #logout div {
 			display: inline;
 		}
-
-		#browse {
-			
+		
+		#options div.menu-description, #login div.menu-description, #logout div.menu-description, #modify div.menu-description, #upload div.menu-description, #search-menu div.menu-description, #collection div.menu-description, #options div.menu-description, #options div-menu-description {
+			display: none;
 		}
-
+		
 		h1 {
 			margin:20px;
 		}
@@ -125,8 +129,12 @@
 			margin-right:2%;
 		}
 
-		#options, #login, #logout {
+			#observation div, #options div, #search-menu div, #collection div, #upload div, #modify div, #options div, #login div, #logout div {
 			display: inline;
+		}
+		
+		#options div.menu-description, #login div.menu-description, #logout div.menu-description, #modify div.menu-description, #upload div.menu-description, #search-menu div.menu-description, #collection div.menu-description, #options div.menu-description, #options div-menu-description {
+			display: none;
 		}
 
 		
@@ -142,14 +150,18 @@
 
 	}
 
-	@media only screen and (min-width: 320px) and (max-width: 400px) {		
+	@media only screen and (min-width: 50px) and (max-width: 400px) {		
 		img.insect-detail {
 			max-width: 200px;
 			max-height: 200px;
 		}
 
-		#options, #login, #logout {
+			#observation div, #options div, #search-menu div, #collection div, #upload div, #modify div, #options div, #login div, #logout div {
 			display: inline;
+		}
+		
+		#options div.menu-description, #login div.menu-description, #logout div.menu-description, #modify div.menu-description, #upload div.menu-description, #search-menu div.menu-description, #collection div.menu-description, #options div.menu-description, #options div-menu-description {
+			display: none;
 		}
 	}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										
 

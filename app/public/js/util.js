@@ -4,21 +4,27 @@ function toggleElements(hideElem, showElem) {
 	document.getElementById(showElem).visibility="visible";
 }
 
-function setImage(insect, $scope) {
-	console.log('setting image');
-	$scope.mainImageUrl=insect.images[0];
-	$scope.insect=insect;
-	if ($scope.fromObservationPage == '1') {
-		console.log('util.setImage: latinName: '+insect.latinName);
-		if (insect.latinName !== undefined && insect.latinName != 'undefined') {
-			document.getElementById('observationLatinName').value = insect.latinName;
-			$scope.observationLatinNameRequired = 0;//document.getElementById('observationLatinName')
-		}
-	}
+
+//Where el is the DOM element you'd like to test for visibility
+function isHidden(el) {
+    return (el.offsetParent === null)
+} 
+
+function updateMainImageUrl($scope) {
+	var elem = $('.insect-thumbs').find(':first');
+	console.log('elem: '+JSON.stringify(elem));
+	if (elem)
+		console.log(' with id: '+elem.id);
+	
 }
 
 function setDelay(callback, ms) {
+
 	var myVar = window.setTimeout(callback, ms);
+}
+
+function isvisible(obj) {
+																																																																																																																																																																																																																																																			  	return obj.offsetWidth > 0 && obj.offsetHeight > 0;
 }
 
 

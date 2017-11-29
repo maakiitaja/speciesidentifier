@@ -6,9 +6,9 @@ var path = require('path');
 
 describe('InsectIdentifier App', function() {
 	
-	describe('Search view', function() {
+/*	describe('Search view', function() {
 
-		/*beforeEach(function() {
+		beforeEach(function() {
 			browser.get('#/main');
 			var EC = protractor.ExpectedConditions;
 
@@ -20,30 +20,29 @@ describe('InsectIdentifier App', function() {
 			browser.wait(EC.visibilityOf($('#showResults')), 5000);	
 			browser.wait(EC.visibilityOf($('#insect-thumbs')), 5000);
 			// search results
-			element.all(by.repeater('insect in pagedInsects[currentPage]')).count().then(function(count) {
+			element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).count().then(function(count) {
 				console.log('search count: '+count);
 				expect(count > 0).toBeTruthy();
-			}); 
-			
-		});*/
+			});			
+		});
 
 		
-		/*
 		it('should swap main image if a thumbnail image is clicked on', function() {
 			// should display the first insect image as the main insect image'
+			console.log('checking main image');
 			expect(element(by.css('img.insect.active')).getAttribute('src')).toContain('images\/ampiaiset_495px.jpg');
-			
+			console.log('clicking third thumb image');
 			element(by.css('.insect-thumbs li:nth-child(3) img')).click();
 			expect(element(by.css('img.insect.active')).getAttribute('src')).toContain('images/\mehilaiset_495px.jpg');
-	  
+	  		console.log('clicking first thumb image');
 			element(by.css('.insect-thumbs li:nth-child(1) img')).click();
 			expect(element(by.css('img.insect.active')).getAttribute('src')).toContain('images\/ampiaiset_495px.jpg');
-		});*/
-/*
+		});
+
 		it('should change to insect detail page', function() {
 			var EC = protractor.ExpectedConditions;
 	      	// activate an insect
-			element.all(by.repeater('insect in pagedInsects[currentPage]')).then(function(arr) {
+			element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).then(function(arr) {
 				console.log('search count: '+arr.length);
 	    	    arr[0].click();
 		
@@ -80,8 +79,8 @@ describe('InsectIdentifier App', function() {
 				});
 		
       		});
-		});*/
-		/*
+		});
+		
 		it('should view insect with multiple images', function() {
 			var EC = protractor.ExpectedConditions;
 
@@ -107,9 +106,9 @@ describe('InsectIdentifier App', function() {
 					expect(element(by.css('img.active')).getAttribute('src')).toContain('images\/aglais_io_black.jpg');
 			});
 		});
-		*/
+		
 
-	});
+	});*/
 	/*
 	describe('Advanced search', function() {
 		beforeEach(function() {
@@ -133,7 +132,7 @@ describe('InsectIdentifier App', function() {
 			browser.wait(EC.visibilityOf($('#showResults')), 5000);	
 			browser.wait(EC.visibilityOf($('#insect-thumbs')), 5000);
 			// search results
-			element.all(by.repeater('insect in pagedInsects[currentPage]')).count().then(function(count) {
+			element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).count().then(function(count) {
 				console.log('search count: '+count);
 				expect(count > 0).toBeTruthy();
 			}); 
@@ -147,7 +146,7 @@ describe('InsectIdentifier App', function() {
 			browser.wait(EC.visibilityOf($('#showResults')), 5000);	
 			browser.wait(EC.visibilityOf($('#insect-thumbs')), 5000);
 			// search results
-			element.all(by.repeater('insect in pagedInsects[currentPage]')).count().then(function(count) {
+			element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).count().then(function(count) {
 				console.log('search count: '+count);
 				expect(count > 0).toBeTruthy();
 
@@ -156,45 +155,8 @@ describe('InsectIdentifier App', function() {
 		});
 	});*/
 	
-
 /*
-    it('should render phone specific links', function() {
-      var query = element(by.model('query'));
-      query.sendKeys('nexus');
-      element.all(by.css('.phones li a')).first().click();
-      browser.getLocationAbsUrl().then(function(url) {
-        expect(url).toEqual('/phones/nexus-s');
-      });
-    });
-  });
-
-
-  describe('Phone detail view', function() {
-
-    beforeEach(function() {
-      browser.get('app/index.html#/phones/nexus-s');
-    });
-
-
-    it('should display nexus-s page', function() {
-      expect(element(by.binding('phone.name')).getText()).toBe('Nexus S');
-    });
-
-
-    it('should display the first phone image as the main phone image', function() {
-      expect(element(by.css('img.phone.active')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.0.jpg/);
-    });
-
-
-    it('should swap main image if a thumbnail image is clicked on', function() {
-      element(by.css('.phone-thumbs li:nth-child(3) img')).click();
-      expect(element(by.css('img.phone.active')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.2.jpg/);
-
-      element(by.css('.phone-thumbs li:nth-child(1) img')).click();
-      expect(element(by.css('img.phone.active')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.0.jpg/);
-    });*/
-
-	/*describe('Add observations', function() {
+	describe('Add observations', function() {
 		beforeEach(function() {
 			browser.get('#/login');
 
@@ -220,7 +182,7 @@ describe('InsectIdentifier App', function() {
 			});	
 		});
 
-  		/*it('should be able to add an observation with a new location', function() {
+  		it('should be able to add an observation with a new location', function() {
 			var EC = protractor.ExpectedConditions;
 						
 			var latinName = 'Leptinotarsa decemlineata';			
@@ -232,7 +194,7 @@ describe('InsectIdentifier App', function() {
 			
 			
 			// search results
-			element.all(by.repeater('insect in pagedInsects[currentPage]')).count().then(function(count) {
+			element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).count().then(function(count) {
 
 					// set the calendar date
 				var browseCalendar = function(testDay, testMonth, testYear) {
@@ -314,15 +276,15 @@ describe('InsectIdentifier App', function() {
 				
 				//function selectDropdownByNumber(element, index, milliseconds) {
     				//	element.findElements(by.tagName('option')).then(function(options) {
-					        options[index].click();
+					 //       options[index].click();
       				//	});
 				//    if (typeof milliseconds !== 'undefined') {
 				//      browser.sleep(milliseconds);
 				//    }
 				//}
 
-				var mySelect = $('#addExistingObservationPlace');
-				selectDropdownByNumber(mySelect, 1);
+				//var mySelect = $('#addExistingObservationPlace');
+				//selectDropdownByNumber(mySelect, 1);
 
 				element(by.id('observationSubmit')).click();
 
@@ -359,7 +321,7 @@ describe('InsectIdentifier App', function() {
 		});
 
 	});*/
-
+	
 	describe('Offline', function() {
 		beforeEach(function() {
 			browser.get('#/login');
@@ -374,31 +336,36 @@ describe('InsectIdentifier App', function() {
 			browser.getCurrentUrl().then(function(url) {
 				console.log('waiting for search page');
 				browser.wait(EC.visibilityOf($('#search')), 5000);
-				
-				console.log('switching to addobservation page');
-				element(by.id('observationmenu')).click();
-				element(by.id('collection')).click();
+			
+				element(by.id('collection-header')).click();
 				browser.getCurrentUrl().then(function(url) {
 					console.log('url: '+url);
 					expect(url).toContain('collection');
-					browser.wait(EC.visibilityOf($('#search')), 5000);
-				});	
+				});
 			});	
 		});
 
-		it('should be able to view offline', function() {
+		it('should be able to view images saved on local storage', function() {
+			
+			
 			element(by.id('offline')).click();
+		
+			element(by.css('.insect-thumbs li:nth-child(1) img')).getSize().then(function(size) {
+				console.log('size: '+size.width);
+				expect(size.width > 0).toBeTruthy();
+			});
+			
 			
 		});
-	}
+	});
   
-	describe("Browse observations", function() {
+	/*describe("Browse observations", function() {
 
     		beforeEach(function() {
 			browser.get('#/browseObservations');
 	    	});
 
-		/*
+		
 		it('should be able to find observations from a given country', function() {
 	      		var EC = protractor.ExpectedConditions;
 
@@ -412,8 +379,8 @@ describe('InsectIdentifier App', function() {
 					expect(count > 0).toBeTruthy();
 				});
 		});
-		*/
-		/*it('should be able to find according to farm type', function () {
+		
+		it('should be able to find according to farm type', function () {
 			var EC = protractor.ExpectedConditions;
 
 	      	element(by.model('query.country')).element(by.css('option[value="Finland"]')).click();
@@ -469,7 +436,7 @@ describe('InsectIdentifier App', function() {
 			});
 			
 			element(by.model('query.name')).clear().then(function() {
-				sendKeys('Neitoperhonen');
+				element(by.model('query.name')).sendKeys('Neitoperhonen');
 				
 				element(by.model('query.language')).element(by.css('option[value="FI"]')).click();
 				element(by.name('search')).click();
@@ -482,8 +449,8 @@ describe('InsectIdentifier App', function() {
 					expect(count > 0).toBeTruthy();
 				});				
 			});		
-		});*/
-		/*
+		});
+		
 		it('should be able to find according to latin name and Finnish name', function () {
 			var EC = protractor.ExpectedConditions;
 
@@ -518,8 +485,7 @@ describe('InsectIdentifier App', function() {
 			
 			});
 		});
-		*/
-		/*
+		
 		it('should be able to find observations from a given country within a specific time interval', function() {
 	      		var EC = protractor.ExpectedConditions;
 
@@ -601,51 +567,69 @@ describe('InsectIdentifier App', function() {
 					console.log('observationlist count: '+count);
 					expect(count > 0).toBeTruthy();
 					
-					// no results
-					 
-					 element(by.id('startDate')).click();
- 					 browseCalendar(1,8,2016);
-					element(by.id('endDate')).click();
-					 browseCalendar(1,8,2015);
-					 element(by.name('search')).click();
-					  browser.wait(EC.visibilityOf($('#noResults')), 5000);	
-					
 				});
 			});
 												
-		});*/
-
-		/*
+		});
 		it('should be able to show no result pane', function() {
 			var EC = protractor.ExpectedConditions;
 
 	      		element(by.model('query.country')).element(by.css('option[value="Finland"]')).click();
 				
 			// date selection
-			var formatDate = function(d, m, y) {
-				// Format the date to output.
+			// set the calendar date
+			var browseCalendar = function(testDay, testMonth, testYear) {
+				var date = new Date();
+				var years = testYear-date.getFullYear();
+				console.log('testDay: '+testDay);
+				console.log('testYear: '+testYear);
 
-				// 2 digits month.
-				var m2 = '00' + m;
-				m2 = m2.substr(m2.length - 2);
-				// 2 digits day.
-				var d2 = '00' + d;
-				d2 = d2.substr(d2.length - 2);
-				// YYYY-MM-DD
-				return y + '-' + m2 + '-' + d2;
+				// browse to year
 
+				for (var i = 0; i < years; i++ ) {
+					element(by.id('cal_py')).click();
+				}
+
+				console.log('testmonth: '+testMonth);
+				var months = testMonth - (date.getMonth() + 1);
+				console.log('months: '+months+' getmonth: '+date.getMonth());
+				if (months < 0)
+					months = months *(-1);
+				// browse to month
+				for (var i = 0; i < months; i++) {
+					if ((testMonth-(date.getMonth()+1)) < 0) {
+						console.log('cal_pm');
+						var el = element(by.id('cal_pm'));
+						browser.wait(EC.visibilityOf(el), 5000);
+						el.click();
+					}
+					else  {
+						console.log('cal_nm');
+						var el = element(by.id('cal_nm'));
+						browser.wait(EC.visibilityOf(el), 5000);
+						el.click();
+					}
+				}
+
+				// select day
+				var cal_day = "cal_day_"+testDay;
+				console.log('cal_day: '+cal_day);
+				var el = element(by.id(cal_day));
+				browser.wait(EC.visibilityOf(el), 5000);
+				el.click();
+	
 			}
 
-			var startDate = element(by.id('startDate'));
-			var endDate = element(by.id('endDate'));
-			startDate.value = formatDate(1,1,2016);
-			endDate.value = formatDate(2,1,2016);
+			element(by.id('startDate')).click();
+ 			browseCalendar(1,7,2014);
+			element(by.id('endDate')).click();
+ 			browseCalendar(1,8,2014);
 											
 			element(by.name('search')).click();
       			browser.wait(EC.visibilityOf($('#noResults')), 5000);	
-		});*/
+		});
 
-	});
+	});*/
 	
 	describe('Logging',function() {
 
@@ -653,7 +637,7 @@ describe('InsectIdentifier App', function() {
 			browser.get('#/login');
 		});
 
-		/*it('should be able to login and logout', function() {
+		it('should be able to login and logout', function() {
 			var EC = protractor.ExpectedConditions;
 			browser.wait(EC.visibilityOf($('#email')), 5000);	
 			element(by.id('email')).sendKeys('mauri.f@gmail.com');
@@ -666,12 +650,8 @@ describe('InsectIdentifier App', function() {
 				expect(element(by.id('logout_username')).getText()).toContain('Mauri');
 				element(by.id('logout')).click();
 				browser.getCurrentUrl().then(function(url) {
+					
 					expect(url).toContain('login');
-					browser.get('#/main');
-					browser.getCurrentUrl().then(function(url) {
-						expect(url).toContain('main');
-						//expect(element(by.id('logout'))).toBeFalse();
-					});
 
 				});
 				
@@ -683,22 +663,23 @@ describe('InsectIdentifier App', function() {
 			browser.wait(EC.visibilityOf($('#email')), 5000);	
 			element(by.id('email')).sendKeys('mauri.f@gmail.com');
 	      		element(by.id('password')).sendKeys('aaa');
-			
+			console.log('logging with incorrect credentials');
 			element(by.id('submit')).click();
-			
 			browser.getCurrentUrl().then(function(url) {
 				expect(url).toContain('login');
+				browser.wait(EC.visibilityOf($('#password')), 5000);
+				//expect(url).toContain('login');
+				console.log('waiting for failure message');
+				browser.wait(EC.visibilityOf($('#message')), 5000);	
+				/*console.log('checking message content');
 				expect(element(by.id('message'))).toContain('Incorrect');
-				browser.get("#/main");
-					
-				browser.getCurrentUrl().then(function(url) {
-					expect(url).toContain('main');
-//					expect(element(by.id('logout'))).toBeUndefined();
-				});				
+				console.log('after checking message content');*/
 			});
-		});*/
+			
+	
+		});
 	});
-	/*
+	
 	describe('Add and view collection', function() {
 
 		beforeEach(function() {
@@ -717,53 +698,94 @@ describe('InsectIdentifier App', function() {
 			});	
 		});
 
-		it('should be able to add and view collection', function() {
+		it('should be able to add and view collection connected and offline', function() {
 			var EC = protractor.ExpectedConditions;
-			element(by.model('query.primaryColor')).element(by.css('option[value="Green"]')).click();
+			
+			
+			element(by.model('query.primaryColor')).element(by.css('option[value="Yellow"]')).click();
 					
-			element(by.model('query.category')).element(by.css('option[value="Beetle"]')).click();
-			element(by.model('query.secondaryColor')).element(by.css('option[value="Green"]')).click();
+			element(by.model('query.category')).element(by.css('option[value="Bee"]')).click();
+//			element(by.model('query.secondaryColor')).element(by.css('option[value="Green"]')).click();
 			element(by.name('search')).click();
 
 			browser.wait(EC.visibilityOf($('#showResults')), 5000);	
 			browser.wait(EC.visibilityOf($('#insect-thumbs')), 5000);
 
 			// search results
-			element.all(by.repeater('insect in pagedInsects[currentPage]')).count().then(function(count) {
+			element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).count().then(function(count) {
 				console.log('search count: '+count);
 				expect(count > 0).toBeTruthy();
 				element(by.id('identify')).click();
 				
 				// expect the url to have changed
 				browser.getCurrentUrl().then(function(url) {
+					expect(url).toContain('/insect');
 					// wait for the detail page to load
 					browser.wait(EC.visibilityOf($('#description')), 5000);
-					expect(url).toContain('/insect');
 					
+
+					// aim to store the insect to the localstorage
+					element(by.id('removeItem')).getAttribute('value').then(function(showRemove) {
+					console.log('showRemove: '+showRemove);	
+					if (showRemove == 1) {
+						element(by.id('removeFromCollection')).click();
+						browser.wait(EC.visibilityOf($('#messageRemovedSuccess')), 5000);
+					}
+					browser.wait(EC.visibilityOf($('#addToCollection')), 5000);
+
 					// add the insect to the localstorage
-					element(byName('addToCollection')).click();
-				
+					element(by.id('addToCollection')).click();
+					browser.wait(EC.visibilityOf($('#messageAddSuccess')), 5000);
+
 					// Switch to collection page
 					element(by.id('collection-header')).click();
-					browser.wait(EC.visibilityOf($('#collection-beetle')), 5000);
+					console.log('waiting for bee header');
+
+					browser.wait(EC.visibilityOf($('#collection-bee')), 5000);
+					
+					console.log('iterating over category'); 
+		
 				
 					element.all(by.repeater('insect in insects')).count().then(function(count) {
+						console.log('waiting for category item count');
 						console.log('collectionlist count: '+count);
+						console.log('waiting for testing count');
 						expect(count > 0).toBeTruthy();
+				
+						element(by.css('.insect-thumbs li:nth-child(1) img')).getSize().then(function(size) {
+							console.log('waiting for test image size');
+							console.log('size online: '+size.width);
+							console.log('waiting for testing the image size');
+							expect(size.width > 0).toBeTruthy();
+
+							// offline test
+							browser.wait(EC.visibilityOf($('#offline')), 5000);
+							element(by.id('offline')).click();
+							//browser.wait(EC.visibilityOf($('#collection-bee')), 5000);
+							element(by.css('.insect-thumbs li:nth-child(1) img')).getSize().then(function(size) {
+								console.log('size offline: '+size.width);
+								expect(size.width > 0).toBeTruthy();
+	
+								//element(by.css('.insect-thumbs li:nth-child(1) img')).click();
+								//browser.wait(EC.visibilityOf($('#description')), 5000);
+							});
+						});
 					
-						element(by.css('.insect-thumbs li:nth-child(1) img')).click();
-						browser.wait(EC.visibilityOf($('#description')), 5000);
-					
+				
 					});
 				});
+				});
+				
+
+				
 					
 			}); 
 			
 		});
-	});*/
-
+	});
+/*
 	describe('Upload', function() {
-		beforeEach(function() {/*
+		beforeEach(function() {
 			browser.get('#/login');
 
 			var EC = protractor.ExpectedConditions;
@@ -781,9 +803,9 @@ describe('InsectIdentifier App', function() {
 
 				browser.wait(EC.visibilityOf($('#upload-title')), 5000);	
 	
-			});	*/
+			});	
 		});
-	/*
+	
 		it('should be able to upload insect', function() {
 
 			var EC = protractor.ExpectedConditions;
@@ -826,17 +848,17 @@ describe('InsectIdentifier App', function() {
 				browser.wait(EC.visibilityOf($('#showResults')), 5000);	
 				browser.wait(EC.visibilityOf($('#insect-thumbs')), 5000);
 				// search results
-				element.all(by.repeater('insect in pagedInsects[currentPage]')).count().then(function(count) {
+				element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).count().then(function(count) {
 				console.log('search count: '+count);
 				expect(count > 0).toBeTruthy();
 				}); 
 
 			});
 
-		});*/
+		});
 		
 		it('should be able to modify insect', function() {
-			/*var EC = protractor.ExpectedConditions;
+			var EC = protractor.ExpectedConditions;
 			var latinName = "Leptinotarsa decemlineata";
 			var finnishName = "Colorado kuoriainen";
 			var englishName = "Colorado potato beetle";
@@ -889,17 +911,18 @@ describe('InsectIdentifier App', function() {
 					browser.wait(EC.visibilityOf($('#insect-thumbs')), 5000);
 					
 					// search results
-					element.all(by.repeater('insect in pagedInsects[currentPage]')).count().then(function(count) {
+					element.all(by.repeater('insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))')).count().then(function(count) {
 						console.log('search count: '+count);
-						expect(count > 0).toBeTruthy();*/
-/*
+						expect(count > 0).toBeTruthy();
+
 						element(by.css('.insect-thumbs li:nth-child(1) img')).click();
 						element(by.id('identify')).click();
 
-						browser.wait(EC.visibilityOf($('#description')), 10000);
-						element.all(by.repeater('img in insect.images')).count().then(function(count) {
+						browser.wait(EC.visibilityOf($('#description')), 5000);
+						// TODO view multiple thumb images
+						/*element.all(by.repeater('img in insect.images')).count().then(function(count) {
 							console.log('thumb image count: '+count);
-							expect(count).toBe(2);
+							expect(count >0).toBeTruthy();
 						});
 					}); 
 					
@@ -907,7 +930,7 @@ describe('InsectIdentifier App', function() {
 
 			
 
-			});*/
+			});
 		});	
-	});
+	});*/
 });

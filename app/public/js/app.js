@@ -6,7 +6,7 @@ var insectIdentifierApp = angular.module('insectIdentifierApp', [
   'ngRoute',
   //'insectIdentifierAnimations',
   'insectIdentifierControllers',
-  //'insectIdentifierFilters',
+  'insectIdentifierFilters',
   'insectIdentifierServices',
   'ngStorage',
   'ngCookies'

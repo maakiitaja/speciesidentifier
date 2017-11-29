@@ -9,7 +9,7 @@ function hoverout(id)
 	console.log('hoverout');
 	var el  = document.getElementById(id+'-img');
 	el.src = "images/"+id+'.png';	
-	el.opacity = 1.0;
+	//el.opacity = 1.0;
 }
 
 
@@ -19,7 +19,7 @@ function hover(id)
 	var str = id+"-img";
 	var el  = document.getElementById(str);
 	el.src = "images/"+id+"-hover.png";
-	el.opacity = 0.5;
+	//el.opacity = 0.5;
 }
 
 

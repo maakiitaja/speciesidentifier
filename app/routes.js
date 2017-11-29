@@ -565,10 +565,10 @@ app.post('/observation/add', function(req, res) {
 		console.log('organicfarm: '+req.query.organicFarm);
 		console.log('nonorganicfarm: '+req.query.nonOrganicFarm);
 
-		if (req.query.organicFarm || req.query.nonOrganicFarm) {
+		if (req.query.organicFarm == 'true' || req.query.nonOrganicFarm == 'true') {
 			console.log('observation place is a farm');
 
-			if (req.query.organicFarm == true) {
+			if (req.query.organicFarm == 'true') {
 				console.log('observation place is an organic farm');
 				observation.organicFarm = true;
 			} 
@@ -578,7 +578,7 @@ app.post('/observation/add', function(req, res) {
 			}
 		}
 		else {
-			// TODO change to organicFarm is undefined
+			
 			observation.organicFarm = undefined;
 		}
 		
@@ -631,8 +631,14 @@ app.get('/observation/browse', function(req, res) {
 		}
 		
 		// time specific search
-		var startDate = new Date(req.query.startDate);
-		var endDate = new Date(req.query.endDate);
+		var startDate;
+		var endDate;
+
+		if (req.query.startDate != '')
+			startDate = new Date(req.query.startDate);
+		if (req.query.endDate != '')
+			endDate = new Date(req.query.endDate);
+
 		console.log('startDate: '+startDate+' and enddate: '+endDate);
 		
 		if (startDate && endDate) {
@@ -943,20 +949,26 @@ app.get('/observation/browse', function(req, res) {
 			// find the user's collection
 			console.log('user: '+req.user.id);
 		
-			console.log('insectId: '+req.query.insectId);
+			console.log('insectId: '+req.query.insectId);	
+			var found = false;
 			Compendium.findOne({'_user': req.user.id}, function(err, compendium) {
 				if (compendium) {
-					console.log('found a user\'s compendium');
+					console.log('found a user\'s compendium with size '+compendium.insects.length);
 					var insectId = JSON.stringify(req.query.insectId);
+
 					for (var i = 0; i < compendium.insects.length; i++) {
 						console.log('compendium.insects[i]: '+JSON.stringify(compendium.insects[i]) + ' with insectId: '+insectId);
 
 						if (JSON.stringify(compendium.insects[i]) == insectId) {
 							console.log('found insect from compendium');
 							res.send('success');
+							found = true;
 							break;
 						}
 					}
+					if (!found)
+						res.send(null);
+					
 						
 				} else {
 					res.send(null);

@@ -1,9 +1,10 @@
 
 <br>
-<h1>{{translations.SEARCHPAGE}}</h1>
+<h1 class="hcolor">{{translations.SEARCHPAGE}}</h1>
 <!--<h1 ng-if="fromObservationPage!=1">{{translations.SEARCHPAGE}}</h1>
 <h1 ng-if="fromObservationPage==1">{{translations.ADDOBSERVATION}}</h1>-->
 <!--<h2 ng-if="fromObservationPage==1">{{translations.SEARCHPAGE}}</h2>-->
+
 <form ng-submit='search(query)'> 
 	<div class="flex-center">
 	<ul id="flex-table" class="flex-table">
@@ -12,7 +13,7 @@
 	</li>
 	<li>
 
-   <select name="category" ng-model="query.category">
+   <select name="category" ng-model="query.category" ng-change="searchForm()">
    	<option value=""></option> 
 	<option value="Ant">{{translations.ANT}}</option>
      	<option value="Bee">{{translations.BEE}}</option>		        
@@ -24,9 +25,9 @@
    </select>
 </li>
    
-	<li> {{translations.PRIMARYCOLOR}}: (*)</li>
+	<li> {{translations.PRIMARYCOLOR}}:</li>
 	<li>
-   <select name="primaryColor" ng-model="query.primaryColor">
+   <select name="primaryColor" ng-model="query.primaryColor" ng-change="searchForm()">
      <option value=""></option>
      <option value="Black">{{translations.BLACK}}</option>
      <option value="Blue">{{translations.BLUE}}</option>
@@ -45,7 +46,7 @@
    </li>
    <li>{{translations.SECONDARYCOLOR}}:</li>
    <li> 
-   <select name="secondaryColor" ng-model="query.secondaryColor">
+   <select name="secondaryColor" ng-model="query.secondaryColor" ng-change="searchForm()">
      <option value=""></option> 
      <option value="Black">{{translations.BLACK}}</option>
      <option value="Blue">{{translations.BLUE}}</option>
@@ -74,16 +75,19 @@
    
    <li> {{translations.LATINNAME}}: </li>
    <li>
-	<input type="text" name="latinName" ng-model="query.latinName"/>
+	<input type="text" name="latinName" ng-model="query.latinName" ng-change="searchForm()"/>
    </li>
-	
- 
+<input type="hidden" name="clicked" ng-model="query.filterClicked" value={{filterClicked}}/>
 </ul>
 </div>
 
- 	<br>  
-	<br>
+<br>
+<br>
+<table class="button-center">
+<tr><td>
 <input type="submit" id="search" name="search" class="button button1 centered" value="{{translations.SEARCH}}" />
+</td></tr>
+</table>
 </form>
 
 <p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
@@ -91,6 +95,7 @@
 
 		<div ng-switch-when="noResults" id="noResults">		
 			<h2>{{translations.NORESULTS}}	</h2>
+
 		</div>
   		<div ng-switch-when="showResults" id="showResults">
   			<h2>{{translations.RESULTS}}</h2>
@@ -98,9 +103,11 @@
 		<div class="row">	
 			<div class="col-6">
 
-			<ul class="insect-thumbs" id="insect-thumbs">
-		  		<li ng-repeat="insect in pagedInsects[currentPage] | filter: {category: query.category} | filter: {primaryColor: query.primaryColor} | filter: {secondaryColor: query.secondaryColor} | filter:{legs:query.legs}">
-				    	<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="setImage(insect)" alt={{insect.latinName}}/>
+
+		<ul class="insect-thumbs" id="insect-thumbs">									
+		  		<li ng-repeat="insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))" ng-init="($first || $last) && finished()" >
+				    	<img  name="{{insect.images[0]+'_thumb.jpg'}}" ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="setImage(insect)" alt={{insect.latinName}} />
+					
 		  		</li>
 			</ul>
 		
@@ -127,7 +134,7 @@
     		   	</table>
    
 			</div> <!-- end of 1st col -->
-			<div class="col-3">
+			<div id="col-3" class="col-3">
 			    <img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active:	mainImageUrl==img}">																																																											
 			</div> <!-- end of 2nd col -->
   

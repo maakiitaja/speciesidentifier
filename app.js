@@ -11,7 +11,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 //++++
 
-var port     = process.env.PORT || 8080;
+var port     = process.env.PORT || 8000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
@@ -110,6 +110,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
-app.listen(8080,function(){
-    console.log("Working on port 8080");
+app.listen(port,function(){
+    console.log("Working on port "+port);
 });

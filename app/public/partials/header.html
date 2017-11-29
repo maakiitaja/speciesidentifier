@@ -2,41 +2,70 @@
 
 <ul class="nav">
 
-    <li id="search-menu" onmouseover="hover('search-menu')" onmouseout="hoverout('search-menu')">
-	<a ng-click="search()" id="search-header"><img id="search-menu-img" src="images/search-menu.png" width="25px" height="25px" /><div>{{translations.SEARCH}}</div></a>
+   <!--<li id="search-menu" onmouseover="hover('search-menu')" onmouseout="hoverout('search-menu')">-->
+    <li id="search-menu">
+	<div class="item">
+	<a ng-click="search()" id="search-header"><img id="search-menu-img" src="images/search-1.png" width="25px" height="25px" /><div class="menu-description">{{translations.SEARCH}}</div>
+	</a>	
+	</div>
     </li>
    
-    <li id="collection" onmouseover="hover('collection')" onmouseout="hoverout('collection')">
-	<a ng-click="collection()" id="collection-header"><img id="collection-img" src="images/collection.png"  width="25px" height="25px" /><div>{{translations.COLLECTION}}</div></a>
-    </li>
-    <li onmouseover="hover('upload')" onmouseout="hoverout('upload')">
-	<a ng-if="currentUser" ng-click="upload()" id="upload"><img id="upload-img" src="images/upload.png"  width="25px" height="25px" /><div>{{translations.UPLOAD}}</div></a>
+   <!--<li id="collection" onmouseover="hover('collection')" onmouseout="hoverout('collection')">-->
+   <li id="collection">
+	<div class="item">
+		<a ng-click="collection()" id="collection-header"><img id="collection-img" src="images/collection-1.png"  width="25px" height="25px"/><div class="menu-description">{{translations.COLLECTION}}</div>
+		</a>
+	</div>
+   </li>
+
+   <!--<li id="modify" onmouseover="hover('modify')" onmouseout="hoverout('modify')">-->
+   <li id="modify">
+
+	<div class="item">
+   		<a ng-if="currentUser" ng-click="modify(currentUser)" id="modify">
+		<img id="modify-img" src="images/modify-1.png"  width="25px" height="25px" />
+ 		<div class="menu-description">{{translations.MODIFY}}</div>
+       		</a>
+	</div>
+
+   </li>
+
+    <!--<li onmouseover="hover('upload')" onmouseout="hoverout('upload')">-->
+    <li id="upload">
+	<div class="item">
+	<a ng-if="currentUser" ng-click="upload()" id="upload"><img id="upload-img" src="images/upload-1.png"  width="25px" height="25px" /><div class="menu-description">{{translations.UPLOAD}}</div></a>
+	</div>
     </li>
 
-   <li id="modify" onmouseover="hover('modify')" onmouseout="hoverout('modify')">
-<a ng-if="currentUser" ng-click="modify(currentUser)" id="modify"><img id="modify-img" src="images/modify.png"  width="25px" height="25px" /> <div>{{translations.MODIFY}}</div></a>
+    <!--<li id="logout" onmouseover="hover('logout')" onmouseout="hoverout('logout')">-->
+    <li id="logout">
+	<div class="item">
+	<a ng-if="currentUser" href="logout"><div class="menu-description" id="logout_username">{{translations.LOGOUT}}, {{currentUser.username}}</div><img id="logout-img" src="images/logout-1.png"  width="25px" height="25px" /></a>
     </li>
 
-    <li id="logout" onmouseover="hover('logout')" onmouseout="hoverout('logout')">
-	<a ng-if="currentUser" href="logout"><div id="logout_username">{{translations.LOGOUT}}, {{currentUser.username}}</div><img id="logout-img" src="images/logout.png"  width="25px" height="25px" /></a>
-    </li>
-    <li id="login" onmouseover="hover('login')" onmouseout="hoverout('login')">
-	<a ng-if="!currentUser" ng-click="login()"><div>{{translations.LOGIN}}</div><img id="login-img" src="images/login.png" width="25px" height="25px"/></a>
+    <!--<li id="login" onmouseover="hover('login')" onmouseout="hoverout('login')">-->
+    <li id="login">
+	<div class="item">
+	<a ng-if="!currentUser" ng-click="login()"><div  class="menu-description">{{translations.LOGIN}}</div><img id="login-img" src="images/login-1.png" width="25px" height="25px"/></a>
+	</div>
     </li> 
 
     <li id="options">
-	<a id="observationmenu"><img id="options-img" src="images/options.png" width="25px" height="25px"/><div>{{translations.OBSERVATION}}</div></a>
+	<div class="item">
+	<a id="observationmenu"><img id="options-img" src="images/options-3.png" width="25px" height="25px"/><div  class="menu-description">{{translations.OBSERVATION}}</div></a>
 	<ul class="subnav">
  	    <li ng-if="currentUser"><a ng-click="addObservation(currentUser)" id="addobservation-header">{{translations.ADDOBSERVATION}}</a></li>
             <li><a ng-click="browseObservation(currentUser)" id="browseobservation-header">{{translations.BROWSEOBSERVATIONS}}</a></li>
 	</ul>
+	</div>
     </li>
 
     <li id="options">
+	<div class="item">
 	<a ng-if="lang=='en'" onmouseover="mopen('o1')" 
-        onmouseout="mclosetime('options-1')"><img id="options-img" src="images/options.png" width="25px" height="25px"/> 		{{translations.LANGUAGE}}</a>
+        onmouseout="mclosetime('options-1')"><img id="options-img" src="images/options-3.png" width="25px" height="25px"/><div  class="menu-description">{{translations.LANGUAGE}}</div></a>
 	<a ng-if="lang=='fi'" onmouseover="mopen('o2')" 
-        onmouseout="mclosetime('options-2')"><img id="options-img" src="images/options.png" width="25px" height="25px"/> 		{{translations.LANGUAGE}} </a>
+        onmouseout="mclosetime('options-2')"><img id="options-img" src="images/options-3.png" width="25px" height="25px"/><div  class="menu-description">{{translations.LANGUAGE}}</div></a>
 	
 	<ul class="subnav" >
  	    <li><a id="o1"  onmouseover="mcancelclosetime('o1')" 
@@ -44,9 +73,11 @@
             <li><a id="o2"  onmouseover="mcancelclosetime('o2')" 
             onmouseout="close('o2')" ng-if="lang=='fi'" ng-click="setLanguage('en')">En</a></li>
 	</ul>
+	</div>
     </li>
 </ul>
 	 
+<br>
 <br>
 </div>
 

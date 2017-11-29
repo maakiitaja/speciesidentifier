@@ -106,6 +106,7 @@ insectIdentifierApp.factory('SearchService', ['$http', function($http) {
 						imgs.push(data[i].images[0]);  		
 		  			}
 		  			$scope.imgs = imgs;
+					console.log('search service, setting mainimage: '+data[0].images[0]);
 					$scope.mainImageUrl = data[0].images[0];
 		  			
 					// in case coming from observation page

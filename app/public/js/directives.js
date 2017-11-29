@@ -125,6 +125,55 @@ myApp.directive('connectivity', function () {
     }
 });
 
+/*
+
+myApp.directive('searchrepeater',  function($timeout, $rootScope) {
+
+  return {	
+
+	
+	link: function(scope, element, attrs) {
+		console.log('search repeater');
+	    if (scope.$last){
+		console.log('updating scope.');
+		$timeout(function() {
+			$rootScope.$apply(function() {
+				$rootScope.filterupdate = true;
+			});
+
+			
+			scope.$apply(function() {
+				console.log('searchrepeater: filter update');
+          			scope.filterupdate = true;
+        		});
+		});
+		
+	      // iteration is complete, do whatever post-processing
+	      // is necessary
+		console.log('last element');
+		var e = element.find('img');
+
+		console.log('e: '+JSON.stringify(e));
+	
+		var el  =element.find('img')[0];
+		console.log('el: '+JSON.stringify(el));
+
+		var src = element.find('img')[0].src;
+		console.log('src: '+src);
+		var id = element.find('img')[0].name;
+		console.log('name: '+JSON.stringify(name));
+
+		var alt = element.find('img')[0].alt;
+		console.log('id: '+JSON.stringify(alt));
+
+		var src = element.find('img').attr('src');
+		console.log('src: '+src);
+	
+    	    }
+  	}
+    }
+});
+*/
 myApp.directive('englishname', ['$q', function($q) {
   return {
     require: 'ngModel',
