@@ -105,8 +105,8 @@
 
 
 		<ul class="insect-thumbs" id="insect-thumbs">									
-		  		<li ng-repeat="insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))" ng-init="($first || $last) && finished()" >
-				    	<img  name="{{insect.images[0]+'_thumb.jpg'}}" ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="setImage(insect)" alt={{insect.latinName}} />
+		  		<li ng-repeat="_insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))" ng-init="($first || $last) && finished()" >
+				    	<img  name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"  ng-class="{activeThumb: mainImageUrl == _insect.images[0]}" ng-click="setImage(_insect)" alt={{_insect.latinName}} />
 					
 		  		</li>
 			</ul>

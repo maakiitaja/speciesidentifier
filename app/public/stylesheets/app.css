@@ -630,11 +630,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8fc400', end
 	    background: #232323;
 	}
 
-	.subnav li {
-	    float: left;
+	.subnav li	 {
+		float: left;
 	}
 	.subnav li a {
 	    border-bottom: 1px solid #2e2e2e;
+	}
+
+	.activeThumb {
+		border: 10px solid rgb(90, 40, 40);
 	}
 
 	.nav #options:hover .subnav  {
