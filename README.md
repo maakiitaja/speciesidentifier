@@ -4,7 +4,7 @@ Registered users may upload new insects.
 Supports LocalStorage.
   
 ## Installation
-Install mongodb: https://docs.mongodb.com/manual/administration/install-community/
+Install mongodb: https://docs.mongodb.com/manual/administration/install-community/<br/>
 Install graphicsmagick: http://www.graphicsmagick.org/README.html
 
 npm install<br/>
@@ -15,7 +15,7 @@ npm start
 
 http://localhost:3000/#/login
 
-To reset a test database (requires GraphicsMagick to work): http://localhost:3000/populate_db
+To reset a test database (requires GraphicsMagick to work): http://localhost:3000/populate_db (may take several minutes to complete)
 
 ## Suggestions
 
@@ -25,4 +25,5 @@ As you change the language to English, you should see the description
 from Wikipedia.<br/>
 In the collection page, try to use the view offline option. Now you 
 should be able to view the collection page and insect detail page offline
-as the data is loaded from localstorage.  
+as the data is loaded from localstorage. <br/>
+Search for Aglais io. In the detail page you should see three thumb images.
