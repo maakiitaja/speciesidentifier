@@ -9,20 +9,20 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var multer = require("multer");
 var im = require("imagemagick");
-var gm = require('gm');
+var gm = require("gm");
 var path = require("path");
 
 var storage = multer.diskStorage({
-  destination: function(req, file, callback) {
+  destination: function (req, file, callback) {
     console.log("destination: " + __dirname + "/public/images/");
     callback(null, __dirname + "/public/images/");
   },
 
-  filename: function(req, file, callback) {
+  filename: function (req, file, callback) {
     console.log("renaming file.");
     console.log("file name: " + file.originalname);
     callback(null, file.originalname);
-  }
+  },
 });
 var upload = multer({ storage: storage });
 
@@ -58,17 +58,17 @@ var imgPath =
 
 // example schema
 var schema = new Schema({
-  img: { data: Buffer, contentType: String }
+  img: { data: Buffer, contentType: String },
 });
 
 // our model
 var A = mongoose.model("A", schema);
 
 // app/routes.js
-module.exports = function(app, passport) {
-  app.get("/image-test", function(req, res) {
+module.exports = function (app, passport) {
+  app.get("/image-test", function (req, res) {
     // empty the collection
-    A.remove(function(err) {
+    A.remove(function (err) {
       if (err) throw err;
 
       console.error("removed old docs");
@@ -77,11 +77,11 @@ module.exports = function(app, passport) {
       var a = new A();
       a.img.data = fs.readFileSync(imgPath);
       a.img.contentType = "image/png";
-      a.save(function(err, a) {
+      a.save(function (err, a) {
         if (err) throw err;
 
         console.error("saved img to mongo");
-        A.findById(a, function(err, doc) {
+        A.findById(a, function (err, doc) {
           if (err) return next(err);
           res.contentType(doc.img.contentType);
           res.send(doc.img.data);
@@ -90,92 +90,99 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.get("/populate_db", function(req, res) {
+  app.get("/populate_db", function (req, res) {
     console.log("populate_db");
 
     console.log("reading insects json");
     var dburl;
     var insects;
-    fs.readFile(__dirname + "/public/insects/insects.json", "utf8", function(
-      err,
-      data
-    ) {
-      var insects = JSON.parse(data);
-      var i = 0;
-      console.log("insects.length: " + insects.length);
-      var insectLength = insects.length;
-      for (var i = 0; i < insectLength; i++) {
-        console.log(insects[i]);
-        for (var name in insects[i]) {
-          //console.log("Item name: " + name);
-          //console.log("Prop: " + insects[i][name]);
+    fs.readFile(
+      __dirname + "/public/insects/insects.json",
+      "utf8",
+      function (err, data) {
+        var insects = JSON.parse(data);
+        var i = 0;
+        console.log("insects.length: " + insects.length);
+        var insectLength = insects.length;
+        for (var i = 0; i < insectLength; i++) {
+          console.log(insects[i]);
+          for (var name in insects[i]) {
+            //console.log("Item name: " + name);
+            //console.log("Prop: " + insects[i][name]);
+          }
         }
-      }
 
-      // empty the collection
-      Insect.remove(function(err) {
-        if (err) throw err;
-        for (var i = 0; i < insects.length; i++) {
-          var insect = insects[i];
+        // empty the collection
+        Insect.remove(function (err) {
+          if (err) throw err;
+          for (var i = 0; i < insects.length; i++) {
+            var insect = insects[i];
 
-          var newInsect = new Insect();
+            var newInsect = new Insect();
 
-          newInsect.translations = [];
-          console.log("writing translations");
-          for (var j = 0; j < insect["names"].length; j++) {
-            newInsect.translations.push({
-              language: insect["names"][j].language,
-              name: insect["names"][j].name
-            });
-          }
-          console.log("newinsect translations: " + newInsect.translations);
-          newInsect.userId = "1"; // default
-          newInsect.latinName = insect["LatinName"];
-          newInsect.legs = insect["Legs"];
-          newInsect.territory = insect["Territory"];
-          newInsect.primaryColor = insect["PrimaryColor"];
-          newInsect.secondaryColor = insect["SecondaryColor"];
-          newInsect.wiki = insect["Wiki"];
-          newInsect.images = [];
-          var imagesTmp = insect["Images"].split(",");
-
-          for (var ind in imagesTmp) {
-            //console.log("image name: " + imagesTmp[ind]);
-            if (path.sep === "\\") {
-              console.log("path seperator is \\");
-              //var index = imagesTmp[ind].indexOf('/');
-              //console.log('index: '+index);
-              var str = imagesTmp[ind];
-              //console.log('str[index]'+str[index]);
-              //str[index] = "\\";
-              str = str.split("/").join("\\");
-              //console.log("str: " + str);
-              imagesTmp[ind] = str;
-              //console.log("image: " + imagesTmp[ind]);
+            newInsect.translations = [];
+            console.log("writing translations");
+            for (var j = 0; j < insect["names"].length; j++) {
+              newInsect.translations.push({
+                language: insect["names"][j].language,
+                name: insect["names"][j].name,
+              });
             }
-            newInsect.images.push(imagesTmp[ind]);
-          }
-          console.log("newInsect.images: " + newInsect.images);
+            console.log("newinsect translations: " + newInsect.translations);
+            newInsect.userId = "1"; // default
+            newInsect.latinName = insect["LatinName"];
+            newInsect.legs = insect["Legs"];
+            newInsect.territory = insect["Territory"];
+            newInsect.primaryColor = insect["PrimaryColor"];
+            newInsect.secondaryColor = insect["SecondaryColor"];
+            newInsect.wiki = insect["Wiki"];
+            newInsect.images = [];
+            var imagesTmp = insect["Images"].split(",");
 
-          newInsect.category = insect["Category"];
+            for (var ind in imagesTmp) {
+              //console.log("image name: " + imagesTmp[ind]);
+              if (path.sep === "\\") {
+                console.log("path seperator is \\");
+                //var index = imagesTmp[ind].indexOf('/');
+                //console.log('index: '+index);
+                var str = imagesTmp[ind];
+                //console.log('str[index]'+str[index]);
+                //str[index] = "\\";
+                str = str.split("/").join("\\");
+                //console.log("str: " + str);
+                imagesTmp[ind] = str;
+                //console.log("image: " + imagesTmp[ind]);
+              }
+              newInsect.images.push(imagesTmp[ind]);
+            }
+            console.log("newInsect.images: " + newInsect.images);
 
-          //thumb picture
-          for (var ind in imagesTmp) {
-            console.log("ind: " + ind);
-            console.log("image name: " + newInsect.images[ind]);
-            //console.log("dirname: " + __dirname);
-            var srcPath = 
-              __dirname +
-              path.sep +
-              "public" +
-              path.sep +
-			  newInsect.images[ind];
-			console.log('srcpath: '+srcPath);
-			gm(srcPath).resize(150,150).write(srcPath+'_thumb.jpg', function(err) {
-				if (err) console.log(err);
-				else
-					console.log("resized file: " + __dirname + "/public/" + insect["Images"][ind]);
-			});
+            newInsect.category = insect["Category"];
+
+            //thumb picture
+            // for (var ind in imagesTmp) {
+            //   console.log("ind: " + ind);
+            //   console.log("image name: " + newInsect.images[ind]);
+            //   //console.log("dirname: " + __dirname);
+            //   var srcPath =
+            //     __dirname +
+            //     path.sep +
+            //     "public" +
+            //     path.sep +
+            //     newInsect.images[ind];
+            //   console.log("srcpath: " + srcPath);
+            //   gm(srcPath)
+            //     .resize(150, 150)
+            //     .write(srcPath + "_thumb.jpg", function (err) {
+            //       if (err) console.log(err);
+            //       else
+            //         console.log(
+            //           "resized file: " +
+            //             __dirname +
+            //             "/public/" +
+            //             insect["Images"][ind]
+            //         );
+            //     });
             /*im.resize(
               {
                 srcPath:
@@ -193,22 +200,23 @@ module.exports = function(app, passport) {
                 );
               }
             );*/
+            //}
+
+            //console.log("newInsect: " + newInsect);
+            newInsect.save(function (err) {
+              if (err) throw err;
+              console.log("Insect saved");
+              console.log(JSON.parse(JSON.stringify(newInsect)));
+            });
           }
+        });
 
-          //console.log("newInsect: " + newInsect);
-          newInsect.save(function(err) {
-            if (err) throw err;
-            console.log("Insect saved");
-            console.log(JSON.parse(JSON.stringify(newInsect)));
-          });
-        }
-      });
-
-      res.redirect("/#/main");
-    });
+        res.redirect("/#/main");
+      }
+    );
   });
 
-  app.get("/insect/search", function(req, res) {
+  app.get("/insect/search", function (req, res) {
     var primaryColor = req.query.primaryColor;
     var secondaryColor = req.query.secondaryColor;
     var category = req.query.category;
@@ -242,7 +250,7 @@ module.exports = function(app, passport) {
 
     console.log("searching");
 
-    query.exec(function(err, insects) {
+    query.exec(function (err, insects) {
       if (err) throw err;
       console.log(insects);
       console.log(JSON.stringify(insects));
@@ -250,8 +258,8 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.get("/insect/list", function(req, res) {
-    Insect.find({}, function(err, insects) {
+  app.get("/insect/list", function (req, res) {
+    Insect.find({}, function (err, insects) {
       if (err) {
         console.log(err);
       }
@@ -261,9 +269,9 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.get("/collection/list", function(req, res) {
+  app.get("/collection/list", function (req, res) {
     if (req.isAuthenticated()) {
-      Compendium.findOne({ _user: req.user.id }, function(err, compendium) {
+      Compendium.findOne({ _user: req.user.id }, function (err, compendium) {
         if (err) {
           console.log(err);
         }
@@ -282,7 +290,7 @@ module.exports = function(app, passport) {
             .where("_id")
             .in(ids)
             .sort("category")
-            .exec(function(err, results) {
+            .exec(function (err, results) {
               if (err) throw err;
               console.log("results: " + results);
               res.send(results);
@@ -292,16 +300,15 @@ module.exports = function(app, passport) {
     }
   });
 
-  app.get("/collection/remove", function(req, res) {
+  app.get("/collection/remove", function (req, res) {
     if (req.isAuthenticated()) {
       console.log("searching user's compendium");
-      Compendium.findOne({ _user: req.user.id }, function(err, compendium) {
-        console.log('compendium: '+compendium);
+      Compendium.findOne({ _user: req.user.id }, function (err, compendium) {
+        console.log("compendium: " + compendium);
         if (compendium == null) {
-          console.log('send fail');
+          console.log("send fail");
           return res.send("fail");
-          
-        } 
+        }
         console.log("found insects in compendium: " + compendium.insects);
         var success = false;
         var insectId = JSON.stringify(req.query._id);
@@ -319,7 +326,7 @@ module.exports = function(app, passport) {
           }
         }
         if (success) {
-          compendium.save(function(err) {
+          compendium.save(function (err) {
             console.log("compendium:" + compendium);
             console.log("saved compendium. ");
             res.send("success");
@@ -333,34 +340,35 @@ module.exports = function(app, passport) {
   });
 
   /* Upload insect */
-  app.post("/insect/populate", upload.array("userPhotos", 100), function(
-    req,
-    res
-  ) {
-    // thumb picture
-    for (var i = 0; i < req.files.length; i++) {
-      var file = req.files[i];
-      console.log("destination: " + file.destination + file.filename);
-      im.resize(
-        {
-          srcPath: file.destination + file.filename,
-          dstPath: file.destination + file.filename + "_thumb.jpg",
-          width: 100,
-          height: 100
-        },
-        function(err, stdout, stderr) {
-          if (err) throw err;
-          console.log("resized file: " + file.filename);
-        }
-      );
+  app.post(
+    "/insect/populate",
+    upload.array("userPhotos", 100),
+    function (req, res) {
+      // thumb picture
+      for (var i = 0; i < req.files.length; i++) {
+        var file = req.files[i];
+        console.log("destination: " + file.destination + file.filename);
+        im.resize(
+          {
+            srcPath: file.destination + file.filename,
+            dstPath: file.destination + file.filename + "_thumb.jpg",
+            width: 100,
+            height: 100,
+          },
+          function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log("resized file: " + file.filename);
+          }
+        );
+      }
+      res.redirect("#/main");
     }
-    res.redirect("#/main");
-  });
+  );
 
   /* Load user's uploaded insects */
-  app.get("/uploadList", function(req, res) {
+  app.get("/uploadList", function (req, res) {
     console.log("userId: " + req.query.userId);
-    Insect.find({ userId: req.query.userId }).exec(function(err, insects) {
+    Insect.find({ userId: req.query.userId }).exec(function (err, insects) {
       if (err) {
         console.log(err);
       }
@@ -371,8 +379,8 @@ module.exports = function(app, passport) {
   });
 
   /* Load an insect */
-  app.get("/insect/load", function(req, res) {
-    Insect.find({ userId: req.query.userId }).exec(function(err, results) {
+  app.get("/insect/load", function (req, res) {
+    Insect.find({ userId: req.query.userId }).exec(function (err, results) {
       if (err) throw err;
       console.log("results: " + results);
       insect = results;
@@ -381,72 +389,78 @@ module.exports = function(app, passport) {
   });
 
   /* Upload or modify insect */
-  app.post("/insect/insert", upload.array("userPhotos", 10), function(
-    req,
-    res
-  ) {
-    console.log("uploading or modifying insect");
-    console.log("isupload: " + req.body.isUpload);
-    console.log("insectId: " + req.body.insectId);
-    console.log("userId:" + req.user.id);
+  app.post(
+    "/insect/insert",
+    upload.array("userPhotos", 10),
+    function (req, res) {
+      console.log("uploading or modifying insect");
+      console.log("isupload: " + req.body.isUpload);
+      console.log("insectId: " + req.body.insectId);
+      console.log("userId:" + req.user.id);
 
-    var isUpload = req.body.isUpload;
-    var handleUpload = function(req, res, insect) {
-      if (req.files.length > 1) {
-        console.log("image2: " + req.files[1]);
-      }
+      var isUpload = req.body.isUpload;
+      var handleUpload = function (req, res, insect) {
+        if (req.files.length > 1) {
+          console.log("image2: " + req.files[1]);
+        }
 
-      console.log("wiki: " + req.body.wiki);
-      insect.latinName = req.body.latinName;
-      insect.legs = req.body.legs;
-      insect.primaryColor = req.body.primaryColor;
-      insect.secondaryColor = req.body.secondaryColor;
-      insect.wiki = req.body.wiki;
-      insect.category = req.body.category;
-      insect.userId = req.user.id;
-      console.log("insect.translations: " + insect.translations);
+        console.log("wiki: " + req.body.wiki);
+        insect.latinName = req.body.latinName;
+        insect.legs = req.body.legs;
+        insect.primaryColor = req.body.primaryColor;
+        insect.secondaryColor = req.body.secondaryColor;
+        insect.wiki = req.body.wiki;
+        insect.category = req.body.category;
+        insect.userId = req.user.id;
+        console.log("insect.translations: " + insect.translations);
 
-      if (isUpload) {
-        console.log("adding new translations");
-        console.log(insect);
-        insect.translations = [];
-        insect.translations.push({ language: "en", name: req.body.enName });
-        insect.translations.push({ language: "fi", name: req.body.fiName });
-      } else {
-        console.log("updating names.");
+        if (isUpload) {
+          console.log("adding new translations");
+          console.log(insect);
+          insect.translations = [];
+          insect.translations.push({ language: "en", name: req.body.enName });
+          insect.translations.push({ language: "fi", name: req.body.fiName });
+        } else {
+          console.log("updating names.");
+          console.log("insect.translations[0]: " + insect.translations[0]);
+          console.log(
+            "insect.translations[0].name: " + insect.translations[0].name
+          );
+          insect.translations[0].name = req.body.enName;
+          insect.translations[1].name = req.body.fiName;
+        }
+        console.log("insect.translations: " + insect.translations);
         console.log("insect.translations[0]: " + insect.translations[0]);
         console.log(
           "insect.translations[0].name: " + insect.translations[0].name
         );
-        insect.translations[0].name = req.body.enName;
-        insect.translations[1].name = req.body.fiName;
-      }
-      console.log("insect.translations: " + insect.translations);
-      console.log("insect.translations[0]: " + insect.translations[0]);
-      console.log(
-        "insect.translations[0].name: " + insect.translations[0].name
-      );
 
-      console.log("read body variables.");
+        console.log("read body variables.");
 
-      if (req.body.imageLinks) {
-        console.log("imagelinks: " + req.body.imageLinks);
-        var imageUrls = req.body.imageLinks.split(",");
+        if (req.body.imageLinks) {
+          console.log("imagelinks: " + req.body.imageLinks);
+          var imageUrls = req.body.imageLinks.split(",");
 
-        for (var ind in imageUrls) insect.images.push(imageUrls[ind]);
-      }
-      console.log("creating thumb picture");
-      // thumb picture
-      for (var i = 0; i < req.files.length; i++) {
-        var file = req.files[i];
-		console.log("destination: " + file.destination + file.filename);
-		gm(file.destination+file.filename).resize(150,150).write(
-			file.destination+file.filename+'_thumb.jpg', function(err) {
-				if (err) console.log(err);
-				else
-					console.log('resized file: '+file.destination+file.filename);
-			});
-        /*im.resize(
+          for (var ind in imageUrls) insect.images.push(imageUrls[ind]);
+        }
+        console.log("creating thumb picture");
+        // thumb picture
+        for (var i = 0; i < req.files.length; i++) {
+          var file = req.files[i];
+          console.log("destination: " + file.destination + file.filename);
+          gm(file.destination + file.filename)
+            .resize(150, 150)
+            .write(
+              file.destination + file.filename + "_thumb.jpg",
+              function (err) {
+                if (err) console.log(err);
+                else
+                  console.log(
+                    "resized file: " + file.destination + file.filename
+                  );
+              }
+            );
+          /*im.resize(
           {
             srcPath: file.destination + file.filename,
             dstPath: file.destination + file.filename + "_thumb.jpg",
@@ -458,105 +472,106 @@ module.exports = function(app, passport) {
             console.log("resized file: " + file.filename);
           }
         );*/
-      }
+        }
 
-      if (isUpload == "1") {
-        console.log("saving insect");
-        insect.save(function(err) {
+        if (isUpload == "1") {
+          console.log("saving insect");
+          insect.save(function (err) {
+            if (err) throw err;
+            console.log("Insect saved");
+            console.log("insect: " + insect);
+            res.redirect("/#/main");
+          });
+        } else {
+          console.log("updating insect");
+          var update = {
+            wiki: insect.wiki,
+            category: insect.category,
+            primaryColor: insect.primaryColor,
+            secondaryColor: insect.secondaryColor,
+            legs: insect.legs,
+            images: insect.images,
+            latinName: insect.latinName,
+            imageLinks: insect.imageLinks,
+            translations: insect.translations,
+          };
+          var conditions = { _id: insect._id };
+          var options = { multi: true };
+          var callback = function callback(err, numAffected) {
+            // numAffected is the number of updated documents
+            if (err) throw err;
+            console.log("insect updated");
+            res.redirect("/#/main");
+          };
+
+          Insect.update(conditions, update, options, callback);
+        }
+      };
+
+      if (isUpload == "0") {
+        console.log("modifying insect");
+        /* Modify */
+        Insect.find({ _id: req.body.insectId }).exec(function (err, results) {
           if (err) throw err;
-          console.log("Insect saved");
-          console.log("insect: " + insect);
-          res.redirect("/#/main");
+          var insect = results[0];
+
+          console.log(insect);
+
+          console.log("removing selected images");
+          /* Remove selected images */
+
+          console.log("insect.images:" + insect.images);
+          var removedPhotoInd = 0;
+          console.log("images.length: " + insect.images.length);
+          var imagesLength = insect.images.length;
+          for (var i = 0; i < imagesLength; i++) {
+            var ind = i - removedPhotoInd;
+            var photo = insect.images[ind];
+            console.log("photo: " + photo);
+            console.log("photo in body: " + req.body[photo]);
+
+            if (req.body[photo]) {
+              console.log("removing photo: " + photo);
+
+              insect.images.splice(ind, 1);
+              removedPhotoInd++;
+              console.log("insect's images: " + insect.images);
+            }
+          }
+
+          console.log("adding new images ");
+          // add possible new images
+          for (var i = 0; i < req.files.length; i++) {
+            console.log("req.files: " + req.files[i].originalname);
+            /* check duplicates */
+            var isDuplicate = false;
+            for (var j = 0; j < insect.images.length; j++) {
+              if (insect.images[j] == req.files[i].originalname)
+                isDuplicate = true;
+            }
+            if (!isDuplicate)
+              insect.images.push("images/" + req.files[i].originalname);
+            else console.log("found duplicate: " + req.files[i].originalname);
+          }
+          handleUpload(req, res, insect);
         });
       } else {
-        console.log("updating insect");
-        var update = {
-          wiki: insect.wiki,
-          category: insect.category,
-          primaryColor: insect.primaryColor,
-          secondaryColor: insect.secondaryColor,
-          legs: insect.legs,
-          images: insect.images,
-          latinName: insect.latinName,
-          imageLinks: insect.imageLinks,
-          translations: insect.translations
-        };
-        var conditions = { _id: insect._id };
-        var options = { multi: true };
-        var callback = function callback(err, numAffected) {
-          // numAffected is the number of updated documents
-          if (err) throw err;
-          console.log("insect updated");
-          res.redirect("/#/main");
-        };
-
-        Insect.update(conditions, update, options, callback);
-      }
-    };
-
-    if (isUpload == "0") {
-      console.log("modifying insect");
-      /* Modify */
-      Insect.find({ _id: req.body.insectId }).exec(function(err, results) {
-        if (err) throw err;
-        var insect = results[0];
-
-        console.log(insect);
-
-        console.log("removing selected images");
-        /* Remove selected images */
-
-        console.log("insect.images:" + insect.images);
-        var removedPhotoInd = 0;
-        console.log("images.length: " + insect.images.length);
-        var imagesLength = insect.images.length;
-        for (var i = 0; i < imagesLength; i++) {
-          var ind = i - removedPhotoInd;
-          var photo = insect.images[ind];
-          console.log("photo: " + photo);
-          console.log("photo in body: " + req.body[photo]);
-
-          if (req.body[photo]) {
-            console.log("removing photo: " + photo);
-
-            insect.images.splice(ind, 1);
-            removedPhotoInd++;
-            console.log("insect's images: " + insect.images);
-          }
-        }
-
-        console.log("adding new images ");
-        // add possible new images
-        for (var i = 0; i < req.files.length; i++) {
-          console.log("req.files: " + req.files[i].originalname);
-          /* check duplicates */
-          var isDuplicate = false;
-          for (var j = 0; j < insect.images.length; j++) {
-            if (insect.images[j] == req.files[i].originalname)
-              isDuplicate = true;
-          }
-          if (!isDuplicate)
-            insect.images.push("images/" + req.files[i].originalname);
-          else console.log("found duplicate: " + req.files[i].originalname);
+        console.log("uploading insect");
+        var insect = new Insect();
+        insect.images = [];
+        for (var ind in req.files) {
+          console.log("file ind: " + ind);
+          console.log(
+            "req.files[ind].originalname" + req.files[ind].originalname
+          );
+          insect.images.push("images/" + req.files[ind].originalname);
         }
         handleUpload(req, res, insect);
-      });
-    } else {
-      console.log("uploading insect");
-      var insect = new Insect();
-      insect.images = [];
-      for (var ind in req.files) {
-        console.log("file ind: " + ind);
-        console.log(
-          "req.files[ind].originalname" + req.files[ind].originalname
-        );
-        insect.images.push("images/" + req.files[ind].originalname);
       }
-      handleUpload(req, res, insect);
     }
-  });
+  );
 
-  app.get("/observationplace/list", function(req, res) {
+  app.get("/observationplace/list", function (req, res) {
     console.log("observation list");
     console.log("req.user.id: " + req.user.id);
     /*
@@ -568,7 +583,7 @@ module.exports = function(app, passport) {
 		res.send(observation);
 	});*/
 
-    Observation.find({ user: req.user.id }, function(err, observations) {
+    Observation.find({ user: req.user.id }, function (err, observations) {
       if (err) throw err;
       console.log("finished searching user's observation places");
 
@@ -579,10 +594,10 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post("/observation/add", function(req, res) {
+  app.post("/observation/add", function (req, res) {
     console.log("observation add");
 
-    var saveObservation = function(observationDetail, observation, res) {
+    var saveObservation = function (observationDetail, observation, res) {
       if (observation == null) {
         console.log(
           "searching existing observation place with id: " +
@@ -591,7 +606,7 @@ module.exports = function(app, passport) {
         Observation.find()
           .where("_id")
           .equals(req.query.observationPlaceId)
-          .exec(function(err, observation) {
+          .exec(function (err, observation) {
             if (err) throw err;
             console.log("found existing observation place");
             console.log("observation: " + observation);
@@ -605,16 +620,16 @@ module.exports = function(app, passport) {
       } else saveObservationDetail(observationDetail, observation, res);
     };
 
-    var saveObservationDetail = function(observationDetail, observation, res) {
+    var saveObservationDetail = function (observationDetail, observation, res) {
       console.log("saving observation detail: " + observationDetail);
 
-      observationDetail.save(function(err, item) {
+      observationDetail.save(function (err, item) {
         if (err) throw err;
         console.log("saved observation detail");
         observation.detail.push(item.id);
         console.log("observation.country: " + observation.country);
         console.log("saving observation: " + observation);
-        observation.save(function(err) {
+        observation.save(function (err) {
           console.log("observation saved");
           res.send("success");
         });
@@ -672,7 +687,7 @@ module.exports = function(app, passport) {
         console.log("searching insect by latin name");
         console.log("req.query.latinName: " + req.query.latinName);
         if (req.query.latinName != null && req.query.latinName != "") {
-          Insect.findOne({ latinName: req.query.latinName }).exec(function(
+          Insect.findOne({ latinName: req.query.latinName }).exec(function (
             err,
             insect
           ) {
@@ -687,10 +702,10 @@ module.exports = function(app, passport) {
     }
   });
 
-  app.get("/observation/browse", function(req, res) {
+  app.get("/observation/browse", function (req, res) {
     console.log("observation browse");
 
-    var performQuery = function(query, observations, req, res, insectId) {
+    var performQuery = function (query, observations, req, res, insectId) {
       if (insectId) {
         console.log("search narrowed by insectid");
         query.where("insect").equals(insectId);
@@ -729,7 +744,7 @@ module.exports = function(app, passport) {
       query.sort("date");
 
       console.log("starting to search observations");
-      query.exec(function(err, observationDetails) {
+      query.exec(function (err, observationDetails) {
         if (err) throw err;
         console.log("search finished");
         console.log("observation details: " + observationDetails);
@@ -750,7 +765,7 @@ module.exports = function(app, passport) {
         Insect.find()
           .where("_id")
           .in(finalInsectIds)
-          .exec(function(err, insects) {
+          .exec(function (err, insects) {
             console.log(
               "found insects for the observation details: " + insects
             );
@@ -785,7 +800,7 @@ module.exports = function(app, passport) {
                         insect: observationDetails[i].insect,
                         latinName: insects[j].latinName,
                         count: observationDetails[i].count,
-                        date: observationDetails[i].date
+                        date: observationDetails[i].date,
                       });
                     }
                   }
@@ -800,7 +815,7 @@ module.exports = function(app, passport) {
                       insect: observationDetails[i].insect,
                       latinName: insects[j].latinName,
                       count: observationDetails[i].count,
-                      date: observationDetails[i].date
+                      date: observationDetails[i].date,
                     });
                   }
                 }
@@ -915,7 +930,7 @@ module.exports = function(app, passport) {
     // search has been narrowed by location
     if (country || location || place) {
       console.log("Searching for observations...");
-      query.exec(function(err, observations) {
+      query.exec(function (err, observations) {
         if (err) throw err;
         console.log("finished searching observations.");
         console.log(observations);
@@ -943,7 +958,7 @@ module.exports = function(app, passport) {
               console.log("searching by translation name");
               query.where("translations.name").equals(name);
             }
-            query.exec(function(err, insects) {
+            query.exec(function (err, insects) {
               if (err) throw err;
               console.log("results: " + insects);
               if (insects)
@@ -974,11 +989,11 @@ module.exports = function(app, passport) {
     }
   });
 
-  app.get("/collection/insert", function(req, res) {
+  app.get("/collection/insert", function (req, res) {
     console.log("searching user by email");
     console.log("user: " + req.user);
-    console.log("user's email: " + req.user.local.email);
-    User.findOne({ "local.email": req.user.local.email }, function(err, user) {
+    console.log("user's email: " + req.user.email);
+    User.findOne({ email: req.user.email }, function (err, user) {
       console.log("found user's email");
       if (err) {
         console.log(err);
@@ -987,13 +1002,13 @@ module.exports = function(app, passport) {
       console.log("user: " + req.user.id);
 
       console.log("insectId: " + req.query.insectId);
-      Compendium.findOne({ _user: req.user.id }, function(err, compendium) {
+      Compendium.findOne({ _user: req.user.id }, function (err, compendium) {
         console.log("found a user's compendium");
         if (compendium) {
           console.log("updating a collection");
           compendium.insects.push(req.query.insectId);
           console.log("updated compendium: " + compendium);
-          compendium.save(function(err) {
+          compendium.save(function (err) {
             if (err) throw err;
             console.log("updated compendium item");
           });
@@ -1007,7 +1022,7 @@ module.exports = function(app, passport) {
           //newCompendium.insects.push(req.params.insectId);
           //newCompendium._user=req.user.id;
           console.log("newCompendium: " + newCompendium);
-          newCompendium.save(function(err) {
+          newCompendium.save(function (err) {
             if (err) throw err;
             console.log("saved compendium item");
           });
@@ -1024,7 +1039,7 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.get("/currentUser", function(req, res) {
+  app.get("/currentUser", function (req, res) {
     if (req.isAuthenticated()) {
       var _user = {};
       _user = req.user;
@@ -1033,65 +1048,69 @@ module.exports = function(app, passport) {
     } else res.send(null);
   });
 
-  app.get("/collection/searchItem", function(req, res) {
+  app.get("/collection/searchItem", function (req, res) {
     console.log("searching item in collection");
     console.log("req.user: " + req.user);
     if (!req.isAuthenticated()) {
       res.send(null);
     } else {
-      User.findOne({ "local.email": req.user.local.email }, function(
-        err,
-        user
-      ) {
-        console.log("found user's email");
-        if (err) {
-          console.log(err);
-        }
+      User.findOne(
+        { "local.email": req.user.local.email },
+        function (err, user) {
+          console.log("found user's email");
+          if (err) {
+            console.log(err);
+          }
 
-        // find the user's collection
-        console.log("user: " + req.user.id);
+          // find the user's collection
+          console.log("user: " + req.user.id);
 
-        console.log("insectId: " + req.query.insectId);
-        var found = false;
-        Compendium.findOne({ _user: req.user.id }, function(err, compendium) {
-          if (compendium) {
-            console.log(
-              "found a user's compendium with size " + compendium.insects.length
-            );
-            var insectId = JSON.stringify(req.query.insectId);
+          console.log("insectId: " + req.query.insectId);
+          var found = false;
+          Compendium.findOne(
+            { _user: req.user.id },
+            function (err, compendium) {
+              if (compendium) {
+                console.log(
+                  "found a user's compendium with size " +
+                    compendium.insects.length
+                );
+                var insectId = JSON.stringify(req.query.insectId);
 
-            for (var i = 0; i < compendium.insects.length; i++) {
-              console.log(
-                "compendium.insects[i]: " +
-                  JSON.stringify(compendium.insects[i]) +
-                  " with insectId: " +
-                  insectId
-              );
+                for (var i = 0; i < compendium.insects.length; i++) {
+                  console.log(
+                    "compendium.insects[i]: " +
+                      JSON.stringify(compendium.insects[i]) +
+                      " with insectId: " +
+                      insectId
+                  );
 
-              if (JSON.stringify(compendium.insects[i]) == insectId) {
-                console.log("found insect from compendium");
-                res.send("success");
-                found = true;
-                break;
+                  if (JSON.stringify(compendium.insects[i]) == insectId) {
+                    console.log("found insect from compendium");
+                    res.send("success");
+                    found = true;
+                    break;
+                  }
+                }
+                if (!found) res.send(null);
+              } else {
+                res.send(null);
               }
             }
-            if (!found) res.send(null);
-          } else {
-            res.send(null);
-          }
-        });
-      });
+          );
+        }
+      );
     }
   });
 
   // =====================================
   // HOME PAGE (with login links) ========
   // =====================================
-  app.get("/", function(req, res) {
+  app.get("/", function (req, res) {
     res.sendFile("index.html");
   });
   // a full list of insects
-  app.get("/user/list", function(req, res) {
+  app.get("/user/list", function (req, res) {
     // get all the insects
 
     var email = "mauri.f@suomi.fi";
@@ -1100,14 +1119,14 @@ module.exports = function(app, passport) {
     var insectCollection = new Insect();
     console.log("after database record creation");
 
-    Insect.find({}, function(err, insects) {
+    Insect.find({}, function (err, insects) {
       if (err) {
         console.log(err);
       }
 
       console.log("found insects: " + insects);
     });
-    User.findOne({ "local.email": email }, function(err, user) {
+    User.findOne({ "local.email": email }, function (err, user) {
       //user.find({}, function(err, insects) {
       if (err) {
         console.log(err);
@@ -1135,7 +1154,7 @@ module.exports = function(app, passport) {
     passport.authenticate("login", {
       successRedirect: "/#/main", // redirect to the secure profile section
       failureRedirect: "/#/login-failure", // redirect back to the signup page if there is an error
-      failureFlash: true // allow flash messages
+      failureFlash: true, // allow flash messages
     })
   ); // // // process the signup form
 
@@ -1156,7 +1175,7 @@ module.exports = function(app, passport) {
     passport.authenticate("signup", {
       successRedirect: "/#/main", // redirect to the secure profile section
       failureRedirect: "/#/signup-failure", // redirect back to the signup page if there is an error
-      failureFlash: true // allow flash messages
+      failureFlash: true, // allow flash messages
     })
   );
 
@@ -1168,16 +1187,16 @@ module.exports = function(app, passport) {
   // =====================================
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
-  app.get("/profile", isLoggedIn, function(req, res) {
+  app.get("/profile", isLoggedIn, function (req, res) {
     res.render("profile.ejs", {
-      user: req.user // get the user out of session and pass to template
+      user: req.user, // get the user out of session and pass to template
     }); //
   }); //
 
   // =====================================
   // LOGOUT ==============================
   // =====================================
-  app.get("/logout", function(req, res) {
+  app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/#/login");
   });

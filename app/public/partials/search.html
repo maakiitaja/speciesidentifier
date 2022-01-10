@@ -1,394 +1,446 @@
-
 <br>
-<h1 class="hcolor">{{translations.SEARCHPAGE}}</h1>
-<!--<h1 ng-if="fromObservationPage!=1">{{translations.SEARCHPAGE}}</h1>
-<h1 ng-if="fromObservationPage==1">{{translations.ADDOBSERVATION}}</h1>-->
-<!--<h2 ng-if="fromObservationPage==1">{{translations.SEARCHPAGE}}</h2>-->
+<h2 style="margin-bottom: 20px" ng-if="fromObservationPage == 1">1. {{translations.SEARCHPAGE}}</h2>
+<h1 ng-if="fromObservationPage != 1">{{translations.SEARCHPAGE}}</h1>
 
-<form ng-submit='search(query)'> 
+<form ng-submit='search(query)'>
 	<div class="flex-center">
-	<ul id="flex-table" class="flex-table">
-	<li>
-	{{translations.CATEGORY}}:
-	</li>
-	<li>
+		<ul id="flex-table" class="flex-table">
+			<li>
+				{{translations.CATEGORY}}:
+			</li>
+			<li>
 
-   <select name="category" ng-model="query.category" ng-change="searchForm()">
-   	<option value=""></option> 
-	<option value="Ant">{{translations.ANT}}</option>
-     	<option value="Bee">{{translations.BEE}}</option>		        
-     	<option value="Beetle">{{translations.BEETLE}}</option>
-     	<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-     	<option value="Caterpillar">{{translations.CATERPILLAR}}</option>        
-   	<option value="Spider">{{translations.SPIDER}}</option>
-      
-   </select>
-</li>
-   
-	<li> {{translations.PRIMARYCOLOR}}:</li>
-	<li>
-   <select name="primaryColor" ng-model="query.primaryColor" ng-change="searchForm()">
-     <option value=""></option>
-     <option value="Black">{{translations.BLACK}}</option>
-     <option value="Blue">{{translations.BLUE}}</option>
-     <option value="Brown">{{translations.BROWN}}</option>
-     <option value="Golden">{{translations.GOLDEN}}</option>
-     <option value="Green">{{translations.GREEN}}</option>
-     <option value="Grey">{{translations.GREY}}</option>
-     <option value="Orange">{{translations.ORANGE}}</option>
-     <option value="Red">{{translations.RED}}</option>
-     <option value="Silver">{{translations.SILVER}}</option>
-     <option value="Turquoise">{{translations.TURQUOISE}}</option>
-     <option value="White">{{translations.WHITE}}</option>
-     <option value="Violet">{{translations.VIOLET}}</option>
-     <option value="Yellow">{{translations.YELLOW}}</option>
-   </select>
-   </li>
-   <li>{{translations.SECONDARYCOLOR}}:</li>
-   <li> 
-   <select name="secondaryColor" ng-model="query.secondaryColor" ng-change="searchForm()">
-     <option value=""></option> 
-     <option value="Black">{{translations.BLACK}}</option>
-     <option value="Blue">{{translations.BLUE}}</option>
-     <option value="Brown">{{translations.BROWN}}</option>
-     <option value="Golden">{{translations.GOLDEN}}</option>
-     <option value="Green">{{translations.GREEN}}</option>
-     <option value="Grey">{{translations.GREY}}</option>
-     <option value="Orange">{{translations.ORANGE}}</option>
-     <option value="Red">{{translations.RED}}</option>
-     <option value="Silver">{{translations.SILVER}}</option>
-     <option value="Turquoise">{{translations.TURQUOISE}}</option>
-     <option value="Violet">{{translations.VIOLET}}</option>
-     <option value="White">{{translations.WHITE}}</option>
-     <option value="Yellow">{{translations.YELLOW}}</option>
-      </select>
-	</li>
-	<li> {{translations.NUMBEROFLEGS}}:</li>
-	<li> 
-   <select name="legs" ng-model="query.legs">
-     <option value=""></option> 
-     <option value="4">4</option>
-     <option value="6">6</option>
-     <option value="8">8</option>
-   </select>   
-	</li>
-   
-   <li> {{translations.LATINNAME}}: </li>
-   <li>
-	<input type="text" name="latinName" ng-model="query.latinName" ng-change="searchForm()"/>
-   </li>
-<input type="hidden" name="clicked" ng-model="query.filterClicked" value={{filterClicked}}/>
-</ul>
-</div>
+				<select class="form-control-own" name="category" ng-model="query.category" ng-change="searchForm()"
+					required>
+					<option value=""></option>
+					<option value="Ant">{{translations.ANT}}</option>
+					<option value="Bee">{{translations.BEE}}</option>
+					<option value="Beetle">{{translations.BEETLE}}</option>
+					<option value="Butterfly">{{translations.BUTTERFLY}}</option>
+					<option value="Centipede">{{translations.CENTIPEDE}}</option>
+					<option value="Spider">{{translations.SPIDER}}</option>
 
-<br>
-<br>
-<table class="button-center">
-<tr><td>
-<input type="submit" id="search" name="search" class="button button1 centered" value="{{translations.SEARCH}}" />
-</td></tr>
-</table>
+				</select>
+			</li>
+
+			<li> {{translations.PRIMARYCOLOR}}:</li>
+			<li>
+				<select class="form-control-own" name="primaryColor" ng-model="query.primaryColor"
+					ng-change="searchForm()">
+					<option value=""></option>
+					<option value="Black">{{translations.BLACK}}</option>
+					<option value="Blue">{{translations.BLUE}}</option>
+					<option value="Brown">{{translations.BROWN}}</option>
+					<option value="Golden">{{translations.GOLDEN}}</option>
+					<option value="Green">{{translations.GREEN}}</option>
+					<option value="Grey">{{translations.GREY}}</option>
+					<option value="Orange">{{translations.ORANGE}}</option>
+					<option value="Red">{{translations.RED}}</option>
+					<option value="Silver">{{translations.SILVER}}</option>
+					<option value="Turquoise">{{translations.TURQUOISE}}</option>
+					<option value="White">{{translations.WHITE}}</option>
+					<option value="Violet">{{translations.VIOLET}}</option>
+					<option value="Yellow">{{translations.YELLOW}}</option>
+				</select>
+			</li>
+			<li>{{translations.SECONDARYCOLOR}}:</li>
+			<li>
+				<select class="form-control-own" name="secondaryColor" ng-model="query.secondaryColor"
+					ng-change="searchForm()">
+					<option value=""></option>
+					<option value="Black">{{translations.BLACK}}</option>
+					<option value="Blue">{{translations.BLUE}}</option>
+					<option value="Brown">{{translations.BROWN}}</option>
+					<option value="Golden">{{translations.GOLDEN}}</option>
+					<option value="Green">{{translations.GREEN}}</option>
+					<option value="Grey">{{translations.GREY}}</option>
+					<option value="Orange">{{translations.ORANGE}}</option>
+					<option value="Red">{{translations.RED}}</option>
+					<option value="Silver">{{translations.SILVER}}</option>
+					<option value="Turquoise">{{translations.TURQUOISE}}</option>
+					<option value="Violet">{{translations.VIOLET}}</option>
+					<option value="White">{{translations.WHITE}}</option>
+					<option value="Yellow">{{translations.YELLOW}}</option>
+				</select>
+			</li>
+			<li> {{translations.NUMBEROFLEGS}}:</li>
+			<li>
+				<select class="form-control-own" name="legs" ng-model="query.legs">
+					<option value=""></option>
+					<option value="4">4</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
+				</select>
+			</li>
+
+			<li> {{translations.LATINNAME}}: </li>
+			<li>
+				<input type="text" name="latinName" ng-model="query.latinName" ng-change="searchForm()" />
+			</li>
+			<input type="hidden" name="clicked" ng-model="query.filterClicked" value={{filterClicked}} />
+		</ul>
+	</div>
+
+	<br>
+	<br>
+	<table class="button-center">
+		<tr>
+			<td>
+				<button type="submit" id="search_button" ng-disabled="disableSearch" name="search"
+					class="button button-green">
+					{{translations.SEARCH}}
+
+				</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="lds-center">
+					<div class="lds-spinner spinner-loading" id="spinner-search">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
 </form>
 
 <p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
 <div ng-switch="searchResults">
 
-		<div ng-switch-when="noResults" id="noResults">		
-			<h2>{{translations.NORESULTS}}	</h2>
+	<div ng-switch-when="noResults" id="noResults">
+		<br>
+		<br>
+		<h2>{{translations.NORESULTS}} </h2>
 
-		</div>
-  		<div ng-switch-when="showResults" id="showResults">
-  			<h2>{{translations.RESULTS}}</h2>
-		<div class="horizontal-table" style="max-width:1000px">
-		<div class="row">	
-			<div class="col-6">
+	</div>
+	<div ng-switch-when="showResults" id="showResults">
+		<br>
+		<br>
+		<h2>{{translations.RESULTS}}</h2>
+		<br>
+		<div class="container-search">
+			<ul class="insect-thumbs container-insect-thumbs" id="insect-thumbs">
+				<li ng-repeat="_insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))"
+					ng-init="($first || $last) && finished()" class="thumb-item">
+					<img name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"
+						ng-class="{activeThumb: mainImageUrl == _insect.images[0]}" ng-click="setImage(_insect)"
+						alt={{_insect.latinName}} />
 
-
-		<ul class="insect-thumbs" id="insect-thumbs">									
-		  		<li ng-repeat="_insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))" ng-init="($first || $last) && finished()" >
-				    	<img  name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"  ng-class="{activeThumb: mainImageUrl == _insect.images[0]}" ng-click="setImage(_insect)" alt={{_insect.latinName}} />
-					
-		  		</li>
+				</li>
 			</ul>
-		
-			<table class="pagination-center">
-			<tfoot>
-			<td colspan="6">
-                        <div class="pagination pull-right">
-                            <ul>
-                                <li ng-class="{disabled: currentPage == 0}">
-                                    <a href ng-click="prevPage()">« {{translations.PREVIOUS}}</a>
-                                </li>
-                                <li ng-repeat="n in range(pagedInsects.length)"
-                                    ng-class="{active: n == currentPage}"
-                                ng-click="setPage()">
-                                    <a href ng-bind="n + 1">1</a>
-                                </li>
-                                <li ng-class="{disabled: currentPage == pagedInsects.length - 1}">
-                                    <a href ng-click="nextPage()">{{translations.NEXT}} »</a>
-                                </li>
-                            </ul>
-                        </div>
-            		</td>
-        		</tfoot>
-    		   	</table>
-   
-			</div> <!-- end of 1st col -->
-			<div id="col-3" class="col-3">
-			    <img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active:	mainImageUrl==img}">																																																											
-			</div> <!-- end of 2nd col -->
-  
-		</div> <!-- end of row -->
 
-		</div> <!-- end of horizontal table -->
-  </div> <!-- end of showresults -->
-</div> <!-- end of searchresults -->
-<br>
-<div ng-if="fromObservationPage != 1 && searchResults=='showResults'">
-		<input id="identify" type="button" class="button button-blue centered" value="{{translations.IDENTIFY}}" ng-click="insectDetail()"/>
-		</div> 
-<!-- start of add observation panel -->
-<div ng-if="fromObservationPage == 1">
+			<!-- pagination-->
+			<table class="pagination-center" id="pagination">
+				<tfoot>
+					<td colspan="6">
+						<div class="pagination pull-right">
+							<ul>
+								<li ng-class="{disabled: currentPage == 0}">
+									<a href ng-click="prevPage()">« {{translations.PREVIOUS}}</a>
+								</li>
+								<li ng-repeat="n in range(pagedInsects.length)" ng-class="{active: n == currentPage}"
+									ng-click="setPage()">
+									<a href ng-bind="n + 1">1</a>
+								</li>
+								<li ng-class="{disabled: currentPage == pagedInsects.length - 1}">
+									<a href ng-click="nextPage()">{{translations.NEXT}} »</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tfoot>
+			</table>
 
+			<!-- large picture-->
+			<div class="large-picture-search" id="large-picture-search">
+				<img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active:	mainImageUrl==img}">
+			</div>
 
+			<div ng-if="fromObservationPage != 1 && searchResults=='showResults'" class="button-identify"
+				id="button-identify">
+				<button id="identify" type="button" class="button button-blue centered"
+					ng-click="insectDetail()">{{translations.IDENTIFY}} </button>
+			</div>
 
-<h2> {{translations.ADDOBSERVATION}} </h2>
-
-
-	<form ng-submit="addObservation(params)">
-		<div class="flex-center">
-			<ul id="flex-table" class="flex-table">
-				<!-- insect specific -->
-				<!-- insect name -->
-				<li><h3>{{translations.INSECTSPECIFIC}}:</h3></li><li></li>
-				<li> {{translations.LATINNAME}}(*): </li>
-   				<li>
-					<input type="text" id="observationLatinName" name="observationLatinName" ng-model="params.observationLatinName" ng-change="checkContent('observationLatinName')" ng-required="observationLatinNameRequired"/>
-   				</li>
-				<li>
-					{{translations.DATE}}(*):  
-				</li>
-				<li>
-				<input ng-click="ds_sh_search('date')" id="date" name="date" style="cursor: text" ng-model="params.date" ng-required="dateRequired.date"/>
-				</li>
-				<li>
-					{{translations.COUNT}}(*):
-				</li>
-				<li>
-					<input type="text" id="count" name="count" ng-model="params.count" required/>
-				</li>
-				<input type="hidden" id="insectId"/>
-				
-				<!-- place specific -->
-				<li><h3>{{translations.PLACESPECIFIC}}:</h3></li><li></li>
-	
-				<div ng-switch="place">
-				<!-- 1) add an existing observation place --> 
-				<li>
-					<input id="addExistingObservationPlace" type="radio" name="addobservationgroup" value="{{translations.SELECTOBSERVATION}}" ng-click="toggleElements('observationplace','addobservation')"/> {{translations.SELECTOBSERVATION}}
-				</li>
-				
-				<!-- 2) add an observation place -->				
-				<li>
-					<input id="addNewObservationPlace" type="radio" name="addobservationgroup" value="{{translations.ADDOBSERVATIONPLACE}}" ng-click="toggleElements('addobservation', 'observationplace')" checked>{{translations.ADDOBSERVATIONPLACE}}			
-				</li>
-				<br><br>
-				<div ng-switch-when="selectobservation"> <!-- start of switch selectobservation-->				
-				<!-- start of select an observation place -->
-				<li id="observationplace">
-					<select name="observationPlace" ng-model="params.observationPlace">
-						<option ng-repeat="option in observationPlaces" value="{{option.id}}">{{option.summary}}</option>
-					
-					</select>
-				</li>
-				</div> <!--end of switch selectobservation-->
-
-				<!-- start of switch addobservationplace -->
-				<div ng-switch-when="addobservationplace">
-				<li>
-					{{translations.COUNTRY}}(*): 
-				</li>
-				<li>
-					<select name="country" ng-model="params.country" required>
-					<option value=""></option>	
-					<option value="{{translations.FINLAND}}">{{translations.FINLAND}} </option>
-					<option value="{{translations.SWEDEN}}">{{translations.SWEDEN}} </option>
-					<option value="{{translations.NORWAY}}">{{translations.NORWAY}} </option>
-					<option value="{{translations.DENMARK}}">{{translations.DENMARK}} </option>
-					<option value="{{translations.GERMANY}}">{{translations.GERMANY}} </option>
-					<option value="{{translations.FRANCE}}">{{translations.FRANCE}} </option>
-					<option value="{{translations.RUSSIA}}">{{translations.RUSSIA}} </option>
-					<option value="{{translations.ITALY}}">{{translations.ITALY}} </option>
-					<option value="{{translations.SPAIN}}">{{translations.SPAIN}} </option>
-					<option value="{{translations.GREECE}}">{{translations.GREECE}} </option>
-					<option value="{{translations.CYPRYS}}">{{translations.CYPRYS}} </option>
-					<option value="{{translations.BELGIUM}}">{{translations.BELGIUM}} </option>
-					<option value="{{translations.UITEDKINGDOM}}">{{translations.UNITEDKINGDOM}} </option>
-					<option value="{{translations.SCOTLAND}}">{{translations.SCOTLAND}} </option>
-					<option value="{{translations.IRELAND}}">{{translations.IRELAND}} </option>
-					<option value="{{translations.ICELAND}}">{{translations.ICELAND}} </option>
-					<option value="{{translations.NETHERLAND}}">{{translations.NETHERLAND}} </option>
-					<option value="{{translations.UKRAINE}}">{{translations.UKRAINE}} </option>
-					<option value="{{translations.HUNGARY}}">{{translations.HUNGARY}} </option>
-					<option value="{{translations.SERBIA}}">{{translations.SERBIA}} </option>
-					<option value="{{translations.ROMANIA}}">{{translations.ROMANIA}} </option>
-					<option value="{{translations.PORTUGALY}}">{{translations.PORTUGALY}} </option>
-					<option value="{{translations.POLAND}}">{{translations.POLAND}} </option>
-					<option value="{{translations.LIETHUA}}">{{translations.LIETHUA}} </option>
-					<option value="{{translations.LATVIA}}">{{translations.LATVIA}} </option>
-					<option value="{{translations.BELARUS}}">{{translations.BELARUS}} </option>
-					<option value="{{translations.CHINA}}">{{translations.CHINA}} </option>
-					<option value="{{translations.INDIA}}">{{translations.INDIA}} </option>
-					<option value="{{translations.PAKISTAN}}">{{translations.PAKISTAN}} </option>
-					<option value="{{translations.KAZAKSTAN}}">{{translations.KAZAKSTAN}} </option>
-					<option value="{{translations.THAILAND}}">{{translations.THAILAND}} </option>
-					<option value="{{translations.SOUTHKOREA}}">{{translations.SOUTHKOREA}} </option>
-					<option value="{{translations.NORTHKOREA}}">{{translations.NORTHKOREA}} </option>
-					<option value="{{translations.PAPUAGUINEA}}">{{translations.PAPUAGUINEA}} </option>
-					<option value="{{translations.NEWZEALAND}}">{{translations.NEWZEALAND}} </option>
-					<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
-					<option value="{{translations.LAOS}}">{{translations.LAOS}} </option>
-					<option value="{{translations.VIETNAM}}">{{translations.VIETNAM}} </option>
-					<option value="{{translations.BRUNEI}}">{{translations.BRUNEI}} </option>
-					<option value="{{translations.MALESIA}}">{{translations.MALESIA}} </option>
-					<option value="{{translations.MYANMAR}}">{{translations.MYANMAR}} </option>
-					<option value="{{translations.SINGAPORE}}">{{translations.SINGAPORE}} </option>
-					<option value="{{translations.AFGANISTAN}}">{{translations.AFGANISTAN}} </option>
-					<option value="{{translations.BANGLADESH}}">{{translations.BANGLADESH}} </option>
-					<option value="{{translations.BHUTAN}}">{{translations.BHUTAN}} </option>
-					<option value="{{translations.MALEDIVE}}">{{translations.MALEDIVE}} </option>
-					<option value="{{translations.NEPAL}}">{{translations.NEPAL}} </option>
-					<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
-					<option value="{{translations.SRILANKA}}">{{translations.SRILANKA}} </option>
-					<option value="{{translations.AZERBAIDZAN}}">{{translations.AZERBAIDZAN}} </option>
-					<option value="{{translations.BAHRAIN}}">{{translations.BAHRAIN}} </option>
-					<option value="{{translations.YEMEN}}">{{translations.YEMEN}} </option>
-					<option value="{{translations.CYPROS}}">{{translations.CYPROS}} </option>
-					<option value="{{translations.LIBANON}}">{{translations.LIBANON}} </option>
-					<option value="{{translations.OMAN}}">{{translations.OMAN}} </option>
-					<option value="{{translations.QATAR}}">{{translations.QATAR}} </option>
-					<option value="{{translations.TURKEY}}">{{translations.TURKEY}} </option>
-					<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
-					<option value="{{translations.JORDANIA}}">{{translations.JORDANIA}} </option>
-					<option value="{{translations.GEORGIA}}">{{translations.GEORGIA}} </option>
-					<option value="{{translations.UZBEKISTAN}}">{{translations.UZBEKISTAN}} </option>
-					<option value="{{translations.TURKEMISTAN}}">{{translations.TURKEMISTAN}} </option>
-					<option value="{{translations.TADZIKISTAN}}">{{translations.TADZIKISTAN}} </option>
-					<option value="{{translations.CANADA}}">{{translations.CANADA}} </option>
-					<option value="{{translations.USA}}">{{translations.USA}} </option>
-					<option value="{{translations.MEXICO}}">{{translations.MEXICO}} </option>
-					<option value="{{translations.JAMAICA}}">{{translations.JAMAICA}} </option>
-					<option value="{{translations.CUBA}}">{{translations.CUBA}} </option>
-					<option value="{{translations.PANAMA}}">{{translations.PANAMA}} </option>
-					<option value="{{translations.COSTARICA}}">{{translations.COSTARICA}} </option>
-					<option value="{{translations.ECUADOR}}">{{translations.ECUADOR}} </option>
-					<option value="{{translations.BRAZIL}}">{{translations.BRAZIL}} </option>
-					<option value="{{translations.PERU}}">{{translations.PERU}} </option>
-					<option value="{{translations.CHILE}}">{{translations.CHILE}} </option>
-					<option value="{{translations.BOLIVIA}}">{{translations.BOLIVIA}} </option>
-					<option value="{{translations.COLUMBIA}}">{{translations.COLUMBIA}} </option>
-					<option value="{{translations.ISRAEL}}">{{translations.ISRAEL}} </option>
-					<option value="{{translations.SYRIA}}">{{translations.SYRIA}} </option>
-					<option value="{{translations.SAUDIARABIA}}">{{translations.SAUDIARABIA}} </option>
-					<option value="{{translations.BELARUS}}">{{translations.BELARUS}} </option>
-					<option value="{{translations.EGYPT}}">{{translations.EGYPT}} </option>
-					<option value="{{translations.TUNISIA}}">{{translations.TUNISIA}} </option>
-					<option value="{{translations.SUDAN}}">{{translations.SUDAN}} </option>
-					<option value="{{translations.SWITERLAND}}">{{translations.SWITZERLAND}} </option>
-					<option value="{{translations.IRAN}}">{{translations.IRAN}} </option>
-					<option value="{{translations.VENEZUALA}}">{{translations.VENEZUALA}} </option>
-					<option value="{{translations.ARGENTIINA}}">{{translations.ARGENTIINA}} </option>
-					<option value="{{translations.MEXICO}}">{{translations.MACEDONIA}} </option>
-					<option value="{{translations.ARMENIA}}">{{translations.ARMENIA}} </option>
-					<option value="{{translations.SUDAN}}">{{translations.SUDAN}} </option>
-					<option value="{{translations.GHANA}}">{{translations.GHANA}} </option>
-					<option value="{{translations.DEMOCRATICREPUPUBLICOFCONGO}}">{{translations.DEMOCRATICREPUPLICOFCONGO}} </option>					<option value="{{translations.REPUBLICOFCONGO}}">{{translations.REPUBLICOFCONGO}} </option>
-					<option value="{{translations.ALGERIA}}">{{translations.ALGERIA}} </option>
-					<option value="{{translations.ZIMBABWE}}">{{translations.ZIMBABWE}} </option>
-					<option value="{{translations.SOUTHAFRICA}}">{{translations.SOUTHAFRICA}} </option>
-					<option value="{{translations.MAURITANIA}}">{{translations.MAURITANIA}} </option>
-					<option value="{{translations.ANGOLA}}">{{translations.AGNOLA}} </option>
-					<option value="{{translations.ETHIOPIA}}">{{translations.ETHIOPIA}} </option>
-					<option value="{{translations.TANZANIA}}">{{translations.TANZANIA}} </option>
-					<option value="{{translations.RWANDA}}">{{translations.RWANDA}} </option>
-					<option value="{{translations.ERITREA}}">{{translations.ERITREA}} </option>
-					<option value="{{translations.ZAMBIA}}">{{translations.ZAMBIA}} </option>
-					<option value="{{translations.LIBYA}}">{{translations.LIBYA}} </option>
-					<option value="{{translations.DIJIBOUTI}}">{{translations.DIJIBOUTI}} </option>
-					<option value="{{translations.COMOROS}}">{{translations.COMOROS}} </option>
-					<option value="{{translations.MALAWI}}">{{translations.MALAWI}} </option>
-					<option value="{{translations.SEYCHELLES}}">{{translations.SEYCHELLES}} </option>
-					<option value="{{translations.CHAD}}">{{translations.CHAD}} </option>
-					<option value="{{translations.LESOTHO}}">{{translations.LESOTHO}} </option>
-					<option value="{{translations.BENIN}}">{{translations.BENIN}} </option>
-					<option value="{{translations.IVORYCOAST}}">{{translations.IVORYCOAST}} </option>
-					<option value="{{translations.LIBERIA}}">{{translations.LIBERIA}} </option>
-					<option value="{{translations.MALI}}">{{translations.MALI}} </option>
-					<option value="{{translations.SENEGAL}}">{{translations.SENEGAL}} </option>
-					<option value="{{translations.TOG}}">{{translations.TOGO}} </option>
-					<option value="{{translations.GUINEABISSEAU}}">{{translations.GUINEABISSEAU}} </option>
-					<option value="{{translations.SIERRALEONE}}">{{translations.SIERRALEONE}} </option>
-					<option value="{{translations.NIGER}}">{{translations.NIGER}} </option>
-				</select>
-				</li>
-
-				<li>
-				{{translations.LOCATION}}(*): 	
-				</li>
-				<li>
-				   <select name="location" ng-model="params.location" required>
-					<option value=""></option>
-   					<option value="{{translations.NORTH}}">{{translations.NORTH}}</option> 
-					<option value="{{translations.NORTHEAST}}">{{translations.NORTHEAST}}</option>
-				        <option value="{{translations.EAST}}">{{translations.EAST}}</option>
-			   	        <option value="{{translations.EASTSOUTH}}">{{translations.EASTSOUTH}}</option>
-			   	        <option value="{{translations.SOUTH}}">{{translations.SOUTH}}</option>
-			   	        <option value="{{translations.SOUTHWEST}}">{{translations.SOUTHWEST}}</option>
-			   	        <option value="{{translations.WEST}}">{{translations.WEST}}</option>
-			   	        <option value="{{translations.NORTHWEST}}">{{translations.NORTHWEST}}</option>
-					<option value="{{translations.MIDDLE}}">{{translations.MIDDLE}}</option>
-				   </select>   
-				</li>
-
-				<li>
-					{{translations.PLACE}}(*):
-				</li>
-				<li> <input name="place" type="text" ng-model="params.place" required/></li>
-
-				<li>
-					{{translations.PLACETYPE}}: 
-				</li>
-				<li></li>
-
-				<li>
-					<input type="radio" id="other" name="farmtypegroup" ng-model="params.farmType" checked/>
-					{{translations.OTHER}}
-				</li>
-				<li></li>
-				
-				<li>
-					<input type="radio" id="organicFarm" name="farmtypegroup" ng-model="params.organicFarm"/>
-					{{translations.ORGANICFARM}}
-				</li>
-				<li> </li>
-				
-				<li>
-					<input type="radio" id="nonOrganicFarm" name="farmtypegroup" ng-model="params.nonorganicFarm"/>
-				{{translations.NONORGANICFARM}} 
-				</li><br>
-				<li>
-					
-				</li>
-				</div>
-				<!-- end of farmtype -->	
-				<!-- end of addobservation -->				
-			</ul>
-		</div> <!-- end of flex table -->
+		</div> <!-- end of showresults -->
+	</div> <!-- end of searchresults -->
 	<br>
-	<input type="submit" id="observationSubmit" type="button" class="button button-blue centered" 		value="{{translations.ADDOBSERVATION}}" /> 
-	</form>
-<div class='js-fade fade-out is-paused alert alert-success' id="messageAddSuccess" ng-if='addObservationSuccess' != ""'>{{addObservationSuccess}}</div>
-<div class='js-fade fade-out is-paused' id="messageRemovedFailure" ng-if='addObservationFailure' != ""' class="alert alert-danger">{{addObservationFailure}}</div>
-</div> <!-- end of add observation panel -->
-	
-  	
+
+	<!-- start of add observation panel -->
+	<div ng-if="fromObservationPage == 1">
+
+		<h2> 2. {{translations.ADDOBSERVATION}} </h2>
+
+		<form ng-submit="addObservation(params)">
+			<div class="flex-center">
+				<ul id="flex-table" class="flex-table">
+					<!-- insect specific -->
+					<!-- insect name -->
+					<li>
+						<h3>{{translations.INSECTSPECIFIC}}:</h3>
+					</li>
+					<li></li>
+					<li> {{translations.LATINNAME}}(*): </li>
+					<li>
+						<input type="text" id="observationLatinName" name="observationLatinName"
+							ng-model="params.observationLatinName" ng-change="checkContent('observationLatinName')"
+							ng-required="observationLatinNameRequired" />
+					</li>
+					<li>
+						{{translations.DATE}}(*):
+					</li>
+					<li>
+						<input ng-click="ds_sh_search('date')" id="date" name="date" style="cursor: text"
+							ng-model="params.date" ng-required="dateRequired.date" />
+					</li>
+					<li>
+						{{translations.COUNT}}(*):
+					</li>
+					<li>
+						<input type="text" id="count" name="count" ng-model="params.count" required />
+					</li>
+					<input type="hidden" id="insectId" />
+
+					<!-- place specific -->
+					<li>
+						<h3>{{translations.PLACESPECIFIC}}:</h3>
+					</li>
+					<li></li>
+
+					<div ng-switch="place">
+
+						<!-- 1) add an existing observation place -->
+						<li>
+							<input id="addExistingObservationPlace" type="radio" name="addobservationgroup"
+								value="{{translations.SELECTOBSERVATION}}"
+								ng-click="toggleElements('observationplace','addobservation')" />
+							{{translations.SELECTOBSERVATION}}
+						</li>
+
+						<!-- 2) add an observation place -->
+						<li>
+							<input id="addNewObservationPlace" type="radio" name="addobservationgroup"
+								value="{{translations.ADDOBSERVATIONPLACE}}"
+								ng-click="toggleElements('addobservation', 'observationplace')"
+								checked>{{translations.ADDOBSERVATIONPLACE}}
+						</li>
+						<br><br>
+						<div ng-switch-when="selectobservation">
+							<!-- start of switch selectobservation-->
+							<!-- start of select an observation place -->
+							<li id="observationplace">
+								<select name="observationPlace" ng-model="params.observationPlace">
+									<option ng-repeat="option in observationPlaces" value="{{option.id}}">
+										{{option.summary}}
+									</option>
+
+								</select>
+							</li>
+						</div>
+						<!--end of switch selectobservation-->
+
+						<!-- start of switch addobservationplace -->
+
+						<div id="flex-table" class="flex-table" ng-switch-when="addobservationplace">
+							<li>
+								{{translations.COUNTRY}}(*):
+							</li>
+							<li>
+								<select name="country" ng-model="params.country" required>
+									<option value=""></option>
+									<option value="{{translations.FINLAND}}">{{translations.FINLAND}} </option>
+									<option value="{{translations.SWEDEN}}">{{translations.SWEDEN}} </option>
+									<option value="{{translations.NORWAY}}">{{translations.NORWAY}} </option>
+									<option value="{{translations.DENMARK}}">{{translations.DENMARK}} </option>
+									<option value="{{translations.GERMANY}}">{{translations.GERMANY}} </option>
+									<option value="{{translations.FRANCE}}">{{translations.FRANCE}} </option>
+									<option value="{{translations.RUSSIA}}">{{translations.RUSSIA}} </option>
+									<option value="{{translations.ITALY}}">{{translations.ITALY}} </option>
+									<option value="{{translations.SPAIN}}">{{translations.SPAIN}} </option>
+									<option value="{{translations.GREECE}}">{{translations.GREECE}} </option>
+									<option value="{{translations.CYPRYS}}">{{translations.CYPRYS}} </option>
+									<option value="{{translations.BELGIUM}}">{{translations.BELGIUM}} </option>
+									<option value="{{translations.UNITEDKINGDOM}}">{{translations.UNITEDKINGDOM}}
+									</option>
+									<option value="{{translations.SCOTLAND}}">{{translations.SCOTLAND}} </option>
+									<option value="{{translations.IRELAND}}">{{translations.IRELAND}} </option>
+									<option value="{{translations.ICELAND}}">{{translations.ICELAND}} </option>
+									<option value="{{translations.NETHERLAND}}">{{translations.NETHERLAND}} </option>
+									<option value="{{translations.UKRAINE}}">{{translations.UKRAINE}} </option>
+									<option value="{{translations.HUNGARY}}">{{translations.HUNGARY}} </option>
+									<option value="{{translations.SERBIA}}">{{translations.SERBIA}} </option>
+									<option value="{{translations.ROMANIA}}">{{translations.ROMANIA}} </option>
+									<option value="{{translations.PORTUGAL}}">{{translations.PORTUGAL}} </option>
+									<option value="{{translations.POLAND}}">{{translations.POLAND}} </option>
+									<option value="{{translations.LIETHUA}}">{{translations.LIETHUA}} </option>
+									<option value="{{translations.LATVIA}}">{{translations.LATVIA}} </option>
+									<option value="{{translations.BELARUS}}">{{translations.BELARUS}} </option>
+									<option value="{{translations.CHINA}}">{{translations.CHINA}} </option>
+									<option value="{{translations.INDIA}}">{{translations.INDIA}} </option>
+									<option value="{{translations.PAKISTAN}}">{{translations.PAKISTAN}} </option>
+									<option value="{{translations.KAZAKSTAN}}">{{translations.KAZAKSTAN}} </option>
+									<option value="{{translations.THAILAND}}">{{translations.THAILAND}} </option>
+									<option value="{{translations.SOUTHKOREA}}">{{translations.SOUTHKOREA}} </option>
+									<option value="{{translations.NORTHKOREA}}">{{translations.NORTHKOREA}} </option>
+									<option value="{{translations.PAPUAGUINEA}}">{{translations.PAPUAGUINEA}} </option>
+									<option value="{{translations.NEWZEALAND}}">{{translations.NEWZEALAND}} </option>
+									<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
+
+									<option value="{{translations.LAOS}}">{{translations.LAOS}} </option>
+									<option value="{{translations.VIETNAM}}">{{translations.VIETNAM}} </option>
+									<option value="{{translations.BRUNEI}}">{{translations.BRUNEI}} </option>
+									<option value="{{translations.MALESIA}}">{{translations.MALESIA}} </option>
+									<option value="{{translations.MYANMAR}}">{{translations.MYANMAR}} </option>
+									<option value="{{translations.SINGAPORE}}">{{translations.SINGAPORE}} </option>
+									<option value="{{translations.AFGANISTAN}}">{{translations.AFGANISTAN}} </option>
+									<option value="{{translations.BANGLADESH}}">{{translations.BANGLADESH}} </option>
+									<option value="{{translations.BHUTAN}}">{{translations.BHUTAN}} </option>
+									<option value="{{translations.MALEDIVE}}">{{translations.MALEDIVE}} </option>
+									<option value="{{translations.NEPAL}}">{{translations.NEPAL}} </option>
+									<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
+									<option value="{{translations.SRILANKA}}">{{translations.SRILANKA}} </option>
+									<option value="{{translations.AZERBAIDZAN}}">{{translations.AZERBAIDZAN}} </option>
+									<option value="{{translations.BAHRAIN}}">{{translations.BAHRAIN}} </option>
+									<option value="{{translations.YEMEN}}">{{translations.YEMEN}} </option>
+									<option value="{{translations.LIBANON}}">{{translations.LIBANON}} </option>
+									<option value="{{translations.OMAN}}">{{translations.OMAN}} </option>
+									<option value="{{translations.QATAR}}">{{translations.QATAR}} </option>
+									<option value="{{translations.TURKEY}}">{{translations.TURKEY}} </option>
+									<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
+									<option value="{{translations.JORDANIA}}">{{translations.JORDANIA}} </option>
+									<option value="{{translations.GEORGIA}}">{{translations.GEORGIA}} </option>
+									<option value="{{translations.UZBEKISTAN}}">{{translations.UZBEKISTAN}} </option>
+									<option value="{{translations.TURKEMISTAN}}">{{translations.TURKEMISTAN}} </option>
+									<option value="{{translations.TADZIKISTAN}}">{{translations.TADZIKISTAN}} </option>
+
+									<option value="{{translations.CANADA}}">{{translations.CANADA}} </option>
+									<option value="{{translations.USA}}">{{translations.USA}} </option>
+									<option value="{{translations.MEXICO}}">{{translations.MEXICO}} </option>
+									<option value="{{translations.JAMAICA}}">{{translations.JAMAICA}} </option>
+									<option value="{{translations.CUBA}}">{{translations.CUBA}} </option>
+									<option value="{{translations.PANAMA}}">{{translations.PANAMA}} </option>
+									<option value="{{translations.COSTARICA}}">{{translations.COSTARICA}} </option>
+									<option value="{{translations.ECUADOR}}">{{translations.ECUADOR}} </option>
+									<option value="{{translations.BRAZIL}}">{{translations.BRAZIL}} </option>
+									<option value="{{translations.PERU}}">{{translations.PERU}} </option>
+									<option value="{{translations.CHILE}}">{{translations.CHILE}} </option>
+									<option value="{{translations.BOLIVIA}}">{{translations.BOLIVIA}} </option>
+									<option value="{{translations.COLUMBIA}}">{{translations.COLUMBIA}} </option>
+									<option value="{{translations.ISRAEL}}">{{translations.ISRAEL}} </option>
+									<option value="{{translations.SYRIA}}">{{translations.SYRIA}} </option>
+									<option value="{{translations.SAUDIARABIA}}">{{translations.SAUDIARABIA}} </option>
+									<option value="{{translations.BELARUS}}">{{translations.BELARUS}} </option>
+									<option value="{{translations.EGYPT}}">{{translations.EGYPT}} </option>
+									<option value="{{translations.TUNISIA}}">{{translations.TUNISIA}} </option>
+									<option value="{{translations.SUDAN}}">{{translations.SUDAN}} </option>
+									<option value="{{translations.SWITERLAND}}">{{translations.SWITZERLAND}} </option>
+									<option value="{{translations.IRAN}}">{{translations.IRAN}} </option>
+									<option value="{{translations.VENEZUALA}}">{{translations.VENEZUALA}} </option>
+
+									<option value="{{translations.ARGENTIINA}}">{{translations.ARGENTIINA}} </option>
+									<option value="{{translations.MEXICO}}">{{translations.MACEDONIA}} </option>
+									<option value="{{translations.ARMENIA}}">{{translations.ARMENIA}} </option>
+									<option value="{{translations.SUDAN}}">{{translations.SUDAN}} </option>
+									<option value="{{translations.GHANA}}">{{translations.GHANA}} </option>
+									<option value="{{translations.DEMOCRATICREPUPUBLICOFCONGO}}">
+										{{translations.DEMOCRATICREPUPUBLICOFCONGO}} </option>
+									<option value="{{translations.REPUBLICOFCONGO}}">{{translations.REPUBLICOFCONGO}}
+									</option>
+									<option value="{{translations.ALGERIA}}">{{translations.ALGERIA}} </option>
+									<option value="{{translations.ZIMBABWE}}">{{translations.ZIMBABWE}} </option>
+									<option value="{{translations.SOUTHAFRICA}}">{{translations.SOUTHAFRICA}} </option>
+									<option value="{{translations.MAURITANIA}}">{{translations.MAURITANIA}} </option>
+									<option value="{{translations.ANGOLA}}">{{translations.ANGOLA}} </option>
+									<option value="{{translations.ETHIOPIA}}">{{translations.ETHIOPIA}} </option>
+									<option value="{{translations.TANZANIA}}">{{translations.TANZANIA}} </option>
+									<option value="{{translations.RWANDA}}">{{translations.RWANDA}} </option>
+									<option value="{{translations.ERITREA}}">{{translations.ERITREA}} </option>
+									<option value="{{translations.ZAMBIA}}">{{translations.ZAMBIA}} </option>
+									<option value="{{translations.LIBYA}}">{{translations.LIBYA}} </option>
+									<option value="{{translations.DIJIBOUTI}}">{{translations.DIJIBOUTI}} </option>
+
+									<option value="{{translations.COMOROS}}">{{translations.COMOROS}} </option>
+									<option value="{{translations.MALAWI}}">{{translations.MALAWI}} </option>
+									<option value="{{translations.SEYCHELLES}}">{{translations.SEYCHELLES}} </option>
+									<option value="{{translations.CHAD}}">{{translations.CHAD}} </option>
+									<option value="{{translations.LESOTHO}}">{{translations.LESOTHO}} </option>
+									<option value="{{translations.BENIN}}">{{translations.BENIN}} </option>
+									<option value="{{translations.IVORYCOAST}}">{{translations.IVORYCOAST}} </option>
+									<option value="{{translations.LIBERIA}}">{{translations.LIBERIA}} </option>
+									<option value="{{translations.MALI}}">{{translations.MALI}} </option>
+									<option value="{{translations.SENEGAL}}">{{translations.SENEGAL}} </option>
+									<option value="{{translations.TOG}}">{{translations.TOGO}} </option>
+									<option value="{{translations.GUINEABISSEAU}}">{{translations.GUINEABISSEAU}}
+									</option>
+									<option value="{{translations.SIERRALEONE}}">{{translations.SIERRALEONE}} </option>
+									<option value="{{translations.NIGER}}">{{translations.NIGER}} </option>
+								</select>
+							</li>
+
+							<li>
+								{{translations.LOCATION}}(*):
+							</li>
+							<li>
+								<select name="location" ng-model="params.location" required>
+									<option value=""></option>
+									<option value="{{translations.NORTH}}">{{translations.NORTH}}</option>
+									<option value="{{translations.NORTHEAST}}">{{translations.NORTHEAST}}</option>
+									<option value="{{translations.EAST}}">{{translations.EAST}}</option>
+									<option value="{{translations.EASTSOUTH}}">{{translations.EASTSOUTH}}</option>
+									<option value="{{translations.SOUTH}}">{{translations.SOUTH}}</option>
+									<option value="{{translations.SOUTHWEST}}">{{translations.SOUTHWEST}}</option>
+									<option value="{{translations.WEST}}">{{translations.WEST}}</option>
+									<option value="{{translations.NORTHWEST}}">{{translations.NORTHWEST}}</option>
+									<option value="{{translations.MIDDLE}}">{{translations.MIDDLE}}</option>
+								</select>
+							</li>
+
+							<li>
+								{{translations.PLACE}}(*):
+							</li>
+							<li> <input name="place" type="text" ng-model="params.place" required /></li>
+
+							<li>
+								{{translations.PLACETYPE}}:
+							</li>
+							<li>
+								<input type="radio" id="other" name="farmtypegroup" ng-model="params.farmType"
+									checked />
+								{{translations.OTHER}}<br>
+								<input type="radio" id="organicFarm" name="farmtypegroup"
+									ng-model="params.organicFarm" />
+								{{translations.ORGANICFARM}}<br>
+								<input type="radio" id="nonOrganicFarm" name="farmtypegroup"
+									ng-model="params.nonorganicFarm" />
+								{{translations.NONORGANICFARM}}
+
+							</li>
+						</div>
+						<!-- end of farmtype -->
+						<!-- end of addobservation -->
+				</ul>
+			</div> <!-- end of flex table -->
+			<br>
+			<div class="container-alert">
+				<div class='js-fade fade-out is-paused alert alert-success' id="messageAddSuccess"
+					ng-if='addObservationSuccess != ""'>{{addObservationSuccess}}</div>
+				<div class='js-fade fade-out is-paused alert alert-danger' id="messageAddFailure"
+					ng-if='addObservationFailure != ""'>{{addObservationFailure}}</div>
+			</div>
+			<button type="submit" id="observationSubmit" type="button"
+				class="button button-blue centered">{{translations.ADDOBSERVATION}}</button>
+		</form>
+
+	</div> <!-- end of add observation panel -->

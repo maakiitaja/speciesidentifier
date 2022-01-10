@@ -1,18 +1,178 @@
-<div id="header">
+<header>
+	<nav id="header" class="header">
 
+		<!--search-->
+		<div class="dropdown" id="search">
+			<div>
+				<btn class="dropbtn dropbtn-nonselected" id="search-header" ng-click="search()">
+					<img id="search-menu-img" class="header-img" src="images/search-1.png" width="25px" height="25px"
+						alt="{{translations.SEARCH}}">
+					<div class="menu-description inline">{{translations.SEARCH}}</div>
+				</btn>
+			</div>
+		</div>
+
+		<!--collection-->
+		<div class="dropdown" id="collection">
+			<div>
+				<btn class="dropbtn dropbtn-nonselected" id="collection-button" ng-click="collection()">
+					<img id="collection-img" class="header-img" src="images/collection-1.png" width="25px" height="25px"
+						alt="{{translations.COLLECTION}}">
+					<div class="menu-description inline">{{translations.COLLECTION}}</div>
+				</btn>
+			</div>
+
+		</div>
+
+		<!--manage-->
+		<div class="dropdown" ng-if="currentUser" id="manage">
+			<div>
+				<btn id="manage-button" class="dropbtn dropbtn-nonselected" onclick="void(0)">
+					<img id="options-img" class="header-img" src="images/options-3.png" alt="{{translations.MANAGE}}"
+						width="25px" height="25px" />
+					<span id="manage-link">{{translations.MANAGE}}</span>
+				</btn>
+				<div class="dropdown-content">
+					<a ng-click="modify(currentUser)">{{translations.MODIFY}}</a>
+					<a ng-click="upload()">{{translations.UPLOAD}}</a>
+				</div>
+			</div>
+		</div>
+		<!--Login-->
+		<div class="dropdown pull-right" ng-if="!currentUser" id="login-div">
+			<btn class="dropbtn dropbtn-nonselected" id="login" ng-click="login()">
+				<img id="login-img" class="header-img" src="images/login-1.png" alt="{{translations.LOGIN}}"
+					width="25px" height="25px">
+				<div class="menu-description inline">{{translations.LOGIN}}</div>
+			</btn>
+		</div>
+		<!--Logout-->
+		<div class="dropdown pull-right" ng-if="currentUser" id="logout-div">
+			<a class="dropbtn dropbtn-nonselected" id="logout" href="logout">
+				<div class="menu-description inline">{{translations.LOGOUT}}, {{currentUser.username}}</div>
+				<img id="logout-img" class="header-img" src="images/logout-1.png" alt="{{translations.LOGOUT}}"
+					width="25px" height="25px">
+			</a>
+		</div>
+		<!--observation-->
+		<div class="dropdown pull-right" id="observation">
+			<div ng-if="currentUser">
+				<btn class="dropbtn dropbtn-nonselected" id="observation-button" onclick="void(0)">
+					<img id="options-img" class="header-img" src="images/options-3.png" width="25px" height="25px" />
+					<span id="observation-link">{{translations.OBSERVATION}}</span>
+				</btn>
+				<div class="dropdown-content">
+					<a ng-if="currentUser" ng-click="addObservation(currentUser)">{{translations.ADDOBSERVATION}}</a>
+					<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
+				</div>
+			</div>
+			<div ng-if="!currentUser">
+				<btn class="dropbtn dropbtn-nonselected" id="observation-button-browse" ng-click="browseObservation()">
+					<img id="collection-img" class="header-img" src="images/collection-1.png" width="25px" height="25px"
+						alt="{{translations.OBSERVATION}}">
+					<div class="menu-description inline">{{translations.BROWSEOBSERVATIONS}}</div>
+				</btn>
+			</div>
+		</div>
+
+		<!--language-->
+		<div class="dropdown pull-right" id="language">
+			<div>
+				<btn class="dropbtn dropbtn-nonselected" id="languauge-button" onclick="void(0)">
+					<img id="options-img" class="header-img" src="images/options-3.png" width="25px" height="25px">
+					<span id="language-link">{{translations.LANGUAGE}}
+					</span>
+				</btn>
+				<div class="dropdown-content">
+					<a ng-if="lang=='en'" ng-click="setLanguage('fi')">FI - Suomi</a>
+					<a ng-if="lang=='fi'" ng-click="setLanguage('en')">EN - English</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- Middle range screens - more menu item-->
+		<div class="dropdown" id="more">
+			<div>
+				<btn id="more-button" class="dropbtn dropbtn-nonselected" onclick="void(0)">
+					<img id="options-img" class="header-img" src="images/options-3.png" alt="{{translations.MORE}}"
+						width="25px" height="25px" />
+					<span id="more-link">{{translations.MORE}}</span>
+				</btn>
+				<div class="dropdown-content">
+					<a ng-if="currentUser" ng-click="modify(currentUser)">{{translations.MODIFY}}</a>
+					<a ng-if="currentUser" ng-click="upload()">{{translations.UPLOAD}}</a>
+					<a ng-if="currentUser" ng-click="addObservation(currentUser)">{{translations.ADDOBSERVATION}}</a>
+					<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
+					<a ng-if="lang=='en'" ng-click="setLanguage('fi')">FI - Suomi</a>
+					<a ng-if="lang=='fi'" ng-click="setLanguage('en')">EN - English</a>
+				</div>
+			</div>
+		</div>
+
+		<button class="btn-mobile-nav-menu" ng-click="openMobileNav()">
+			<ion-icon class="icon-mobile-nav" name="menu-outline"></ion-icon>
+		</button>
+
+		<!-- mobile navigation for smallest screens < 415px-->
+		<nav class="main-nav">
+
+			<button class="btn-mobile-nav-close" ng-click="closeMobileNav()">
+				<ion-icon class="icon-mobile-nav" name="close-outline"></ion-icon>
+			</button>
+
+			<ul class="main-nav-list">
+				<li><a class="main-nav-link" ng-click="search()">{{translations.SEARCH}}</a></li>
+				<li><a class="main-nav-link" ng-click="collection()">{{translations.COLLECTION}}</a></li>
+				<li class="main-nav-link" ng-if="currentUser"><a
+						ng-click="modify(currentUser)">{{translations.MODIFY}}</a></li>
+				<li class="main-nav-link" ng-if="currentUser"><a ng-click="upload()">{{translations.UPLOAD}}</a></li>
+				<li class="main-nav-link" ng-if="currentUser"><a
+						ng-click="addObservation(currentUser)">{{translations.ADDOBSERVATION}}</a>
+				</li>
+				<li><a class="main-nav-link"
+						ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
+				</li>
+				<li class="main-nav-link" ng-if="lang=='en'"><a ng-click="setLanguage('fi')">FI - Suomi</a></li>
+				<li class="main-nav-link" ng-if="lang=='fi'"><a ng-click="setLanguage('en')">EN - English</a></li>
+				<li class="main-nav-link" ng-if="currentUser"><a href="logout">{{translations.LOGOUT}}</a></li>
+				<li class="main-nav-link" ng-if="!currentUser"><a ng-click="login()">{{translations.LOGIN}}</a></li>
+			</ul>
+
+			<!--
+				<div class="dropdown pull-left position-relative" id="smallest-screen">
+			<a class="dropbtn" class="inline position-top-left" onclick="void(0)">
+				<div class="menu-description inline">{{translations.MANAGE}}</div>
+
+				<img id="options-img" src="images/options-3.png" width="25px" height="25px">
+			</a>
+			<div class="dropdown-content">
+				<a ng-click="search()">{{translations.SEARCH}}</a>
+				<a ng-click="collection()">{{translations.COLLECTION}}</a>
+				<a ng-if="currentUser" ng-click="modify(currentUser)">{{translations.MODIFY}}</a>
+				<a ng-if="currentUser" ng-click="upload()">{{translations.UPLOAD}}</a>
+				<a ng-if="currentUser" ng-click="addObservation(currentUser)">{{translations.ADDOBSERVATION}}</a>
+				<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
+				<a ng-if="lang=='en'" ng-click="setLanguage('fi')">FI</a>
+				<a ng-if="lang=='fi'" ng-click="setLanguage('en')">EN</a>
+			</div>
+			-->
+		</nav>
+	</nav>
+	<!--
 	<ul class="nav">
 
-		<!--<li id="search-menu" onmouseover="hover('search-menu')" onmouseout="hoverout('search-menu')">-->
+		
 		<li id="search-menu">
 			<div class="item">
-				<a ng-click="search()" id="search-header"><img id="search-menu-img" src="images/search-1.png"
-						width="25px" height="25px" />
+				
+				<a ng-click="search()" id="search-header">
+					<img id="search-menu-img" src="images/search-1.png"
+						width="25px" height="25px" >
 					<div class="menu-description">{{translations.SEARCH}}</div>
 				</a>
 			</div>
 		</li>
 
-		<!--<li id="collection" onmouseover="hover('collection')" onmouseout="hoverout('collection')">-->
 		<li id="collection">
 			<div class="item">
 				<a ng-click="collection()" id="collection-header"><img id="collection-img" src="images/collection-1.png"
@@ -22,7 +182,6 @@
 			</div>
 		</li>
 
-		<!--<li id="modify" onmouseover="hover('modify')" onmouseout="hoverout('modify')">-->
 		<li id="modify">
 
 			<div class="item">
@@ -34,7 +193,6 @@
 
 		</li>
 
-		<!--<li onmouseover="hover('upload')" onmouseout="hoverout('upload')">-->
 		<li id="upload">
 			<div class="item">
 				<a ng-if="currentUser" ng-click="upload()" id="upload"><img id="upload-img" src="images/upload-1.png"
@@ -44,7 +202,6 @@
 			</div>
 		</li>
 
-		<!--<li id="logout" onmouseover="hover('logout')" onmouseout="hoverout('logout')">-->
 		<li id="logout">
 			<div class="item">
 				<a ng-if="currentUser" href="logout">
@@ -53,7 +210,6 @@
 				</a>
 		</li>
 
-		<!--<li id="login" onmouseover="hover('login')" onmouseout="hoverout('login')">-->
 		<li id="login">
 			<div class="item">
 				<a ng-if="!currentUser" ng-click="login()">
@@ -68,12 +224,17 @@
 				<a id="observationmenu"><img id="options-img" src="images/options-3.png" width="25px" height="25px" />
 					<div class="menu-description">{{translations.OBSERVATION}}</div>
 				</a>
-				<ul class="subnav">
-					<li ng-if="currentUser"><a ng-click="addObservation(currentUser)"
-							id="addobservation-header">{{translations.ADDOBSERVATION}}</a></li>
-					<li><a ng-click="browseObservation(currentUser)"
-							id="browseobservation-header">{{translations.BROWSEOBSERVATIONS}}</a></li>
-				</ul>
+				<div>
+					<ul class="subnav">
+						<li ng-if="currentUser">
+							<a ng-click="addObservation(currentUser)"
+								id="addobservation-header">{{translations.ADDOBSERVATION}}
+							</a>
+						</li>
+						<li><a ng-click="browseObservation(currentUser)"
+								id="browseobservation-header">{{translations.BROWSEOBSERVATIONS}}</a></li>
+					</ul>
+				</div>
 			</div>
 		</li>
 
@@ -88,16 +249,16 @@
 					<div class="menu-description">{{translations.LANGUAGE}}</div>
 				</a>
 
-				<ul class="subnav">
-					<li id="first"><a id="o1" onmouseover="mcancelclosetime('o1')" onmouseout="close('o1')" ng-if="lang=='en'"
-							ng-click="setLanguage('fi')">Fi</a></li>
-					<li><a id="o2" onmouseover="mcancelclosetime('o2')" onmouseout="close('o2')" ng-if="lang=='fi'"
-							ng-click="setLanguage('en')">En</a></li>
-				</ul>
+				<div class="subnav">
+					<a ng-if="lang=='en'"
+							ng-click="setLanguage('fi')">Fi</a>
+					<a ng-if="lang=='fi'"
+							ng-click="setLanguage('en')">En</a>
+				</div>
 			</div>
 		</li>
-	</ul>
+	</ul>-->
 
-	<br>
-	<br>
-</div>
+	</nav>
+
+</header>

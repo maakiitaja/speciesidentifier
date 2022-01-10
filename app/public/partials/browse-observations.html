@@ -1,15 +1,18 @@
 <h1 id="browseObservationHeader"> {{translations.BROWSEOBSERVATIONS}}</h1>
-<form ng-submit='searchObservations(query)'  > 
+<form ng-submit='searchObservations(query)'>
 	<div class="flex-center">
-	<ul id="flex-table" class="flex-table">
-		<li><h3>{{translations.PLACESPECIFIC}}:</h3></li><li></li>
-		<li>
-			{{translations.COUNTRY}}(*):
-			
-		</li>
-		<li>
-			<select name="country" ng-model="query.country" required>
-					<option value=""></option> 
+		<ul id="flex-table" class="flex-table">
+			<li>
+				<h3>{{translations.PLACESPECIFIC}}:</h3>
+			</li>
+			<li></li>
+			<li>
+				{{translations.COUNTRY}}(*):
+
+			</li>
+			<li>
+				<select name="country" ng-model="query.country" required>
+					<option value=""></option>
 					<option value="{{translations.FINLAND}}">{{translations.FINLAND}} </option>
 					<option value="{{translations.SWEDEN}}">{{translations.SWEDEN}} </option>
 					<option value="{{translations.NORWAY}}">{{translations.NORWAY}} </option>
@@ -22,7 +25,7 @@
 					<option value="{{translations.GREECE}}">{{translations.GREECE}} </option>
 					<option value="{{translations.CYPRYS}}">{{translations.CYPRYS}} </option>
 					<option value="{{translations.BELGIUM}}">{{translations.BELGIUM}} </option>
-					<option value="{{translations.UITEDKINGDOM}}">{{translations.UNITEDKINGDOM}} </option>
+					<option value="{{translations.UNITEDKINGDOM}}">{{translations.UNITEDKINGDOM}} </option>
 					<option value="{{translations.SCOTLAND}}">{{translations.SCOTLAND}} </option>
 					<option value="{{translations.IRELAND}}">{{translations.IRELAND}} </option>
 					<option value="{{translations.ICELAND}}">{{translations.ICELAND}} </option>
@@ -31,7 +34,7 @@
 					<option value="{{translations.HUNGARY}}">{{translations.HUNGARY}} </option>
 					<option value="{{translations.SERBIA}}">{{translations.SERBIA}} </option>
 					<option value="{{translations.ROMANIA}}">{{translations.ROMANIA}} </option>
-					<option value="{{translations.PORTUGALY}}">{{translations.PORTUGALY}} </option>
+					<option value="{{translations.PORTUGAL}}">{{translations.PORTUGAL}} </option>
 					<option value="{{translations.POLAND}}">{{translations.POLAND}} </option>
 					<option value="{{translations.LIETHUA}}">{{translations.LIETHUA}} </option>
 					<option value="{{translations.LATVIA}}">{{translations.LATVIA}} </option>
@@ -63,7 +66,6 @@
 					<option value="{{translations.AZERBAIDZAN}}">{{translations.AZERBAIDZAN}} </option>
 					<option value="{{translations.BAHRAIN}}">{{translations.BAHRAIN}} </option>
 					<option value="{{translations.YEMEN}}">{{translations.YEMEN}} </option>
-					<option value="{{translations.CYPROS}}">{{translations.CYPROS}} </option>
 					<option value="{{translations.LIBANON}}">{{translations.LIBANON}} </option>
 					<option value="{{translations.OMAN}}">{{translations.OMAN}} </option>
 					<option value="{{translations.QATAR}}">{{translations.QATAR}} </option>
@@ -74,7 +76,7 @@
 					<option value="{{translations.UZBEKISTAN}}">{{translations.UZBEKISTAN}} </option>
 					<option value="{{translations.TURKEMISTAN}}">{{translations.TURKEMISTAN}} </option>
 					<option value="{{translations.TADZIKISTAN}}">{{translations.TADZIKISTAN}} </option>
-					
+
 					<option value="{{translations.CANADA}}">{{translations.CANADA}} </option>
 					<option value="{{translations.USA}}">{{translations.USA}} </option>
 					<option value="{{translations.MEXICO}}">{{translations.MEXICO}} </option>
@@ -98,19 +100,20 @@
 					<option value="{{translations.SWITERLAND}}">{{translations.SWITZERLAND}} </option>
 					<option value="{{translations.IRAN}}">{{translations.IRAN}} </option>
 					<option value="{{translations.VENEZUALA}}">{{translations.VENEZUALA}} </option>
-		
+
 					<option value="{{translations.ARGENTIINA}}">{{translations.ARGENTIINA}} </option>
 					<option value="{{translations.MEXICO}}">{{translations.MACEDONIA}} </option>
 					<option value="{{translations.ARMENIA}}">{{translations.ARMENIA}} </option>
 					<option value="{{translations.SUDAN}}">{{translations.SUDAN}} </option>
 					<option value="{{translations.GHANA}}">{{translations.GHANA}} </option>
-					<option value="{{translations.DEMOCRATICREPUPUBLICOFCONGO}}">{{translations.DEMOCRATICREPUPLICOFCONGO}} </option>
+					<option value="{{translations.DEMOCRATICREPUPUBLICOFCONGO}}">
+						{{translations.DEMOCRATICREPUPUBLICOFCONGO}} </option>
 					<option value="{{translations.REPUBLICOFCONGO}}">{{translations.REPUBLICOFCONGO}} </option>
 					<option value="{{translations.ALGERIA}}">{{translations.ALGERIA}} </option>
 					<option value="{{translations.ZIMBABWE}}">{{translations.ZIMBABWE}} </option>
 					<option value="{{translations.SOUTHAFRICA}}">{{translations.SOUTHAFRICA}} </option>
 					<option value="{{translations.MAURITANIA}}">{{translations.MAURITANIA}} </option>
-					<option value="{{translations.ANGOLA}}">{{translations.AGNOLA}} </option>
+					<option value="{{translations.ANGOLA}}">{{translations.ANGOLA}} </option>
 					<option value="{{translations.ETHIOPIA}}">{{translations.ETHIOPIA}} </option>
 					<option value="{{translations.TANZANIA}}">{{translations.TANZANIA}} </option>
 					<option value="{{translations.RWANDA}}">{{translations.RWANDA}} </option>
@@ -133,111 +136,129 @@
 					<option value="{{translations.GUINEABISSEAU}}">{{translations.GUINEABISSEAU}} </option>
 					<option value="{{translations.SIERRALEONE}}">{{translations.SIERRALEONE}} </option>
 					<option value="{{translations.NIGER}}">{{translations.NIGER}} </option>
-			</select>
-		</li>
+				</select>
+			</li>
 
-		<li>
-			{{translations.LOCATION}}: 
-		</li>
-		<li>
-			<select name="country" ng-model="query.location">
-				<option value=""></option> 
-				<option value="{{translations.NORTH}}">{{translations.NORTH}}</option> 
-				<option value="{{translations.NORTHEAST}}">{{translations.NORTHEAST}}</option>
-			        <option value="{{translations.EAST}}">{{translations.EAST}}</option>
-		   	        <option value="{{translations.EASTSOUTH}}">{{translations.EASTSOUTH}}</option>
-		   	        <option value="{{translations.SOUTH}}">{{translations.SOUTH}}</option>
-		   	        <option value="{{translations.SOUTHWEST}}">{{translations.SOUTHWEST}}</option>
-		   	        <option value="{{translations.WEST}}">{{translations.WEST}}</option>
-		   	        <option value="{{translations.NORTHWEST}}">{{translations.NORTHWEST}}</option>
-				<option value="{{translations.MIDDLE}}">{{translations.MIDDLE}}</option>
-			</select>
-		</li>
-		<li>
-			{{translations.PLACE}}:
-			
-		</li>
-		<li>
-			<input type="text" ng-model="query.place" />
-		</li>
-		<li>
-			{{translations.PLACETYPE}}:
-		</li>
-		<li>
-			
-			<input type="radio" id="noFarmType" value="{{translations.NO}}" name="typeselection" ng-click="showByType('0')" checked=true/> {{translations.NO}}
-			<input type="radio" id="byFarmType" value="{{translations.YES}}" name="typeselection" ng-click="showByType('1')"/> {{translations.YES}}
-			
-			<div ng-switch="typeSelection">
-				<div ng-switch-when="byType">
-					<input type="radio" id="nofarm" name="farmtype" value="{{translations.NOFARM}}" ng-model="query.nofarm" checked=true/> {{translations.NOFARM}}
-					<input type="radio" id="organicFarm" name="farmtype" value="{{translations.ORGANICFARM}}" ng-model="query.organicFarm"> {{translations.ORGANICFARM}}	
-					<input type="radio" id="nonOrganicFarm" name="farmtype" value="{{translations.NONORGANICFARM}}" ng-model="query.nonOrganicFarm"/>	{{translations.NONORGANICFARM}}
-					
-				</div>	
-			</div>
-			
-		</li>
-			
-		<li><h3>{{translations.TIMESPECIFIC}}:</h3></li><li></li>
-		<li>
-			{{translations.STARTDATE}}(*):
-		</li>
-		<li>
-			<input ng-click="ds_sh_search('startDate')" id="startDate" name="startdate" style="cursor: text" ng-model="query.startDate"/><!-- ng-required="dateRequired.startDate"/>-->
-		</li>
-		<li>
-			{{translations.ENDDATE}}(*):
-		</li>
-		<li>
-			<input ng-click="ds_sh_search('endDate')" id="endDate" name="enddate" style="cursor: text" ng-model="query.endDate"/><!-- ng-required="dateRequired.endDate"/>-->
-		</li>
-	
-		<li><h3>{{translations.INSECTSPECIFIC}}:</h3></li><li></li>
-		<li>
-			{{translations.SEARCH}}:
-		</li>
-		<li>
-			<input type="radio" id="byCategory" value="{{translations.CATEGORY}}" name="insectsearchselection" ng-click="toggleInsectSearch('0')"/> {{translations.CATEGORY}}
-			<input type="radio" id="byName" value="{{translations.NAME}}" name="insectsearchselection" ng-click="toggleInsectSearch('1')"/> {{translations.NAME}}
+			<li>
+				{{translations.LOCATION}}:
+			</li>
+			<li>
+				<select name="country" ng-model="query.location">
+					<option value=""></option>
+					<option value="{{translations.NORTH}}">{{translations.NORTH}}</option>
+					<option value="{{translations.NORTHEAST}}">{{translations.NORTHEAST}}</option>
+					<option value="{{translations.EAST}}">{{translations.EAST}}</option>
+					<option value="{{translations.EASTSOUTH}}">{{translations.EASTSOUTH}}</option>
+					<option value="{{translations.SOUTH}}">{{translations.SOUTH}}</option>
+					<option value="{{translations.SOUTHWEST}}">{{translations.SOUTHWEST}}</option>
+					<option value="{{translations.WEST}}">{{translations.WEST}}</option>
+					<option value="{{translations.NORTHWEST}}">{{translations.NORTHWEST}}</option>
+					<option value="{{translations.MIDDLE}}">{{translations.MIDDLE}}</option>
+				</select>
+			</li>
+			<li>
+				{{translations.PLACE}}:
 
-			<div ng-switch="insectSearchSelection">
-			
-				<div ng-switch-when="byCategory">
-						<select name="category" ng-model="query.category" >
-						<option value=""></option> 
-						<option value="Ant">{{translations.ANT}}</option>
-							<option value="Bee">{{translations.BEE}}</option>		        
+			</li>
+			<li>
+				<input type="text" ng-model="query.place" />
+			</li>
+			<li>
+				{{translations.PLACETYPE}}:
+			</li>
+			<li>
+
+				<input type="radio" id="noFarmType" value="{{translations.NO}}" name="typeselection"
+					ng-click="showByType('0')" checked=true /> {{translations.NO}}
+				<input type="radio" id="byFarmType" value="{{translations.YES}}" name="typeselection"
+					ng-click="showByType('1')" /> {{translations.YES}}
+
+				<div ng-switch="typeSelection">
+					<div ng-switch-when="byType">
+						<input type="radio" id="nofarm" name="farmtype" value="{{translations.NOFARM}}"
+							ng-model="query.nofarm" checked=true /> {{translations.NOFARM}}
+						<input type="radio" id="organicFarm" name="farmtype" value="{{translations.ORGANICFARM}}"
+							ng-model="query.organicFarm"> {{translations.ORGANICFARM}}
+						<input type="radio" id="nonOrganicFarm" name="farmtype" value="{{translations.NONORGANICFARM}}"
+							ng-model="query.nonOrganicFarm" /> {{translations.NONORGANICFARM}}
+
+					</div>
+				</div>
+
+			</li>
+
+			<li>
+				<h3>{{translations.TIMESPECIFIC}}:</h3>
+			</li>
+			<li></li>
+			<li>
+				{{translations.STARTDATE}}(*):
+			</li>
+			<li>
+				<input ng-click="ds_sh_search('startDate')" id="startDate" name="startdate" style="cursor: text"
+					ng-model="query.startDate" ng-required="dateRequired.startDate" />
+				<!-- ng-required="dateRequired.startDate"/>-->
+			</li>
+			<li>
+				{{translations.ENDDATE}}(*):
+			</li>
+			<li>
+				<input ng-click="ds_sh_search('endDate')" id="endDate" name="enddate" style="cursor: text"
+					ng-model="query.endDate" ng-required="dateRequired.endDate" />
+				<!-- ng-required="dateRequired.endDate"/>-->
+			</li>
+
+			<li>
+				<h3>{{translations.INSECTSPECIFIC}}:</h3>
+			</li>
+			<li></li>
+			<li>
+				{{translations.SEARCH}}:
+			</li>
+			<li>
+				<input type="radio" id="byCategory" value="{{translations.CATEGORY}}" name="insectsearchselection"
+					ng-click="toggleInsectSearch('0')" /> {{translations.CATEGORY}}
+				<input type="radio" id="byName" value="{{translations.NAME}}" name="insectsearchselection"
+					ng-click="toggleInsectSearch('1')" /> {{translations.NAME}}
+
+				<div ng-switch="insectSearchSelection">
+
+					<div ng-switch-when="byCategory">
+						<select name="category" ng-model="query.category">
+							<option value=""></option>
+							<option value="Ant">{{translations.ANT}}</option>
+							<option value="Bee">{{translations.BEE}}</option>
 							<option value="Beetle">{{translations.BEETLE}}</option>
 							<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-							<option value="Caterpillar">{{translations.CATERPILLAR}}</option>        
-						<option value="Spider">{{translations.SPIDER}}</option>
-						</select>					
+							<option value="Centipede">{{translations.CENTIPEDE}}</option>
+							<option value="Spider">{{translations.SPIDER}}</option>
+						</select>
+					</div>
+
+					<div ng-switch-when="byName">
+						{{translations.NAME}}: (*) <input type="text" ng-model="query.name" required />
+						<br>
+
+						{{translations.LANGUAGE}}: (*)
+
+						<select name="language" ng-model="query.language" required>
+							<option value=""></option>
+							<option value="Latin">{{translations.LATIN}}</option>
+							<option value="EN">{{translations.ENGLISH}}</option>
+							<option value="FI">{{translations.FINNISH}}</option>
+						</select>
+
+					</div>
 				</div>
-				
-				<div ng-switch-when="byName">
-					{{translations.NAME}}: (*)  <input type="text" ng-model="query.name" required/>
-					<br>
-						
-					{{translations.LANGUAGE}}: (*)
-					
-					<select name="language" ng-model="query.language" required>
-						<option value=""></option> 
-						<option value="Latin">{{translations.LATIN}}</option>
-							<option value="EN">{{translations.ENGLISH}}</option>        
-						<option value="FI">{{translations.FINNISH}}</option>
-					</select>
-				
-				</div>
-			</div>
 			</li>
-		</li>
-	
-	</ul>
+			</li>
+
+		</ul>
 	</div>
 
 	<br>
-	<input type="submit" name="search" class="button button1 centered" value="{{translations.SEARCH}}" />
+	<br>
+	<button type="submit" name="search" class="button button-green centered">{{translations.SEARCH}}</button>
 </form>
 <!-- 
 place specific:
@@ -264,30 +285,33 @@ date | insectname | category
 		<h2>{{translations.NORESULTS}}</h2>
 	</div>
 	<div ng-switch-when="showResults" id="showResults">
+		<br>
 		<h2>{{translations.RESULTS}}</h2>
-	<div class="flex-center-wide">
-		
-		<ul id="flex-table-7-col" class="flex-table">
-			<li class="heading"> <b>{{translations.LATINNAME}}</b> </li>
-			<li class="heading"> <b>{{translations.DATE}}</b> </li>
-			<li class="heading"> <b>{{translations.COUNT}}</b> </li>
-			<li class="heading"> <b>{{translations.COUNTRY}}</b> </li>
-			<li class="heading"> <b>{{translations.LOCATION}}</b> </li>
-			<li class="heading"> <b>{{translations.PLACE}}</b> </li>
-			<li class="heading"> <b>{{translations.FARMTYPE}}</b> </li>
-			
-		</ul>
-		<ul ng-repeat="observation in observations" name="table-data" id="flex-table-7-col" class="flex-table"> 
-			<li> {{observation.latinName}}</li>
-			<li> {{observation.date}}</li>
-			<li> {{observation.count}}</li>
-			<li> {{observation.country}}</li>
-			<li> {{observation.location}}</li>
-			<li> {{observation.place}}</li>
-			<li> {{observation.farmType}}</li>
-	
-		</ul>
+		<br>
+		<br>
+		<div class="flex-center-wide">
+
+			<ul id="flex-table-7-col" class="flex-table">
+				<li class="heading"> <b>{{translations.LATINNAME}}</b> </li>
+				<li class="heading"> <b>{{translations.DATE}}</b> </li>
+				<li class="heading"> <b>{{translations.COUNT}}</b> </li>
+				<li class="heading"> <b>{{translations.COUNTRY}}</b> </li>
+				<li class="heading"> <b>{{translations.LOCATION}}</b> </li>
+				<li class="heading"> <b>{{translations.PLACE}}</b> </li>
+				<li class="heading"> <b>{{translations.FARMTYPE}}</b> </li>
+
+			</ul>
+			<ul ng-repeat="observation in observations" name="table-data" id="flex-table-7-col"
+				class="flex-table table-data">
+				<li> {{observation.latinName}}</li>
+				<li> {{observation.date}}</li>
+				<li> {{observation.count}}</li>
+				<li> {{observation.country}}</li>
+				<li> {{observation.location}}</li>
+				<li> {{observation.place}}</li>
+				<li> {{observation.farmType}}</li>
+
+			</ul>
+		</div>
 	</div>
 </div>
-</div>
-

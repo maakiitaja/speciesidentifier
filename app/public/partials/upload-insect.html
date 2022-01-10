@@ -1,142 +1,161 @@
-<p margin-top="2em"/>
+<p margin-top="2em" />
 <div ng-if="isUpload==1" id="upload-title">
-<h1>{{translations.UPLOADPAGE}}</h1>
+	<h1>{{translations.UPLOADPAGE}}</h1>
 </div>
 <div ng-if="isUpload==0">
-<h1>{{translations.MODIFYPAGE}}</h1>
+	<h1>{{translations.MODIFYPAGE}}</h1>
 </div>
 <form action="/insect/insert" name="myForm" enctype="multipart/form-data" method="post">
 	<div class="flex-center">
-	<ul id="flex-table" class="flex-table">
+		<ul id="flex-table" class="flex-table">
 
-	<li>{{translations.ENGLISHNAME}}: </li><li style="min-width:200px"><input id="englishName" type="text" value="{{enName}}" name="enName" ng-model="enName" /> 
-	</li>
-	<li>{{translations.FINNISHNAME}}: </li><li><input id="finnishName" type="text" value="{{fiName}}" name="fiName" ng-model="fiName"/> 	</li>
-	<li>{{translations.LATINNAME}}: (*)</li><li> <input id="latinName" type="text" name="latinName" ng-model="latinName" required/></li>
-	<!--<td><span ng-show="myForm.latinName.$touched && myForm.latinName.$invalid">{{translations.LATINNAMEREQUIRED}}</span></td>-->	
-	
-	
-	<li>	{{translations.CATEGORY}}: (*)</li>
-	<li>
-      <select id="category" value="{{category}}" name="category" ng-model="category" required>
-      	<option value=""></option>
-			<option value="Ant">{{translations.ANT}}</option>      
-			<option value="Bee">{{translations.BEE}}</option>  
-	     	<option value="Beetle">{{translations.BEETLE}}</option>
-	     	<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-	     	<option value="Caterpillar">{{translations.CATERPILLAR}}</option>        
-	   	<option value="Spider">{{translations.SPIDER}}</option> 	      
-	   </select>
-	</li>
-	<span ng-show="myForm.category.$touched && myForm.category.$invalid">{{translations.CATEGORYREQUIRED}}</span>
+			<li>{{translations.ENGLISHNAME}}: </li>
+			<li style="min-width:200px"><input id="englishName" type="text" value="{{enName}}" name="enName"
+					ng-model="enName" />
+			</li>
+			<li>{{translations.FINNISHNAME}}: </li>
+			<li><input id="finnishName" type="text" value="{{fiName}}" name="fiName" ng-model="fiName" /> </li>
+			<li>{{translations.LATINNAME}}: (*)</li>
+			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName" required /></li>
+			<!--<td><span ng-show="myForm.latinName.$touched && myForm.latinName.$invalid">{{translations.LATINNAMEREQUIRED}}</span></td>-->
 
-	   
-	<li> {{translations.PRIMARYCOLOR}}: (*)</li>
-      <li>
-      <select id="primaryColor" name="primaryColor" value="{{primaryColor}}" ng-model="primaryColor" required>
-      	<option value=""></option>
-        <option value="Black">{{translations.BLACK}}</option>
-        <option value="Blue">{{translations.BLUE}}</option>
-        <option value="Brown">{{translations.BROWN}}</option>
-        <option value="Golden">{{translations.GOLDEN}}</option>
-        <option value="Green">{{translations.GREEN}}</option>
-        <option value="Grey">{{translations.GREY}}</option>
-		  <option value="Orange">{{translations.ORANGE}}</option>
-        <option value="Red">{{translations.RED}}</option>
-        <option value="Silver">{{translations.SILVER}}</option>
-        <option value="Turquoise">{{translations.TURQUOISE}}</option>
-        <option value="Violet">{{translations.VIOLET}}</option>
-        <option value="White">{{translations.WHITE}}</option>
-        <option value="Yellow">{{translations.YELLOW}}</option>
-      </select></li>
-      <span ng-show="myForm.primaryColor.$touched && myForm.primaryColor.$invalid">{{translations.PRIMARYCOLORREQUIRED}}</span>
 
-      <li> {{translations.SECONDARYCOLOR}}: (*)</li> 
-      <li>
-     <select id="secondaryColor" name="secondaryColor" value="{{secondaryColor}}"  ng-model="secondaryColor" required>
-				<option value=""></option>
-			  <option value="Black">{{translations.BLACK}}</option>
-			  <option value="Blue">{{translations.BLUE}}</option>
-			  <option value="Brown">{{translations.BROWN}}</option>
-			  <option value="Golden">{{translations.GOLDEN}}</option>
-			  <option value="Green">{{translations.GREEN}}</option>
-			  <option value="Grey">{{translations.GREY}}</option>
-			  <option value="Orange">{{translations.ORANGE}}</option>
-			  <option value="Red">{{translations.RED}}</option>
-			  <option value="Silver">{{translations.SILVER}}</option>
-			  <option value="Turquoise">{{translations.TURQUOISE}}</option>
-			  <option value="Violet">{{translations.VIOLET}}</option>
-			  <option value="White">{{translations.WHITE}}</option>
-			  <option value="Yellow">{{translations.YELLOW}}</option>
-</select>
-		</li>
-		<span ng-show="myForm.secondaryColor.$touched && myForm.secondaryColor.$invalid">{{translations.SECONDARCOLORYREQUIRED}}</span>
-		<li> {{translations.NUMBEROFLEGS}}: (*)</li>
-		<li> 
-      <select id="legs" name="legs" value="{{legs}}" ng-model="legs" required>
-      	<option value=""></option>
-        <option value="02">2</option>
-        <option value="04">4</option>
-        <option value="06">6</option>
-        <option value="08">8</option>
-      </select>   
-	</li>
-	<span ng-show="myForm.legs.$touched && myForm.legs.$invalid">{{translations.LEGSREQUIRED}}</span>
+			<li> {{translations.CATEGORY}}: (*)</li>
+			<li>
+				<select class="form-control-own" id="category" value="{{category}}" name="category" ng-model="category"
+					required>
+					<option value=""></option>
+					<option value="Ant">{{translations.ANT}}</option>
+					<option value="Bee">{{translations.BEE}}</option>
+					<option value="Beetle">{{translations.BEETLE}}</option>
+					<option value="Butterfly">{{translations.BUTTERFLY}}</option>
+					<option value="Centipede">{{translations.CENTIPEDE}}</option>
+					<option value="Spider">{{translations.SPIDER}}</option>
+				</select>
+				<p ng-show="myForm.category.$touched && myForm.category.$invalid">{{translations.CATEGORYREQUIRED}}</p>
 
-	<li>	{{translations.WIKIENTRY}}:</li>
-	<li> <input id="wiki" type="text" name="wiki" ng-model="wiki"/>
-	</li>
-	
-	<li>  	
-	{{translations.IMAGELINKS}}:</li>  
-  	<li>
-  	<textarea id="imageLinks" name="imageLinks" ng-model="imageLinks"></textarea>
-  	</li>  	
-  	
-  	<li> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</li>
-	  <li>
- 	  <input type="file" id="userPhotos" name="userPhotos" file-model="myFile" ng-required="isRequired" multiple/>
-  	  </li>
-	  <span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
+			</li>
 
- 
- 	<input type="hidden" id="isUpload" name="isUpload" value="{{isUpload}}" ng-model="isUpload"/>
- 	<input type="hidden" id="insectId" name="insectId" value="{{insectId}}" ng-model="insectId"/>
 
-  	<br>
-	<br>
-	<br>
-	</ul>
-	
-	<div ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
-		<div class="horizontal-table">
-	    		<ul id="horizontal-list-table">
-				<ul class="insect-thumbs">
-					<li>
-					<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
-					<input type='checkbox' name="{{photo.name}}" ng-model="photo.checked" ng-click="checkPhotoRequired(photo)"/>Remove</li>
+			<li> {{translations.PRIMARYCOLOR}}: (*)</li>
+			<li>
+				<select class="form-control-own" id="primaryColor" name="primaryColor" value="{{primaryColor}}"
+					ng-model="primaryColor" required>
+					<option value=""></option>
+					<option value="Black">{{translations.BLACK}}</option>
+					<option value="Blue">{{translations.BLUE}}</option>
+					<option value="Brown">{{translations.BROWN}}</option>
+					<option value="Golden">{{translations.GOLDEN}}</option>
+					<option value="Green">{{translations.GREEN}}</option>
+					<option value="Grey">{{translations.GREY}}</option>
+					<option value="Orange">{{translations.ORANGE}}</option>
+					<option value="Red">{{translations.RED}}</option>
+					<option value="Silver">{{translations.SILVER}}</option>
+					<option value="Turquoise">{{translations.TURQUOISE}}</option>
+					<option value="Violet">{{translations.VIOLET}}</option>
+					<option value="White">{{translations.WHITE}}</option>
+					<option value="Yellow">{{translations.YELLOW}}</option>
+				</select>
+				<p ng-show="myForm.primaryColor.$touched && myForm.primaryColor.$invalid">
+					{{translations.PRIMARYCOLORREQUIRED}}</p>
+
+			</li>
+
+			<li> {{translations.SECONDARYCOLOR}}: (*)</li>
+			<li>
+				<select class="form-control-own" id="secondaryColor" name="secondaryColor" value="{{secondaryColor}}"
+					ng-model="secondaryColor" required>
+					<option value=""></option>
+					<option value="Black">{{translations.BLACK}}</option>
+					<option value="Blue">{{translations.BLUE}}</option>
+					<option value="Brown">{{translations.BROWN}}</option>
+					<option value="Golden">{{translations.GOLDEN}}</option>
+					<option value="Green">{{translations.GREEN}}</option>
+					<option value="Grey">{{translations.GREY}}</option>
+					<option value="Orange">{{translations.ORANGE}}</option>
+					<option value="Red">{{translations.RED}}</option>
+					<option value="Silver">{{translations.SILVER}}</option>
+					<option value="Turquoise">{{translations.TURQUOISE}}</option>
+					<option value="Violet">{{translations.VIOLET}}</option>
+					<option value="White">{{translations.WHITE}}</option>
+					<option value="Yellow">{{translations.YELLOW}}</option>
+				</select>
+				<p ng-show="myForm.secondaryColor.$touched && myForm.secondaryColor.$invalid">
+					{{translations.SECONDARYCOLORREQUIRED}}</p>
+
+			</li>
+			<li> {{translations.NUMBEROFLEGS}}: (*)</li>
+			<li>
+				<select class="form-control-own" id="legs" name="legs" value="{{legs}}" ng-model="legs" required>
+					<option value=""></option>
+					<option value="02">2</option>
+					<option value="04">4</option>
+					<option value="06">6</option>
+					<option value="08">8</option>
+				</select>
+				<p ng-show="myForm.legs.$touched && myForm.legs.$invalid">{{translations.LEGSREQUIRED}}</p>
+
+			</li>
+
+			<li> {{translations.WIKIENTRY}}:</li>
+			<li> <input id="wiki" type="text" name="wiki" ng-model="wiki" />
+			</li>
+
+			<li>
+				{{translations.IMAGELINKS}}:</li>
+			<li>
+				<textarea id="imageLinks" name="imageLinks" ng-model="imageLinks"></textarea>
+			</li>
+
+			<li> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</li>
+			<li>
+				<input type="file" id="userPhotos" name="userPhotos" file-model="myFile" ng-required="isRequired"
+					multiple />
+			</li>
+			<span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
+
+
+			<input type="hidden" id="isUpload" name="isUpload" value="{{isUpload}}" ng-model="isUpload" />
+			<input type="hidden" id="insectId" name="insectId" value="{{insectId}}" ng-model="insectId" />
+
+			<br>
+			<br>
+			<br>
+		</ul>
+
+		<div ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
+			<div class="horizontal-table">
+				<ul id="horizontal-list-table">
+					<ul class="insect-thumbs">
+						<li>
+							<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
+							<input type='checkbox' name="{{photo.name}}" ng-model="photo.checked"
+								ng-click="checkPhotoRequired(photo)" />Remove
+						</li>
+					</ul>
 				</ul>
-	   	 	</ul>
-	  	</div>
-  	</div>
-	<br>
-	<table class="center">
-	<tr><td>
-
-		<div ng-if="isUpload==1">
-		<input id="uploadSubmit" type="submit" class="button" value="{{translations.UPLOAD}}">
+			</div>
 		</div>
-		<div ng-if="isUpload==0">
-		<input id="updateSubmit" ng-click="uploadFile()" type="submit" class="button" value="{{translations.SAVE}}">
-		</div>
-		
-  	</td></tr>
-  	
-	</table>
-  	
-  	
- </form>
- 
-<p margin-top="2em"/>
+		<br>
+		<table class="center">
+			<tr>
+				<td>
 
-  	
+					<div ng-if="isUpload==1">
+						<input id="uploadSubmit" type="submit" class="button button-blue"
+							value="{{translations.UPLOAD}}">
+					</div>
+					<div ng-if="isUpload==0">
+						<input id="updateSubmit" ng-click="uploadFile()" type="submit" class="button button-blue"
+							value="{{translations.SAVE}}">
+					</div>
+
+				</td>
+			</tr>
+
+		</table>
+
+
+</form>
+
+<p margin-top="2em" />

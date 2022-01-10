@@ -1,99 +1,96 @@
 <br>
-
-<table class="center" >
-
-<tr><td>
-	<p id="description">{{translations.DESCRIPTION}}: {{description}}</p>
-</td></tr>
-
-<tr><td>
-	<p id="latinName"> {{translations.LATINNAME}}: {{insect.latinName}}</p>
-</td></tr>
-
-
-<!-- main image -->
-<tr><td>
-
-
-<div ng-if="insect.images.length > 1"> 
-
-	<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images" 
-	 	ng-class="{active: mainImageUrl==img}" class="insect-detail" />
-	<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimagemultipledisconnected" ng-repeat="img in insect.images" 
-	 	ng-class="{active: mainImageUrl==img}" class="insect-detail" />
-	
-</div>
-
-<div ng-if="insect.images.length==1">
-	<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="mainimage" class="insect-detail active" />
-	<img ng-if="connected==0" ng-src="{{localStorage[insect.images[0]]}}" id="mainimagedisconnected" class="insect-detail active" />
-
-</div>
-</tr></td>
+<table class="center">
+	<tr>
+		<td>
+			<p id="description"><strong>{{translations.DESCRIPTION}}</strong>: {{description}}</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p id="latinName"> <strong>{{translations.LATINNAME}}</strong>: {{insect.latinName}}</p>
+		</td>
+	</tr>
+	<!-- main image -->
+	<tr>
+		<td>
+			<div ng-if="insect.images.length > 1" class="insect-detail-grid">
+				<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images"
+					ng-class="{active: mainImageUrl==img}" class="insect-detail" />
+				<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimagemultipledisconnected"
+					ng-repeat="img in insect.images" ng-class="{active: mainImageUrl==img}" class="insect-detail" />
+			</div>
+			<div ng-if="insect.images.length==1">
+				<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="mainimage" class="insect-detail active" />
+				<img ng-if="connected==0" ng-src="{{localStorage[insect.images[0]]}}" id="mainimagedisconnected"
+					class="insect-detail active" />
+			</div>
+		</td>
+	</tr>
 </table>
 
 <!-- translated name -->
 
 <table class="button-center">
-	<tr><td>
-	<div ng-repeat="translation in insect.translations">
-		<p ng-if="translation.language==lang">
-			 {{translation.name}}	
-		</p>
-	</div>
-</td></tr>
+	<tr>
+		<td>
+			<div ng-repeat="translation in insect.translations">
+				<p ng-if="translation.language==lang">
+					{{translation.name}}
+				</p>
+			</div>
+		</td>
+	</tr>
 </table>
-
 
 <!-- thumb images -->
 
-<div class="horizontal-table" ng-if="insect.images.length > 1">
-    <ul id="horizontal-list-table">
-	<ul class="insect-thumbs-detail">
+<div>
+
+	<ul class="insect-thumbs container-insect-detail" id="insect-thumbs" ng-if="insect.images.length > 1">
 		<li ng-repeat="img in insect.images">
-		<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}" ng-click="setImage(img)" alt={{insect.latinName}} />
-		<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}" id="{{img+'_thumb.jpg_not_connected'}}" ng-click="setImage(img)" alt={{insect.latinName}} /></li>
+			<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}" ng-click="setImage(img)"
+				alt={{insect.latinName}} />
+			<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}"
+				id="{{img+'_thumb.jpg_not_connected'}}" ng-click="setImage(img)" alt={{insect.latinName}} />
+		</li>
 	</ul>
-    </ul>
 </div>
 
 <br>
+<div class="container-alert">
+	<div id="messageAddFailure" ng-if='messageCollectionAddFailure != ""' class="alert alert-danger">
+		{{messageCollectionAddFailure}}</div>
+	<div id="messageAddSuccess" ng-if='messageCollectionAddSuccess != ""' class="alert alert-success">
+		{{messageCollectionAddSuccess}}</div>
+	<div id="messageRemovedFailure" ng-if='messageRemovedFailure != ""' class="alert alert-danger">
+		{{messageRemovedFailure}}</div>
+	<div id="messageRemovedSuccess" ng-if='messageRemovedSuccess != ""' class="alert alert-success">
+		{{messageRemovedSuccess}}</div>
+</div>
 
-<div id="messageAddFailure" ng-if='messageCollectionAddFailure != ""' class="alert alert-danger">{{messageCollectionAddFailure}}</div>
-<div id="messageAddSuccess" ng-if='messageCollectionAddSuccess != ""' class="alert alert-success">{{messageCollectionAddSuccess}}</div>
-<div id="messageRemovedFailure" ng-if='messageRemovedFailure != ""' class="alert alert-danger">{{messageRemovedFailure}}</div>
-<div id="messageRemovedSuccess" ng-if='messageRemovedSuccess != ""' class="alert alert-success">{{messageRemovedSuccess}}</div>
-<p id="removeItem" value="{{removeItem}}"/>
+<p id="removeItem" value="{{removeItem}}" />
 
 <div ng-switch="prevUrl" class="center">
 
 
-  <div ng-switch-when="#/list">
-	<table class="button-center">
+	<div ng-switch-when="#/list">
+		<div class="button-grid">
+			<input id="newSearch" type="button" class="button button-blue" value="{{translations.NEWSEARCH}}"
+				ng-click="new_search()" />
+			<input ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red"
+				value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)" />
 
-	<tr><td>
-     <input id="newSearch" type="button" class="button button-blue" value="{{translations.NEWSEARCH}}" ng-click="new_search()"/>
-	<input ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red" value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)"/ >
-	
-	<input ng-if="!inCollection" id="addToCollection" ng-if="currentUser" type="button" class="button button-green" value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()" />	
-	
-	</td></tr></table>
-  </div>
-  <div ng-switch-when="#/collection">
-<table class="button-center">
-    <tr><td>
-
-     <input id="returnToCollection" type="button" class="button button-blue " value="{{translations.RETURNTOCOLLECTION}}" ng-click="collection()"/ >
-</td>
-<td>
-     <input id="removeFromCollection" type="button" class="button button-red" value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)" ng-disabled="removedItem"/ >
-</td></tr>
-
-</table>
-  </div>
+			<input ng-if="!inCollection" id="addToCollection" ng-if="currentUser" type="button"
+				class="button button-green" value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()" />
+		</div>
+	</div>
+	<div ng-switch-when="#/collection">
+		<div class="button-grid">
+			<input id="returnToCollection" type="button" class="button button-blue "
+				value="{{translations.RETURNTOCOLLECTION}}" ng-click="collection()" />
+			<input id="removeFromCollection" type="button" class="button button-red"
+				value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)"
+				ng-disabled="removedItem" />
+		</div>
+	</div>
 </div>
-
-
-
-
-

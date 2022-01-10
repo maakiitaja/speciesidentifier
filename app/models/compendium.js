@@ -1,11 +1,14 @@
-	var mongoose = require('mongoose')
-var ObjectId = require('mongodb').ObjectID;
+var mongoose = require("mongoose");
+var ObjectId = require("mongodb").ObjectID;
 var Schema = mongoose.Schema;
 
-var CompendiumSchema = new Schema({
-	_user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-	insects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Insect'}]
-});
+var CompendiumSchema = new Schema(
+  {
+    _user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    insects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Insect" }],
+  },
+  /* This is used to fix the “Unknown modifier: $pushAll” in mongodb >= v3.6. */
+  { usePushEach: true }
+);
 
-  
-module.exports = mongoose.model('Compendium', CompendiumSchema);
+module.exports = mongoose.model("Compendium", CompendiumSchema);

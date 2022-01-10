@@ -1,36 +1,40 @@
 <h1>{{translations.COLLECTIONPAGE}}</h1>
+<div class="centered">
+	<div>
+		<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-click="viewOffline()" />
+		<strong>{{translations.OFFLINE}}</strong>
 
-<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-click="viewOffline()"/>{{translations.OFFLINE}}
-
-<div ng-repeat="insects in localStorage.collection" class="centered">
-	<div ng-if="insects.length > 0">
-		<h2 ng-if="insects[0].category == 'Ant'" id="collection-ant">{{translations.ANT}}</h2>
-		<h2 ng-if="insects[0].category == 'Bee'" id="collection-bee">{{translations.BEE}}</h2>
-		<h2 ng-if="insects[0].category == 'Beetle'" id="collection-beetle">{{translations.BEETLE}}</h2>
-		<h2 ng-if="insects[0].category == 'Butterfly'" id="collecion-butterfly">{{translations.BUTTERFLY}}</h2>
-		<h2 ng-if="insects[0].category == 'Caterpillar'" id="collection-caterpillar">{{translations.CATERPILLAR}}</h2>
-		<h2 ng-if="insects[0].category == 'Spider'" id="collection-spider">{{translations.SPIDER}}</h2>
-		<ul class="insect-thumbs">
-			<li ng-repeat="insect in insects">
-				<div ng-repeat="translation in insect.translations">
-					<p ng-if="translation.language==lang">
-					{{translation.name}}
-					</p>
-					<p>
-					{{insect.latinName}}
-					</p>
-				</div>
-				<div style="display:none">
-				{{tmp = insect.images[0]+'_thumb.jpg'}}
-				
-				</div>
-				<img ng-if="connected==1" id="{{insect.images[0]+'_thumb.jpg'}}" ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
-				<img ng-if="connected==0" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}" ng-src="{{localStorage[tmp]}}" ng-click="viewDetail(insect)" />	
-	
-			</li>
-		</ul>
 	</div>
-</div>  
+	<div ng-repeat="insects in localStorage.collection">
 
+		<div ng-if="insects.length > 0">
+			<h3 ng-if="insects[0].category == 'Ant'" id="collection-ant">{{translations.ANT}}</h3>
+			<h3 ng-if="insects[0].category == 'Bee'" id="collection-bee">{{translations.BEE}}</h3>
+			<h3 ng-if="insects[0].category == 'Beetle'" id="collection-beetle">{{translations.BEETLE}}</h3>
+			<h3 ng-if="insects[0].category == 'Butterfly'" id="collecion-butterfly">{{translations.BUTTERFLY}}</h3>
+			<h3 ng-if="insects[0].category == 'Centipede'" id="collection-centipede">{{translations.CENTIPEDE}}</h3>
+			<h3 ng-if="insects[0].category == 'Spider'" id="collection-spider">{{translations.SPIDER}}</h3>
+			<ul class="insect-thumbs">
+				<li ng-repeat="insect in insects">
+					<div ng-repeat="translation in insect.translations">
+						<p ng-if="translation.language==lang">
+							{{translation.name}}
+						</p>
+						<p>
+							{{insect.latinName}}
+						</p>
+					</div>
+					<div style="display:none">
+						{{tmp = insect.images[0]+'_thumb.jpg'}}
 
+					</div>
+					<img ng-if="connected==1" id="{{insect.images[0]+'_thumb.jpg'}}"
+						ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
+					<img ng-if="connected==0" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
+						ng-src="{{localStorage[tmp]}}" ng-click="viewDetail(insect)" />
 
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

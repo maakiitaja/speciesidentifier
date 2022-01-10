@@ -1,187 +1,76 @@
 <!doctype html>
-<html lang="en" >
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>Insect identifier</title>
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-  <link rel="stylesheet" href="stylesheets/app.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Insect identifier</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="stylesheets/app.css">
+	<link rel="stylesheet" href="stylesheets/queries.css">
+	<link rel="stylesheet" href="stylesheets/spinner.css">
+	<!-- for logging styles-->
 
-  <!-- for logging styles-->
-
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome
  -->
-<script src="js/datepicker.js"></script>
-<script src="js/menu.js"></script>
-<script src="js/pagination.js"></script>
-<script src="js/util.js"></script>
-<script src="js/connectivity.js"></script>
-<script src="bower_components/angular/angular.min.js"></script>
-<script src="bower_components/jquery/dist/jquery.js"></script>
 
-<!--load datepicker after the document has loaded -->
-<script type="text/javascript">$(document).ready(function () { 
-   var url = "js/datepicker.js";
-	$.getScript( url, function() {
-		console.log('loaded datepicker.js');
-	});
-});
-</script>
+	<script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+	<script src="js/datepicker.js"></script>
+	<script src="js/menu.js"></script>
+	<script src="js/pagination.js"></script>
+	<script src="js/util.js"></script>
+	<script src="js/connectivity.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/jquery/dist/jquery.js"></script>
 
-  <script src="bower_components/angular-animate/angular-animate.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src='bower_components/angular-cookies/angular-cookies.js'></script>
-  <script src="bower_components/angular-loader/angular-loader.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/animations.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/ngStorage.min.js"></script>
-  <script src="js/directives.js"></script>
-    
-  <style>
-  	/* styles for browsers with larger than 1000px width */
-   @media only screen and (min-width: 1000px) {
-    .col-3 {width: 30%;}
-    .col-6 {width: 70%;}
+	<!--load datepicker after the document has loaded -->
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var url = "js/datepicker.js";
+			$.getScript(url, function () {
+				console.log('loaded datepicker.js');
+			});
+		});
+	</script>
 
-  	#collection div, #search-menu div, #options div, #upload div, #search-menu div,#upload div, #modify div, #logout div, #login div{
-		display: inline;
-	}
-	
-	table.center{
-		margin-left:auto;
-		margin-right:auto;	
-	}
+	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src='bower_components/angular-cookies/angular-cookies.js'></script>
+	<script src="bower_components/angular-loader/angular-loader.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/animations.js"></script>
+	<script src="js/controllers.js"></script>
+	<script src="js/filters.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/ngStorage.min.js"></script>
+	<script src="js/directives.js"></script>
 
-	img.insect-detail {
-		max-width: 100%;
-		max-height: 100%;
-	}
-}
 
-  @media only screen and (max-width: 1000px) and (min-width:768px) {
-    	/* For desktop: */
-       .col-3 {width: 30%;}
-       .col-6 {width: 70%;}
-	 
-	#collection div, #browse div, #upload div, #search-menu div, #options div, #modify div{
-		display: inline;
-	}
-	
-	#modify div.menu-description {
-		display: none;
-	}
-
-	table.center{
-		margin-left:auto;
-		margin-right:auto;	
-	}
-
-	h1 {
-		margin:0px;
-	}
-
-	#options {
-		max-width: 200px;
-	}
-	
-	.subnav li {
-		max-width: 200px;
-	}
-
-	img.insect-detail {
-		max-width: 500px;
-		max-height: 500px;
-	}
-}			
-
-	@media only screen and (min-width: 500px) and (max-width: 768px) {		
-
-		table.center{
-			margin-left:5%;
-			margin-right:5%;
-		}
-
-		#observation div, #options div, #search-menu div, #collection div, #upload div, #modify div, #options div, #login div, #logout div {
-			display: inline;
-		}
-		
-		#options div.menu-description, #login div.menu-description, #logout div.menu-description, #modify div.menu-description, #upload div.menu-description, #search-menu div.menu-description, #collection div.menu-description, #options div.menu-description, #options div-menu-description {
-			display: none;
-		}
-		
-		h1 {
-			margin:20px;
-		}
-		img.insect-detail {
-			max-width: 400px;
-			max-height: 400px;
-		}
-	}	
-	
-	@media only screen and (min-width: 400px) and (max-width: 500px){		
-
-		table.center{
-			margin-left:2%;
-			margin-right:2%;
-		}
-
-			#observation div, #options div, #search-menu div, #collection div, #upload div, #modify div, #options div, #login div, #logout div {
-			display: inline;
-		}
-		
-		#options div.menu-description, #login div.menu-description, #logout div.menu-description, #modify div.menu-description, #upload div.menu-description, #search-menu div.menu-description, #collection div.menu-description, #options div.menu-description, #options div-menu-description {
-			display: none;
-		}
-
-		
-
-		h1 {
-			margin:20px;
-		}
-
-		img.insect-detail {
-			max-width: 300px;
-			max-height: 300px;
-		}
-
-	}
-
-	@media only screen and (min-width: 50px) and (max-width: 400px) {		
-		img.insect-detail {
-			max-width: 200px;
-			max-height: 200px;
-		}
-
-			#observation div, #options div, #search-menu div, #collection div, #upload div, #modify div, #options div, #login div, #logout div {
-			display: inline;
-		}
-		
-		#options div.menu-description, #login div.menu-description, #logout div.menu-description, #modify div.menu-description, #upload div.menu-description, #search-menu div.menu-description, #collection div.menu-description, #options div.menu-description, #options div-menu-description {
-			display: none;
-		}
-	}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										
-
-   </style>
-}
 </head>
-<body ng-app="insectIdentifierApp">	
-  <!-- datepicker -->
-  <table class="ds_box" cellpadding="0" cellspacing="0" id="ds_conclass" style="display: none;">
-  <tr><td id="ds_calclass">
-  </td></tr>
-  </table>
 
-  <div header> </div>
+<body ng-app="insectIdentifierApp">
+	<!-- datepicker -->
+	<table class="ds_box" cellpadding="0" cellspacing="0" id="ds_conclass" style="display: none;">
+		<tr>
+			<td id="ds_calclass">
+			</td>
+		</tr>
+	</table>
 
-  <div class="view-container">
-    <div ng-view class="view-frame"> </div>
+	<div header> </div>
 
-  </div>
+	<div class="view-container">
+		<div ng-view class="view-frame"> </div>
+
+	</div>
+
+	<div footer> </div>
 
 </body>
+
 </html>
-		

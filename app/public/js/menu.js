@@ -39,7 +39,7 @@ function mopen(id)
 
 	// get new layer and show it
 	ddmenuitem = document.getElementById(id);
-	ddmenuitem.style.visibility = 'visible';
+	ddmenuitem.style.display = 'block';
 
 }
 
@@ -48,7 +48,7 @@ function mopen(id)
 function close(id) {
 	console.log('close: '+id);
 	if (ddmenuitem) {
-		ddmenuitem.style.visibility = 'hidden';
+		ddmenuitem.style.display = 'none';
 	}
 }
 
