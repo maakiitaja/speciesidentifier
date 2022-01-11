@@ -101,7 +101,8 @@ insectIdentifierApp.factory("SearchService", [
     return {
       search: function ($scope, $localStorage, query) {
         console.log("query: " + query);
-
+        // reset the pagination page
+        $scope.currentPage = 0;
         if (query == "" || typeof query == "undefined") {
           $scope.searchResults = "Please, provide search parameters";
           console.log("query is empty");

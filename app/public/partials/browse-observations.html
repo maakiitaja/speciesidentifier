@@ -289,9 +289,63 @@ date | insectname | category
 		<h2>{{translations.RESULTS}}</h2>
 		<br>
 		<br>
-		<div class="flex-center-wide">
+		<div class="tables">
+			<!-- table for smaller screens -->
+			<table role="table" class="table-observation--sm table-observation--small">
+				<thead role="rowgroup" class="thead-observation--sm">
+					<tr role="row" class="observation-row--sm">
+						<th class="th-observation--sm" role="columnheader">{{translations.LATINNAME}}</th>
+						<th class="th-observation--sm" role="columnheader">{{translations.DATE}}</th>
+						<th class="th-observation--sm" role="columnheader">{{translations.COUNT}}</th>
+						<th class="th-observation--sm" role="columnheader">{{translations.COUNTRY}}</th>
+						<th class="th-observation--sm" role="columnheader">{{translations.LOCATION}}</th>
+						<th class="th-observation--sm" role="columnheader">{{translations.PLACE}}</th>
+						<th class="th-observation--sm" role="columnheader">{{translations.FARMTYPE}}</th>
+					</tr>
+				</thead>
+				<tbody class="tbody-observation--sm" role="rowgroup">
+					<tr role="row" ng-repeat="observation in observations" class="observation-row--sm">
+						<td role="cell" class="cell-observation--sm">{{observation.latinName}}</td>
+						<td role="cell" class="cell-observation--sm">{{observation.date}}</td>
+						<td role="cell" class="cell-observation--sm">{{observation.count}}</td>
+						<td role="cell" class="cell-observation--sm">{{observation.country}}</td>
+						<td role="cell" class="cell-observation--sm">{{observation.location}}</td>
+						<td role="cell" class="cell-observation--sm">{{observation.place}}</td>
+						<td role="cell" class="cell-observation--sm">{{observation.farmType}}</td>
+					</tr>
+				</tbody>
 
-			<ul id="flex-table-7-col" class="flex-table">
+			</table>
+			<div class="container-observation">
+				<!-- table for medium and larger screens-->
+				<table class="table-observation table-observation--md">
+					<thead class="thead-observation">
+						<tr>
+							<th class="th-observation">{{translations.LATINNAME}}</th>
+							<th class="th-observation">{{translations.DATE}}</th>
+							<th class="th-observation">{{translations.COUNT}}</th>
+							<th class="th-observation">{{translations.COUNTRY}}</th>
+							<th class="th-observation">{{translations.LOCATION}}</th>
+							<th class="th-observation">{{translations.PLACE}}</th>
+							<th class="th-observation">{{translations.FARMTYPE}}</th>
+
+						</tr>
+					</thead>
+					<tbody class="observation-table-body">
+						<tr ng-repeat="observation in observations" class="observation-row">
+							<td class="cell-observation">{{observation.latinName}}</td>
+							<td class="cell-observation">{{observation.date}}</td>
+							<td class="cell-observation">{{observation.count}}</td>
+							<td class="cell-observation">{{observation.country}}</td>
+							<td class="cell-observation">{{observation.location}}</td>
+							<td class="cell-observation">{{observation.place}}</td>
+							<td class="cell-observation">{{observation.farmType}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- <ul id="flex-table-7-col" class="flex-table">
 				<li class="heading"> <b>{{translations.LATINNAME}}</b> </li>
 				<li class="heading"> <b>{{translations.DATE}}</b> </li>
 				<li class="heading"> <b>{{translations.COUNT}}</b> </li>
@@ -311,7 +365,7 @@ date | insectname | category
 				<li> {{observation.place}}</li>
 				<li> {{observation.farmType}}</li>
 
-			</ul>
-		</div>
+			</ul> -->
+
 	</div>
 </div>

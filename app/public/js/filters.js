@@ -10,27 +10,43 @@ angular.module('phonecatFilters', []).filter('checkmark', function() {
 angular
   .module("insectIdentifierFilters", [])
   .filter("searchFilter", function () {
-    return function (items, primary, category, secondary, legs, filterClicked) {
+    return function (
+      items,
+      primary,
+      category,
+      secondary,
+      legs,
+      filterClicked,
+      finishedCallback
+    ) {
       console.log("search filter.");
       console.log("primary: " + primary);
       console.log("category: " + category);
+      console.log("filterclicked", filterClicked);
+      if (!filterClicked) {
+        return;
+      }
       var aPrimary = primary;
       var aCategory = category;
       var aSecondary = secondary;
       var aLegs = legs;
-      console.log("filterclicked: " + filterClicked);
+      //console.log("filterclicked: " + filterClicked);
       if (aPrimary === undefined) aPrimary = "";
       if (aSecondary === undefined) aSecondary = "";
       if (aCategory === undefined) aCategory = "";
       if (aLegs === undefined) aLegs = "";
 
-      if (items[0]) {
+      if (items !== undefined && items.length == 0 && items[0]) {
         console.log(
           "items[i].primaryColor: " +
             items[0].primaryColor +
             " primary: " +
             aPrimary
         );
+      }
+
+      if (items === undefined || items.length == 0) {
+        return;
       }
 
       var l = items.length;
@@ -140,12 +156,18 @@ angular
       if (filtered.length == 0) {
         paginationEl.classList.add("pagination-hide");
         largePictureEl.classList.add("pagination-hide");
-        buttonIdentifyEl.classList.add("pagination-hide");
+        if (buttonIdentifyEl) {
+          buttonIdentifyEl.classList.add("pagination-hide");
+        }
       } else {
         paginationEl.classList.remove("pagination-hide");
         largePictureEl.classList.remove("pagination-hide");
-        buttonIdentifyEl.classList.remove("pagination-hide");
+        if (buttonIdentifyEl) {
+          buttonIdentifyEl.classList.remove("pagination-hide");
+        }
       }
+      // update the currently found items in the search page
+      finishedCallback(filtered);
       return filtered;
     };
   });

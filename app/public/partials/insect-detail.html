@@ -13,7 +13,7 @@
 	<!-- main image -->
 	<tr>
 		<td>
-			<div ng-if="insect.images.length > 1" class="insect-detail-grid">
+			<div ng-if="insect.images.length > 1">
 				<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images"
 					ng-class="{active: mainImageUrl==img}" class="insect-detail" />
 				<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimagemultipledisconnected"

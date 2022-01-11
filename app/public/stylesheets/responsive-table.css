@@ -1,0 +1,71 @@
+/** Credits to css-tricks.com **/
+
+/* Force table to not be like tables anymore */
+table.table-observation--sm,
+thead.thead-observation--sm,
+tbody.tbody-observation--sm,
+th.th-observation--sm,
+td.cell-observation--sm,
+tr.observation-row--sm {
+  display: block;
+}
+
+/* Hide table headers (but not display: none;, for accessibility) */
+thead.thead-observation--sm tr {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+tr.observation-row--sm {
+  margin: 0 0 1rem 0;
+}
+
+tr.observation-row--sm:nth-child(odd) {
+  background: #ccc;
+}
+
+td.cell-observation--sm {
+  /* Behave  like a "row" */
+  border: none;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  padding-left: 50%;
+}
+
+td.cell-observation--sm:before {
+  /* Now like a table header */
+  position: absolute;
+  /* Top/left values mimic padding */
+  top: 0;
+  left: 6px;
+  width: 45%;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+/*
+Label the data
+You could also use a data-* attribute and content for this. That way "bloats" the HTML, this way means you need to keep HTML and CSS in sync. Lea Verou has a clever way to handle with text-shadow.
+*/
+td.cell-observation--sm:nth-of-type(1):before {
+  content: "Latin name";
+}
+td.cell-observation--sm:nth-of-type(2):before {
+  content: "Date";
+}
+td.cell-observation--sm:nth-of-type(3):before {
+  content: "Amount";
+}
+td.cell-observation--sm:nth-of-type(4):before {
+  content: "Country";
+}
+td.cell-observation--sm:nth-of-type(5):before {
+  content: "Country part";
+}
+td.cell-observation--sm:nth-of-type(6):before {
+  content: "Place";
+}
+td.cell-observation--sm:nth-of-type(7):before {
+  content: "Place type";
+}

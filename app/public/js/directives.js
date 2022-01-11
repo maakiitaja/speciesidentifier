@@ -51,6 +51,37 @@ myApp.directive("footer", function () {
   };
 });
 
+myApp.directive("ngResize", function ($window) {
+  return {
+    scope: {
+      ngResize: "=",
+    },
+    link: function ($scope, element, attrs) {
+      console.log("resize directive");
+      angular.element($window).on("resize", function () {
+        console.log("$scope.ngResize: ", $scope.ngResize);
+        console.log(
+          "$scope.fromAddObservationsCtrl ",
+          $scope.ngResize.fromAddObservationsCtrl
+        );
+        if ($scope.ngResize.fromAddObservationsCtrl) {
+          var vw = getVw();
+          if (vw >= 860) {
+            console.log("vw >= 860px");
+            $scope.ngResize.withoutIdentifyBtnSmCond = false;
+            $scope.ngResize.withoutIdentifyBtnMdCond = true;
+          } else {
+            console.log("vw < 860px");
+            $scope.ngResize.withoutIdentifyBtnSmCond = true;
+            $scope.ngResize.withoutIdentifyBtnMdCond = false;
+          }
+          $scope.$apply();
+        }
+      });
+    },
+  };
+});
+
 myApp.directive("header", function () {
   return {
     restrict: "A", //This means that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements

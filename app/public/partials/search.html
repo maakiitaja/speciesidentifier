@@ -1,151 +1,153 @@
-<br>
-<h2 style="margin-bottom: 20px" ng-if="fromObservationPage == 1">1. {{translations.SEARCHPAGE}}</h2>
-<h1 ng-if="fromObservationPage != 1">{{translations.SEARCHPAGE}}</h1>
-
-<form ng-submit='search(query)'>
-	<div class="flex-center">
-		<ul id="flex-table" class="flex-table">
-			<li>
-				{{translations.CATEGORY}}:
-			</li>
-			<li>
-
-				<select class="form-control-own" name="category" ng-model="query.category" ng-change="searchForm()"
-					required>
-					<option value=""></option>
-					<option value="Ant">{{translations.ANT}}</option>
-					<option value="Bee">{{translations.BEE}}</option>
-					<option value="Beetle">{{translations.BEETLE}}</option>
-					<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-					<option value="Centipede">{{translations.CENTIPEDE}}</option>
-					<option value="Spider">{{translations.SPIDER}}</option>
-
-				</select>
-			</li>
-
-			<li> {{translations.PRIMARYCOLOR}}:</li>
-			<li>
-				<select class="form-control-own" name="primaryColor" ng-model="query.primaryColor"
-					ng-change="searchForm()">
-					<option value=""></option>
-					<option value="Black">{{translations.BLACK}}</option>
-					<option value="Blue">{{translations.BLUE}}</option>
-					<option value="Brown">{{translations.BROWN}}</option>
-					<option value="Golden">{{translations.GOLDEN}}</option>
-					<option value="Green">{{translations.GREEN}}</option>
-					<option value="Grey">{{translations.GREY}}</option>
-					<option value="Orange">{{translations.ORANGE}}</option>
-					<option value="Red">{{translations.RED}}</option>
-					<option value="Silver">{{translations.SILVER}}</option>
-					<option value="Turquoise">{{translations.TURQUOISE}}</option>
-					<option value="White">{{translations.WHITE}}</option>
-					<option value="Violet">{{translations.VIOLET}}</option>
-					<option value="Yellow">{{translations.YELLOW}}</option>
-				</select>
-			</li>
-			<li>{{translations.SECONDARYCOLOR}}:</li>
-			<li>
-				<select class="form-control-own" name="secondaryColor" ng-model="query.secondaryColor"
-					ng-change="searchForm()">
-					<option value=""></option>
-					<option value="Black">{{translations.BLACK}}</option>
-					<option value="Blue">{{translations.BLUE}}</option>
-					<option value="Brown">{{translations.BROWN}}</option>
-					<option value="Golden">{{translations.GOLDEN}}</option>
-					<option value="Green">{{translations.GREEN}}</option>
-					<option value="Grey">{{translations.GREY}}</option>
-					<option value="Orange">{{translations.ORANGE}}</option>
-					<option value="Red">{{translations.RED}}</option>
-					<option value="Silver">{{translations.SILVER}}</option>
-					<option value="Turquoise">{{translations.TURQUOISE}}</option>
-					<option value="Violet">{{translations.VIOLET}}</option>
-					<option value="White">{{translations.WHITE}}</option>
-					<option value="Yellow">{{translations.YELLOW}}</option>
-				</select>
-			</li>
-			<li> {{translations.NUMBEROFLEGS}}:</li>
-			<li>
-				<select class="form-control-own" name="legs" ng-model="query.legs">
-					<option value=""></option>
-					<option value="4">4</option>
-					<option value="6">6</option>
-					<option value="8">8</option>
-				</select>
-			</li>
-
-			<li> {{translations.LATINNAME}}: </li>
-			<li>
-				<input type="text" name="latinName" ng-model="query.latinName" ng-change="searchForm()" />
-			</li>
-			<input type="hidden" name="clicked" ng-model="query.filterClicked" value={{filterClicked}} />
-		</ul>
-	</div>
-
-	<br>
-	<br>
-	<table class="button-center">
-		<tr>
-			<td>
-				<button type="submit" id="search_button" ng-disabled="disableSearch" name="search"
-					class="button button-green">
-					{{translations.SEARCH}}
-
-				</button>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div class="lds-center">
-					<div class="lds-spinner spinner-loading" id="spinner-search">
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-					</div>
-				</div>
-			</td>
-		</tr>
-	</table>
-</form>
-
-<p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
-<div ng-switch="searchResults">
-
-	<div ng-switch-when="noResults" id="noResults">
-		<br>
-		<br>
-		<h2>{{translations.NORESULTS}} </h2>
-
-	</div>
-	<div ng-switch-when="showResults" id="showResults">
-		<br>
-		<br>
-		<h2>{{translations.RESULTS}}</h2>
-		<br>
-		<div class="container-search">
-			<ul class="insect-thumbs container-insect-thumbs" id="insect-thumbs">
-				<li ng-repeat="_insect in ($parent.filteredItems =(pagedInsects[currentPage] | searchFilter: query.primaryColor: query.category:query.secondaryColor:query.legs:filterClicked))"
-					ng-init="($first || $last) && finished()" class="thumb-item">
-					<img name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"
-						ng-class="{activeThumb: mainImageUrl == _insect.images[0]}" ng-click="setImage(_insect)"
-						alt={{_insect.latinName}} />
-
+<section class="section-search" ng-resize="resize">
+	<h2 style="margin-bottom: 20px" ng-if="fromObservationPage == 1">1. {{translations.SEARCHPAGE}}</h2>
+	<h1 ng-if="fromObservationPage != 1">{{translations.SEARCHPAGE}}</h1>
+	<form ng-submit='search(query)'>
+		<div class="flex-center">
+			<ul id="flex-table" class="flex-table">
+				<li>
+					{{translations.CATEGORY}}:
 				</li>
-			</ul>
+				<li>
 
-			<!-- pagination-->
-			<table class="pagination-center" id="pagination">
-				<tfoot>
-					<td colspan="6">
-						<div class="pagination pull-right">
+					<select class="form-control-own" name="category" ng-model="query.category"
+						ng-change="filterChange()" required>
+						<option value=""></option>
+						<option value="Ant">{{translations.ANT}}</option>
+						<option value="Bee">{{translations.BEE}}</option>
+						<option value="Beetle">{{translations.BEETLE}}</option>
+						<option value="Butterfly">{{translations.BUTTERFLY}}</option>
+						<option value="Centipede">{{translations.CENTIPEDE}}</option>
+						<option value="Spider">{{translations.SPIDER}}</option>
+
+					</select>
+				</li>
+
+				<li> {{translations.PRIMARYCOLOR}}:</li>
+				<li>
+					<select class="form-control-own" name="primaryColor" ng-model="query.primaryColor"
+						ng-change="filterChange()">
+						<option value=""></option>
+						<option value="Black">{{translations.BLACK}}</option>
+						<option value="Blue">{{translations.BLUE}}</option>
+						<option value="Brown">{{translations.BROWN}}</option>
+						<option value="Golden">{{translations.GOLDEN}}</option>
+						<option value="Green">{{translations.GREEN}}</option>
+						<option value="Grey">{{translations.GREY}}</option>
+						<option value="Orange">{{translations.ORANGE}}</option>
+						<option value="Red">{{translations.RED}}</option>
+						<option value="Silver">{{translations.SILVER}}</option>
+						<option value="Turquoise">{{translations.TURQUOISE}}</option>
+						<option value="White">{{translations.WHITE}}</option>
+						<option value="Violet">{{translations.VIOLET}}</option>
+						<option value="Yellow">{{translations.YELLOW}}</option>
+					</select>
+				</li>
+				<li>{{translations.SECONDARYCOLOR}}:</li>
+				<li>
+					<select class="form-control-own" name="secondaryColor" ng-model="query.secondaryColor">
+						<option value=""></option>
+						<option value="Black">{{translations.BLACK}}</option>
+						<option value="Blue">{{translations.BLUE}}</option>
+						<option value="Brown">{{translations.BROWN}}</option>
+						<option value="Golden">{{translations.GOLDEN}}</option>
+						<option value="Green">{{translations.GREEN}}</option>
+						<option value="Grey">{{translations.GREY}}</option>
+						<option value="Orange">{{translations.ORANGE}}</option>
+						<option value="Red">{{translations.RED}}</option>
+						<option value="Silver">{{translations.SILVER}}</option>
+						<option value="Turquoise">{{translations.TURQUOISE}}</option>
+						<option value="Violet">{{translations.VIOLET}}</option>
+						<option value="White">{{translations.WHITE}}</option>
+						<option value="Yellow">{{translations.YELLOW}}</option>
+					</select>
+				</li>
+				<!-- <li> {{translations.NUMBEROFLEGS}}:</li>
+				<li>
+					<select class="form-control-own" name="legs" ng-model="query.legs">
+						<option value=""></option>
+						<option value="4">4</option>
+						<option value="6">6</option>
+						<option value="8">8</option>
+					</select>
+				</li> -->
+
+				<li> {{translations.LATINNAME}}: </li>
+				<li>
+					<input type="text" name="latinName" ng-model="query.latinName" />
+				</li>
+				<input type="hidden" name="clicked" ng-model="query.filterClicked" value={{filterClicked}} />
+			</ul>
+		</div>
+
+		<br>
+		<br>
+		<table class="button-center">
+			<tr>
+				<td>
+					<button type="submit" id="search_button" ng-disabled="disableSearch" name="search"
+						class="button button-green">
+						{{translations.SEARCH}}
+
+					</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="lds-center">
+						<div class="lds-spinner spinner-loading" id="spinner-search">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+</section>
+<section class="section-search-results">
+	<p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
+	<div ng-switch="searchResults">
+
+		<div ng-switch-when="noResults" id="noResults">
+			<br>
+			<br>
+			<h2>{{translations.NORESULTS}} </h2>
+
+		</div>
+		<div ng-switch-when="showResults" id="showResults">
+			<br>
+			<br>
+			<h2>{{translations.RESULTS}}</h2>
+			<br>
+			<!-- grid -->
+
+			<div class="container-search"
+				ng-class="{withoutIdentifyBtnSm: resize.withoutIdentifyBtnSmCond, withoutIdentifyBtnMd: resize.withoutIdentifyBtnMdCond}"
+				id="container-search">
+
+				<!-- thumb pictures-->
+				<ul class="insect-thumbs container-insect-thumbs" id="insect-thumbs">
+					<li ng-repeat="_insect in pagedInsects[currentPage]" class="thumb-item">
+						<img name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"
+							ng-class="{activeThumb: mainImageUrl == _insect.images[0]}" ng-click="setImage(_insect)"
+							alt={{_insect.latinName}} />
+					</li>
+				</ul>
+
+				<!-- pagination-->
+				<table class="pagination-center" id="pagination">
+					<td>
+						<div class="pagination">
 							<ul>
 								<li ng-class="{disabled: currentPage == 0}">
 									<a href ng-click="prevPage()">« {{translations.PREVIOUS}}</a>
@@ -160,24 +162,26 @@
 							</ul>
 						</div>
 					</td>
-				</tfoot>
-			</table>
+				</table>
 
-			<!-- large picture-->
-			<div class="large-picture-search" id="large-picture-search">
-				<img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active:	mainImageUrl==img}">
-			</div>
+				<!-- large picture-->
+				<div class="large-picture-search" id="large-picture-search">
+					<img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active:	mainImageUrl==img}">
+				</div>
 
-			<div ng-if="fromObservationPage != 1 && searchResults=='showResults'" class="button-identify"
-				id="button-identify">
-				<button id="identify" type="button" class="button button-blue centered"
-					ng-click="insectDetail()">{{translations.IDENTIFY}} </button>
-			</div>
+				<!-- identify button -->
+				<div ng-if="fromObservationPage != 1 && searchResults=='showResults'" class="button-identify"
+					id="button-identify">
+					<button id="identify" type="button" class="button button-blue centered"
+						ng-click="insectDetail()">{{translations.IDENTIFY}}</button>
+				</div>
 
-		</div> <!-- end of showresults -->
-	</div> <!-- end of searchresults -->
-	<br>
-
+			</div> <!-- end of showresults -->
+		</div> <!-- end of searchresults -->
+		<br>
+	</div>
+</section>
+<section class="section-add-observation">
 	<!-- start of add observation panel -->
 	<div ng-if="fromObservationPage == 1">
 
@@ -217,7 +221,6 @@
 					<li>
 						<h3>{{translations.PLACESPECIFIC}}:</h3>
 					</li>
-					<li></li>
 
 					<div ng-switch="place">
 
@@ -238,6 +241,7 @@
 						</li>
 						<br><br>
 						<div ng-switch-when="selectobservation">
+							<li></li>
 							<!-- start of switch selectobservation-->
 							<!-- start of select an observation place -->
 							<li id="observationplace">
@@ -277,7 +281,8 @@
 									<option value="{{translations.SCOTLAND}}">{{translations.SCOTLAND}} </option>
 									<option value="{{translations.IRELAND}}">{{translations.IRELAND}} </option>
 									<option value="{{translations.ICELAND}}">{{translations.ICELAND}} </option>
-									<option value="{{translations.NETHERLAND}}">{{translations.NETHERLAND}} </option>
+									<option value="{{translations.NETHERLAND}}">{{translations.NETHERLAND}}
+									</option>
 									<option value="{{translations.UKRAINE}}">{{translations.UKRAINE}} </option>
 									<option value="{{translations.HUNGARY}}">{{translations.HUNGARY}} </option>
 									<option value="{{translations.SERBIA}}">{{translations.SERBIA}} </option>
@@ -292,10 +297,14 @@
 									<option value="{{translations.PAKISTAN}}">{{translations.PAKISTAN}} </option>
 									<option value="{{translations.KAZAKSTAN}}">{{translations.KAZAKSTAN}} </option>
 									<option value="{{translations.THAILAND}}">{{translations.THAILAND}} </option>
-									<option value="{{translations.SOUTHKOREA}}">{{translations.SOUTHKOREA}} </option>
-									<option value="{{translations.NORTHKOREA}}">{{translations.NORTHKOREA}} </option>
-									<option value="{{translations.PAPUAGUINEA}}">{{translations.PAPUAGUINEA}} </option>
-									<option value="{{translations.NEWZEALAND}}">{{translations.NEWZEALAND}} </option>
+									<option value="{{translations.SOUTHKOREA}}">{{translations.SOUTHKOREA}}
+									</option>
+									<option value="{{translations.NORTHKOREA}}">{{translations.NORTHKOREA}}
+									</option>
+									<option value="{{translations.PAPUAGUINEA}}">{{translations.PAPUAGUINEA}}
+									</option>
+									<option value="{{translations.NEWZEALAND}}">{{translations.NEWZEALAND}}
+									</option>
 									<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
 
 									<option value="{{translations.LAOS}}">{{translations.LAOS}} </option>
@@ -304,14 +313,17 @@
 									<option value="{{translations.MALESIA}}">{{translations.MALESIA}} </option>
 									<option value="{{translations.MYANMAR}}">{{translations.MYANMAR}} </option>
 									<option value="{{translations.SINGAPORE}}">{{translations.SINGAPORE}} </option>
-									<option value="{{translations.AFGANISTAN}}">{{translations.AFGANISTAN}} </option>
-									<option value="{{translations.BANGLADESH}}">{{translations.BANGLADESH}} </option>
+									<option value="{{translations.AFGANISTAN}}">{{translations.AFGANISTAN}}
+									</option>
+									<option value="{{translations.BANGLADESH}}">{{translations.BANGLADESH}}
+									</option>
 									<option value="{{translations.BHUTAN}}">{{translations.BHUTAN}} </option>
 									<option value="{{translations.MALEDIVE}}">{{translations.MALEDIVE}} </option>
 									<option value="{{translations.NEPAL}}">{{translations.NEPAL}} </option>
 									<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
 									<option value="{{translations.SRILANKA}}">{{translations.SRILANKA}} </option>
-									<option value="{{translations.AZERBAIDZAN}}">{{translations.AZERBAIDZAN}} </option>
+									<option value="{{translations.AZERBAIDZAN}}">{{translations.AZERBAIDZAN}}
+									</option>
 									<option value="{{translations.BAHRAIN}}">{{translations.BAHRAIN}} </option>
 									<option value="{{translations.YEMEN}}">{{translations.YEMEN}} </option>
 									<option value="{{translations.LIBANON}}">{{translations.LIBANON}} </option>
@@ -321,9 +333,12 @@
 									<option value="{{translations.INDONESIA}}">{{translations.INDONESIA}} </option>
 									<option value="{{translations.JORDANIA}}">{{translations.JORDANIA}} </option>
 									<option value="{{translations.GEORGIA}}">{{translations.GEORGIA}} </option>
-									<option value="{{translations.UZBEKISTAN}}">{{translations.UZBEKISTAN}} </option>
-									<option value="{{translations.TURKEMISTAN}}">{{translations.TURKEMISTAN}} </option>
-									<option value="{{translations.TADZIKISTAN}}">{{translations.TADZIKISTAN}} </option>
+									<option value="{{translations.UZBEKISTAN}}">{{translations.UZBEKISTAN}}
+									</option>
+									<option value="{{translations.TURKEMISTAN}}">{{translations.TURKEMISTAN}}
+									</option>
+									<option value="{{translations.TADZIKISTAN}}">{{translations.TADZIKISTAN}}
+									</option>
 
 									<option value="{{translations.CANADA}}">{{translations.CANADA}} </option>
 									<option value="{{translations.USA}}">{{translations.USA}} </option>
@@ -340,28 +355,34 @@
 									<option value="{{translations.COLUMBIA}}">{{translations.COLUMBIA}} </option>
 									<option value="{{translations.ISRAEL}}">{{translations.ISRAEL}} </option>
 									<option value="{{translations.SYRIA}}">{{translations.SYRIA}} </option>
-									<option value="{{translations.SAUDIARABIA}}">{{translations.SAUDIARABIA}} </option>
+									<option value="{{translations.SAUDIARABIA}}">{{translations.SAUDIARABIA}}
+									</option>
 									<option value="{{translations.BELARUS}}">{{translations.BELARUS}} </option>
 									<option value="{{translations.EGYPT}}">{{translations.EGYPT}} </option>
 									<option value="{{translations.TUNISIA}}">{{translations.TUNISIA}} </option>
 									<option value="{{translations.SUDAN}}">{{translations.SUDAN}} </option>
-									<option value="{{translations.SWITERLAND}}">{{translations.SWITZERLAND}} </option>
+									<option value="{{translations.SWITERLAND}}">{{translations.SWITZERLAND}}
+									</option>
 									<option value="{{translations.IRAN}}">{{translations.IRAN}} </option>
 									<option value="{{translations.VENEZUALA}}">{{translations.VENEZUALA}} </option>
 
-									<option value="{{translations.ARGENTIINA}}">{{translations.ARGENTIINA}} </option>
+									<option value="{{translations.ARGENTIINA}}">{{translations.ARGENTIINA}}
+									</option>
 									<option value="{{translations.MEXICO}}">{{translations.MACEDONIA}} </option>
 									<option value="{{translations.ARMENIA}}">{{translations.ARMENIA}} </option>
 									<option value="{{translations.SUDAN}}">{{translations.SUDAN}} </option>
 									<option value="{{translations.GHANA}}">{{translations.GHANA}} </option>
 									<option value="{{translations.DEMOCRATICREPUPUBLICOFCONGO}}">
 										{{translations.DEMOCRATICREPUPUBLICOFCONGO}} </option>
-									<option value="{{translations.REPUBLICOFCONGO}}">{{translations.REPUBLICOFCONGO}}
+									<option value="{{translations.REPUBLICOFCONGO}}">
+										{{translations.REPUBLICOFCONGO}}
 									</option>
 									<option value="{{translations.ALGERIA}}">{{translations.ALGERIA}} </option>
 									<option value="{{translations.ZIMBABWE}}">{{translations.ZIMBABWE}} </option>
-									<option value="{{translations.SOUTHAFRICA}}">{{translations.SOUTHAFRICA}} </option>
-									<option value="{{translations.MAURITANIA}}">{{translations.MAURITANIA}} </option>
+									<option value="{{translations.SOUTHAFRICA}}">{{translations.SOUTHAFRICA}}
+									</option>
+									<option value="{{translations.MAURITANIA}}">{{translations.MAURITANIA}}
+									</option>
 									<option value="{{translations.ANGOLA}}">{{translations.ANGOLA}} </option>
 									<option value="{{translations.ETHIOPIA}}">{{translations.ETHIOPIA}} </option>
 									<option value="{{translations.TANZANIA}}">{{translations.TANZANIA}} </option>
@@ -373,18 +394,21 @@
 
 									<option value="{{translations.COMOROS}}">{{translations.COMOROS}} </option>
 									<option value="{{translations.MALAWI}}">{{translations.MALAWI}} </option>
-									<option value="{{translations.SEYCHELLES}}">{{translations.SEYCHELLES}} </option>
+									<option value="{{translations.SEYCHELLES}}">{{translations.SEYCHELLES}}
+									</option>
 									<option value="{{translations.CHAD}}">{{translations.CHAD}} </option>
 									<option value="{{translations.LESOTHO}}">{{translations.LESOTHO}} </option>
 									<option value="{{translations.BENIN}}">{{translations.BENIN}} </option>
-									<option value="{{translations.IVORYCOAST}}">{{translations.IVORYCOAST}} </option>
+									<option value="{{translations.IVORYCOAST}}">{{translations.IVORYCOAST}}
+									</option>
 									<option value="{{translations.LIBERIA}}">{{translations.LIBERIA}} </option>
 									<option value="{{translations.MALI}}">{{translations.MALI}} </option>
 									<option value="{{translations.SENEGAL}}">{{translations.SENEGAL}} </option>
 									<option value="{{translations.TOG}}">{{translations.TOGO}} </option>
 									<option value="{{translations.GUINEABISSEAU}}">{{translations.GUINEABISSEAU}}
 									</option>
-									<option value="{{translations.SIERRALEONE}}">{{translations.SIERRALEONE}} </option>
+									<option value="{{translations.SIERRALEONE}}">{{translations.SIERRALEONE}}
+									</option>
 									<option value="{{translations.NIGER}}">{{translations.NIGER}} </option>
 								</select>
 							</li>
@@ -444,3 +468,4 @@
 		</form>
 
 	</div> <!-- end of add observation panel -->
+</section>

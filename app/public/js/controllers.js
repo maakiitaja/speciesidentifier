@@ -711,7 +711,20 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
   "$http",
   "$localStorage",
   "SearchService",
-  function ($scope, Search, $location, $http, $localStorage, SearchService) {
+  "$rootScope",
+  function (
+    $scope,
+    Search,
+    $location,
+    $http,
+    $localStorage,
+    SearchService,
+    $rootScope
+  ) {
+    // resizing the container search
+    $scope.resize = {};
+    $scope.resize.fromAddObservationsCtrl = true;
+
     // validation
     $scope.dateRequired = { date: 1 };
     $scope.observationLatinNameRequired = 1;
@@ -719,7 +732,36 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     $scope.addObservationFailure = "";
     $scope.addObservationSuccess = "";
 
+    //resize event listener
+    // if (!$rootScope.resizeSet) {
+    //   window.addEventListener(
+    //     "resize",
+    //     function () {
+    //       console.log("addEventListener - resize");
+    //       $rootScope.resizeSet = true;
+    //       resize($scope);
+    //     },
+    //     true
+    //   );
+    // }
+
+    // add the without identify button row -class to the search-container
+    if (getVw() < 860) {
+      console.log(
+        "setting without identify button grid configuration for small screens"
+      );
+      $scope.resize.withoutIdentifyBtnSmCond = true;
+      $scope.resize.withoutIdentifyBtnMdCond = false;
+    } else {
+      console.log(
+        "setting without identify button grid configuration for large screens"
+      );
+      $scope.resize.withoutIdentifyBtnSmCond = false;
+      $scope.resize.withoutIdentifyBtnMdCond = true;
+    }
+
     // Pagination
+
     $scope.itemsPerPage = 8;
     $scope.currentPage = 0;
     $scope.pagedInsects = [];
@@ -992,6 +1034,7 @@ insectIdentifierControllers.controller("SearchCtrl", [
   "$localStorage",
   "SearchService",
   "$timeout",
+  "$rootScope",
   function (
     $scope,
     Search,
@@ -999,8 +1042,13 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $http,
     $localStorage,
     SearchService,
-    $timeout
+    $timeout,
+    $rootScope
   ) {
+    // resizing the container search
+    $scope.resize = {};
+    $scope.resize.fromAddObservationsCtrl = false;
+
     // Update the main header
 
     // loop through all the menu items and remove the highlighted/selected css class
@@ -1037,63 +1085,19 @@ insectIdentifierControllers.controller("SearchCtrl", [
 
     // Pagination
     $scope.itemsPerPage = 8;
-    $scope.currentPage = 0;
+    if ($scope.selectedInsect === undefined) {
+      console.log("resetting pagination page");
+      $scope.currentPage = 0;
+    }
     $scope.pagedInsects = [];
     $scope.filterClicked = false;
     $scope.filteredItems = [];
-    /*$scope.cb = function(el) {
-			console.log('el.length: '+el.length);
-			var lis = el[0].getElementsByTagName('li');
-			for (var i = 0; i < lis.length; i++) {
-				var img = lis[i].getElementsByTagName('img');
 
-				console.log(''+i+': '+JSON.stringify(img));
-				if (isvisible(img[0]) == false) {
-					console.log('img'+i+' is hidden');
-				} else
-					console.log('img'+i+' is visible');
-				console.log('img.src: '+img[0].src + ' img.name: '+img[0].name);
-			}
-
-		}*/
     $scope.showFilteredItems = function () {
       console.log("showresults: " + $scope.searchResults);
       //console.log('filtered items: '+$scope.returnedFilteredItems);
       console.log("filtered items: " + $scope.filteredItems);
     };
-
-    /*$scope.$watch('filterdItems', function(items) {
-			console.log('filtered items: '+items);
-			if ($scope.filterClicked) {
-				if (items && items.length > 0) {
-					console.log('watch: setting main image url');
-					$scope.mainImageUrl = items[0].images[0];
-				}
-				else {
-					$scope.mainImageUrl = items[0].images[0];
-					console.log('watch: emptying main image url');
-				}	
- 				console.log('filter was clicked');
-
-				$scope.filterClicked = false;
-			}
-		});*/
-    /*
-
-
-		$scope.$watch('filterupdate', function(val) {
-			console.log('in filterupdate, val: '+val);
-			if (val == true) {
-				var el = document.getElementsByClassName('insect-thumbs');
-				console.log('el: '+JSON.stringify(el));
-				var lis = el[0].getElementsByTagName('li');
-				console.log('lis: '+JSON.stringify(lis));
-
-				var imgs = lis[0].getElementsByTagName('img');
-				console.log('img.src: '+imgs[0].src + ' img.name: '+imgs[0].name);
-				setDelay($scope.cb(el), 5500);
-			}
-		});*/
 
     $scope.setPagedInsects = function (insects) {
       setPagedInsects(insects, $scope);
@@ -1104,6 +1108,8 @@ insectIdentifierControllers.controller("SearchCtrl", [
     if ($location.search().returningFromDetailPage == "1") {
       console.log("returning from detail page");
       $scope.insect = $location.search().insect;
+      // for proper pagination to work
+      $scope.selectedInsect = $location.search().insect;
       $scope.searchResults = "showResults";
       var insects = $localStorage.searchResults;
       $scope.setPagedInsects(insects);
@@ -1127,49 +1133,10 @@ insectIdentifierControllers.controller("SearchCtrl", [
       console.log("search form filterclicked: " + $scope.filterClicked);
     };
 
-    $scope.finished = function () {
-      console.log("filtering done.");
-      console.log("scope.filteredItems: " + $scope.filteredItems);
-      var items = $scope.filteredItems;
-
-      if ($scope.filterClicked) {
-        if (items && items.length > 0) {
-          console.log("finished: setting main image url");
-          $scope.mainImageUrl = items[0].images[0];
-          // set the active insect
-          $scope.insect = items[0];
-        } else {
-          $scope.mainImageUrl = "";
-          console.log("finished: emptying main image url");
-        }
-        console.log("filter was clicked");
-
-        $scope.filterClicked = false;
-      }
-      /*	var el = document.getElementsByClassName('insect-thumbs');
-			var lis = el[0].getElementsByTagName('li');
-				
-			var imgs = lis[0].getElementsByTagName('img')																																																							;
-			//var el = document.querySelector('.insect-thumbs li');
-			console.log('el: '+JSON.stringify(el));
-			console.log('lis: '+JSON.stringify(lis));
-			console.log('imgs: '+JSON.stringify(imgs));
-			console.log('img: '+JSON.stringify(imgs[0]));
-			*/
-      //updateMainImageUrl($scope);
-    };
-
     $scope.search = function (query) {
       SearchService.search($scope, $localStorage, query);
     };
 
-    $scope.filterChange = function () {
-      console.log("filter change");
-    };
-    $scope.p = function () {
-      console.log("setting main image url");
-      $scope.mainImageUrl = "images/kimalaiset_495px.jpg";
-    };
     $scope.setImage = function (insect) {
       console.log("setting image");
 
@@ -1310,7 +1277,7 @@ insectIdentifierControllers.controller("MainCtrl", [
       $scope.location.path("insect/upload");
     };
     // pagination controls
-    $scope.currentPage = 1;
+    $scope.currentPage = 0;
     $scope.totalItems = 30;
     $scope.entryLimit = 8; // items per page
     $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
