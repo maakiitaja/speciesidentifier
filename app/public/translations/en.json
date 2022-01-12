@@ -1,6 +1,7 @@
 {
   "MANAGE": "Manage",
-  "OFFLINE": "View offline (localstorage will be used)",
+  "OFFLINE": "Load information from browser's local storage",
+  "OFFLINEMODE": "Offline mode",
   "USERNAME": "User name",
   "ALREADYACCOUNT": "Already have an account",
   "LOGIN": "Login",
@@ -278,5 +279,9 @@
   "PRIMARYCOLORREQUIRED": "Primary color is required.",
   "SECONDARYCOLORREQUIRED": "Secondary color is required.",
   "LATINNAMEREQUIRED": "Latin name is required.",
-  "MORE": "More"
+  "MORE": "More",
+  "NOUPLOADEDINSECTFOUND": "No uploaded insects found. Start adding new insects from",
+  "HERE": "here",
+  "NOCOLLECTIONITEMS": "Your collection is empty. Start adding new collection items from ",
+  "OFFLINEFAILURE": "Failed to add item to the collection. Reason offline mode."
 }

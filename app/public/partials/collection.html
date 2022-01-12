@@ -1,7 +1,8 @@
 <h1>{{translations.COLLECTIONPAGE}}</h1>
 <div class="centered">
-	<div>
-		<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-click="viewOffline()" />
+	<div ng-if="!collectionEmpty">
+		<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-model="checkbox.offline"
+			ng-click="viewOffline()" />
 		<strong>{{translations.OFFLINE}}</strong>
 
 	</div>
@@ -28,13 +29,18 @@
 						{{tmp = insect.images[0]+'_thumb.jpg'}}
 
 					</div>
-					<img ng-if="connected==1" id="{{insect.images[0]+'_thumb.jpg'}}"
+					<img ng-if="!checkbox.offline" id="{{insect.images[0]+'_thumb.jpg'}}"
 						ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
-					<img ng-if="connected==0" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
+					<img ng-if="checkbox.offline" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
 						ng-src="{{localStorage[tmp]}}" ng-click="viewDetail(insect)" />
 
 				</li>
 			</ul>
 		</div>
+	</div>
+
+	<div ng-if="collectionEmpty">
+		<p class="start-adding-collection-items">{{translations.NOCOLLECTIONITEMS}} <a
+				ng-click="startToAddCollectionItems()">{{translations.HERE}}</a></p>
 	</div>
 </div>

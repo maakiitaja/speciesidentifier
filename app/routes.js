@@ -669,7 +669,7 @@ module.exports = function (app, passport) {
       }
     }
 
-    if (!req.isAuthenticated()) req.send(null);
+    if (!req.isAuthenticated()) res.send(null);
     else {
       var observationDetail = new ObservationDetail();
 
@@ -694,10 +694,18 @@ module.exports = function (app, passport) {
             if (err) throw err;
 
             console.log("found insect by latin name: " + insect);
-            if (insect != null) observationDetail.insect = insect._id;
+            if (insect != null) {
+              observationDetail.insect = insect._id;
+            } else {
+              res.send(null);
+              return;
+            }
             saveObservation(observationDetail, observation, res);
           });
-        } else res.send(null);
+        } else {
+          res.send(null);
+          return;
+        }
       }
     }
   });

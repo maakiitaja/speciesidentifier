@@ -1,6 +1,6 @@
 {
   "MANAGE": "Hallitse",
-  "OFFLINE": "Selaa ilman verkkoyhteyttä",
+  "OFFLINE": "Lataa tiedot selaimen paikallisesta muistista (localstorage)",
   "USERNAME": "Käyttäjänimi",
   "ALREADYHAVEACCOUNT": "Olen jo luonut tilin",
   "LOGIN": "Kirjaudu",
@@ -203,7 +203,7 @@
   "NORTHWEST": "Luode",
   "MIDDLE": "Keski",
   "ADDOBSERVATIONPLACE": "Lisää havainto paikka",
-  "OBSERVATION": "Havainnot",
+  "OBSERVATION": "Havainto",
   "ADDOBSERVATION": "Lisää havainto",
   "BROWSEOBSERVATIONS": "Selaa havaintoja",
   "NEXT": "Seuraava",
@@ -282,5 +282,10 @@
   "LATINNAMEREQUIRED": "Latinalainen nimi on pakollinen.",
   "ADDOBSERVATIONSUCCESS": "Havainto lisätty onnistuneesti.",
   "ADDOBSERVATIONFAILURE": "Havaintoa ei onnistuttu lisämään.",
-  "MORE": "Lisää"
+  "MORE": "Lisää",
+  "NOUPLOADEDINSECTFOUND": "Et ole luonut aiemmin hyönteisiä. Aloita uusien hyönteisten luonti ",
+  "HERE": "täältä",
+  "NOCOLLECTIONITEMS": "Kokoelmasi on tyhjä. Aloita kokoelmasi luonti ",
+  "OFFLINEFAILURE": "Hyönteisen lisääminen kokoelmaan epäonnistui. Aseta selaimen paikallismuistin käyttö pois kokoelmasivulla. ",
+  "OFFLINEMODE": "Offline moodi"
 }

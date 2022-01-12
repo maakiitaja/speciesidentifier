@@ -1,6 +1,11 @@
 <br>
 <table class="center">
-	<tr>
+	<tr ng-if="!connected">
+		<td class="container-tag">
+			<div class="offline-mode">{{translations.OFFLINEMODE}}</div>
+		</td>
+	</tr>
+	<tr ng-if="description">
 		<td>
 			<p id="description"><strong>{{translations.DESCRIPTION}}</strong>: {{description}}</p>
 		</td>
@@ -13,6 +18,7 @@
 	<!-- main image -->
 	<tr>
 		<td>
+
 			<div ng-if="insect.images.length > 1">
 				<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images"
 					ng-class="{active: mainImageUrl==img}" class="insect-detail" />
@@ -29,7 +35,6 @@
 </table>
 
 <!-- translated name -->
-
 <table class="button-center">
 	<tr>
 		<td>
@@ -43,9 +48,7 @@
 </table>
 
 <!-- thumb images -->
-
 <div>
-
 	<ul class="insect-thumbs container-insect-detail" id="insect-thumbs" ng-if="insect.images.length > 1">
 		<li ng-repeat="img in insect.images">
 			<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}" ng-click="setImage(img)"
@@ -66,31 +69,35 @@
 		{{messageRemovedFailure}}</div>
 	<div id="messageRemovedSuccess" ng-if='messageRemovedSuccess != ""' class="alert alert-success">
 		{{messageRemovedSuccess}}</div>
+	<div ng-if="messageCollectionAddOfflineFailure != ''" class="alert alert-danger">
+		{{messageCollectionAddOfflineFailure}}
+	</div>
 </div>
 
-<p id="removeItem" value="{{removeItem}}" />
-
 <div ng-switch="prevUrl" class="center">
-
-
 	<div ng-switch-when="#/list">
 		<div class="button-grid">
-			<input id="newSearch" type="button" class="button button-blue" value="{{translations.NEWSEARCH}}"
+			<input id="newSearch" type="button" class="button button-blue" value="&larr; {{translations.NEWSEARCH}}"
 				ng-click="new_search()" />
+
 			<input ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red"
 				value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)" />
 
-			<input ng-if="!inCollection" id="addToCollection" ng-if="currentUser" type="button"
-				class="button button-green" value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()" />
+			<input ng-if="!inCollection" id="addToCollection" type="button" class="button button-green"
+				value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()" />
 		</div>
 	</div>
 	<div ng-switch-when="#/collection">
 		<div class="button-grid">
 			<input id="returnToCollection" type="button" class="button button-blue "
-				value="{{translations.RETURNTOCOLLECTION}}" ng-click="collection()" />
-			<input id="removeFromCollection" type="button" class="button button-red"
+				value="&larr; {{translations.RETURNTOCOLLECTION}}" ng-click="collection()" />
+
+			<input ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red"
 				value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)"
 				ng-disabled="removedItem" />
+
+			<input ng-if="!inCollection" id="addToCollection" type="button" class="button button-green"
+				value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()" />
 		</div>
 	</div>
 </div>

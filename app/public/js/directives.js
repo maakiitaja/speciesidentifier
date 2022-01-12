@@ -57,13 +57,7 @@ myApp.directive("ngResize", function ($window) {
       ngResize: "=",
     },
     link: function ($scope, element, attrs) {
-      console.log("resize directive");
-      angular.element($window).on("resize", function () {
-        console.log("$scope.ngResize: ", $scope.ngResize);
-        console.log(
-          "$scope.fromAddObservationsCtrl ",
-          $scope.ngResize.fromAddObservationsCtrl
-        );
+      function onResize() {
         if ($scope.ngResize.fromAddObservationsCtrl) {
           var vw = getVw();
           if (vw >= 860) {
@@ -77,10 +71,53 @@ myApp.directive("ngResize", function ($window) {
           }
           $scope.$apply();
         }
-      });
+      }
+
+      function cleanUp() {
+        console.log("resize directive cleanup");
+        angular.element($window).off("resize", onResize);
+      }
+
+      angular.element($window).on("resize", onResize);
+      $scope.$on("$destroy", cleanUp);
+
+      console.log("resize directive");
     },
   };
 });
+
+myApp.directive("resizev2", [
+  "$window",
+  function ($window) {
+    return {
+      link: link,
+      restrict: "A",
+    };
+
+    function link(scope, element, attrs) {
+      console.log("resizev2 directive start");
+
+      function onResize() {
+        scope.vw = getVw();
+        // uncomment for only fire when $window.innerWidth change
+        // if (scope.width !== $window.innerWidth)
+        {
+          console.log("resize event with width: ", scope.vw);
+          console.log("directive resize scope: ", scope);
+          scope.$digest();
+        }
+      }
+
+      function cleanUp() {
+        console.log("resize directive cleanup");
+        angular.element($window).off("resize", onResize);
+      }
+
+      angular.element($window).on("resize", onResize);
+      scope.$on("$destroy", cleanUp);
+    }
+  },
+]);
 
 myApp.directive("header", function () {
   return {

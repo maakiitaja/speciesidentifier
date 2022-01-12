@@ -6,22 +6,28 @@
 		<h2 id='Bee' ng-if="insects[0].category == 'Bee'">{{translations.BEE}}</h2>
 		<h2 id='Beetle' ng-if="insects[0].category == 'Beetle'">{{translations.BEETLE}}</h2>
 		<h2 id='Butterfly' ng-if="insects[0].category == 'Butterfly'">{{translations.BUTTERFLY}}</h2>
-		<h2 id='Centipede' ng-if="insects[0].category == 'Centipede'">{{translations.CATERPILLAR}}</h2>
+		<h2 id='Centipede' ng-if="insects[0].category == 'Centipede'">{{translations.CENTIPEDE}}</h2>
 		<h2 id='Spider' ng-if="insects[0].category == 'Spider'">{{translations.SPIDER}}</h2>
-		<ul align="center" class="insect-thumbs">
+		<ul class="insect-thumbs">
 			<li ng-repeat="insect in insects">
-				
+
 				<div ng-repeat="translation in insect.translations">
 					<p ng-if="translation.language==lang">
-					{{translation.name}}
+						{{translation.name}}
 					</p>
-				
+
 				</div>
 				<p>
 					{{insect.latinName}}
 				</p>
-				<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" id="{{insect.latinName}}" ng-click="upload(insect)"/>
+				<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" id="{{insect.latinName}}" ng-click="upload(insect)" />
 			</li>
 		</ul>
 	</div>
-</div>  
+
+</div>
+
+<div class="centered" ng-if="!uploadList.length">
+	<p class="start-adding-insect">{{translations.NOUPLOADEDINSECTFOUND}} <a
+			ng-click="upload()">{{translations.HERE}}</a></p>
+</div>

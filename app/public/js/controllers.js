@@ -231,6 +231,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     console.log(
       "uploadlist ctrl current User:" + $location.search().currentUser._id
     );
+
     $http({
       url: "/uploadList",
       method: "GET",
@@ -272,16 +273,24 @@ insectIdentifierControllers.controller("UploadListCtrl", [
         console.log(list[data[i].category]);
         //console.log("category's "+data[i].category+" "+i+"st item:"+list[data[i].category][i]);
       }
-      console.log(JSON.stringify(list["Butterfly"]));
+
       console.log(JSON.stringify(list));
-      $scope.uploadList = list;
+      if (list.length == 0) {
+        $scope.uploadList = null;
+      } else {
+        $scope.uploadList = list;
+      }
       $scope.insect = data[0];
     });
 
     $scope.upload = function (insect) {
-      $scope.location
-        .path("insect/upload")
-        .search({ insect: insect, fromUploadListPage: "1" });
+      if (insect === undefined) {
+        $scope.location.path("insect/upload");
+      } else {
+        $scope.location
+          .path("insect/upload")
+          .search({ insect: insect, fromUploadListPage: "1" });
+      }
     };
   },
 ]);
@@ -375,9 +384,17 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     $scope.messageCollectionAddSuccess = "";
     $scope.messageRemovedFailure = "";
     $scope.messageRemovedSuccess = "";
+    $scope.messageCollectionAddOfflineFailure = "";
+
+    // check connectivity
+    if ($localStorage.connected) {
+      console.log("$localStorage.connected: ", $localStorage.connected);
+    }
+    $scope.connected = $localStorage.connected;
 
     $scope.$watch("online", function (newStatus, $scope, $localStorage) {
-      connectivity(newStatus, $scope, $localStorage);
+      console.log("watch for 'online' called");
+      //connectivity(newStatus, $scope, $localStorage);
     });
 
     $scope.localStorage = $localStorage;
@@ -400,14 +417,15 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         console.log("response.data: " + response.data);
         if (response.data && response.data != "") {
           $scope.inCollection = 1;
-          $scope.removeItem = 1;
           console.log("disabled add collection");
         } else {
-          $scope.removeItem = 0;
           $scope.inCollection = 0;
           console.log("enabling add collection");
         }
       });
+    }
+    if ($scope.prevUrl === "#/collection") {
+      $scope.inCollection = 1;
     }
 
     $scope.lang = $cookies.get("lang");
@@ -425,24 +443,21 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         "&callback=?";
     }
 
-    var setDescription = function (desc) {
-      console.log("setting description: " + desc);
-      $scope.description = desc;
-    };
-
     $.getJSON(wikilink, function (data) {
       if (data.query) {
         var pages = data.query.pages;
+        var description = "";
         for (var prop in pages) {
           var description = JSON.stringify(data.query.pages[prop].extract);
+          if (description === '""') {
+            description = null;
+            console.log("set description to empty");
+          }
+          console.log("description: ", description);
         }
 
         console.log(description);
         if (description) {
-          //var res=description.replace("\"", '');
-          //res=description.replace("\"", '');
-          //res= res.replace("\\", '');
-          //console.log('setting description: '+res);
           $scope.$apply(function () {
             $scope.description = description;
           });
@@ -524,8 +539,6 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         // TODO catch max size reached
         $localStorage[name] = dataURL;
         var tmp = $localStorage[name];
-        console.log("saved item: " + tmp);
-        //console.log(JSON.stringify($localStorage));
       };
     };
 
@@ -564,6 +577,14 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     };
 
     $scope.removeFromCollection = function (insect) {
+      // check authentication status before going to the Server
+      console.log("current.user: ", $cookies.get("current.user"));
+      var currentUser = $cookies.get("current.user");
+      if (currentUser === "") {
+        // attempt to remove the insect from local storage
+        $scope.removeInsectFromCollection($scope, $localStorage);
+        return;
+      }
       $http({
         url: "/collection/remove",
         method: "GET",
@@ -571,42 +592,17 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       }).success(function (data) {
         console.log("data: " + data);
         if (data == "success") {
-          $scope.inCollection = 0;
-          $scope.removeItem = 0;
-
-          alert("Removed insect from collection.");
-          $scope.messageRemovedSuccess =
-            $scope.translations.REMOVEDINSECTFROMCOLLECTION;
-          // localstorage.update
-          var category = $scope.insect.category;
-          console.log(
-            "category: " +
-              category +
-              ", with length: " +
-              $localStorage.collection[category].length +
-              ", $localStorage.collection[category][0]: " +
-              $localStorage.collection[category][0]
-          );
-
-          for (var i = 0; i < $localStorage.collection[category].length; i++) {
-            console.log(
-              "$localStorage.collection[category][i]._id: " +
-                $localStorage.collection[category][0]._id
-            );
-            if (
-              $localStorage.collection[category][i]._id == $scope.insect._id
-            ) {
-              console.log("found insect from local storage at position: " + i);
-
-              $localStorage.collection[category].splice(i, 1);
-              console.log(
-                "$localStorage.collection[category].length: " +
-                  $localStorage.collection[category].length
-              );
-              break;
-            }
-          }
+          $scope.removeInsectFromCollection($scope, $localStorage);
         } else {
+          // check first whether the insect is in the localstorage collection
+          var successLocalStorageRemoval = $scope.removeInsectFromCollection(
+            $scope,
+            $localStorage
+          );
+          if (successLocalStorageRemoval) {
+            return;
+          }
+
           $scope.messageRemovedFailure =
             $scope.translations.FAILEDTOREMOVEINSECTFROMCOLLECTION;
           $scope.inCollection = 0;
@@ -616,7 +612,52 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       });
     };
 
+    $scope.removeInsectFromCollection = function ($scope, $localStorage) {
+      var category = $scope.insect.category;
+      console.log(
+        "category: " +
+          category +
+          ", with length: " +
+          $localStorage.collection[category].length +
+          ", $localStorage.collection[category][0]: " +
+          $localStorage.collection[category][0]
+      );
+      var success = false;
+
+      for (var i = 0; i < $localStorage.collection[category].length; i++) {
+        if ($localStorage.collection[category][i]._id == $scope.insect._id) {
+          console.log("found insect from local storage at position: " + i);
+
+          $localStorage.collection[category].splice(i, 1);
+          success = true;
+          break;
+        }
+      }
+
+      if (success) {
+        $scope.messageRemovedSuccess =
+          $scope.translations.REMOVEDINSECTFROMCOLLECTION;
+        // update the state
+        $scope.inCollection = 0;
+      } else {
+        $scope.messageRemovedFailure =
+          $scope.translations.FAILEDTOREMOVEINSECTFROMCOLLECTION;
+      }
+
+      return success;
+    };
+
     $scope.add_to_collection = function () {
+      // guard if collection page has set the offline option
+      if ($localStorage.connected == 0 || localStorage.connected === "0") {
+        console.log(
+          "addToCollection, collection page has set the offline option"
+        );
+        $scope.messageCollectionAddOfflineFailure =
+          $scope.translations.OFFLINEFAILURE;
+        return;
+      }
+
       var insectsByCategory = {
         Ant: [],
         Bee: [],
@@ -655,7 +696,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
             );
             console.log("not a duplicate");
             $scope.saveImagesToLocalStorage();
-            alert("Saved insect to collection");
+            //alert("Saved insect to collection");
           }
         } else {
           $localStorage.collection[$scope.insect.category].push($scope.insect);
@@ -674,22 +715,31 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       }
       // save to the server
       if (!duplicate) {
+        // check authentication status before going to the Server
+        console.log("current.user: ", $cookies.get("current.user"));
+        var currentUser = $cookies.get("current.user");
+        if (currentUser === "") {
+          $scope.addItemToCollection($scope);
+        }
         $http({
           url: "/collection/insert",
           method: "GET",
           params: { insectId: $scope.insect._id },
         }).success(function (data) {
-          console.log("translations.ITEMSAVED");
-          $scope.disableAddCollection = "true";
-          $scope.messageCollectionAddSuccess = $scope.translations.ITEMSAVED;
-          $scope.inCollection = 1;
-          $scope.removeItem = 1;
+          $scope.addItemToCollection($scope);
         });
       } else {
         console.log("translations.ITEMALREADYINCOLLECTION");
         $scope.messageCollectionAddFailure =
           $scope.translations.ITEMALREADYINCOLLECTION;
       }
+    };
+
+    $scope.addItemToCollection = function ($scope) {
+      console.log("translations.ITEMSAVED");
+      $scope.disableAddCollection = "true";
+      $scope.messageCollectionAddSuccess = $scope.translations.ITEMSAVED;
+      $scope.inCollection = 1;
     };
 
     $scope.collection = function () {
@@ -721,6 +771,9 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     SearchService,
     $rootScope
   ) {
+    // reset the hidden insectid
+    $scope.insectId = null;
+
     // resizing the container search
     $scope.resize = {};
     $scope.resize.fromAddObservationsCtrl = true;
@@ -731,19 +784,6 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
 
     $scope.addObservationFailure = "";
     $scope.addObservationSuccess = "";
-
-    //resize event listener
-    // if (!$rootScope.resizeSet) {
-    //   window.addEventListener(
-    //     "resize",
-    //     function () {
-    //       console.log("addEventListener - resize");
-    //       $rootScope.resizeSet = true;
-    //       resize($scope);
-    //     },
-    //     true
-    //   );
-    // }
 
     // add the without identify button row -class to the search-container
     if (getVw() < 860) {
@@ -761,13 +801,9 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     }
 
     // Pagination
-
     $scope.itemsPerPage = 8;
     $scope.currentPage = 0;
     $scope.pagedInsects = [];
-    $scope.selectExistingObservation =
-      "0"; /* mode of choosing an observation place */
-    $scope.place = "addobservationplace"; // default to add a new observation place
 
     $scope.fromObservationPage = 1;
     $scope.$watch("translations", function (val) {
@@ -800,65 +836,6 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       init_times(monthtime, weekday);
       init_close($scope.translations.CLOSE);
     });
-
-    // fetch for user's stored observation places
-    // get a list of beetles
-    $http({
-      url: "/observationplace/list",
-      method: "GET",
-      params: { user: $location.search().currentUser },
-    }).success(function (data) {
-      //alert('received observation places'+ data);
-
-      console.log("showing observation places");
-      console.log("data: " + JSON.stringify(data));
-      var observationPlaceFormatted = [];
-      for (var i = 0; i < data.length; i++) {
-        var text =
-          data[i].country + ", " + data[i].location + ", " + data[i].place;
-        if (data[i].organicFarm) {
-          console.log("organic farm");
-          text = text.concat(", " + $scope.translations.ORGANICFARM);
-          console.log("modfied text: " + text);
-        } else if (data[i].farm && !data[i].organicFarm) {
-          console.log("non organic farm");
-          text = text.concat(", " + $scope.translations.NONORGANICFARM);
-          console.log("modified text: " + text);
-        }
-        console.log(
-          "country: " +
-            data[i].country +
-            ", organicfarm: " +
-            data[i].organicFarm +
-            ", " +
-            data[i].place +
-            ", " +
-            data[i].location +
-            ", farm: " +
-            data[i].farm
-        );
-        observationPlaceFormatted.push({ summary: text, id: data[i]._id });
-      }
-      console.log(
-        "observation places formatted: " +
-          JSON.stringify(observationPlaceFormatted)
-      );
-      $scope.observationPlaces = observationPlaceFormatted;
-    });
-
-    /** Scope functions **/
-    $scope.toggleElements = function (elem, deactivated) {
-      console.log("elem: " + elem + " hidden: " + deactivated);
-      if (elem == "observationplace") {
-        console.log("showing select observationplace");
-        $scope.place = "selectobservation";
-        $scope.selectExistingObservation = "1";
-      } else {
-        console.log("showing addobservation");
-        $scope.place = "addobservationplace";
-        $scope.selectExistingObservation = "0";
-      }
-    };
 
     $scope.ds_sh_search = function (el) {
       ds_sh(el, $scope);
@@ -902,45 +879,31 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       date.setMonth(month);
       date.setDate(formattedDate.substring(8, 10));
       console.log("latinname: " + query.observationLatinName);
-      console.log("insectId: " + query.insectId);
+      console.log("insectId: " + $scope.insectId);
 
-      if ($scope.selectExistingObservation == "1") {
-        console.log("adding observation with existing place");
-        console.log("observationplace id: " + query.observationPlace);
-        params = {
-          insectId: document.getElementById("insectId").value,
-          user: $location.search().currentUser,
-          date: date,
-          count: query.count,
-          observationPlaceId: query.observationPlace,
-          latinName: query.observationLatinName,
-        };
-      } else {
-        console.log("adding an observation without existing place");
-        console.log("query object: ", query);
-        console.log(
-          "organicfarm: " + document.getElementById("organicFarm").checked
-        );
-        console.log(
-          "nonorganicfarm: " + document.getElementById("nonOrganicFarm").checked
-        );
-        console.log("nofarm: " + document.getElementById("other").checked);
+      console.log("adding an observation without existing place");
+      console.log("query object: ", query);
+      console.log(
+        "organicfarm: " + document.getElementById("organicFarm").checked
+      );
+      console.log(
+        "nonorganicfarm: " + document.getElementById("nonOrganicFarm").checked
+      );
+      console.log("nofarm: " + document.getElementById("other").checked);
 
-        console.log("insectId:" + document.getElementById("insectId").value);
-        console.log("query.country: " + query.country);
-        params = {
-          country: query.country,
-          location: query.location,
-          count: query.count,
-          date: date,
-          place: query.place,
-          organicFarm: document.getElementById("organicFarm").checked,
-          nonOrganicFarm: document.getElementById("nonOrganicFarm").checked,
-          user: $location.search().currentUser,
-          latinName: query.observationLatinName,
-          insectId: document.getElementById("insectId").value,
-        };
-      }
+      console.log("query.country: " + query.country);
+      params = {
+        country: query.country,
+        location: query.location,
+        count: query.count,
+        date: date,
+        place: query.place,
+        organicFarm: document.getElementById("organicFarm").checked,
+        nonOrganicFarm: document.getElementById("nonOrganicFarm").checked,
+        user: $location.search().currentUser,
+        latinName: query.observationLatinName,
+        insectId: $scope.insectId,
+      };
 
       $http({ url: "/observation/add", method: "POST", params: params })
         .success(function (data) {
@@ -997,12 +960,15 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
 
     $scope.setImage = function (insect) {
       $scope.mainImageUrl = insect.images[0];
+
+      // update the hidden insect id
+      $scope.insectId = insect._id;
+
       if (insect.latinName !== undefined && insect.latinName !== "undefined") {
         document.getElementById("observationLatinName").value =
           insect.latinName;
         $scope.observationLatinNameRequired = 0; //document.getElementById('observationLatinName')
       }
-      //setImage(insect, $scope);
     };
 
     /** Pagination functions **/
@@ -1045,6 +1011,10 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $timeout,
     $rootScope
   ) {
+    // enable search button
+    console.log("enabling search button");
+    $scope.disableSearch = false;
+
     // resizing the container search
     $scope.resize = {};
     $scope.resize.fromAddObservationsCtrl = false;
@@ -1107,6 +1077,14 @@ insectIdentifierControllers.controller("SearchCtrl", [
 
     if ($location.search().returningFromDetailPage == "1") {
       console.log("returning from detail page");
+      // guard for page reloads
+      console.log(
+        "location.search().insect.images: ",
+        $location.search().insect.images
+      );
+      if ($location.search().insect.images === undefined) {
+        return;
+      }
       $scope.insect = $location.search().insect;
       // for proper pagination to work
       $scope.selectedInsect = $location.search().insect;
@@ -1292,14 +1270,12 @@ insectIdentifierControllers.controller("CollectionCtrl", [
   "$localStorage",
   "$cookies",
   function ($scope, Search, $location, $http, $localStorage, $cookies) {
-    $scope.connected = $scope.online;
+    console.log("$localStorage.connected", $localStorage.connected);
+    $scope.checkbox = { offline: !$localStorage.connected };
+    console.log("$scope.offline", $scope.checkbox.offline);
 
-    console.log("scope.online: " + $scope.online);
-    if (!$scope.online) document.getElementById("offline").checked = true;
-    else document.getElementById("offline").checked = false;
     $scope.localStorage = $localStorage;
     $scope.tmp = "";
-    var name = "abc d";
     var name = "images/Scarabaeidae-Lehtisarviset tv20100621_081.jpg_thumb.jpg";
     console.log("$localStorage.name:" + $localStorage[name]);
     console.log("$scope.$localStorage.name:" + $scope.localStorage[name]);
@@ -1315,6 +1291,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       Spider: [],
     };
 
+    $scope.collectionEmpty = collectionEmpty($localStorage.collection);
+    console.log("collection empty: ", $scope.collectionEmpty);
+
     $http
       .get("/collection/list")
       .success(function (data) {
@@ -1323,7 +1302,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           $localStorage.collection = [];
           $localStorage.collection = insectsByCategory;
         }
+        console.log("data: ", data);
 
+        // Add items from the backend to the localstorage if there are no duplicates
         for (var ind in data) {
           var insect = data[ind];
           var duplicate = 0;
@@ -1347,6 +1328,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
             $localStorage.collection[insect.category].push(insect);
           }
         }
+        $scope.collectionEmpty = collectionEmpty($localStorage.collection);
+        console.log("collection empty: ", $scope.collectionEmpty);
       })
       .error(function () {
         console.log("failed to refresh collection");
@@ -1357,12 +1340,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $scope.localStorage = $localStorage;
 
     $scope.viewOffline = function () {
-      if (document.getElementById("offline").checked == "0")
-        $scope.connected = "1";
-      else $scope.connected = "0";
+      console.log("connected : " + !$scope.checkbox.offline);
 
-      console.log("connected : " + $scope.connected);
-      $localStorage.connected = $scope.connected;
+      $localStorage.connected = !$scope.checkbox.offline;
     };
 
     $scope.viewDetail = function (insect) {
@@ -1373,6 +1353,10 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       $scope.location
         .path("insect")
         .search({ insect: insect, prevUrl: "#/collection" });
+    };
+
+    $scope.startToAddCollectionItems = function () {
+      $scope.location.path("search");
     };
   },
 ]);

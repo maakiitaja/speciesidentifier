@@ -67,26 +67,29 @@ function setPagedInsects(insects, $scope) {
   }
 }
 
-function resize($scope) {
-  var vw = getVw();
-  console.log("withoutIdentifyBtnCond: ", $scope.withoutIdentifyBtnCond);
-  //console.log("vw: ", vw);
-
-  if (vw >= 860) {
-    console.log("vw >= 860px");
-    $scope.withoutIdentifyBtnCond = false;
-    $scope.$apply();
-  } else {
-    console.log("vw < 860px");
-    $scope.withoutIdentifyBtnCond = true;
-    $scope.$apply();
-  }
-}
-
 function getVw() {
   const vw = Math.max(
     document.documentElement.clientWidth || 0,
     window.innerWidth || 0
   );
   return vw;
+}
+
+function collectionEmpty(collection) {
+  var isEmpty = true;
+
+  if (collection === undefined) {
+    return isEmpty;
+  }
+  console.log("collection: ", collection);
+
+  for (var ind in collection) {
+    console.log("category ", ind);
+    console.log("category.length ", collection[ind].length);
+    if (collection[ind].length > 0) {
+      isEmpty = false;
+      break;
+    }
+  }
+  return isEmpty;
 }

@@ -103,6 +103,7 @@ insectIdentifierApp.factory("SearchService", [
         console.log("query: " + query);
         // reset the pagination page
         $scope.currentPage = 0;
+
         if (query == "" || typeof query == "undefined") {
           $scope.searchResults = "Please, provide search parameters";
           console.log("query is empty");
@@ -152,20 +153,31 @@ insectIdentifierApp.factory("SearchService", [
 
               // in case coming from observation page
               // and search narrowed by name
-              console.log("query.latinName: " + query.latinName);
-              if (query.latinName != "" && $scope.fromObservationPage == "1") {
-                console.log("setting latin name for add observation form");
-                if (query.latinName !== undefined) {
-                  console.log("searchservice, query.latinname not null");
-                  document.getElementById("observationLatinName").value =
-                    query.latinName;
-                } else {
-                  console.log("searchservice, no query.latinname");
-                  console.log("data[0]", data[0]);
-                  document.getElementById("insectId").value = data[0]._id;
-                  document.getElementById("observationLatinName").value =
-                    data[0].latinName;
-                }
+              // console.log("query.latinName: " + query.latinName);
+              // if (query.latinName != "" && $scope.fromObservationPage == "1") {
+              //   console.log("setting latin name for add observation form");
+              //   if (query.latinName !== undefined) {
+              //     console.log("searchservice, query.latinname not null");
+              //     document.getElementById("observationLatinName").value =
+              //       query.latinName;
+              //   } else {
+              //     console.log("searchservice, no query.latinname");
+              //     console.log("data[0]", data[0]);
+              //     document.getElementById("insectId").value = data[0]._id;
+              //     document.getElementById("observationLatinName").value =
+              //       data[0].latinName;
+              //   }
+              // }
+
+              // in case coming from observation page
+              console.log("blaa");
+              if ($scope.fromObservationPage == "1") {
+                console.log(
+                  "coming from observation page: setting hidden insectId and latinname"
+                );
+                $scope.insectId = data[0]._id;
+                document.getElementById("observationLatinName").value =
+                  data[0].latinName;
               }
 
               console.log("showing search results");

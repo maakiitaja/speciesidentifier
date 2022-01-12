@@ -64,6 +64,24 @@
   border-radius: 5px;
 }
 
+/** Offline mode tag **/
+.offline-mode {
+  background-color: #ffd43b;
+  border-radius: 100px;
+  padding: 1px 15px;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  margin: 20px;
+  max-width: 200px;
+}
+
+.container-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* alert box */
 .container-alert {
   margin: auto 20px;
@@ -373,13 +391,6 @@ ul.insect-thumbs img:hover {
   transform: scale(1.25);
 }
 
-.section-search,
-.section-add-observation {
-  /*background-color: #eeefff;*/
-}
-.section-search-results {
-  /*background-color: rgb(230, 225, 225);*/
-}
 .flex-table {
   display: flex;
   align-items: center;
@@ -410,6 +421,8 @@ ul.insect-thumbs img:hover {
   flex: 1 7 10%;
 }
 
+/* responsive addobservation search */
+
 .withoutIdentifyBtnSm {
   grid-template-rows: 0.2fr 1fr 0.2fr 1px !important;
 }
@@ -418,9 +431,7 @@ ul.insect-thumbs img:hover {
   grid-template-rows: 4fr 1fr !important;
 }
 
-.tables {
-}
-
+/* medium browse observation table */
 th.th-observation,
 td.cell-observation {
   padding: 16px 24px;
@@ -453,7 +464,7 @@ tbody.observation-table-body tr:nth-child(even) {
 .table-observation {
   margin: 0 auto;
 }
-*/ .container-search {
+.container-search {
   row-gap: 10px;
   column-gap: 50px;
   display: grid;
@@ -683,6 +694,13 @@ h1 {
 }
 h2 {
   text-align: center;
+  margin-bottom: 45px !important;
+  color: rgb(80, 80, 80) !important;
+}
+h2 span {
+  /*rgba(90, 81, 81, 0.5)*/
+  color: #b0adad;
+  margin-right: 12px;
 }
 
 /** From bootstrap */
@@ -815,6 +833,12 @@ h1,
   color: #b84db8 !important;
   text-align: center;
   margin-bottom: 60px !important;
+}
+h4 {
+  text-align: center;
+  color: #b84db8 !important;
+  margin-top: 20px !important;
+  margin-bottom: 5px !important;
 }
 
 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#bfd255+0,8eb92a+50,72aa00+51,9ecb2d+100;Green+Gloss */
