@@ -2,11 +2,11 @@
 <div class="centered">
 	<div ng-if="!collectionEmpty">
 		<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-model="checkbox.offline"
-			ng-click="viewOffline()" />
+			ng-click="viewOffline()" class="input--sm" />
 		<strong>{{translations.OFFLINE}}</strong>
 
 	</div>
-	<div ng-repeat="insects in localStorage.collection">
+	<div ng-repeat=" insects in localStorage.collection">
 
 		<div ng-if="insects.length > 0">
 			<h3 ng-if="insects[0].category == 'Ant'" id="collection-ant">{{translations.ANT}}</h3>

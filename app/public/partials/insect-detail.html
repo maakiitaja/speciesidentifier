@@ -74,30 +74,35 @@
 	</div>
 </div>
 
+<!-- buttons -->
 <div ng-switch="prevUrl" class="center">
 	<div ng-switch-when="#/list">
 		<div class="button-grid">
-			<input id="newSearch" type="button" class="button button-blue" value="&larr; {{translations.NEWSEARCH}}"
-				ng-click="new_search()" />
+			<button id="newSearch" type="button" class="button button-blue" value="&larr; {{translations.NEWSEARCH}}"
+				ng-click="new_search()">&larr; {{translations.NEWSEARCH}}</button>
 
-			<input ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red"
-				value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)" />
+			<button ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red"
+				value="{{translations.REMOVEFROMCOLLECTION}}"
+				ng-click="removeFromCollection(insect)">{{translations.REMOVEFROMCOLLECTION}}</button>
 
-			<input ng-if="!inCollection" id="addToCollection" type="button" class="button button-green"
-				value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()" />
+			<button ng-if="!inCollection" id="addToCollection" type="button" class="button button-green"
+				value="{{translations.ADDTOCOLLECTION}}"
+				ng-click="add_to_collection()">{{translations.ADDTOCOLLECTION}}</button>
 		</div>
 	</div>
 	<div ng-switch-when="#/collection">
 		<div class="button-grid">
-			<input id="returnToCollection" type="button" class="button button-blue "
-				value="&larr; {{translations.RETURNTOCOLLECTION}}" ng-click="collection()" />
+			<button id="returnToCollection" type="button" class="button button-blue "
+				value="&larr; {{translations.RETURNTOCOLLECTION}}" ng-click="collection()">&larr;
+				{{translations.RETURNTOCOLLECTION}}</button>
 
-			<input ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red"
+			<button ng-if="inCollection==1" id="removeFromCollection" type="button" class="button button-red"
 				value="{{translations.REMOVEFROMCOLLECTION}}" ng-click="removeFromCollection(insect)"
-				ng-disabled="removedItem" />
+				ng-disabled="removedItem">{{translations.REMOVEFROMCOLLECTION}}</button>
 
-			<input ng-if="!inCollection" id="addToCollection" type="button" class="button button-green"
-				value="{{translations.ADDTOCOLLECTION}}" ng-click="add_to_collection()" />
+			<button ng-if="!inCollection" id="addToCollection" type="button" class="button button-green"
+				value="{{translations.ADDTOCOLLECTION}}"
+				ng-click="add_to_collection()">{{translations.ADDTOCOLLECTION}}</button>
 		</div>
 	</div>
 </div>

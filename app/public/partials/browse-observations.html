@@ -168,19 +168,22 @@
 			</li>
 			<li>
 
-				<input type="radio" id="noFarmType" value="{{translations.NO}}" name="typeselection"
+				<input class="input--sm" type="radio" id="noFarmType" value="{{translations.NO}}" name="typeselection"
 					ng-click="showByType('0')" checked=true /> {{translations.NO}}
-				<input type="radio" id="byFarmType" value="{{translations.YES}}" name="typeselection"
+				<input class="input--sm" type="radio" id="byFarmType" value="{{translations.YES}}" name="typeselection"
 					ng-click="showByType('1')" /> {{translations.YES}}
 
 				<div ng-switch="typeSelection">
 					<div ng-switch-when="byType">
-						<input type="radio" id="nofarm" name="farmtype" value="{{translations.NOFARM}}"
-							ng-model="query.nofarm" checked=true /> {{translations.NOFARM}}
-						<input type="radio" id="organicFarm" name="farmtype" value="{{translations.ORGANICFARM}}"
-							ng-model="query.organicFarm"> {{translations.ORGANICFARM}}
-						<input type="radio" id="nonOrganicFarm" name="farmtype" value="{{translations.NONORGANICFARM}}"
-							ng-model="query.nonOrganicFarm" /> {{translations.NONORGANICFARM}}
+						<input class="input--sm" type="radio" id="nofarm" name="farmtype"
+							value="{{translations.NOFARM}}" ng-model="query.nofarm" checked=true />
+						{{translations.NOFARM}}
+						<input class="input--sm" type="radio" id="organicFarm" name="farmtype"
+							value="{{translations.ORGANICFARM}}" ng-model="query.organicFarm">
+						{{translations.ORGANICFARM}}
+						<input class="input--sm" type="radio" id="nonOrganicFarm" name="farmtype"
+							value="{{translations.NONORGANICFARM}}" ng-model="query.nonOrganicFarm" />
+						{{translations.NONORGANICFARM}}
 
 					</div>
 				</div>
@@ -216,10 +219,10 @@
 				{{translations.SEARCH}}:
 			</li>
 			<li>
-				<input type="radio" id="byCategory" value="{{translations.CATEGORY}}" name="insectsearchselection"
-					ng-click="toggleInsectSearch('0')" /> {{translations.CATEGORY}}
-				<input type="radio" id="byName" value="{{translations.NAME}}" name="insectsearchselection"
-					ng-click="toggleInsectSearch('1')" /> {{translations.NAME}}
+				<input class="input--sm" type="radio" id="byCategory" value="{{translations.CATEGORY}}"
+					name="insectsearchselection" ng-click="toggleInsectSearch('0')" /> {{translations.CATEGORY}}
+				<input class="input--sm" type="radio" id="byName" value="{{translations.NAME}}"
+					name="insectsearchselection" ng-click="toggleInsectSearch('1')" /> {{translations.NAME}}
 
 				<div ng-switch="insectSearchSelection">
 

@@ -196,7 +196,7 @@
 	<div ng-if="fromObservationPage == 1">
 
 		<h2><span>02</span> {{translations.OBSERVATION}} </h2>
-		<p>insectid: {{insectId}}</p>
+
 		<form ng-submit="addObservation(params)">
 			<div class="flex-center">
 				<ul id="flex-table" class="flex-table">
@@ -209,8 +209,9 @@
 					<li> {{translations.LATINNAME}}(*): </li>
 					<li>
 						<input type="text" id="observationLatinName" name="observationLatinName"
-							ng-model="params.observationLatinName" ng-change="checkContent('observationLatinName')"
-							ng-required="observationLatinNameRequired" />
+							ng-model="params.observationLatinName"
+							ng-change="checkLatinname(params.observationLatinName)" ng-disabled="mainImageUrl"
+							required />
 					</li>
 					<li>
 						{{translations.DATE}}(*):
@@ -223,7 +224,7 @@
 						{{translations.COUNT}}(*):
 					</li>
 					<li>
-						<input type="text" id="count" name="count" ng-model="params.count" required />
+						<input type="number" id="count" name="count" ng-model="params.count" required />
 					</li>
 					<input type="hidden" id="insectId" />
 
@@ -393,7 +394,7 @@
 							{{translations.LOCATION}}(*):
 						</li>
 						<li>
-							<select name="location" ng-model="params.location" required>
+							<select name="countrypart" ng-model="params.countrypart" required>
 								<option value=""></option>
 								<option value="{{translations.NORTH}}">{{translations.NORTH}}</option>
 								<option value="{{translations.NORTHEAST}}">{{translations.NORTHEAST}}</option>
@@ -416,13 +417,16 @@
 							{{translations.PLACETYPE}}:
 						</li>
 						<li>
-							<input type="radio" id="other" name="farmtypegroup" ng-model="params.farmType" checked />
-							{{translations.OTHER}}<br>
-							<input type="radio" id="organicFarm" name="farmtypegroup" ng-model="params.organicFarm" />
-							{{translations.ORGANICFARM}}<br>
-							<input type="radio" id="nonOrganicFarm" name="farmtypegroup"
-								ng-model="params.nonorganicFarm" />
-							{{translations.NONORGANICFARM}}
+							<div class="centered">
+								<input type="radio" class="input--sm" id="other" name="farmtypegroup"
+									ng-model="params.farmType" value="other">{{translations.OTHER}}
+								<br>
+								<input type="radio" class="input--sm" id="organicFarm" name="farmtypegroup"
+									ng-model="params.farmType" value="organicFarm" />{{translations.ORGANICFARM}}
+								<br>
+								<input type="radio" class="input--sm" id="nonOrganicFarm" name="farmtypegroup"
+									ng-model="params.farmType" value="nonorganicFarm" />{{translations.NONORGANICFARM}}
+							</div>
 
 						</li>
 					</div>

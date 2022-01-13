@@ -697,6 +697,7 @@ module.exports = function (app, passport) {
             if (insect != null) {
               observationDetail.insect = insect._id;
             } else {
+              console.log("couldn't find the insect by latin name, returning");
               res.send(null);
               return;
             }

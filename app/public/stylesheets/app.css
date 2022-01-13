@@ -621,7 +621,12 @@ select {
 }
 input {
   margin: 5px !important;
+  width: 200px;
 }
+input.input--sm {
+  width: auto !important;
+}
+
 textarea {
   margin: 5px;
 }

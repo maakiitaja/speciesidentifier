@@ -761,16 +761,20 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
   "$http",
   "$localStorage",
   "SearchService",
-  "$rootScope",
-  function (
-    $scope,
-    Search,
-    $location,
-    $http,
-    $localStorage,
-    SearchService,
-    $rootScope
-  ) {
+  function ($scope, Search, $location, $http, $localStorage, SearchService) {
+    // initialize form
+    $scope.params = {
+      country: null,
+      countrypart: null,
+      place: "",
+      count: "",
+      farmType: "other",
+      observationLatinName: "",
+    };
+
+    // toggle selected insect image flag
+    $scope.toggleSelectedInsectImage = true;
+
     // reset the hidden insectid
     $scope.insectId = null;
 
@@ -883,23 +887,25 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
 
       console.log("adding an observation without existing place");
       console.log("query object: ", query);
+
       console.log(
-        "organicfarm: " + document.getElementById("organicFarm").checked
+        "query.farmType === 'organicFarm'",
+        query.farmType === "organicFarm"
       );
       console.log(
-        "nonorganicfarm: " + document.getElementById("nonOrganicFarm").checked
+        "query.farmType === 'nonorganicFarm'",
+        query.farmType === "nonorganicFarm"
       );
-      console.log("nofarm: " + document.getElementById("other").checked);
 
       console.log("query.country: " + query.country);
       params = {
         country: query.country,
-        location: query.location,
+        location: query.countrypart,
         count: query.count,
         date: date,
         place: query.place,
-        organicFarm: document.getElementById("organicFarm").checked,
-        nonOrganicFarm: document.getElementById("nonOrganicFarm").checked,
+        organicFarm: query.farmType === "organicFarm",
+        nonOrganicFarm: query.farmType === "nonorganicFarm",
         user: $location.search().currentUser,
         latinName: query.observationLatinName,
         insectId: $scope.insectId,
@@ -907,48 +913,43 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
 
       $http({ url: "/observation/add", method: "POST", params: params })
         .success(function (data) {
-          //alert('added an observation');
+          console.log("add observation returned data: ", data);
+          if (!data) {
+            console.log("no data after add observation");
+            $scope.reportError();
+            return;
+          }
           console.log("observation added successfully");
 
           $scope.addObservationSuccess =
             $scope.translations.ADDOBSERVATIONSUCCESS;
 
-          $scope.setDelay("messageAddSuccess", 3000);
+          $scope.setDelay("messageAddSuccess", 1500);
         })
         .error(function () {
           console.log("adding observation failed");
-
-          $scope.addObservationFailure =
-            $scope.translations.ADDOBSERVATIONFAILURE;
-
-          $scope.setDelay("messageAddFailure", 3000);
+          $scope.reportError();
         });
+    };
+
+    $scope.reportError = function () {
+      $scope.addObservationFailure = $scope.translations.ADDOBSERVATIONFAILURE;
+
+      $scope.setDelay("messageAddFailure", 1500);
     };
 
     $scope.search = function (query) {
       SearchService.search($scope, $localStorage, query);
     };
-    $scope.checkContent = function (el) {
-      console.log("checkContent el: " + el);
-
-      var val = document.getElementById(el).value;
-
-      if (val == "") {
-        console.log("content is empty: " + el);
-        if (el == "observationLatinName")
-          $scope.observationLatinNameRequired = 1;
-        else if (el == "date") {
-          $scope.dateRequired = 1;
-          console.log("date is set as required");
-        }
+    $scope.checkLatinname = function (name) {
+      console.log("checking latinname, ", name);
+      // validation
+      if (name === '""' || name === undefined || name == "") {
+        console.log("setting latinname validation to required");
+        $scope.observationLatinNameRequired = 1;
       } else {
-        console.log("content is non-empty: " + el);
-        if (el == "observationLatinName")
-          $scope.observationLatinNameRequired = 0;
-        else if (el == "date") {
-          $scope.dateRequired = 0;
-          console.log("date is set as non-required");
-        }
+        console.log("setting latinname validation to nonrequired");
+        $scope.observationLatinNameRequired = 0;
       }
     };
     $scope.updateRequired = function () {
@@ -959,15 +960,23 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     };
 
     $scope.setImage = function (insect) {
+      // check was the selected insect image clicked again
+      if (insect._id === $scope.insectId) {
+        console.log("selected insect image was clicked again");
+        // enable latinname input
+        $scope.mainImageUrl = null;
+        // reset hidden insect id
+        $scope.insectId = null;
+        return;
+      }
       $scope.mainImageUrl = insect.images[0];
 
       // update the hidden insect id
       $scope.insectId = insect._id;
 
-      if (insect.latinName !== undefined && insect.latinName !== "undefined") {
-        document.getElementById("observationLatinName").value =
-          insect.latinName;
-        $scope.observationLatinNameRequired = 0; //document.getElementById('observationLatinName')
+      // update the latinname input
+      if (insect.latinName !== undefined) {
+        $scope.params.observationLatinName = insect.latinName;
       }
     };
 
@@ -1060,16 +1069,11 @@ insectIdentifierControllers.controller("SearchCtrl", [
       $scope.currentPage = 0;
     }
     $scope.pagedInsects = [];
-    $scope.filterClicked = false;
-    $scope.filteredItems = [];
 
-    $scope.showFilteredItems = function () {
-      console.log("showresults: " + $scope.searchResults);
-      //console.log('filtered items: '+$scope.returnedFilteredItems);
-      console.log("filtered items: " + $scope.filteredItems);
-    };
+    $scope.showFilteredItems = function () {};
 
     $scope.setPagedInsects = function (insects) {
+      // call util function
       setPagedInsects(insects, $scope);
     };
 
@@ -1105,12 +1109,6 @@ insectIdentifierControllers.controller("SearchCtrl", [
       $scope.imgs = imgs;
     }
 
-    $scope.searchForm = function () {
-      console.log("onmouseup");
-      $scope.filterClicked = true;
-      console.log("search form filterclicked: " + $scope.filterClicked);
-    };
-
     $scope.search = function (query) {
       SearchService.search($scope, $localStorage, query);
     };
@@ -1122,17 +1120,6 @@ insectIdentifierControllers.controller("SearchCtrl", [
       $scope.mainImageUrl = insect.images[0];
 
       $scope.insect = insect;
-      if ($scope.fromObservationPage == "1") {
-        console.log("util.setImage: latinName: " + insect.latinName);
-        if (
-          insect.latinName !== undefined &&
-          insect.latinName !== "undefined"
-        ) {
-          document.getElementById("observationLatinName").value =
-            insect.latinName;
-          $scope.observationLatinNameRequired = 0; //document.getElementById('observationLatinName')
-        }
-      }
     };
 
     $scope.insectDetail = function () {
