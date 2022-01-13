@@ -150,6 +150,7 @@ insectIdentifierApp.factory("SearchService", [
               }
               $scope.insect = data[0];
               $scope.insects = data;
+
               $localStorage.searchResults = data;
 
               $scope.setPagedInsects(data);

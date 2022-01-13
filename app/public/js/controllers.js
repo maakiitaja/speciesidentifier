@@ -44,6 +44,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     $scope.dateRequired = { startDate: 1, endDate: 1 };
     $scope.dateRequired.startDate = 1;
     $scope.dateRequired.endDate = 1;
+    $scope.disableSearch = false;
     //$scope.startDateRequired = 1;
     //$scope.endDateRequired = 1;
 
@@ -116,6 +117,12 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     };
 
     $scope.searchObservations = function (query) {
+      // show loading spinner
+      var spinnerEl = document.getElementById("spinner-search");
+      spinnerEl.classList.toggle("spinner-loading");
+      // disable search button
+      $scope.disableSearch = true;
+
       // convert the date to javascript date
       // YYYY-MM-DD
       var formattedDate = document.getElementById("startDate").value;
@@ -216,6 +223,11 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
 
         if (data && data.length > 0) $scope.searchResults = "showResults";
         else $scope.searchResults = "noResults";
+
+        // Hide spinner element
+        spinnerEl.classList.toggle("spinner-loading");
+        // Enable search button
+        $scope.disableSearch = false;
       });
     };
   },
@@ -1020,6 +1032,11 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $timeout,
     $rootScope
   ) {
+    $scope.setPagedInsects = function (insects) {
+      // call util function
+      setPagedInsects(insects, $scope);
+    };
+
     // enable search button
     console.log("enabling search button");
     $scope.disableSearch = false;
@@ -1070,13 +1087,6 @@ insectIdentifierControllers.controller("SearchCtrl", [
     }
     $scope.pagedInsects = [];
 
-    $scope.showFilteredItems = function () {};
-
-    $scope.setPagedInsects = function (insects) {
-      // call util function
-      setPagedInsects(insects, $scope);
-    };
-
     $scope.fromObservationPage = 0;
 
     if ($location.search().returningFromDetailPage == "1") {
@@ -1093,6 +1103,8 @@ insectIdentifierControllers.controller("SearchCtrl", [
       // for proper pagination to work
       $scope.selectedInsect = $location.search().insect;
       $scope.searchResults = "showResults";
+
+      // use localstorage to obtain the previous search results
       var insects = $localStorage.searchResults;
       $scope.setPagedInsects(insects);
 

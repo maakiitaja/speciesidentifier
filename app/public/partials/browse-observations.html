@@ -261,7 +261,27 @@
 
 	<br>
 	<br>
-	<button type="submit" name="search" class="button button-green centered">{{translations.SEARCH}}</button>
+	<div class="centered">
+		<button type="submit" name="search" ng-disabled="disableSearch"
+			class="button button-green centered">{{translations.SEARCH}}</button>
+		<div class="lds-center">
+			<div class="lds-spinner spinner-loading" id="spinner-search">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</div>
+
 </form>
 <!-- 
 place specific:

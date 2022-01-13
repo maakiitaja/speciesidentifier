@@ -14,13 +14,13 @@
 
 		<!--collection-->
 		<div class="dropdown" id="collection">
-			<div>
-				<btn class="dropbtn dropbtn-nonselected" id="collection-button" ng-click="collection()">
-					<img id="collection-img" class="header-img" src="images/collection-1.png" width="25px" height="25px"
-						alt="{{translations.COLLECTION}}">
-					<div class="menu-description inline">{{translations.COLLECTION}}</div>
-				</btn>
-			</div>
+
+			<btn class="dropbtn dropbtn-nonselected" id="collection-button" ng-click="collection()">
+				<img id="collection-img" class="header-img" src="images/collection-1.png" width="25px" height="25px"
+					alt="{{translations.COLLECTION}}">
+				<div class="menu-description inline">{{translations.COLLECTION}}</div>
+			</btn>
+
 
 		</div>
 
@@ -137,25 +137,6 @@
 				<li class="main-nav-link" ng-if="currentUser"><a href="logout">{{translations.LOGOUT}}</a></li>
 				<li class="main-nav-link" ng-if="!currentUser"><a ng-click="login()">{{translations.LOGIN}}</a></li>
 			</ul>
-
-			<!--
-				<div class="dropdown pull-left position-relative" id="smallest-screen">
-			<a class="dropbtn" class="inline position-top-left" onclick="void(0)">
-				<div class="menu-description inline">{{translations.MANAGE}}</div>
-
-				<img id="options-img" src="images/options-3.png" width="25px" height="25px">
-			</a>
-			<div class="dropdown-content">
-				<a ng-click="search()">{{translations.SEARCH}}</a>
-				<a ng-click="collection()">{{translations.COLLECTION}}</a>
-				<a ng-if="currentUser" ng-click="modify(currentUser)">{{translations.MODIFY}}</a>
-				<a ng-if="currentUser" ng-click="upload()">{{translations.UPLOAD}}</a>
-				<a ng-if="currentUser" ng-click="addObservation(currentUser)">{{translations.ADDOBSERVATION}}</a>
-				<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
-				<a ng-if="lang=='en'" ng-click="setLanguage('fi')">FI</a>
-				<a ng-if="lang=='fi'" ng-click="setLanguage('en')">EN</a>
-			</div>
-			-->
 		</nav>
 	</nav>
 	<!--

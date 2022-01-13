@@ -142,12 +142,12 @@
 				<td>
 
 					<div ng-if="isUpload==1">
-						<input id="uploadSubmit" type="submit" class="button button-blue"
-							value="{{translations.UPLOAD}}">
+						<button id="uploadSubmit" type="submit" class="button button-blue"
+							value="{{translations.UPLOAD}}">{{translations.UPLOAD}}</button>
 					</div>
 					<div ng-if="isUpload==0">
-						<input id="updateSubmit" ng-click="uploadFile()" type="submit" class="button button-blue"
-							value="{{translations.SAVE}}">
+						<button id="updateSubmit" ng-click="uploadFile()" type="submit" class="button button-blue"
+							value="{{translations.SAVE}}">{{translations.SAVE}}</button>
 					</div>
 
 				</td>

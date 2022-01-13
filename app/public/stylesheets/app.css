@@ -102,7 +102,7 @@ html {
 /* Hover menu */
 
 .dropbtn {
-  padding: 6px;
+  padding: 14px;
   font-size: 16px;
   border: none;
 }
@@ -164,6 +164,7 @@ html {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
   background-color: #2e2e2e;
+  cursor: pointer;
 }
 
 .dropdown:hover .dropbtn.dropbtn-selected {
@@ -249,11 +250,6 @@ html {
   visibility: hidden;
 }
 
-#organicfarm,
-#nonorganicfarm {
-  disabled: true;
-}
-
 .button {
   /* Green */
   border: none;
@@ -271,6 +267,10 @@ html {
 }
 .button-green:hover {
   background-color: #54d158;
+}
+
+.button-green:hover:disabled {
+  cursor: not-allowed;
 }
 
 .button-orange {
@@ -358,12 +358,22 @@ img.insect-detail.active {
   margin: auto;
 }
 
+.thumb-card {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  border-radius: 11px;
+  border: 0;
+  overflow: hidden;
+  margin-bottom: 15px;
+  margin-right: 30px;
+  margin-left: 0;
+  margin-top: 0;
+}
+
 ul.insect-thumbs {
   list-style: none;
 }
 
 ul.insect-thumbs li {
-  border: 1px solid black;
   display: inline-block;
   margin: 5px;
   background-color: white;
@@ -619,6 +629,11 @@ select {
   margin: 5px !important;
   padding: 5px !important;
 }
+
+input[type="text"]:disabled {
+  cursor: not-allowed;
+}
+
 input {
   margin: 5px !important;
   width: 200px;
