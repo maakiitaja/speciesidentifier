@@ -1,45 +1,52 @@
 <br>
-<table class="center">
-	<tr ng-if="!connected">
-		<td class="container-tag">
-			<div class="offline-mode">{{translations.OFFLINEMODE}}</div>
-		</td>
-	</tr>
-	<tr ng-if="description">
-		<td>
-			<p id="description"><strong>{{translations.DESCRIPTION}}</strong>: {{description}}</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p id="latinName"> <strong>{{translations.LATINNAME}}</strong>: {{insect.latinName}}</p>
-		</td>
-	</tr>
-	<!-- main image -->
-	<tr>
-		<td>
+<div class="container-main-detail">
+	<table class="button-center">
+		<tr ng-if="!connected">
+			<td class="container-tag">
+				<div class="offline-mode">{{translations.OFFLINEMODE}}</div>
+			</td>
+		</tr>
+		<tr ng-if="description">
+			<td>
+				<p class="" id="description"><strong>{{translations.DESCRIPTION}}</strong>:
+					{{description}}
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p class="margin-bottom-md" id="latinName"> <strong>{{translations.LATINNAME}}</strong>:
+					{{insect.latinName}}</p>
+			</td>
+		</tr>
+		<!-- main image -->
+		<tr>
+			<td>
 
-			<div ng-if="insect.images.length > 1">
-				<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images"
-					ng-class="{active: mainImageUrl==img}" class="insect-detail" />
-				<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimagemultipledisconnected"
-					ng-repeat="img in insect.images" ng-class="{active: mainImageUrl==img}" class="insect-detail" />
-			</div>
-			<div ng-if="insect.images.length==1">
-				<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="mainimage" class="insect-detail active" />
-				<img ng-if="connected==0" ng-src="{{localStorage[insect.images[0]]}}" id="mainimagedisconnected"
-					class="insect-detail active" />
-			</div>
-		</td>
-	</tr>
-</table>
+				<div class="container-main-image-detail" ng-if="insect.images.length > 1">
+					<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images"
+						ng-class="{active: mainImageUrl==img}" class="insect-detail" />
+					<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimagemultipledisconnected"
+						ng-repeat="img in insect.images" ng-class="{active: mainImageUrl==img}" class="insect-detail" />
+				</div>
+				<div class="container-main-image-detail" ng-if="insect.images.length==1">
+					<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="mainimage"
+						class="insect-detail active" />
+					<img ng-if="connected==0" ng-src="{{localStorage[insect.images[0]]}}" id="mainimagedisconnected"
+						class="insect-detail active" />
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
 
 <!-- translated name -->
 <table class="button-center">
 	<tr>
 		<td>
 			<div ng-repeat="translation in insect.translations">
-				<p ng-if="translation.language==lang">
+				<p class="current-language-name" ng-if="translation.language==lang">
 					{{translation.name}}
 				</p>
 			</div>
@@ -49,14 +56,17 @@
 
 <!-- thumb images -->
 <div>
-	<ul class="insect-thumbs container-insect-detail" id="insect-thumbs" ng-if="insect.images.length > 1">
-		<li ng-repeat="img in insect.images">
-			<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}" ng-click="setImage(img)"
-				alt={{insect.latinName}} />
-			<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}"
-				id="{{img+'_thumb.jpg_not_connected'}}" ng-click="setImage(img)" alt={{insect.latinName}} />
-		</li>
-	</ul>
+	<div class="container">
+		<ul class="insect-thumbs container-insect-detail" id="insect-thumbs" ng-if="insect.images.length > 1">
+			<li ng-repeat="img in insect.images">
+				<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}"
+					ng-click="setImage(img)" alt={{insect.latinName}} />
+				<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}"
+					id="{{img+'_thumb.jpg_not_connected'}}" ng-click="setImage(img)" alt={{insect.latinName}} />
+			</li>
+		</ul>
+	</div>
+
 </div>
 
 <br>

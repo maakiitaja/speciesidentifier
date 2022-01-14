@@ -451,6 +451,8 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
   "$localStorage",
   "$cookies",
   function ($scope, Search, $location, $http, $localStorage, $cookies) {
+    resetHeader();
+
     $scope.initMessages = function () {
       console.log("initializing messages");
       $scope.messageCollectionAddFailure = "";
