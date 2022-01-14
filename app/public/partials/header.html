@@ -2,9 +2,9 @@
 	<nav id="header" class="header">
 
 		<!--search-->
-		<div class="dropdown" id="search">
+		<div class="dropdown" id="search" ng-click="search()">
 			<div>
-				<btn class="dropbtn dropbtn-nonselected" id="search-header" ng-click="search()">
+				<btn class="dropbtn dropbtn-nonselected" id="search-header">
 					<img id="search-menu-img" class="header-img" src="images/search-1.png" width="25px" height="25px"
 						alt="{{translations.SEARCH}}">
 					<div class="menu-description inline">{{translations.SEARCH}}</div>
@@ -13,9 +13,9 @@
 		</div>
 
 		<!--collection-->
-		<div class="dropdown" id="collection">
+		<div class="dropdown" id="collection" ng-click="collection()">
 
-			<btn class="dropbtn dropbtn-nonselected" id="collection-button" ng-click="collection()">
+			<btn class="dropbtn dropbtn-nonselected" id="collection-button">
 				<img id="collection-img" class="header-img" src="images/collection-1.png" width="25px" height="25px"
 					alt="{{translations.COLLECTION}}">
 				<div class="menu-description inline">{{translations.COLLECTION}}</div>
@@ -25,9 +25,9 @@
 		</div>
 
 		<!--manage-->
-		<div class="dropdown" ng-if="currentUser" id="manage">
+		<div class="dropdown" ng-if="currentUser" id="manage" onclick="void(0)">
 			<div>
-				<btn id="manage-button" class="dropbtn dropbtn-nonselected" onclick="void(0)">
+				<btn id="manage-button" class="dropbtn dropbtn-nonselected">
 					<img id="options-img" class="header-img" src="images/options-3.png" alt="{{translations.MANAGE}}"
 						width="25px" height="25px" />
 					<span id="manage-link">{{translations.MANAGE}}</span>
@@ -39,8 +39,8 @@
 			</div>
 		</div>
 		<!--Login-->
-		<div class="dropdown pull-right" ng-if="!currentUser" id="login-div">
-			<btn class="dropbtn dropbtn-nonselected" id="login" ng-click="login()">
+		<div class="dropdown pull-right" ng-if="!currentUser" id="login-div" ng-click="login()">
+			<btn class="dropbtn dropbtn-nonselected" id="login">
 				<img id="login-img" class="header-img" src="images/login-1.png" alt="{{translations.LOGIN}}"
 					width="25px" height="25px">
 				<div class="menu-description inline">{{translations.LOGIN}}</div>
@@ -55,9 +55,9 @@
 			</a>
 		</div>
 		<!--observation-->
-		<div class="dropdown pull-right" id="observation">
+		<div class="dropdown pull-right" id="observation" onclick="void(0)">
 			<div ng-if="currentUser">
-				<btn class="dropbtn dropbtn-nonselected" id="observation-button" onclick="void(0)">
+				<btn class="dropbtn dropbtn-nonselected" id="observation-button">
 					<img id="options-img" class="header-img" src="images/options-3.png" width="25px" height="25px" />
 					<span id="observation-link">{{translations.OBSERVATION}}</span>
 				</btn>
@@ -66,8 +66,8 @@
 					<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
 				</div>
 			</div>
-			<div ng-if="!currentUser">
-				<btn class="dropbtn dropbtn-nonselected" id="observation-button-browse" ng-click="browseObservation()">
+			<div ng-if="!currentUser" ng-click="browseObservation()">
+				<btn class="dropbtn dropbtn-nonselected" id="observation-button-browse">
 					<img id="collection-img" class="header-img" src="images/collection-1.png" width="25px" height="25px"
 						alt="{{translations.OBSERVATION}}">
 					<div class="menu-description inline">{{translations.BROWSEOBSERVATIONS}}</div>
@@ -76,9 +76,9 @@
 		</div>
 
 		<!--language-->
-		<div class="dropdown pull-right" id="language">
+		<div class="dropdown pull-right" id="language" onclick="void(0)">
 			<div>
-				<btn class="dropbtn dropbtn-nonselected" id="languauge-button" onclick="void(0)">
+				<btn class="dropbtn dropbtn-nonselected" id="languauge-button">
 					<img id="options-img" class="header-img" src="images/options-3.png" width="25px" height="25px">
 					<span id="language-link">{{translations.LANGUAGE}}
 					</span>
@@ -91,9 +91,9 @@
 		</div>
 
 		<!-- Middle range screens - more menu item-->
-		<div class="dropdown" id="more">
+		<div class="dropdown" id="more" onclick="void(0)">
 			<div>
-				<btn id="more-button" class="dropbtn dropbtn-nonselected" onclick="void(0)">
+				<btn id="more-button" class="dropbtn dropbtn-nonselected">
 					<img id="options-img" class="header-img" src="images/options-3.png" alt="{{translations.MORE}}"
 						width="25px" height="25px" />
 					<span id="more-link">{{translations.MORE}}</span>

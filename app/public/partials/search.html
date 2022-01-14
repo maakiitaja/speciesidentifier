@@ -176,8 +176,13 @@
 
 				<!-- large picture-->
 				<div class="large-picture-search" id="large-picture-search">
-					<img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active:	mainImageUrl==img}">
+					<div ng-repeat="img in imgs" ng-class="{active: mainImageUrl==img}" class="insect"
+						ng-style="{backgroundImage: 'url({{img}})'}"></div>
 				</div>
+
+				<!-- <div class="large-picture-search">
+					<img ng-src="{{img}}" class="insect" ng-repeat="img in imgs" ng-class="{active: mainImageUrl==img}">
+				</div> -->
 
 				<!-- identify button -->
 				<div ng-if="fromObservationPage != 1 && searchResults=='showResults'" class="button-identify"

@@ -1100,6 +1100,12 @@ insectIdentifierControllers.controller("SearchCtrl", [
         return;
       }
       $scope.insect = $location.search().insect;
+
+      // replace any backslashes with forward slashes
+      $location.search().insect.images[0] = $location
+        .search()
+        .insect.images[0].replace("\\", "/");
+
       // for proper pagination to work
       $scope.selectedInsect = $location.search().insect;
       $scope.searchResults = "showResults";

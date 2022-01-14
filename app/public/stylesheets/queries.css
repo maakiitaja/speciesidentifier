@@ -179,7 +179,6 @@
   .container-search {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 0.2fr 120px;
-    row-gap: 0;
   }
 
   .large-picture-search {
@@ -199,7 +198,13 @@
   }
 
   .container-search {
-    grid-template-rows: 0.2fr 1fr 0.2fr 120px;
+    grid-template-rows: 0.5fr 1fr 0.2fr 120px;
+  }
+}
+
+@media only screen and (max-width: 376px) {
+  .container-search {
+    grid-template-rows: 0.3fr 1fr 0.2fr 120px;
   }
 }
 
@@ -301,7 +306,7 @@
   #language div,
   #observation div,
   #manage div,
-  #collection div,
+  #collection,
   #search div,
   #logout-div,
   #login-div,

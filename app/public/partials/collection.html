@@ -18,11 +18,11 @@
 			<ul class="insect-thumbs">
 				<li ng-repeat="insect in insects">
 					<div class="thumb-card">
-						<div ng-repeat="translation in insect.translations">
-							<p ng-if="translation.language==lang">
+						<div class="margin-top-md" ng-repeat="translation in insect.translations">
+							<p class="name-translation" ng-if="translation.language==lang">
 								{{translation.name}}
 							</p>
-							<p>
+							<p class="latinname-translation">
 								{{insect.latinName}}
 							</p>
 						</div>

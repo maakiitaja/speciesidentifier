@@ -148,6 +148,20 @@ insectIdentifierApp.factory("SearchService", [
                 );
                 $scope.observationLatinNameRequired = 0;
               }
+
+              var imgs = [];
+              // make a list of image urls and replace any backslashes with forward slashes
+              var len = data.length;
+              for (var i = 0; i < len; i++) {
+                console.log("data[i].images[0]", data[i].images[0]);
+                var replacedImagePath = data[i].images[0].replace("\\", "/");
+                replacedImagePath = encodeURIComponent(replacedImagePath);
+                console.log("replaced image value: ", replacedImagePath);
+
+                data[i].images[0] = replacedImagePath;
+                imgs.push(replacedImagePath);
+              }
+
               $scope.insect = data[0];
               $scope.insects = data;
 
@@ -155,17 +169,11 @@ insectIdentifierApp.factory("SearchService", [
 
               $scope.setPagedInsects(data);
 
-              var imgs = [];
-              // make a list of image urls
-              var len = data.length;
-              for (var i = 0; i < len; i++) {
-                imgs.push(data[i].images[0]);
-              }
               $scope.imgs = imgs;
               console.log(
                 "search service, setting mainimage: " + data[0].images[0]
               );
-              $scope.mainImageUrl = data[0].images[0];
+              $scope.mainImageUrl = data[0].images[0].replace("\\", "/");
 
               // in case coming from observation page
               if ($scope.fromObservationPage == "1") {
