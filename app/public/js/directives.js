@@ -100,39 +100,6 @@ myApp.directive("ngResize", function ($window) {
   };
 });
 
-myApp.directive("resizev2", [
-  "$window",
-  function ($window) {
-    return {
-      link: link,
-      restrict: "A",
-    };
-
-    function link(scope, element, attrs) {
-      console.log("resizev2 directive start");
-
-      function onResize() {
-        scope.vw = getVw();
-        // uncomment for only fire when $window.innerWidth change
-        // if (scope.width !== $window.innerWidth)
-        {
-          console.log("resize event with width: ", scope.vw);
-          console.log("directive resize scope: ", scope);
-          scope.$digest();
-        }
-      }
-
-      function cleanUp() {
-        console.log("resize directive cleanup");
-        angular.element($window).off("resize", onResize);
-      }
-
-      angular.element($window).on("resize", onResize);
-      scope.$on("$destroy", cleanUp);
-    }
-  },
-]);
-
 myApp.directive("header", function () {
   return {
     restrict: "A", //This means that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements
@@ -159,6 +126,9 @@ myApp.directive("header", function () {
         $route,
         $localStorage
       ) {
+        // initialize current user for header menu item highlighing to work when reloading a page
+        $scope.currentUser = {};
+
         if (!$cookies.get("lang")) {
           console.log("no lang chosen.");
           $cookies.put("lang", "en");
@@ -191,239 +161,74 @@ myApp.directive("header", function () {
             header.classList.toggle("nav-open");
           };
 
-          $scope.collection = function () {
+          $scope.resetHeader = function () {
+            resetHeader();
+          };
+
+          $scope.highlightElement = function (el) {
+            highlightElement(el);
+          };
+
+          $scope.disableMobileNavigation = function () {
             var header = document.getElementById("header");
             header.classList.remove("nav-open");
+          };
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            // var dropbtnEls = document.querySelectorAll("dropbtn");
-            // dropbtnEls.forEach(function (el) {
-            //   el.classList.remove("dropbtn-selected");
-            //   el.classList.add("dropbtn-nonselected");
-            // });
-            // // add the selected class to the current nav item
-            // var collectionEl = document.getElementById("collection-button");
-            // collectionEl.classList.add("dropbtn-selected");
-            // collectionEl.classList.remove("dropbtn-nonselected");
+          $scope.collection = function () {
+            $scope.disableMobileNavigation();
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            var searchEl = document.getElementById("search-header");
-            searchEl.classList.remove("dropbtn-selected");
-            searchEl.classList.add("dropbtn-nonselected");
-
-            var manageEl = document.getElementById("manage-button");
-            if (manageEl) {
-              manageEl.classList.remove("dropbtn-selected");
-              manageEl.classList.add("dropbtn-nonselected");
-            }
-
-            var observationEl = document.getElementById("observation-button");
-            if (observationEl) {
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            } else {
-              var observationEl = document.getElementById(
-                "observation-button-browse"
-              );
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            }
-
-            var loginEl = document.getElementById("login");
-            if (loginEl) {
-              loginEl.classList.remove("dropbtn-selected");
-              loginEl.classList.add("dropbtn-nonselected");
-            }
-
-            // Set the current menu item as selected images
-            var collectionEl = document.getElementById("collection-button");
-            collectionEl.classList.add("dropbtn-selected");
-            collectionEl.classList.remove("dropbtn-nonselected");
+            $scope.resetHeader();
+            $scope.highlightElement("collection-button");
 
             $scope.location.path("collection");
           };
           $scope.search = function () {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
+            $scope.disableMobileNavigation();
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            // var dropbtnEls = document.querySelectorAll("dropbtn");
-            // dropbtnEls.forEach(function (el) {
-            //   el.classList.remove("dropbtn-selected");
-            //   el.classList.add("dropbtn-nonselected");
-            // });
-            // // Set the current menu item as selected
-            // var searchEl = document.getElementById("search-header");
-            // searchEl.classList.add("dropbtn-selected");
-            // searchEl.classList.remove("dropbtn-nonselected");
-
-            // loop through all the menu items and remove the highlighted/selected css class
-            var collectionEl = document.getElementById("collection-button");
-            collectionEl.classList.remove("dropbtn-selected");
-            collectionEl.classList.add("dropbtn-nonselected");
-
-            var manageEl = document.getElementById("manage-button");
-            if (manageEl) {
-              manageEl.classList.remove("dropbtn-selected");
-              manageEl.classList.add("dropbtn-nonselected");
-            }
-
-            var observationEl = document.getElementById("observation-button");
-            if (observationEl) {
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            } else {
-              var observationEl = document.getElementById(
-                "observation-button-browse"
-              );
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            }
-
-            var loginEl = document.getElementById("login");
-            if (loginEl) {
-              loginEl.classList.remove("dropbtn-selected");
-              loginEl.classList.add("dropbtn-nonselected");
-            }
-
-            // Set the current menu item as selected
-            var searchEl = document.getElementById("search-header");
-            searchEl.classList.add("dropbtn-selected");
-            searchEl.classList.remove("dropbtn-nonselected");
+            $scope.resetHeader();
+            $scope.highlightElement("search-header");
 
             $scope.location.path("search");
           };
           $scope.upload = function () {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
+            $scope.disableMobileNavigation();
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            var collectionEl = document.getElementById("collection-button");
-            collectionEl.classList.remove("dropbtn-selected");
-            collectionEl.classList.add("dropbtn-nonselected");
-
-            var searchEl = document.getElementById("search-header");
-            searchEl.classList.remove("dropbtn-selected");
-            searchEl.classList.add("dropbtn-nonselected");
-
-            var observationEl = document.getElementById("observation-button");
-            if (observationEl) {
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            } else {
-              var observationEl = document.getElementById(
-                "observation-button-browse"
-              );
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            }
-
-            // Set the current menu item as selected
-            var manageEl = document.getElementById("manage-button");
-            manageEl.classList.add("dropbtn-selected");
-            manageEl.classList.remove("dropbtn-nonselected");
+            $scope.resetHeader();
+            $scope.highlightElement("manage-button");
 
             $scope.location.path("insect/upload");
           };
 
           $scope.modify = function (currentUser) {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
+            $scope.disableMobileNavigation();
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            var collectionEl = document.getElementById("collection-button");
-            collectionEl.classList.remove("dropbtn-selected");
-            collectionEl.classList.add("dropbtn-nonselected");
-
-            var searchEl = document.getElementById("search-header");
-            searchEl.classList.remove("dropbtn-selected");
-            searchEl.classList.add("dropbtn-nonselected");
-
-            var observationEl = document.getElementById("observation-button");
-            if (observationEl) {
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            } else {
-              var observationEl = document.getElementById(
-                "observation-button-browse"
-              );
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            }
-
-            // Set the current menu item as selected
-            var manageEl = document.getElementById("manage-button");
-            manageEl.classList.add("dropbtn-selected");
-            manageEl.classList.remove("dropbtn-nonselected");
+            $scope.resetHeader();
+            $scope.highlightElement("manage-button");
 
             $scope.location
               .path("insect/uploadList")
               .search({ currentUser: currentUser });
           };
           $scope.addObservation = function (currentUser) {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
+            $scope.disableMobileNavigation();
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            var collectionEl = document.getElementById("collection-button");
-            collectionEl.classList.remove("dropbtn-selected");
-            collectionEl.classList.add("dropbtn-nonselected");
-
-            var searchEl = document.getElementById("search-header");
-            searchEl.classList.remove("dropbtn-selected");
-            searchEl.classList.add("dropbtn-nonselected");
-
-            var manageEl = document.getElementById("manage-button");
-            if (manageEl) {
-              manageEl.classList.remove("dropbtn-selected");
-              manageEl.classList.add("dropbtn-nonselected");
+            $scope.resetHeader();
+            if (currentUser) {
+              $scope.highlightElement("observation-button");
             }
-
-            // Set the current menu item as selected
-            var observationEl = document.getElementById("observation-button");
-            observationEl.classList.add("dropbtn-selected");
-            observationEl.classList.remove("dropbtn-nonselected");
 
             $scope.location
               .path("addObservations")
               .search({ currentUser: currentUser });
           };
           $scope.browseObservation = function (currentUser) {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
+            $scope.disableMobileNavigation();
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            var collectionEl = document.getElementById("collection-button");
-            collectionEl.classList.remove("dropbtn-selected");
-            collectionEl.classList.add("dropbtn-nonselected");
-
-            var searchEl = document.getElementById("search-header");
-            searchEl.classList.remove("dropbtn-selected");
-            searchEl.classList.add("dropbtn-nonselected");
-
-            var manageEl = document.getElementById("manage-button");
-            if (manageEl) {
-              manageEl.classList.remove("dropbtn-selected");
-              manageEl.classList.add("dropbtn-nonselected");
-            }
-
-            var loginEl = document.getElementById("login");
-            if (loginEl) {
-              loginEl.classList.remove("dropbtn-selected");
-              loginEl.classList.add("dropbtn-nonselected");
-            }
-
-            // Set the current menu item as selected
-            var observationEl = document.getElementById("observation-button");
-            if (observationEl) {
-              observationEl.classList.add("dropbtn-selected");
-              observationEl.classList.remove("dropbtn-nonselected");
+            $scope.resetHeader();
+            if (currentUser) {
+              $scope.highlightElement("observation-button");
             } else {
-              var observationEl = document.getElementById(
-                "observation-button-browse"
-              );
-              observationEl.classList.add("dropbtn-selected");
-              observationEl.classList.remove("dropbtn-nonselected");
+              $scope.highlightElement("observation-button-browse");
             }
 
             $scope.location
@@ -432,8 +237,7 @@ myApp.directive("header", function () {
           };
 
           $scope.setLanguage = function (lang) {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
+            $scope.disableMobileNavigation();
 
             $cookies.put("lang", lang);
             console.log("lang: " + lang);
@@ -442,40 +246,10 @@ myApp.directive("header", function () {
             $route.reload();
           };
           $scope.login = function () {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
+            $scope.disableMobileNavigation();
 
-            // loop through all the menu items and remove the highlighted/selected css class
-            var collectionEl = document.getElementById("collection-button");
-            collectionEl.classList.remove("dropbtn-selected");
-            collectionEl.classList.add("dropbtn-nonselected");
-
-            var searchEl = document.getElementById("search-header");
-            searchEl.classList.remove("dropbtn-selected");
-            searchEl.classList.add("dropbtn-nonselected");
-
-            var manageEl = document.getElementById("manage-button");
-            if (manageEl) {
-              manageEl.classList.remove("dropbtn-selected");
-              manageEl.classList.add("dropbtn-nonselected");
-            }
-
-            var observationEl = document.getElementById("observation-button");
-            if (observationEl) {
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            } else {
-              var observationEl = document.getElementById(
-                "observation-button-browse"
-              );
-              observationEl.classList.remove("dropbtn-selected");
-              observationEl.classList.add("dropbtn-nonselected");
-            }
-
-            // Set the current menu item as selected
-            var loginEl = document.getElementById("login");
-            loginEl.classList.add("dropbtn-selected");
-            loginEl.classList.remove("dropbtn-nonselected");
+            $scope.resetHeader();
+            $scope.highlightElement("login");
 
             $scope.location.path("login");
           };

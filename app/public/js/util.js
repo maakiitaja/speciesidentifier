@@ -102,3 +102,23 @@ setDelay = function (el, ms, $scope) {
   };
   setTimeout(timeoutF, ms, el, $scope);
 };
+
+resetHeader = function () {
+  //loop through all the menu items and remove the highlighted/selected css class
+  var dropbtnEls = document.querySelectorAll(".dropbtn");
+  dropbtnEls.forEach(function (el) {
+    el.classList.remove("dropbtn-selected");
+    el.classList.add("dropbtn-nonselected");
+  });
+};
+
+highlightElement = function (elName) {
+  // add the selected class to the current nav item
+  var el = document.getElementById(elName);
+  if (el) {
+    el.classList.add("dropbtn-selected");
+    el.classList.remove("dropbtn-nonselected");
+  } else {
+    console.log("util highlightelement, element is null:", elName);
+  }
+};

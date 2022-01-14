@@ -16,6 +16,8 @@ insectIdentifierControllers.controller("LoggingCtrl", [
   function ($scope, Search, $location, $http) {
     $scope.message = "";
     console.log("logging controller");
+    resetHeader();
+    highlightElement("login");
   },
 ]);
 
@@ -28,6 +30,8 @@ insectIdentifierControllers.controller("LoggingFailureCtrl", [
     $scope.$watch("translations", function (val) {
       $scope.message = $scope.translations.INCORRECTCREDENTIALS;
     });
+    resetHeader();
+    highlightElement("login");
 
     console.log("logging failure controller, message: " + $scope.message);
   },
@@ -39,8 +43,10 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
   "$location",
   "$http",
   "$localStorage",
-  function ($scope, Search, $location, $http) {
+  "$cookies",
+  function ($scope, Search, $location, $http, $localStorage, $cookies) {
     console.log("browse observation ctrl");
+
     $scope.dateRequired = { startDate: 1, endDate: 1 };
     $scope.dateRequired.startDate = 1;
     $scope.dateRequired.endDate = 1;
@@ -230,6 +236,16 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         $scope.disableSearch = false;
       });
     };
+
+    // header
+    resetHeader();
+    if ($cookies.get("current.user") !== "") {
+      console.log("highglighting observation button");
+      highlightElement("observation-button");
+    } else {
+      console.log("highglighting observation button browse");
+      highlightElement("observation-button-browse");
+    }
   },
 ]);
 
@@ -239,10 +255,15 @@ insectIdentifierControllers.controller("UploadListCtrl", [
   "$location",
   "$http",
   "$localStorage",
-  function ($scope, Search, $location, $http, $localStorage) {
+  "$cookies",
+  function ($scope, Search, $location, $http, $localStorage, $cookies) {
     console.log(
       "uploadlist ctrl current User:" + $location.search().currentUser._id
     );
+
+    // menu
+    resetHeader();
+    highlightElement("manage-button");
 
     $http({
       url: "/uploadList",
@@ -312,6 +333,10 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
   "$http",
   "$localStorage",
   function ($scope, Search, $location, $http, $localStorage) {
+    // header
+    resetHeader();
+    highlightElement("manage-button");
+
     $scope.fileChange = function (event) {
       var files = event.target.files;
       console.log(files);
@@ -832,6 +857,10 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
   "$localStorage",
   "SearchService",
   function ($scope, Search, $location, $http, $localStorage, SearchService) {
+    // Header
+    resetHeader();
+    highlightElement("observation-button");
+
     // initialize form
     $scope.params = {
       country: null,
@@ -1089,6 +1118,10 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $timeout,
     $rootScope
   ) {
+    if ($rootScope.search) {
+      console.log("SearchCtrl, header search button clicked");
+    }
+
     $scope.setPagedInsects = function (insects) {
       // call util function
       setPagedInsects(insects, $scope);
@@ -1104,37 +1137,8 @@ insectIdentifierControllers.controller("SearchCtrl", [
 
     // Update the main header
 
-    // loop through all the menu items and remove the highlighted/selected css class
-    var collectionEl = document.getElementById("collection-button");
-    collectionEl.classList.remove("dropbtn-selected");
-    collectionEl.classList.add("dropbtn-nonselected");
-
-    var manageEl = document.getElementById("manage-button");
-    if (manageEl) {
-      manageEl.classList.remove("dropbtn-selected");
-      manageEl.classList.add("dropbtn-nonselected");
-    }
-
-    var observationEl = document.getElementById("observation-button");
-    if (observationEl) {
-      observationEl.classList.remove("dropbtn-selected");
-      observationEl.classList.add("dropbtn-nonselected");
-    } else {
-      var observationEl = document.getElementById("observation");
-      observationEl.classList.remove("dropbtn-selected");
-      observationEl.classList.add("dropbtn-nonselected");
-    }
-
-    var loginEl = document.getElementById("login");
-    if (loginEl) {
-      loginEl.classList.remove("dropbtn-selected");
-      loginEl.classList.add("dropbtn-nonselected");
-    }
-
-    // Set the current menu item as selected
-    var searchEl = document.getElementById("search-header");
-    searchEl.classList.add("dropbtn-selected");
-    searchEl.classList.remove("dropbtn-nonselected");
+    resetHeader();
+    highlightElement("search-header");
 
     // Pagination
     $scope.itemsPerPage = 8;
@@ -1335,6 +1339,10 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     console.log("$localStorage.connected", $localStorage.connected);
     $scope.checkbox = { offline: !$localStorage.connected };
     console.log("$scope.offline", $scope.checkbox.offline);
+
+    // menu
+    resetHeader();
+    highlightElement("collection-button");
 
     $scope.localStorage = $localStorage;
     $scope.tmp = "";
