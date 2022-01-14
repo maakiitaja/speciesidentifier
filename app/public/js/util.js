@@ -93,3 +93,12 @@ function collectionEmpty(collection) {
   }
   return isEmpty;
 }
+
+setDelay = function (el, ms, $scope) {
+  console.log("in set delay, el:", el);
+  const timeoutF = function (elName, $scope) {
+    console.log("setdelay: calling callb, elName:", elName);
+    $scope.callb(elName);
+  };
+  setTimeout(timeoutF, ms, el, $scope);
+};

@@ -312,6 +312,64 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
   "$http",
   "$localStorage",
   function ($scope, Search, $location, $http, $localStorage) {
+    $scope.fileChange = function (event) {
+      var files = event.target.files;
+      console.log(files);
+      if (files.length > 0) {
+        // validate
+        var validFiles = true;
+        for (var i = 0; i < files.length; i++) {
+          var ext = files[i].name.match(/\.(.+)$/)[1];
+          if (
+            angular.lowercase(ext) === "jpg" ||
+            angular.lowercase(ext) === "jpeg" ||
+            angular.lowercase(ext) === "png"
+          ) {
+            alert("Valid File Format");
+          } else {
+            alert("Invalid File Format");
+            validFiles = false;
+          }
+        }
+
+        if (validFiles) {
+          console.log("setting file upload required to false");
+          $scope.isRequired = false;
+          console.log("setting file input populated to true");
+          $scope.fileInputPopulated = true;
+        } else {
+          console.log("invalid file(s)");
+          $scope.isRequired = true;
+          $scope.fileInputPopulated = false;
+          document.getElementById("userPhotos").value = null;
+        }
+      }
+    };
+
+    $scope.checkPhotoRequired = function () {
+      console.log("check photo required.");
+      alert("checkphotorequired");
+      if ($scope.fileInputPopulated) {
+        alert("fileinputpopulated true");
+        return;
+      }
+      var inputs = document.getElementsByClassName("photo-checkbox");
+      console.log("photo checkbox inputs: ", inputs);
+      var isRequired = true;
+
+      for (var i = 0; i < inputs.length; i++) {
+        console.log("inputs[i].checked", inputs[i].checked);
+        if (!inputs[i].checked) {
+          isRequired = false;
+          break;
+        }
+      }
+
+      $scope.isRequired = isRequired;
+
+      return;
+    };
+
     if ($location.search().fromUploadListPage == "1") {
       // update
       $location.search().fromUploadListPage = 0;
@@ -352,39 +410,6 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
       console.log("scope.photos: " + $scope.photos);
       console.log("scope.photos[0].name: " + $scope.photos[0].name);
-
-      $scope.fileChange = function (event) {
-        var files = event.target.files;
-        console.log(files);
-        if (files.length > 0) {
-          console.log("setting file upload required to false");
-          $scope.isRequired = false;
-          console.log("setting file input populated to true");
-          $scope.fileInputPopulated = true;
-        }
-      };
-
-      $scope.checkPhotoRequired = function (photo) {
-        if ($scope.fileInputPopulated) {
-          return;
-        }
-
-        var inputs = document.getElementsByClassName("photo-checkbox");
-        console.log("photo checkbox inputs: ", inputs);
-        var isRequired = true;
-
-        for (var i = 0; i < inputs.length; i++) {
-          console.log("inputs[i].checked", inputs[i].checked);
-          if (!inputs[i].checked) {
-            isRequired = false;
-            break;
-          }
-        }
-
-        $scope.isRequired = isRequired;
-
-        return;
-      };
     } else {
       console.log("isupload: true");
       $scope.isUpload = "1";
@@ -401,11 +426,17 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
   "$localStorage",
   "$cookies",
   function ($scope, Search, $location, $http, $localStorage, $cookies) {
-    $scope.messageCollectionAddFailure = "";
-    $scope.messageCollectionAddSuccess = "";
-    $scope.messageRemovedFailure = "";
-    $scope.messageRemovedSuccess = "";
-    $scope.messageCollectionAddOfflineFailure = "";
+    $scope.initMessages = function () {
+      console.log("initializing messages");
+      $scope.messageCollectionAddFailure = "";
+      $scope.messageCollectionAddSuccess = "";
+      $scope.messageRemovedFailure = "";
+      $scope.messageRemovedSuccess = "";
+      $scope.messageCollectionAddOfflineFailure = "";
+    };
+
+    $scope.initMessages();
+    $scope.messageDelayTime = 3000;
 
     // check connectivity
     if ($localStorage.connected) {
@@ -626,6 +657,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
 
           $scope.messageRemovedFailure =
             $scope.translations.FAILEDTOREMOVEINSECTFROMCOLLECTION;
+          setDelay("messageRemovedFailure", $scope.messageDelayTime, $scope);
           $scope.inCollection = 0;
           console.log("failed to remove insect");
           alert("Failed to remove insect from collection.");
@@ -658,9 +690,11 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       if (success) {
         $scope.messageRemovedSuccess =
           $scope.translations.REMOVEDINSECTFROMCOLLECTION;
+        setDelay("messageRemovedSuccess", $scope.messageDelayTime, $scope);
         // update the state
         $scope.inCollection = 0;
       } else {
+        setDelay("messageRemovedFailure", $scope.messageDelayTime, $scope);
         $scope.messageRemovedFailure =
           $scope.translations.FAILEDTOREMOVEINSECTFROMCOLLECTION;
       }
@@ -672,7 +706,12 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       // guard if collection page has set the offline option
       if ($localStorage.connected == 0 || localStorage.connected === "0") {
         console.log(
-          "addToCollection, collection page has set the offline option"
+          "addToCollection, collection page has set the offline option or synchronization issue"
+        );
+        setDelay(
+          "messageCollectionAddOfflineFailure",
+          $scope.messageDelayTime,
+          $scope
         );
         $scope.messageCollectionAddOfflineFailure =
           $scope.translations.OFFLINEFAILURE;
@@ -740,27 +779,37 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         console.log("current.user: ", $cookies.get("current.user"));
         var currentUser = $cookies.get("current.user");
         if (currentUser === "") {
-          $scope.addItemToCollection($scope);
+          $scope.addItemToCollection();
         }
         $http({
           url: "/collection/insert",
           method: "GET",
           params: { insectId: $scope.insect._id },
         }).success(function (data) {
-          $scope.addItemToCollection($scope);
+          $scope.addItemToCollection();
         });
       } else {
         console.log("translations.ITEMALREADYINCOLLECTION");
         $scope.messageCollectionAddFailure =
           $scope.translations.ITEMALREADYINCOLLECTION;
+        setDelay("messageAddFailure", $scope.messageDelayTime, $scope);
       }
     };
 
-    $scope.addItemToCollection = function ($scope) {
+    $scope.addItemToCollection = function () {
       console.log("translations.ITEMSAVED");
-      $scope.disableAddCollection = "true";
       $scope.messageCollectionAddSuccess = $scope.translations.ITEMSAVED;
+      setDelay("messageAddSuccess", $scope.messageDelayTime, $scope);
       $scope.inCollection = 1;
+    };
+
+    $scope.callb = function (el) {
+      console.log("callb insectdetail, el:", el);
+      var htmlEl = document.getElementById(el);
+      if (htmlEl.classList.contains("is-paused")) {
+        htmlEl.classList.remove("is-paused");
+      }
+      $scope.initMessages();
     };
 
     $scope.collection = function () {
@@ -870,24 +919,23 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       setPagedInsects(insects, $scope);
     };
 
-    $scope.setDelay = function (el, ms) {
-      console.log("in set delay, el:", el);
-      const timeoutF = function (elName) {
-        console.log("setdelay: calling callb, elName:", elName);
-        $scope.callb(elName);
-      };
-      setTimeout(timeoutF, ms, el);
-    };
+    // $scope.setDelay = function (el, ms) {
+    //   console.log("in set delay, el:", el);
+    //   const timeoutF = function (elName) {
+    //     console.log("setdelay: calling callb, elName:", elName);
+    //     $scope.callb(elName);
+    //   };
+    //   setTimeout(timeoutF, ms, el);
+    // };
 
     $scope.callb = function (el) {
-      console.log("callb, el: ", el);
+      console.log("callb addobservation, el: ", el);
       var htmlEl = document.getElementById(el);
       if (htmlEl.classList.contains("is-paused")) {
         htmlEl.classList.remove("is-paused");
       }
       $scope.addObservationSuccess = "";
       $scope.addObservationFailure = "";
-      //el.className += " is-paused";
     };
 
     $scope.addObservation = function (query) {
@@ -945,7 +993,7 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
           $scope.addObservationSuccess =
             $scope.translations.ADDOBSERVATIONSUCCESS;
 
-          $scope.setDelay("messageAddSuccess", 1500);
+          setDelay("messageAddSuccess", 1500, $scope);
         })
         .error(function () {
           console.log("adding observation failed");
@@ -956,7 +1004,7 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     $scope.reportError = function () {
       $scope.addObservationFailure = $scope.translations.ADDOBSERVATIONFAILURE;
 
-      $scope.setDelay("messageAddFailure", 1500);
+      setDelay("messageAddFailure", 1500, $scope);
     };
 
     $scope.search = function (query) {

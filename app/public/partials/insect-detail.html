@@ -61,15 +61,16 @@
 
 <br>
 <div class="container-alert">
-	<div id="messageAddFailure" ng-if='messageCollectionAddFailure != ""' class="alert alert-danger">
+	<div id="messageAddFailure" ng-if='messageCollectionAddFailure != ""' class="alert alert-danger is-paused fade-out">
 		{{messageCollectionAddFailure}}</div>
-	<div id="messageAddSuccess" ng-if='messageCollectionAddSuccess != ""' class="alert alert-success">
+	<div id="messageAddSuccess" ng-if='messageCollectionAddSuccess != ""'
+		class="alert alert-success is-paused fade-out">
 		{{messageCollectionAddSuccess}}</div>
-	<div id="messageRemovedFailure" ng-if='messageRemovedFailure != ""' class="alert alert-danger">
+	<div id="messageRemovedFailure" ng-if='messageRemovedFailure != ""' class="alert alert-danger is-paused fade-out">
 		{{messageRemovedFailure}}</div>
-	<div id="messageRemovedSuccess" ng-if='messageRemovedSuccess != ""' class="alert alert-success">
+	<div id="messageRemovedSuccess" ng-if='messageRemovedSuccess != ""' class="alert alert-success is-paused fade-out">
 		{{messageRemovedSuccess}}</div>
-	<div ng-if="messageCollectionAddOfflineFailure != ''" class="alert alert-danger">
+	<div ng-if="messageCollectionAddOfflineFailure != ''" class="alert alert-danger is-paused fade-out">
 		{{messageCollectionAddOfflineFailure}}
 	</div>
 </div>

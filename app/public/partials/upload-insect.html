@@ -131,7 +131,7 @@
 					<li>
 						<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
 						<input type='checkbox' class="input--sm photo-checkbox" name="{{photo.name}}"
-							ng-model="photo.checked" ng-click="checkPhotoRequired(photo)" />Remove
+							ng-model="photo.checked" ng-click="checkPhotoRequired(photo)" id="fileInput" />Remove
 					</li>
 				</ul>
 
@@ -143,8 +143,8 @@
 				<td>
 
 					<div ng-if="isUpload==1">
-						<button id="uploadSubmit" type="submit" class="button button-blue"
-							value="{{translations.UPLOAD}}">{{translations.UPLOAD}}</button>
+						<button id="uploadSubmit" type="submit" ng-click="checkPhotoRequired()"
+							class="button button-blue" value="{{translations.UPLOAD}}">{{translations.UPLOAD}}</button>
 					</div>
 					<div ng-if="isUpload==0">
 						<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit"

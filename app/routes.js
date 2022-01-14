@@ -248,7 +248,8 @@ module.exports = function (app, passport) {
       query.where("latinName").equals(latinName);
     }
 
-    console.log("searching");
+    console.log("sorting by latinname");
+    query.sort("latinName");
 
     query.exec(function (err, insects) {
       if (err) throw err;
