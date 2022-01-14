@@ -249,7 +249,6 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       method: "GET",
       params: { userId: $location.search().currentUser._id },
     }).success(function (data) {
-      //alert("received uploaded insects");
       if (data[0]) {
         console.log("received insects images: " + data[0].images);
         console.log("1st insect: " + data[0].latinName);
@@ -283,12 +282,11 @@ insectIdentifierControllers.controller("UploadListCtrl", [
         list[data[i].category].push(data[i]);
 
         console.log(list[data[i].category]);
-        //console.log("category's "+data[i].category+" "+i+"st item:"+list[data[i].category][i]);
       }
 
       console.log(JSON.stringify(list));
       if (list.length == 0) {
-        $scope.uploadList = null;
+        $scope.uploadList = {};
       } else {
         $scope.uploadList = list;
       }
@@ -355,26 +353,37 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
       console.log("scope.photos: " + $scope.photos);
       console.log("scope.photos[0].name: " + $scope.photos[0].name);
 
-      $scope.checkPhotoRequired = function (photo) {
-        // check if the clicked remove checkbox is non-ticked
-        console.log("photo: " + photo);
-        console.log("photo.name: " + photo.name);
-        console.log("photo.checked: " + photo.checked);
-
-        if (photo.checked) {
-          // loop remove-checkboxes
-          var isRequired = true;
-          for (var i = 0; i < $scope.photos.length; i++) {
-            if (!$scope.photos[i].checked) {
-              console.log("found non-ticked photo checkbox");
-              $scope.isRequired = false;
-            }
-          }
-          $scope.isRequired = isRequired;
-        } else {
-          console.log("found the clicked checkbox to be non-ticked.");
+      $scope.fileChange = function (event) {
+        var files = event.target.files;
+        console.log(files);
+        if (files.length > 0) {
+          console.log("setting file upload required to false");
           $scope.isRequired = false;
+          console.log("setting file input populated to true");
+          $scope.fileInputPopulated = true;
         }
+      };
+
+      $scope.checkPhotoRequired = function (photo) {
+        if ($scope.fileInputPopulated) {
+          return;
+        }
+
+        var inputs = document.getElementsByClassName("photo-checkbox");
+        console.log("photo checkbox inputs: ", inputs);
+        var isRequired = true;
+
+        for (var i = 0; i < inputs.length; i++) {
+          console.log("inputs[i].checked", inputs[i].checked);
+          if (!inputs[i].checked) {
+            isRequired = false;
+            break;
+          }
+        }
+
+        $scope.isRequired = isRequired;
+
+        return;
       };
     } else {
       console.log("isupload: true");

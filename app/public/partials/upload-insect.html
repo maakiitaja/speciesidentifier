@@ -110,7 +110,8 @@
 			<li> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</li>
 			<li>
 				<input type="file" id="userPhotos" name="userPhotos" file-model="myFile" ng-required="isRequired"
-					multiple />
+					custom-on-change="fileChange" multiple />
+				{{isRequired}}
 			</li>
 			<span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
 
@@ -125,15 +126,15 @@
 
 		<div ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
 			<div class="horizontal-table">
-				<ul id="horizontal-list-table">
-					<ul class="insect-thumbs">
-						<li>
-							<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
-							<input type='checkbox' name="{{photo.name}}" ng-model="photo.checked"
-								ng-click="checkPhotoRequired(photo)" />Remove
-						</li>
-					</ul>
+
+				<ul class="insect-thumbs-upload">
+					<li>
+						<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
+						<input type='checkbox' class="input--sm photo-checkbox" name="{{photo.name}}"
+							ng-model="photo.checked" ng-click="checkPhotoRequired(photo)" />Remove
+					</li>
 				</ul>
+
 			</div>
 		</div>
 		<br>
@@ -146,8 +147,8 @@
 							value="{{translations.UPLOAD}}">{{translations.UPLOAD}}</button>
 					</div>
 					<div ng-if="isUpload==0">
-						<button id="updateSubmit" ng-click="uploadFile()" type="submit" class="button button-blue"
-							value="{{translations.SAVE}}">{{translations.SAVE}}</button>
+						<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit"
+							class="button button-blue" value="{{translations.SAVE}}">{{translations.SAVE}}</button>
 					</div>
 
 				</td>

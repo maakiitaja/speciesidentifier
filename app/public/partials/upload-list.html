@@ -2,32 +2,34 @@
 
 <div ng-repeat="insects in uploadList" class="centered">
 	<div ng-if="insects.length > 0">
-		<h2 id='Ant' ng-if="insects[0].category == 'Ant'">{{translations.ANT}}:</h2>
-		<h2 id='Bee' ng-if="insects[0].category == 'Bee'">{{translations.BEE}}:</h2>
-		<h2 id='Beetle' ng-if="insects[0].category == 'Beetle'">{{translations.BEETLE}}:</h2>
-		<h2 id='Butterfly' ng-if="insects[0].category == 'Butterfly'">{{translations.BUTTERFLY}}:</h2>
-		<h2 id='Centipede' ng-if="insects[0].category == 'Centipede'">{{translations.CENTIPEDE}}:</h2>
-		<h2 id='Spider' ng-if="insects[0].category == 'Spider'">{{translations.SPIDER}}:</h2>
+		<h3 id='Ant' ng-if="insects[0].category == 'Ant'">{{translations.ANT}}:</h3>
+		<h3 id='Bee' ng-if="insects[0].category == 'Bee'">{{translations.BEE}}:</h3>
+		<h3 id='Beetle' ng-if="insects[0].category == 'Beetle'">{{translations.BEETLE}}:</h3>
+		<h3 id='Butterfly' ng-if="insects[0].category == 'Butterfly'">{{translations.BUTTERFLY}}:</h3>
+		<h3 id='Centipede' ng-if="insects[0].category == 'Centipede'">{{translations.CENTIPEDE}}:</h3>
+		<h3 id='Spider' ng-if="insects[0].category == 'Spider'">{{translations.SPIDER}}:</h3>
 		<ul class="insect-thumbs">
 			<li ng-repeat="insect in insects">
+				<div class="thumb-card">
+					<div class="margin-top-md" ng-repeat="translation in insect.translations">
+						<p class="name-translation" ng-if="translation.language==lang">
+							{{translation.name}}
+						</p>
 
-				<div ng-repeat="translation in insect.translations">
-					<p ng-if="translation.language==lang">
-						{{translation.name}}
+					</div>
+					<p class="latinname-translation">
+						{{insect.latinName}}
 					</p>
-
+					<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" id="{{insect.latinName}}"
+						ng-click="upload(insect)" />
 				</div>
-				<p>
-					{{insect.latinName}}
-				</p>
-				<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" id="{{insect.latinName}}" ng-click="upload(insect)" />
 			</li>
 		</ul>
 	</div>
 
 </div>
 
-<div class="centered" ng-if="!uploadList.length">
+<div class="centered" ng-if="uploadList.length == 0">
 	<p class="start-adding-insect">{{translations.NOUPLOADEDINSECTFOUND}} <a
 			ng-click="upload()">{{translations.HERE}}</a></p>
 </div>
