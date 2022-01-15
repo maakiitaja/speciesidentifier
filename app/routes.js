@@ -21,7 +21,10 @@ var storage = multer.diskStorage({
   filename: function (req, file, callback) {
     console.log("renaming file.");
     console.log("file name: " + file.originalname);
-    callback(null, file.originalname);
+    const now = new Date();
+    console.log("current time: ", now.getTime());
+    const renamedFilename = file.originalname + now.getTime();
+    callback(null, renamedFilename);
   },
 });
 var upload = multer({ storage: storage });
@@ -408,10 +411,6 @@ module.exports = function (app, passport) {
 
       var isUpload = req.body.isUpload;
       var handleUpload = function (req, res, insect) {
-        if (req.files.length > 1) {
-          console.log("image2: " + req.files[1]);
-        }
-
         console.log("wiki: " + req.body.wiki);
         insect.latinName = req.body.latinName;
         insect.legs = req.body.legs;
@@ -447,8 +446,8 @@ module.exports = function (app, passport) {
 
         console.log("creating thumb picture");
         // thumb picture
-        for (var filesName in req.files) {
-          var files = req.files[filesName];
+        for (var filesInput in req.files) {
+          var files = req.files[filesInput];
           for (var i = 0; i < files.length; i++) {
             var file = files[i];
             console.log("destination: " + file.destination + file.filename);
@@ -547,13 +546,13 @@ module.exports = function (app, passport) {
 
           console.log("req.files: ", req.files);
           // add possible new images
-          for (var filesName in req.files) {
-            console.log("req.files[filesName]:", req.files[filesName]);
+          for (var filesInput in req.files) {
+            console.log("req.files[filesName]:", req.files[filesInput]);
             console.log(
               "req.files[filesName].length",
-              req.files[filesName].length
+              req.files[filesInput].length
             );
-            var files = req.files[filesName];
+            var files = req.files[filesInput];
 
             for (var i = 0; i < files.length; i++) {
               console.log(
@@ -581,12 +580,17 @@ module.exports = function (app, passport) {
         console.log("uploading new insect");
         var insect = new Insect();
         insect.images = [];
-        for (var ind in req.files) {
-          console.log("file ind: " + ind);
-          console.log(
-            "req.files[ind].originalname" + req.files[ind].originalname
-          );
-          insect.images.push("images/" + req.files[ind].originalname);
+        console.log("iterating over fileinputs: ", req.files);
+
+        // add file names
+        for (var filesInput in req.files) {
+          var files = req.files[filesInput];
+          console.log("files are: ", files, " with length: " + files.length);
+
+          for (var i = 0; i < files.length; i++) {
+            console.log("req.files[ind].originalname" + files[i].originalname);
+            insect.images.push("images/" + files[i].originalname);
+          }
         }
         handleUpload(req, res, insect);
       }

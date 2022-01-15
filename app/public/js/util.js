@@ -133,7 +133,7 @@ function getImgURL(url, transferContainer, ind, callback) {
 
     console.log("getimgurl before xhr.open");
     xhr.open("GET", url, enableCORS);
-    xhr.extraInfo = ind;
+    xhr.extraInfo = { ind: ind, transferContainer: transferContainer };
     console.log("getimgurl after xhr.open");
     xhr.responseType = "blob";
     console.log("getimgurl before xhr.send");
@@ -145,18 +145,22 @@ function getImgURL(url, transferContainer, ind, callback) {
         "xhr.onload start, transfercontainer: " +
           transferContainer +
           " ind: " +
-          this.extraInfo
+          this.extraInfo.ind
       );
 
-      return callback(xhr.response, transferContainer, this.extraInfo)
+      return callback(
+        xhr.response,
+        this.extraInfo.transferContainer,
+        this.extraInfo.ind
+      )
         .then(() => {
           if (this.status >= 200 && this.status < 300) {
             console.log("happy");
             resolve({ message: true });
           } else {
-            resolve({ message: false });
             console.log("sad");
             transferContainer.items = null;
+            reject({ message: false });
           }
         })
         .catch((err) => {
@@ -178,9 +182,10 @@ function loadURLToContainer(url, transferContainer, ind) {
     console.log("loadUrlToInputFIeld, transferContainer: " + transferContainer);
     getImgURL(url, transferContainer, ind, (imgBlob, container, index) => {
       return new Promise(function (resolve, reject) {
+        const containerObj = container;
         // Load img blob to input
         let fileName = "filename_" + index + ".jpg"; // should .replace(/[/\\?%*:|"<>]/g, '-') for remove special char like / \
-        console.log("filename: ", fileName);
+        console.log("filename: ", fileName, " imgBlob: ", imgBlob);
         // validate
         let file = new File(
           [imgBlob],
@@ -190,8 +195,8 @@ function loadURLToContainer(url, transferContainer, ind) {
         );
 
         console.log("getImgURL, file: ", file);
-        console.log("getImgUrl, container:", container);
-        container.items.add(file);
+        console.log("getImgUrl, container:", containerObj);
+        containerObj.items.add(file);
         console.log("util: added items to transfer container");
 
         if (file) {
@@ -203,14 +208,18 @@ function loadURLToContainer(url, transferContainer, ind) {
         console.log("promise returned from getImgUrl: ", msg);
         if (!msg.message) {
           console.log("setting transfercontainer back to empty");
-          transferContainer.files = null;
-          transferContainer.items = null;
+          containerObj.files = null;
+          containerObj.items = null;
         }
         resolve({ message: msg });
       })
       .catch((err) => {
+        console.log("getimgurl catch error");
         reject({ msg: err });
       });
+  }).catch((err) => {
+    console.log("loadurltocontainer catch error");
+    //reject({ msg: err });
   });
 }
 

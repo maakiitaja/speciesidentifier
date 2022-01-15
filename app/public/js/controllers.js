@@ -398,11 +398,12 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     };
 
     $scope.downloadImageLinks = async function () {
-      var links = $scope.imageLinks.trim(" ").split(",");
-      console.log("links are: ", links);
-      if (links.length === 0) {
+      console.log("links are: ", $scope.imageLinks.trim());
+      if (!$scope.imageLinks.trim()) {
         return;
       }
+      var links = $scope.imageLinks.trim().split(",");
+      console.log("links are: ", links);
 
       // attempt to fetch the resource(s)
       // show loading spinner
@@ -415,17 +416,19 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
       var promises = [];
       for (var i = 0; i < links.length; i++) {
         var promise = new Promise(function (resolve, reject) {
-          return loadURLToContainer(links[i], container, i).then((msg) => {
+          loadURLToContainer(links[i], container, i).then((msg) => {
             if (msg) {
               console.log("loaded item to container:");
               resolve(msg);
             } else {
               console.log('couldn"t load item to container:');
-              //reject(msg);
+              reject(msg);
             }
           });
         }).catch((err) => {
           console.log("loadUrltocontainer failed");
+          container.items = null;
+          container.files = null;
         });
         promises.push(promise);
       }
