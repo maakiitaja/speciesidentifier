@@ -396,6 +396,17 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     };
 
     $scope.checkPhotoRequired = function () {
+      // need to check if latinname has already been reserved
+      if ($scope.latinNameReserved) {
+        console.log("latinname has been reserved");
+        alert("check the latin name again");
+        // for form validation to work reset the field
+        $scope.latinName = "";
+
+        $scope.$apply();
+        return;
+      }
+
       console.log("check photo required.");
       // in case the main file input has been populated
       if ($scope.fileInputPopulated) {

@@ -16,7 +16,11 @@
 			<li>{{translations.FINNISHNAME}}: </li>
 			<li><input id="finnishName" type="text" value="{{fiName}}" name="fiName" ng-model="fiName" /> </li>
 			<li>{{translations.LATINNAME}}: (*)</li>
-			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName" required /></li>
+			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName" ng-required="latinNameReq"
+					latin-name-exists />
+				<p ng-if="latinNameReserved">This latin name has already been used.</p>
+				{{latinNameReq}}
+			</li>
 			<!--<td><span ng-show="myForm.latinName.$touched && myForm.latinName.$invalid">{{translations.LATINNAMEREQUIRED}}</span></td>-->
 
 
@@ -176,12 +180,15 @@
 	<div>
 		<div ng-if="isUpload==1">
 			<button id="uploadSubmit" type="submit" ng-click="checkPhotoRequired()" class="button button-blue centered"
-				value="{{translations.UPLOAD}}" ng-disabled="disableUpload">{{translations.UPLOAD}}</button>
+				value="{{translations.UPLOAD}}"
+				ng-disabled="disableUpload || myForm.$pending">{{translations.UPLOAD}}</button>
 		</div>
 		<div ng-if="isUpload==0">
 			<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit" class="button button-blue centered"
-				value="{{translations.SAVE}}" ng-disabled="disableUpload">{{translations.SAVE}}</button>
+				value="{{translations.SAVE}}"
+				ng-disabled="disableUpload || myForm.$pending">{{translations.SAVE}}</button>
 		</div>
+
 	</div>
 
 </form>

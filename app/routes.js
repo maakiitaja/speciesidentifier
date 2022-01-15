@@ -597,6 +597,23 @@ module.exports = function (app, passport) {
     }
   );
 
+  app.post("/latinNameExists", function (req, res) {
+    console.log("latinNameExist function req.body: ", req.body);
+    Insect.findOne({ latinName: req.body.latinName }).exec(function (
+      err,
+      insect
+    ) {
+      if (err) throw err;
+      if (insect) {
+        console.log("found latinname");
+        res.send({ msg: true });
+      } else {
+        console.log('didn"t find latinname');
+        res.send(null);
+      }
+    });
+  });
+
   app.get("/observationplace/list", function (req, res) {
     console.log("observation list");
     console.log("req.user.id: " + req.user.id);

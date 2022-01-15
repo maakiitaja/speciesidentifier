@@ -66,6 +66,53 @@ myApp.directive("customOnChange", function () {
   };
 });
 
+myApp.directive("latinNameExists", function ($http, $q) {
+  return {
+    require: "ngModel",
+    link: function (scope, element, attrs, ngModel) {
+      ngModel.$asyncValidators.latinNameExists = function (
+        modelValue,
+        viewValue
+      ) {
+        console.log("viewvalue: ", viewValue);
+        console.log("scope.latinName: ", scope.latinName);
+        console.log("scope.insect.latinName: ", scope.insect.latinName);
+        // check whether the new value is the same as the scope valueProperties
+        if (scope.insect && viewValue === scope.insect.latinName) {
+          scope.latinNameReserved = false;
+          console.log("viewvalue equals scope value");
+          return $q.resolve();
+        }
+
+        // check if the value is is empty
+        if (viewValue === "") {
+          console.log("viewvalue is empty");
+          scope.latinNameReserved = false;
+          scope.latinNameReq = true;
+          return $q.reject();
+        }
+
+        return $http
+          .post("/latinNameExists", { latinName: viewValue })
+          .then(function (response) {
+            console.log("response latinname exist: ", response);
+
+            if (response.data.msg) {
+              console.log("rejecting");
+              scope.latinNameReq = true;
+              scope.latinNameReserved = true;
+              return $q.reject();
+            }
+            console.log("response ok");
+            scope.latinNameReq = false;
+            scope.latinNameReserved = false;
+            return true;
+          });
+      };
+    },
+  };
+});
+
 myApp.directive("ngResize", function ($window) {
   return {
     scope: {
