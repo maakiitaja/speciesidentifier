@@ -109,7 +109,7 @@ insectIdentifierApp.factory("SearchService", [
           console.log("query is empty");
         } else {
           // show loading spinner
-          toggleLoadingSpinner();
+          toggleLoadingSpinner($scope);
 
           // disable search button
           $scope.disableSearch = true;
@@ -189,7 +189,7 @@ insectIdentifierApp.factory("SearchService", [
               $scope.searchResults = "showResults";
             }
             // Hide spinner element
-            toggleLoadingSpinner();
+            toggleLoadingSpinner($scope);
 
             // Enable search button
             $scope.disableSearch = false;

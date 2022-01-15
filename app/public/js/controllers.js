@@ -337,47 +337,81 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     resetHeader();
     highlightElement("manage-button");
 
+    $scope.validateFileFormat = function (files) {
+      for (var i = 0; i < files.length; i++) {
+        var validFiles = true;
+        var ext = files[i].name.match(/\.(.+)$/)[1];
+        if (
+          angular.lowercase(ext) === "jpg" ||
+          angular.lowercase(ext) === "jpeg" ||
+          angular.lowercase(ext) === "png"
+        ) {
+        } else {
+          console.log("Invalid File Format");
+          validFiles = false;
+          break;
+        }
+      }
+      return validFiles;
+    };
+
     $scope.fileChange = function (event) {
       var files = event.target.files;
       console.log(files);
       if (files.length > 0) {
         // validate
-        var validFiles = true;
-        for (var i = 0; i < files.length; i++) {
-          var ext = files[i].name.match(/\.(.+)$/)[1];
-          if (
-            angular.lowercase(ext) === "jpg" ||
-            angular.lowercase(ext) === "jpeg" ||
-            angular.lowercase(ext) === "png"
-          ) {
-          } else {
-            console.log("Invalid File Format");
-            validFiles = false;
-          }
-        }
+        var validFiles = $scope.validateFileFormat(files);
+        // var validFiles = true;
+        // for (var i = 0; i < files.length; i++) {
+        //   var ext = files[i].name.match(/\.(.+)$/)[1];
+        //   if (
+        //     angular.lowercase(ext) === "jpg" ||
+        //     angular.lowercase(ext) === "jpeg" ||
+        //     angular.lowercase(ext) === "png"
+        //   ) {
+        //   } else {
+        //     console.log("Invalid File Format");
+        //     validFiles = false;
+        //   }
+        // }
 
         if (validFiles) {
           console.log("setting file upload required to false");
           $scope.isRequired = false;
           console.log("setting file input populated to true");
           $scope.fileInputPopulated = true;
-
+          $scope.$apply();
           // show the files in form
-          document.getElementById("showFiles").innerHTML =
-            document.getElementById("userPhotos").value;
+          // document.getElementById("showFiles").innerHTML =
+          //   document.getElementById("userPhotos").value;
         } else {
-          alert("Invalid file(s). Accepted format: jpg/jpeg/png");
+          alert("Invalid file(s). Accepted formats: jpg/jpeg/png");
           console.log("invalid file(s)");
           $scope.isRequired = true;
           $scope.fileInputPopulated = false;
           document.getElementById("userPhotos").value = null;
+          $scope.$apply();
         }
       }
     };
 
     $scope.checkPhotoRequired = function () {
       console.log("check photo required.");
+      // in case the main file input has been populated
       if ($scope.fileInputPopulated) {
+        return;
+      }
+
+      // in case the user has provided valid image links
+      const el = document.getElementById("userPhotos2");
+      console.log("el: ", el);
+      console.log(" el.files.length: ", el.files.length);
+
+      if (el && el.files.length > 0) {
+        console.log(
+          "valid image links were provided, disabling main file input validation"
+        );
+        $scope.isRequired = false;
         return;
       }
       var inputs = document.getElementsByClassName("photo-checkbox");
@@ -399,21 +433,47 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
     $scope.downloadImageLinks = async function () {
       console.log("links are: ", $scope.imageLinks.trim());
+
+      // trim whitespace and check if imagelinks are empty
       if (!$scope.imageLinks.trim()) {
+        $scope.imagesDownloaded = true;
+        $scope.numberOfImagesDownloaded = 0;
+
         return;
       }
+
       var links = $scope.imageLinks.trim().split(",");
       console.log("links are: ", links);
+      var validFiles = true;
+      // validate imagelinks
+      for (var i = 0; i < links.length; i++) {
+        links[i] = links[i].toLowerCase();
+        if (
+          links[i].indexOf(".jpg") != -1 ||
+          links[i].indexOf(".jpeg") != -1 ||
+          links[i].indexOf(".png") != -1
+        ) {
+        } else {
+          console.log("Invalid File Format");
+          validFiles = false;
+          break;
+        }
+      }
 
-      // attempt to fetch the resource(s)
+      if (!validFiles) {
+        alert("Invalid file(s). Accepted formats: jpg/jpeg/png");
+        return;
+      }
+      console.log("image link validation passed");
+
       // show loading spinner
-      toggleLoadingSpinner();
+      toggleLoadingSpinner($scope);
       $scope.disableUpload = true;
-      console.log("downloading image");
       const container = new DataTransfer();
       console.log("container: ", container);
 
       var promises = [];
+      // attempt to fetch the resource(s)
       for (var i = 0; i < links.length; i++) {
         var promise = new Promise(function (resolve, reject) {
           loadURLToContainer(links[i], container, i).then((msg) => {
@@ -439,14 +499,24 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         document.getElementById("userPhotos2").files = container.files;
         console.log("download done");
         // hide loading spinner
-        toggleLoadingSpinner();
+        toggleLoadingSpinner($scope);
         $scope.disableUpload = false;
+        $scope.imagesDownloaded = true;
+        $scope.numberOfImagesDownloaded = container.files.length;
+
+        // perform validation
+        $scope.checkPhotoRequired();
         $scope.$apply();
       } catch (err) {
         console.log("failed to load images");
         // hide loading spinner
-        toggleLoadingSpinner();
+        toggleLoadingSpinner($scope);
         $scope.disableUpload = false;
+        $scope.imagesDownloaded = true;
+        $scope.numberOfImagesDownloaded = 0;
+
+        // perform validation
+        $scope.checkPhotoRequired();
         $scope.$apply();
       }
     };
@@ -490,7 +560,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         $scope.photos.push({ name: insect.images[i], checked: "0" });
 
       console.log("scope.photos: " + $scope.photos);
-      console.log("scope.photos[0].name: " + $scope.photos[0].name);
+      //console.log("scope.photos[0].name: " + $scope.photos[0].name);
     } else {
       console.log("isupload: true");
       $scope.isUpload = "1";

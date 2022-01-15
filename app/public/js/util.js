@@ -223,8 +223,9 @@ function loadURLToContainer(url, transferContainer, ind) {
   });
 }
 
-function toggleLoadingSpinner() {
+function toggleLoadingSpinner($scope) {
   var spinnerEl = document.getElementById("spinner-search");
+  $scope.displaySpinner = !$scope.displaySpinner;
   if (spinnerEl) {
     spinnerEl.classList.toggle("spinner-loading");
   } else {

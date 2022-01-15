@@ -104,9 +104,9 @@
 			<li>
 				{{translations.IMAGELINKS}}:</li>
 			<li>
-				<textarea id="imageLinks" ng-change="downloadImageLinks()" name="imageLinks"
+				<textarea id="imageLinks" rows="3" ng-change="downloadImageLinks()" name="imageLinks"
 					ng-model="imageLinks"></textarea>
-				<div class="lds-center" style="margin-bottom: 28px">
+				<div class="lds-center" ng-class="{hideSpinner:!displaySpinner}" style="margin-bottom: 28px">
 					<div class="lds-spinner spinner-loading" id="spinner-search">
 						<div></div>
 						<div></div>
@@ -122,20 +122,23 @@
 						<div></div>
 					</div>
 				</div>
+				<div class="images-retrieved" ng-if="imagesDownloaded">
+					<p>{{numberOfImagesDownloaded}} images retrieved/ready</p>
+				</div>
 			</li>
 
-			<li> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</li>
+			<li> {{translations.SELECTANIMAGETOUPLOAD}}: <span ng-if="isRequired">(*)</span></li>
 			<li>
 				<input type="file" id="userPhotos" name="userPhotos" ng-required="isRequired"
 					custom-on-change="fileChange" multiple />
-				{{isRequired}}
+
 				<div id="showFiles">
 
 				</div>
 			</li>
 
-			<li> {{translations.SELECTANIMAGETOUPLOAD}}: (2)</li>
-			<li>
+			<li> </li>
+			<li class="hidden-file-input">
 				<input type="file" id="userPhotos2" name="userPhotos2" custom-on-change="fileChange" multiple />
 
 				<div id="showFiles">
@@ -153,40 +156,33 @@
 			<br>
 		</ul>
 
-		<div ng-if="isUpload==0" id="uploadedPhotos" ng-repeat="photo in photos">
-			<div class="horizontal-table">
+	</div>
+	<!-- existing insect pictures-->
 
-				<ul class="insect-thumbs-upload">
-					<li>
-						<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
-						<input type='checkbox' class="input--sm photo-checkbox" name="{{photo.name}}"
-							ng-model="photo.checked" ng-click="checkPhotoRequired(photo)" />{{translations.REMOVEPHOTO}}
-					</li>
-				</ul>
+	<div class="container" ng-if="isUpload==0" id="uploadedPhotos">
+		<ul class="insect-thumbs-upload container-insect-detail">
+			<li ng-repeat="photo in photos">
+				<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
+				<div class="photo-checkbox-container">
+					<input type='checkbox' class="input--sm photo-checkbox" name="{{photo.name}}"
+						ng-model="photo.checked" ng-click="checkPhotoRequired(photo)" />{{translations.REMOVEPHOTO}}
+				</div>
+			</li>
+		</ul>
+	</div>
+	<br>
+	<!-- buttons-->
 
-			</div>
+	<div>
+		<div ng-if="isUpload==1">
+			<button id="uploadSubmit" type="submit" ng-click="checkPhotoRequired()" class="button button-blue centered"
+				value="{{translations.UPLOAD}}" ng-disabled="disableUpload">{{translations.UPLOAD}}</button>
 		</div>
-		<br>
-		<table class="center">
-			<tr>
-				<td>
-
-					<div ng-if="isUpload==1">
-						<button id="uploadSubmit" type="submit" ng-click="checkPhotoRequired()"
-							class="button button-blue" value="{{translations.UPLOAD}}"
-							ng-disabled="disableUpload">{{translations.UPLOAD}}</button>
-					</div>
-					<div ng-if="isUpload==0">
-						<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit"
-							class="button button-blue" value="{{translations.SAVE}}"
-							ng-disabled="disableUpload">{{translations.SAVE}}</button>
-					</div>
-					{{disableUpload}}
-				</td>
-			</tr>
-
-		</table>
-
+		<div ng-if="isUpload==0">
+			<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit" class="button button-blue centered"
+				value="{{translations.SAVE}}" ng-disabled="disableUpload">{{translations.SAVE}}</button>
+		</div>
+	</div>
 
 </form>
 
