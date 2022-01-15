@@ -350,9 +350,8 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
             angular.lowercase(ext) === "jpeg" ||
             angular.lowercase(ext) === "png"
           ) {
-            alert("Valid File Format");
           } else {
-            alert("Invalid File Format");
+            console.log("Invalid File Format");
             validFiles = false;
           }
         }
@@ -362,7 +361,12 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
           $scope.isRequired = false;
           console.log("setting file input populated to true");
           $scope.fileInputPopulated = true;
+
+          // show the files in form
+          document.getElementById("showFiles").innerHTML =
+            document.getElementById("userPhotos").value;
         } else {
+          alert("Invalid file(s). Accepted format: jpg/jpeg/png");
           console.log("invalid file(s)");
           $scope.isRequired = true;
           $scope.fileInputPopulated = false;
@@ -373,9 +377,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
     $scope.checkPhotoRequired = function () {
       console.log("check photo required.");
-      alert("checkphotorequired");
       if ($scope.fileInputPopulated) {
-        alert("fileinputpopulated true");
         return;
       }
       var inputs = document.getElementsByClassName("photo-checkbox");
@@ -393,6 +395,57 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
       $scope.isRequired = isRequired;
 
       return;
+    };
+
+    $scope.downloadImageLinks = async function () {
+      var links = $scope.imageLinks.trim(" ").split(",");
+      console.log("links are: ", links);
+      if (links.length === 0) {
+        return;
+      }
+
+      // attempt to fetch the resource(s)
+      // show loading spinner
+      toggleLoadingSpinner();
+      $scope.disableUpload = true;
+      console.log("downloading image");
+      const container = new DataTransfer();
+      console.log("container: ", container);
+
+      var promises = [];
+      for (var i = 0; i < links.length; i++) {
+        var promise = new Promise(function (resolve, reject) {
+          return loadURLToContainer(links[i], container, i).then((msg) => {
+            if (msg) {
+              console.log("loaded item to container:");
+              resolve(msg);
+            } else {
+              console.log('couldn"t load item to container:');
+              //reject(msg);
+            }
+          });
+        }).catch((err) => {
+          console.log("loadUrltocontainer failed");
+        });
+        promises.push(promise);
+      }
+      console.log("resolving all promises");
+      try {
+        const result = await Promise.all(promises);
+        console.log("container.files: ", container.files);
+        document.getElementById("userPhotos2").files = container.files;
+        console.log("download done");
+        // hide loading spinner
+        toggleLoadingSpinner();
+        $scope.disableUpload = false;
+        $scope.$apply();
+      } catch (err) {
+        console.log("failed to load images");
+        // hide loading spinner
+        toggleLoadingSpinner();
+        $scope.disableUpload = false;
+        $scope.$apply();
+      }
     };
 
     if ($location.search().fromUploadListPage == "1") {

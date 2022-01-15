@@ -104,14 +104,43 @@
 			<li>
 				{{translations.IMAGELINKS}}:</li>
 			<li>
-				<textarea id="imageLinks" name="imageLinks" ng-model="imageLinks"></textarea>
+				<textarea id="imageLinks" ng-change="downloadImageLinks()" name="imageLinks"
+					ng-model="imageLinks"></textarea>
+				<div class="lds-center" style="margin-bottom: 28px">
+					<div class="lds-spinner spinner-loading" id="spinner-search">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
 			</li>
 
 			<li> {{translations.SELECTANIMAGETOUPLOAD}}: (*)</li>
 			<li>
-				<input type="file" id="userPhotos" name="userPhotos" file-model="myFile" ng-required="isRequired"
+				<input type="file" id="userPhotos" name="userPhotos" ng-required="isRequired"
 					custom-on-change="fileChange" multiple />
 				{{isRequired}}
+				<div id="showFiles">
+
+				</div>
+			</li>
+
+			<li> {{translations.SELECTANIMAGETOUPLOAD}}: (2)</li>
+			<li>
+				<input type="file" id="userPhotos2" name="userPhotos2" custom-on-change="fileChange" multiple />
+
+				<div id="showFiles">
+
+				</div>
 			</li>
 			<span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
 
@@ -131,7 +160,7 @@
 					<li>
 						<img ng-src="{{photo.name+'_thumb.jpg'}}" id="{{photo.name}}" alt={{insect.latinName}} />
 						<input type='checkbox' class="input--sm photo-checkbox" name="{{photo.name}}"
-							ng-model="photo.checked" ng-click="checkPhotoRequired(photo)" />Remove
+							ng-model="photo.checked" ng-click="checkPhotoRequired(photo)" />{{translations.REMOVEPHOTO}}
 					</li>
 				</ul>
 
@@ -144,13 +173,15 @@
 
 					<div ng-if="isUpload==1">
 						<button id="uploadSubmit" type="submit" ng-click="checkPhotoRequired()"
-							class="button button-blue" value="{{translations.UPLOAD}}">{{translations.UPLOAD}}</button>
+							class="button button-blue" value="{{translations.UPLOAD}}"
+							ng-disabled="disableUpload">{{translations.UPLOAD}}</button>
 					</div>
 					<div ng-if="isUpload==0">
 						<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit"
-							class="button button-blue" value="{{translations.SAVE}}">{{translations.SAVE}}</button>
+							class="button button-blue" value="{{translations.SAVE}}"
+							ng-disabled="disableUpload">{{translations.SAVE}}</button>
 					</div>
-
+					{{disableUpload}}
 				</td>
 			</tr>
 

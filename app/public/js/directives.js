@@ -52,6 +52,7 @@ myApp.directive("footer", function () {
 });
 
 /** file upload */
+// see: https://stackoverflow.com/questions/17922557/angularjs-how-to-check-for-changes-in-file-input-fields
 myApp.directive("customOnChange", function () {
   return {
     restrict: "A",
@@ -243,7 +244,7 @@ myApp.directive("header", function () {
             console.log("lang: " + lang);
             TranslationService.getTranslation($scope, $cookies.get("lang"), "");
             $scope.lang = lang;
-            $route.reload();
+            //$route.reload();
           };
           $scope.login = function () {
             $scope.disableMobileNavigation();

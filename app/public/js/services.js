@@ -109,8 +109,8 @@ insectIdentifierApp.factory("SearchService", [
           console.log("query is empty");
         } else {
           // show loading spinner
-          var spinnerEl = document.getElementById("spinner-search");
-          spinnerEl.classList.toggle("spinner-loading");
+          toggleLoadingSpinner();
+
           // disable search button
           $scope.disableSearch = true;
 
@@ -189,7 +189,8 @@ insectIdentifierApp.factory("SearchService", [
               $scope.searchResults = "showResults";
             }
             // Hide spinner element
-            spinnerEl.classList.toggle("spinner-loading");
+            toggleLoadingSpinner();
+
             // Enable search button
             $scope.disableSearch = false;
           });

@@ -122,3 +122,103 @@ highlightElement = function (elName) {
     console.log("util highlightelement, element is null:", elName);
   }
 };
+
+// xml blob res
+function getImgURL(url, transferContainer, ind, callback) {
+  return new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    var enableCORS = true;
+
+    console.log("getImgURL ind: ", ind);
+
+    console.log("getimgurl before xhr.open");
+    xhr.open("GET", url, enableCORS);
+    xhr.extraInfo = ind;
+    console.log("getimgurl after xhr.open");
+    xhr.responseType = "blob";
+    console.log("getimgurl before xhr.send");
+    xhr.send();
+    console.log("getimgurl after xhr.send");
+
+    xhr.onload = function () {
+      console.log(
+        "xhr.onload start, transfercontainer: " +
+          transferContainer +
+          " ind: " +
+          this.extraInfo
+      );
+
+      return callback(xhr.response, transferContainer, this.extraInfo)
+        .then(() => {
+          if (this.status >= 200 && this.status < 300) {
+            console.log("happy");
+            resolve({ message: true });
+          } else {
+            resolve({ message: false });
+            console.log("sad");
+            transferContainer.items = null;
+          }
+        })
+        .catch((err) => {
+          console.log("callback failure");
+        });
+    };
+    xhr.onerror = function () {
+      console.error("** An error occurred during the XMLHttpRequest");
+      alert("Attempt of fetching the resource failed");
+      resolve({
+        msg: false,
+      });
+    };
+  });
+}
+
+function loadURLToContainer(url, transferContainer, ind) {
+  return new Promise(function (resolve, reject) {
+    console.log("loadUrlToInputFIeld, transferContainer: " + transferContainer);
+    getImgURL(url, transferContainer, ind, (imgBlob, container, index) => {
+      return new Promise(function (resolve, reject) {
+        // Load img blob to input
+        let fileName = "filename_" + index + ".jpg"; // should .replace(/[/\\?%*:|"<>]/g, '-') for remove special char like / \
+        console.log("filename: ", fileName);
+        // validate
+        let file = new File(
+          [imgBlob],
+          fileName,
+          { type: "image/jpeg", lastModified: new Date().getTime() },
+          "utf-8"
+        );
+
+        console.log("getImgURL, file: ", file);
+        console.log("getImgUrl, container:", container);
+        container.items.add(file);
+        console.log("util: added items to transfer container");
+
+        if (file) {
+        }
+        resolve({ message: true });
+      });
+    })
+      .then((msg) => {
+        console.log("promise returned from getImgUrl: ", msg);
+        if (!msg.message) {
+          console.log("setting transfercontainer back to empty");
+          transferContainer.files = null;
+          transferContainer.items = null;
+        }
+        resolve({ message: msg });
+      })
+      .catch((err) => {
+        reject({ msg: err });
+      });
+  });
+}
+
+function toggleLoadingSpinner() {
+  var spinnerEl = document.getElementById("spinner-search");
+  if (spinnerEl) {
+    spinnerEl.classList.toggle("spinner-loading");
+  } else {
+    console.log("couldn't toggle loading spinner");
+  }
+}

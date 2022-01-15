@@ -283,5 +283,6 @@
   "NOUPLOADEDINSECTFOUND": "No uploaded insects found. Start adding new insects from",
   "HERE": "here",
   "NOCOLLECTIONITEMS": "Your collection is empty. Start adding new collection items from ",
-  "OFFLINEFAILURE": "Failed to add item to the collection. Reason offline mode or synchronization issue."
+  "OFFLINEFAILURE": "Failed to add item to the collection. Reason offline mode or synchronization issue.",
+  "REMOVEPHOTO": "Remove"
 }

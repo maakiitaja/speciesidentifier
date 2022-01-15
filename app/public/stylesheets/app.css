@@ -268,7 +268,8 @@ html {
   background-color: #54d158;
 }
 
-.button-green:hover:disabled {
+.button-green:hover:disabled,
+.button-blue:hover:disabled {
   cursor: not-allowed;
 }
 

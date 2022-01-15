@@ -23,13 +23,13 @@
 		<tr>
 			<td>
 
-				<div class="container-main-image-detail" ng-if="insect.images.length > 1">
+				<div ng-if="insect.images.length > 1">
 					<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images"
 						ng-class="{active: mainImageUrl==img}" class="insect-detail" />
 					<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimagemultipledisconnected"
 						ng-repeat="img in insect.images" ng-class="{active: mainImageUrl==img}" class="insect-detail" />
 				</div>
-				<div class="container-main-image-detail" ng-if="insect.images.length==1">
+				<div ng-if="insect.images.length==1">
 					<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="mainimage"
 						class="insect-detail active" />
 					<img ng-if="connected==0" ng-src="{{localStorage[insect.images[0]]}}" id="mainimagedisconnected"

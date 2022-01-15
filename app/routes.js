@@ -392,7 +392,14 @@ module.exports = function (app, passport) {
   /* Upload or modify insect */
   app.post(
     "/insect/insert",
-    upload.array("userPhotos", 10),
+    //upload.array("userPhotos", 10),
+    upload.fields([
+      {
+        name: "userPhotos",
+        maxCount: 10,
+      },
+      { name: "userPhotos2", maxCount: 10 },
+    ]),
     function (req, res) {
       console.log("uploading or modifying insect");
       console.log("isupload: " + req.body.isUpload);
@@ -438,41 +445,38 @@ module.exports = function (app, passport) {
 
         console.log("read body variables.");
 
-        if (req.body.imageLinks) {
-          console.log("imagelinks: " + req.body.imageLinks);
-          var imageUrls = req.body.imageLinks.split(",");
-
-          for (var ind in imageUrls) insect.images.push(imageUrls[ind]);
-        }
         console.log("creating thumb picture");
         // thumb picture
-        for (var i = 0; i < req.files.length; i++) {
-          var file = req.files[i];
-          console.log("destination: " + file.destination + file.filename);
-          gm(file.destination + file.filename)
-            .resize(150, 150)
-            .write(
-              file.destination + file.filename + "_thumb.jpg",
-              function (err) {
-                if (err) console.log(err);
-                else
-                  console.log(
-                    "resized file: " + file.destination + file.filename
-                  );
-              }
-            );
-          /*im.resize(
-          {
-            srcPath: file.destination + file.filename,
-            dstPath: file.destination + file.filename + "_thumb.jpg",
-            width: 150,
-            height: 150
-          },
-          function(err, stdout, stderr) {
-            if (err) throw err;
-            console.log("resized file: " + file.filename);
+        for (var filesName in req.files) {
+          var files = req.files[filesName];
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            console.log("destination: " + file.destination + file.filename);
+            gm(file.destination + file.filename)
+              .resize(150, 150)
+              .write(
+                file.destination + file.filename + "_thumb.jpg",
+                function (err) {
+                  if (err) console.log(err);
+                  else
+                    console.log(
+                      "resized file: " + file.destination + file.filename
+                    );
+                }
+              );
+            /*im.resize(
+            {
+              srcPath: file.destination + file.filename,
+              dstPath: file.destination + file.filename + "_thumb.jpg",
+              width: 150,
+              height: 150
+            },
+            function(err, stdout, stderr) {
+              if (err) throw err;
+              console.log("resized file: " + file.filename);
+            }
+          );*/
           }
-        );*/
         }
 
         if (isUpload == "1") {
@@ -537,27 +541,44 @@ module.exports = function (app, passport) {
               insect.images.splice(ind, 1);
               removedPhotoInd++;
               console.log("insect's images: " + insect.images);
+              // TODO remove the photo file from the server
             }
           }
 
-          console.log("adding new images ");
+          console.log("req.files: ", req.files);
           // add possible new images
-          for (var i = 0; i < req.files.length; i++) {
-            console.log("req.files: " + req.files[i].originalname);
-            /* check duplicates */
-            var isDuplicate = false;
-            for (var j = 0; j < insect.images.length; j++) {
-              if (insect.images[j] == req.files[i].originalname)
-                isDuplicate = true;
+          for (var filesName in req.files) {
+            console.log("req.files[filesName]:", req.files[filesName]);
+            console.log(
+              "req.files[filesName].length",
+              req.files[filesName].length
+            );
+            var files = req.files[filesName];
+
+            for (var i = 0; i < files.length; i++) {
+              console.log(
+                "req.files[filesName][i].originalName: ",
+                files[i].originalname
+              );
+              /* check duplicates */
+              var isDuplicate = false;
+              for (var j = 0; j < insect.images.length; j++) {
+                if (insect.images[j] == files.originalname) isDuplicate = true;
+              }
+              if (!isDuplicate) {
+                console.log(
+                  "adding a new file to insect,",
+                  files[i].originalname
+                );
+                insect.images.push("images/" + files[i].originalname);
+              } else console.log("found duplicate: " + files[i].originalname);
             }
-            if (!isDuplicate)
-              insect.images.push("images/" + req.files[i].originalname);
-            else console.log("found duplicate: " + req.files[i].originalname);
           }
+
           handleUpload(req, res, insect);
         });
       } else {
-        console.log("uploading insect");
+        console.log("uploading new insect");
         var insect = new Insect();
         insect.images = [];
         for (var ind in req.files) {
