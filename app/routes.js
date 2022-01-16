@@ -26,26 +26,23 @@ var storage = multer.diskStorage({
     const now = new Date();
     console.log("current time: ", now.getTime());
     const renamedFilename = file.originalname + now.getTime();
+
     callback(null, renamedFilename);
   },
 });
-var upload = multer({ storage: storage });
-
-function fileFilter(req, file, cb) {
-  /*
-  // The function should call `cb` with a boolean
-  // to indicate if the file should be accepted
-
-  // To reject this file pass `false`, like so:
-  cb(null, 0);
-
-  // To accept the file pass `true`, like so:
-  cb(null, 1);
-
-  // You can always pass an error if something goes wrong:
-  cb(new Error('I don\'t have a clue!'))
-*/
-}
+var upload = multer({
+  limits: {
+    fieldNameSize: 500,
+    fileSize: 1048576, //  1048576
+  },
+  storage: storage,
+}).fields([
+  {
+    name: "userPhotos",
+    maxCount: 5,
+  },
+  { name: "userPhotos2", maxCount: 5 },
+]);
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
@@ -403,30 +400,30 @@ module.exports = function (app, passport) {
   });
 
   /* Upload insect */
-  app.post(
-    "/insect/populate",
-    upload.array("userPhotos", 100),
-    function (req, res) {
-      // thumb picture
-      for (var i = 0; i < req.files.length; i++) {
-        var file = req.files[i];
-        console.log("destination: " + file.destination + file.filename);
-        im.resize(
-          {
-            srcPath: file.destination + file.filename,
-            dstPath: file.destination + file.filename + "_thumb.jpg",
-            width: 100,
-            height: 100,
-          },
-          function (err, stdout, stderr) {
-            if (err) throw err;
-            console.log("resized file: " + file.filename);
-          }
-        );
-      }
-      res.redirect("#/main");
-    }
-  );
+  // app.post(
+  //   "/insect/populate",
+  //   upload.array("userPhotos", 100),
+  //   function (req, res) {
+  //     // thumb picture
+  //     for (var i = 0; i < req.files.length; i++) {
+  //       var file = req.files[i];
+  //       console.log("destination: " + file.destination + file.filename);
+  //       im.resize(
+  //         {
+  //           srcPath: file.destination + file.filename,
+  //           dstPath: file.destination + file.filename + "_thumb.jpg",
+  //           width: 100,
+  //           height: 100,
+  //         },
+  //         function (err, stdout, stderr) {
+  //           if (err) throw err;
+  //           console.log("resized file: " + file.filename);
+  //         }
+  //       );
+  //     }
+  //     res.redirect("#/main");
+  //   }
+  // );
 
   /* Load user's uploaded insects */
   app.get("/uploadList", function (req, res) {
@@ -452,24 +449,25 @@ module.exports = function (app, passport) {
   });
 
   /* Upload or modify insect */
-  app.post(
-    "/insect/insert",
-    //upload.array("userPhotos", 10),
-    upload.fields([
-      {
-        name: "userPhotos",
-        maxCount: 10,
-      },
-      { name: "userPhotos2", maxCount: 10 },
-    ]),
-    function (req, res) {
+  app.post("/insect/insert", function (req, res) {
+    upload(req, res, function (err) {
+      if (err) {
+        console.log("got upload error, file limit exceeded?, err: ", err);
+        // would need to redirect to error view
+        return res.redirect("/#/fileuploaderror");
+      }
+
+      if (!req.isAuthenticated()) {
+        res.send(null);
+        return;
+      }
       console.log("uploading or modifying insect");
       console.log("isupload: " + req.body.isUpload);
       console.log("insectId: " + req.body.insectId);
       console.log("userId:" + req.user.id);
 
       var isUpload = req.body.isUpload;
-      var handleUpload = function (req, res, insect) {
+      var handleUpload = async function (req, res, insect) {
         console.log("wiki: " + req.body.wiki);
         insect.latinName = req.body.latinName;
         insect.legs = req.body.legs;
@@ -559,15 +557,26 @@ module.exports = function (app, passport) {
             translations: insect.translations,
           };
           var conditions = { _id: insect._id };
-          var options = { multi: true };
-          var callback = function callback(err, numAffected) {
-            // numAffected is the number of updated documents
-            if (err) throw err;
-            console.log("insect updated");
-            res.redirect("/#/main");
-          };
+          // var callback = function callback(err, numAffected) {
+          //   // numAffected is the number of updated documents
+          //   if (err) {
+          //     console.log("got error, err: ", err);
 
-          Insect.update(conditions, update, options, callback);
+          //     res.send(null);
+          //     throw err;
+          //   }
+          //   console.log("insect updated");
+          //   res.redirect("/#/main");
+          // };
+
+          const oldDocument = await Insect.updateOne(conditions, update);
+          console.log("insect updated");
+          try {
+            return res.redirect("/#/main");
+          } catch (err) {
+            console.log("error in redirect");
+            return res.send(null);
+          }
         }
       };
 
@@ -615,21 +624,19 @@ module.exports = function (app, passport) {
 
             for (var i = 0; i < files.length; i++) {
               console.log(
-                "req.files[filesName][i].originalName: ",
-                files[i].originalname
+                "req.files[filesName][i].fileName: ",
+                files[i].filename
               );
               /* check duplicates */
               var isDuplicate = false;
               for (var j = 0; j < insect.images.length; j++) {
-                if (insect.images[j] == files.originalname) isDuplicate = true;
+                if (insect.images[j] == files.filename) isDuplicate = true;
               }
               if (!isDuplicate) {
-                console.log(
-                  "adding a new file to insect,",
-                  files[i].originalname
-                );
-                insect.images.push("images/" + files[i].originalname);
-              } else console.log("found duplicate: " + files[i].originalname);
+                console.log("adding a new file to insect,", files[i].filename);
+                console.log("files[i]: " + files[i]);
+                insect.images.push("images/" + files[i].filename);
+              } else console.log("found duplicate: " + files[i].filename);
             }
           }
 
@@ -647,14 +654,14 @@ module.exports = function (app, passport) {
           console.log("files are: ", files, " with length: " + files.length);
 
           for (var i = 0; i < files.length; i++) {
-            console.log("req.files[ind].originalname" + files[i].originalname);
-            insect.images.push("images/" + files[i].originalname);
+            console.log("req.files[ind].filename" + files[i].filename);
+            insect.images.push("images/" + files[i].filename);
           }
         }
         handleUpload(req, res, insect);
       }
-    }
-  );
+    });
+  });
 
   app.post("/latinNameExists", function (req, res) {
     console.log("latinNameExist function req.body: ", req.body);

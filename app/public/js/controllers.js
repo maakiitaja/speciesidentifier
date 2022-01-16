@@ -7,6 +7,15 @@ var insectIdentifierControllers = angular.module(
   "insectIdentifierControllers",
   []
 );
+insectIdentifierControllers.controller("FileUploadErrorCtrl", [
+  "$scope",
+  "$location",
+  function ($scope, $location) {
+    $scope.main = function () {
+      $location.path("search");
+    };
+  },
+]);
 
 insectIdentifierControllers.controller("LoggingCtrl", [
   "$scope",
@@ -379,7 +388,11 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     $scope.fileChange = function (event) {
       var files = event.target.files;
       console.log(files);
-      if (files.length > 0) {
+      if (files.length > 5) {
+        alert("The maximum amount of files (5) has been exceeded.");
+        document.getElementById("userPhotos").value = null;
+        $scope.$apply();
+      } else if (files.length) {
         // validate
         var validFiles = $scope.validateFileFormat(files);
 
@@ -463,6 +476,12 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
       var links = $scope.imageLinks.trim().split(",");
       console.log("links are: ", links);
+
+      if (links.length > 5) {
+        alert("The maximum amount of files (5) has been exceeded.");
+        return;
+      }
+
       var validFiles = true;
       // validate imagelinks
       for (var i = 0; i < links.length; i++) {

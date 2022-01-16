@@ -185,6 +185,11 @@ html {
   visibility: hidden;
 }
 
+.fileupload-error-container {
+  padding: 30px;
+  margin-bottom: 50px !important;
+}
+
 /* footer */
 .container-footer {
   display: flex;

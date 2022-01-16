@@ -266,9 +266,9 @@
   "Butterfly": "Perhoset",
   "Spider": "Hämähäkit",
   "UPLOADINSECT": "Lisää hyönteinen",
-  "IMAGELINKS": "Lisää kuvalinkkejä",
+  "IMAGELINKS": "Lisää kuvalinkkejä (max 5)",
   "WIKIENTRY": "Wiki osio",
-  "SELECTANIMAGETOUPLOAD": "Valitse kuva(t)",
+  "SELECTANIMAGETOUPLOAD": "Valitse kuva(t) (max 5)",
   "COLLECTIONPAGE": "Kokoelma",
   "RETURNTOCOLLECTION": "Palaa kokoelmaan",
   "NORESULTS": "Ei tuloksia",
@@ -289,5 +289,6 @@
   "OFFLINEFAILURE": "Hyönteisen lisääminen kokoelmaan epäonnistui. Olet joko offline moodissa tai tapahtui synkronointi ongelma. ",
   "OFFLINEMODE": "Offline moodi",
   "REMOVEPHOTO": "Poista",
-  "DELETE": "Poista"
+  "DELETE": "Poista",
+  "FILEUPLOADERROR": "Pahoittelut, tapahtui kuvan lataamisvirhe, sillä kuvan maksimi koko ylitettiin. Mene takaisin hakusivulle "
 }

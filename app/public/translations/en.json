@@ -265,9 +265,9 @@
   "SPIDER": "Spider",
   "CENTIPEDE": "centipede",
   "UPLOADINSECT": "Upload insect",
-  "IMAGELINKS": "Add image links",
+  "IMAGELINKS": "Add image links (5)",
   "WIKIENTRY": "Wiki entry",
-  "SELECTANIMAGETOUPLOAD": "Select image(s)",
+  "SELECTANIMAGETOUPLOAD": "Select image(s) (max 5)",
   "COLLECTIONPAGE": "Collection",
   "RETURNTOCOLLECTION": "Return to collection",
   "NORESULTS": "No results",
@@ -285,5 +285,6 @@
   "NOCOLLECTIONITEMS": "Your collection is empty. Start adding new collection items from ",
   "OFFLINEFAILURE": "Failed to add item to the collection. Reason offline mode or synchronization issue.",
   "REMOVEPHOTO": "Remove",
-  "DELETE": "Delete"
+  "DELETE": "Delete",
+  "FILEUPLOADERROR": "Sorry, a file upload error occured. Maximum size of file was exceeded. Go back to search page from "
 }
