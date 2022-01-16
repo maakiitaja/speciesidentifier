@@ -16,8 +16,7 @@
 			<li>{{translations.FINNISHNAME}}: </li>
 			<li><input id="finnishName" type="text" value="{{fiName}}" name="fiName" ng-model="fiName" /> </li>
 			<li>{{translations.LATINNAME}}: (*)</li>
-			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName" ng-required="latinNameReq"
-					latin-name-exists />
+			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName" required latin-name-exists />
 				<p ng-if="latinNameReserved">This latin name has already been used.</p>
 				{{latinNameReq}}
 			</li>
@@ -182,11 +181,14 @@
 			<button id="uploadSubmit" type="submit" ng-click="checkPhotoRequired()" class="button button-blue centered"
 				value="{{translations.UPLOAD}}"
 				ng-disabled="disableUpload || myForm.$pending">{{translations.UPLOAD}}</button>
+
 		</div>
-		<div ng-if="isUpload==0">
+		<div ng-if="isUpload==0" class="button-grid">
 			<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit" class="button button-blue centered"
 				value="{{translations.SAVE}}"
 				ng-disabled="disableUpload || myForm.$pending">{{translations.SAVE}}</button>
+			<button id="deleteInsect" type="button" ng-click="deleteInsect()" class="button button-red centered"
+				value="{{translations.DELETE}}">{{translations.DELETE}}</button>
 		</div>
 
 	</div>

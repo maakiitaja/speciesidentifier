@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var ObjectId = require("mongodb").ObjectID;
 var Schema = mongoose.Schema;
+//module.exports = mongoose.model("Insect", InsectSchema);
 
 var CompendiumSchema = new Schema(
   {

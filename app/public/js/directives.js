@@ -51,6 +51,41 @@ myApp.directive("footer", function () {
   };
 });
 
+// myApp.directive("duplicateNameAsyncValidator", [
+//   "$compile",
+//   "$q",
+//   "$timeout",
+//   "APIClient",
+//   function ($compile, $q, $timeout, APIClient) {
+//     return {
+//       restrict: "A",
+//       require: "ngModel",
+//       link: function (scope, element, attrs, ngModel) {
+//         var allowDuplicate = scope.$eval(attrs.duplicateNameAsyncValidator);
+
+//         ngModel.$asyncValidators.duplicateNameAsyncValidator = function (
+//           modelValue
+//         ) {
+//           if (allowDuplicate) {
+//             return $q(function (resolve, reject) {
+//               $timeout(function () {
+//                 return $q.resolve(true);
+//               });
+//             });
+//           } else {
+//             return APIClient.hasDuplicate({ data: modelValue }).then(function (
+//               response
+//             ) {
+//               if (response && !response.data.result) return $q.resolve(true);
+//               else return $q.reject(false);
+//             });
+//           }
+//         };
+//       },
+//     };
+//   },
+// ]);
+
 /** file upload */
 // see: https://stackoverflow.com/questions/17922557/angularjs-how-to-check-for-changes-in-file-input-fields
 myApp.directive("customOnChange", function () {
@@ -88,7 +123,6 @@ myApp.directive("latinNameExists", function ($http, $q) {
         if (viewValue === "") {
           console.log("viewvalue is empty");
           scope.latinNameReserved = false;
-          scope.latinNameReq = true;
           return $q.reject();
         }
 
@@ -99,12 +133,10 @@ myApp.directive("latinNameExists", function ($http, $q) {
 
             if (response.data.msg) {
               console.log("rejecting");
-              scope.latinNameReq = true;
               scope.latinNameReserved = true;
               return $q.reject();
             }
             console.log("response ok");
-            scope.latinNameReq = false;
             scope.latinNameReserved = false;
             return true;
           });

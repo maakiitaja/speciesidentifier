@@ -288,5 +288,6 @@
   "NOCOLLECTIONITEMS": "Kokoelmasi on tyhjä. Aloita kokoelmasi luonti ",
   "OFFLINEFAILURE": "Hyönteisen lisääminen kokoelmaan epäonnistui. Olet joko offline moodissa tai tapahtui synkronointi ongelma. ",
   "OFFLINEMODE": "Offline moodi",
-  "REMOVEPHOTO": "Poista"
+  "REMOVEPHOTO": "Poista",
+  "DELETE": "Poista"
 }

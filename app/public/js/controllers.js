@@ -257,9 +257,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
   "$localStorage",
   "$cookies",
   function ($scope, Search, $location, $http, $localStorage, $cookies) {
-    console.log(
-      "uploadlist ctrl current User:" + $location.search().currentUser._id
-    );
+    console.log("uploadlist ctrl current User:" + $scope.currentUser);
 
     // menu
     resetHeader();
@@ -268,7 +266,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     $http({
       url: "/uploadList",
       method: "GET",
-      params: { userId: $location.search().currentUser._id },
+      params: { userId: $scope.currentUser._id },
     }).success(function (data) {
       if (data[0]) {
         console.log("received insects images: " + data[0].images);
@@ -337,6 +335,32 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     resetHeader();
     highlightElement("manage-button");
 
+    $scope.deleteInsect = function () {
+      var result = confirm("Are you sure you want to delete this insect?");
+      if (!result) {
+        console.log("not wanting to delete");
+        return;
+      }
+
+      var params = { insectId: $scope.insect._id };
+      $http({
+        url: "/insect/delete",
+        method: "DELETE",
+        params: params,
+      }).success(function (data) {
+        console.log("data: ", data);
+        if (data.msg) {
+          console.log("insect deleted");
+          alert("successfully removed insect");
+          $location.path("insect/uploadList").search({ user: currentUser });
+        } else {
+          console.log("insect exists in some compendium");
+          alert("Can't delete insect, because it exists in some collection. ");
+          return;
+        }
+      });
+    };
+
     $scope.validateFileFormat = function (files) {
       for (var i = 0; i < files.length; i++) {
         var validFiles = true;
@@ -361,19 +385,6 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
       if (files.length > 0) {
         // validate
         var validFiles = $scope.validateFileFormat(files);
-        // var validFiles = true;
-        // for (var i = 0; i < files.length; i++) {
-        //   var ext = files[i].name.match(/\.(.+)$/)[1];
-        //   if (
-        //     angular.lowercase(ext) === "jpg" ||
-        //     angular.lowercase(ext) === "jpeg" ||
-        //     angular.lowercase(ext) === "png"
-        //   ) {
-        //   } else {
-        //     console.log("Invalid File Format");
-        //     validFiles = false;
-        //   }
-        // }
 
         if (validFiles) {
           console.log("setting file upload required to false");

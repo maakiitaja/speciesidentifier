@@ -1,7 +1,8 @@
 // load up the user model
 var User = require("./models/user");
-var Compendium = require("./models/compendium");
 var Insect = require("./models/insect");
+var Compendium = require("./models/compendium");
+
 var Observation = require("./models/observation");
 var ObservationDetail = require("./models/observationDetail");
 var fs = require("fs");
@@ -752,6 +753,40 @@ module.exports = function (app, passport) {
         }
       }
     }
+  });
+
+  app.delete("/insect/delete", function (req, res) {
+    console.log("compendium deletes");
+
+    console.log(req.query.insectId);
+    Compendium.find()
+      .populate({
+        path: "insects",
+        match: { _id: req.query.insectId },
+      })
+      .exec(function (err, results) {
+        if (err) {
+          console.error("got an error");
+          throw err;
+        }
+        console.log("results: ", results);
+        // perform filtering
+        const filteredCompendiums = results.filter((compendium) => {
+          return compendium.insects.length > 0;
+        });
+        if (filteredCompendiums.length > 0) {
+          console.log("result.length: ", results.length);
+          console.log("found compendium(s) with the given insect");
+          return res.send({ msg: false });
+        }
+        console.log("safe to delete the insect");
+
+        Insect.deleteOne({ _id: req.query.insectId }, function (err, result) {
+          if (err) throw err;
+          console.log("insect deletion result: ", result);
+          res.send({ msg: true });
+        });
+      });
   });
 
   app.get("/observation/browse", function (req, res) {
