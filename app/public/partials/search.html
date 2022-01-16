@@ -75,11 +75,24 @@
 					</select>
 				</li> -->
 
-				<li> {{translations.LATINNAME}}: </li>
+				<li> {{translations.NAME}}: </li>
 				<li>
-					<input type="text" name="latinName" ng-model="query.latinName" />
+					<input type="text" name="name" ng-model="query.name" />
+
 				</li>
-				<input type="hidden" name="clicked" ng-model="query.filterClicked" value={{filterClicked}} />
+				<li>{{translations.LANGUAGE}}: </li>
+				<li>
+					<div class="language-container">
+
+						<select class="form-control-own" name="language" ng-model="query.language">
+							<option value=""></option>
+							<option value="Latin">{{translations.LATIN}}</option>
+							<option value="en">{{translations.ENGLISH}}</option>
+							<option value="fi">{{translations.FINNISH}}</option>
+						</select>
+					</div>
+				</li>
+
 			</ul>
 		</div>
 

@@ -198,15 +198,12 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
           byType: byType,
         },
       }).success(function (data) {
-        console.log("received observations: " + JSON.stringify(data));
         $scope.observations = data;
         for (var i = 0; i < data.length; i++) {
           var formattedDate = new Date();
           var rawDate = new Date(data[i].date);
           console.log("data[i].date: " + data[i].date);
-          /*formattedDate.setYear(rawDate.getYear());
-					formattedDate.setMonth(rawDate.getMonth());
-					formattedDate.setDate(rawDate.getDate());*/
+
           var formattedDate = ds_format_date(
             rawDate.getDate(),
             rawDate.getMonth() + 1,

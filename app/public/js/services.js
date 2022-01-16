@@ -122,7 +122,8 @@ insectIdentifierApp.factory("SearchService", [
               secondaryColor: query.secondaryColor,
               category: query.category,
               legs: query.legs,
-              latinName: query.latinName,
+              name: query.name,
+              language: query.language,
             },
           }).success(function (data) {
             console.log("receiving search results.");
@@ -138,6 +139,7 @@ insectIdentifierApp.factory("SearchService", [
             console.log(
               "search results:" + data + " with length: " + data.length
             );
+            console.log(JSON.stringify(data));
             if (data.length == 0) {
               $scope.searchResults = "noResults";
             } else {

@@ -554,7 +554,8 @@ tbody.observation-table-body tr:nth-child(even) {
   flex-shrink: 0;
 }
 
-.photo-checkbox-container {
+.photo-checkbox-container,
+.language-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -717,7 +718,7 @@ img.phone.active {
 
 .form-control-own {
   border-radius: 5px;
-  width: 140px;
+  width: 180px;
   margin: 5px;
   padding: 5px;
 }
@@ -733,7 +734,7 @@ input[type="text"]:disabled {
 
 input {
   margin: 5px !important;
-  width: 200px;
+  width: 180px;
 }
 input.input--sm {
   width: auto !important;

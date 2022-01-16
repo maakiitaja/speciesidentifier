@@ -354,8 +354,8 @@ date | insectname | category
 						<td role="cell" class="cell-observation--sm">{{observation.insect.latinName}}</td>
 						<td role="cell" class="cell-observation--sm">{{observation.date}}</td>
 						<td role="cell" class="cell-observation--sm">{{observation.count}}</td>
-						<td role="cell" class="cell-observation--sm">{{observation.country}}</td>
-						<td role="cell" class="cell-observation--sm">{{observation.countryPart}}</td>
+						<td role="cell" class="cell-observation--sm">{{translations[observation.country]}}</td>
+						<td role="cell" class="cell-observation--sm">{{translations[observation.countryPart]}}</td>
 						<td role="cell" class="cell-observation--sm">{{observation.place}}</td>
 						<td role="cell" class="cell-observation--sm">{{observation.farmType}}</td>
 					</tr>
@@ -382,8 +382,8 @@ date | insectname | category
 							<td class="cell-observation">{{observation.insect.latinName}}</td>
 							<td class="cell-observation">{{observation.date}}</td>
 							<td class="cell-observation">{{observation.count}}</td>
-							<td class="cell-observation">{{observation.country}}</td>
-							<td class="cell-observation">{{observation.countryPart}}</td>
+							<td class="cell-observation">{{translations[observation.country]}}</td>
+							<td class="cell-observation">{{translations[observation.countryPart]}}</td>
 							<td class="cell-observation">{{observation.place}}</td>
 							<td class="cell-observation">{{observation.farmType}}</td>
 						</tr>
@@ -391,27 +391,5 @@ date | insectname | category
 				</table>
 			</div>
 		</div>
-		<!-- <ul id="flex-table-7-col" class="flex-table">
-				<li class="heading"> <b>{{translations.LATINNAME}}</b> </li>
-				<li class="heading"> <b>{{translations.DATE}}</b> </li>
-				<li class="heading"> <b>{{translations.COUNT}}</b> </li>
-				<li class="heading"> <b>{{translations.COUNTRY}}</b> </li>
-				<li class="heading"> <b>{{translations.LOCATION}}</b> </li>
-				<li class="heading"> <b>{{translations.PLACE}}</b> </li>
-				<li class="heading"> <b>{{translations.FARMTYPE}}</b> </li>
-
-			</ul>
-			<ul ng-repeat="observation in observations" name="table-data" id="flex-table-7-col"
-				class="flex-table table-data">
-				<li> {{observation.latinName}}</li>
-				<li> {{observation.date}}</li>
-				<li> {{observation.count}}</li>
-				<li> {{observation.country}}</li>
-				<li> {{observation.location}}</li>
-				<li> {{observation.place}}</li>
-				<li> {{observation.farmType}}</li>
-
-			</ul> -->
-
 	</div>
 </div>

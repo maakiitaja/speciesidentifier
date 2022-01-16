@@ -226,7 +226,9 @@ module.exports = function (app, passport) {
     var secondaryColor = req.query.secondaryColor;
     var category = req.query.category;
     var legs = req.query.legs;
-    var latinName = req.query.latinName;
+    var name = req.query.name;
+    var language = req.query.language;
+
     console.log(
       "primaryColor: " +
         req.query.primaryColor +
@@ -249,17 +251,72 @@ module.exports = function (app, passport) {
     if (req.query.legs) {
       query.where("legs").equals(legs);
     }
-    if (req.query.latinName) {
-      query.where("latinName").equals(latinName);
-    }
 
-    console.log("sorting by latinname");
-    query.sort("latinName");
+    var searchByTranslation = function (insects, name, language) {
+      console.log("search by translation name:", name);
+      var result = insects.filter((insect) => {
+        var foundTranslation = false;
+
+        insect.translations.forEach((translation) => {
+          if (language === undefined && translation.name === name) {
+            foundTranslation = true;
+          } else if (
+            translation.language === language &&
+            translation.name === name
+          ) {
+            foundTranslation = true;
+          }
+        });
+
+        return foundTranslation;
+      });
+      return result;
+    };
+
+    var searchByLatinName = function (insects, name) {
+      console.log("name: ", name);
+      var results = insects.filter((insect) => {
+        return insect.latinName === name;
+      });
+      console.log("search by latin name results: ", results);
+      return results;
+    };
+
+    console.log("name:", name, "language:", language);
 
     query.exec(function (err, insects) {
       if (err) throw err;
-      console.log(insects);
-      console.log(JSON.stringify(insects));
+      console.log(insects[0]);
+
+      // check for latin language and name
+      if (language === "Latin" && name) {
+        console.log("checking by latin language and name");
+        insects = searchByLatinName(insects, name);
+        console.log("found insects[0]: ", insects[0]);
+        // name was given, but no language
+      } else if (
+        name &&
+        (language === undefined || language === null || language === "")
+      ) {
+        console.log("searching by latin name and other translations");
+        var insectsByLatinName = searchByLatinName(insects, name);
+        console.log("insectByLatinName: ", insectsByLatinName);
+        var insectsByTranslation = searchByTranslation(
+          insects,
+          name,
+          undefined
+        );
+        console.log("iinsectByTranslation: ", insectsByTranslation);
+        insects = insectsByLatinName.concat(insectsByTranslation);
+
+        console.log("found insects[0]: ", insects[0]);
+        // both name and language were given
+      } else if (name && language !== undefined) {
+        console.log("both name and language were given, checking translations");
+        insects = searchByTranslation(insects, name, language);
+        console.log("found insects[0]: ", insects[0]);
+      }
+
       res.send(insects);
     });
   });
