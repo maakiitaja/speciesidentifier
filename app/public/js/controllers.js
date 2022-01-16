@@ -184,7 +184,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         url: "/observation/browse",
         method: "GET",
         params: {
-          location: query.location,
+          countryPart: query.countryPart,
           country: query.country,
           place: query.place,
           startDate: startDate,
@@ -1142,6 +1142,7 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       console.log("month: " + month);
       date.setMonth(month);
       date.setDate(formattedDate.substring(8, 10));
+      console.log("date is: ", date);
       console.log("latinname: " + query.observationLatinName);
       console.log("insectId: " + $scope.insectId);
 
@@ -1157,10 +1158,19 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
         query.farmType === "nonorganicFarm"
       );
 
+      console.log("formattedDate: ", formattedDate instanceof Date);
+      console.log("date: ", date instanceof Date);
+      console.log(
+        "new Date(formattedDate)",
+        new Date(formattedDate) instanceof Date
+      );
+      console.log("new Date(date)", new Date(date) instanceof Date);
+      console.log("new Date()", new Date() instanceof Date);
+
       console.log("query.country: " + query.country);
       params = {
         country: query.country,
-        location: query.countrypart,
+        countryPart: query.countrypart,
         count: query.count,
         date: date,
         place: query.place,

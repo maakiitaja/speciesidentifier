@@ -5,11 +5,13 @@ var Schema = mongoose.Schema;
 var ObservationSchema = new Schema({
   country: String,
   county: String,
-  location: String /* direction of compass or middle */,
+  countryPart: String /* direction of compass or middle */,
   organicFarm: Boolean,
   place: String,
+  count: Number,
+  date: { type: Date },
+  insect: { type: mongoose.Schema.Types.ObjectId, ref: "Insect" },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  detail: [{ type: mongoose.Schema.Types.ObjectId, ref: "ObservationDetail" }],
 });
 
 module.exports = mongoose.model("Observation", ObservationSchema);

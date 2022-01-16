@@ -12,6 +12,7 @@ var multer = require("multer");
 var im = require("imagemagick");
 var gm = require("gm");
 var path = require("path");
+const observation = require("./models/observation");
 
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -640,57 +641,22 @@ module.exports = function (app, passport) {
 
   app.post("/observation/add", function (req, res) {
     console.log("observation add");
+    if (!req.isAuthenticated()) {
+      res.send(null);
+    }
 
-    var saveObservation = function (observationDetail, observation, res) {
-      if (observation == null) {
-        console.log(
-          "searching existing observation place with id: " +
-            req.query.observationPlaceId
-        );
-        Observation.find()
-          .where("_id")
-          .equals(req.query.observationPlaceId)
-          .exec(function (err, observation) {
-            if (err) throw err;
-            console.log("found existing observation place");
-            console.log("observation: " + observation);
-            if (observation.length == 1) {
-              observation = observation[0];
-              console.log("observation lenght is 1");
-            }
-            console.log("observation.country: " + observation.country);
-            saveObservationDetail(observationDetail, observation, res);
-          });
-      } else saveObservationDetail(observationDetail, observation, res);
-    };
+    var saveObservation = function (observation, req, res) {
+      //observation.user = req.user.id;
 
-    var saveObservationDetail = function (observationDetail, observation, res) {
-      console.log("saving observation detail: " + observationDetail);
+      // time specific (assume date is formatted)
+      console.log("date is without new Date: ", req.query.date);
+      observation.date = req.query.date;
 
-      observationDetail.save(function (err, item) {
-        if (err) throw err;
-        console.log("saved observation detail");
-        observation.detail.push(item.id);
-        console.log("observation.country: " + observation.country);
-        console.log("saving observation: " + observation);
-        observation.save(function (err) {
-          console.log("observation saved");
-          res.send("success");
-        });
-      });
-    };
-    console.log("starting to add observation");
-    // observationplace specific
-    var observation = null;
-    if (req.query.observationPlaceId == null) {
-      console.log("observationplaceid == null");
-      var observation = new Observation();
-
-      observation.user = req.user.id;
+      // place specific
       console.log("observation country: " + req.query.country);
       observation.country = req.query.country;
+      observation.countryPart = req.query.countryPart;
       observation.place = req.query.place;
-      observation.location = req.query.location;
       console.log("checking farm type");
       console.log("organicfarm: " + req.query.organicFarm);
       console.log("nonorganicfarm: " + req.query.nonOrganicFarm);
@@ -711,47 +677,81 @@ module.exports = function (app, passport) {
       } else {
         observation.organicFarm = undefined;
       }
-    }
 
-    if (!req.isAuthenticated()) res.send(null);
-    else {
-      var observationDetail = new ObservationDetail();
-
-      // observationdetail
-      console.log("observation detail date");
-      observationDetail.date = new Date(req.query.date);
-      observationDetail.count = req.query.count;
-      console.log("checking insect id");
-      console.log("insectId: " + req.query.insectId);
-      if (req.query.insectId != null && req.query.insectId != "") {
-        console.log("insectId was sent");
-        observationDetail.insect = req.query.insectId;
-        saveObservation(observationDetail, observation, res);
-      } else {
-        console.log("searching insect by latin name");
-        console.log("req.query.latinName: " + req.query.latinName);
-        if (req.query.latinName != null && req.query.latinName != "") {
-          Insect.findOne({ latinName: req.query.latinName }).exec(function (
-            err,
-            insect
-          ) {
-            if (err) throw err;
-
-            console.log("found insect by latin name: " + insect);
-            if (insect != null) {
-              observationDetail.insect = insect._id;
-            } else {
-              console.log("couldn't find the insect by latin name, returning");
-              res.send(null);
-              return;
+      // insect specific
+      observation.count = req.query.count;
+      if (!req.query.insectId) {
+        // search by latin name
+        console.log("searching by latin name");
+        Insect.findOne(
+          { latinName: req.query.latinName },
+          function (err, insect) {
+            if (err) {
+              console.log(
+                "searching insect by latin name failed before saving observation"
+              );
+              throw err;
             }
-            saveObservation(observationDetail, observation, res);
-          });
-        } else {
-          res.send(null);
-          return;
-        }
+            console.log("found insect by its latin name, ", insect);
+            observation.insect = insect;
+            performSave(observation, res);
+          }
+        );
+      } else {
+        console.log("searching insect by its id, ", req.query.insectId);
+        // search insect by id
+        Insect.findOne({ _id: req.query.insectId }).exec(function (
+          err,
+          insect
+        ) {
+          if (err) {
+            console.error(
+              "couldn't find the insect by its id before saving observation"
+            );
+            console.log("insect: ", insect);
+            throw err;
+          }
+          console.log("found insect by its id, insect:", insect);
+
+          observation.insect = insect;
+          // save observation
+          performSave(observation, res);
+        });
       }
+    };
+
+    var performSave = function (observation, res) {
+      console.log("observation: ", observation);
+      console.log(
+        "observation date without new date: ",
+        observation.date.toString()
+      );
+      observation.save(function (err) {
+        if (err) {
+          console.log('couldn"t save observation ', err);
+          throw err;
+        }
+        console.log("sending confirmation to the client");
+        res.send({ msg: true });
+      });
+    };
+
+    var observation = new Observation();
+
+    // initialization
+    var latinName = req.query.latinName;
+    var insectId = req.query.insectId;
+
+    console.log("checking insect id");
+    console.log("insectId: " + insectId);
+
+    if (insectId !== null || latinName !== null) {
+      console.log("starting to save insect");
+      saveObservation(observation, req, res);
+    } else {
+      console.log("no latinname or insect id provided");
+      res.send(null);
+      return;
     }
   });
 
@@ -791,171 +791,18 @@ module.exports = function (app, passport) {
 
   app.get("/observation/browse", function (req, res) {
     console.log("observation browse");
+    var query = Observation.find();
 
-    var performQuery = function (query, observations, req, res, insectId) {
-      if (insectId) {
-        console.log("search narrowed by insectid");
-        query.where("insect").equals(insectId);
-      }
+    // initialization
 
-      // time specific search
-      var startDate;
-      var endDate;
-
-      if (req.query.startDate != "") startDate = new Date(req.query.startDate);
-      if (req.query.endDate != "") endDate = new Date(req.query.endDate);
-
-      console.log("startDate: " + startDate + " and enddate: " + endDate);
-
-      if (startDate && endDate) {
-        if (
-          startDate.getFullYear() == endDate.getFullYear() &&
-          startDate.getMonth() == endDate.getMonth() &&
-          startDate.getDate() == endDate.getDate()
-        ) {
-          console.log("startdate equals enddate.");
-          startDate.setDate(startDate.getDate() - 1);
-          //startDate.setHours(0, 0, 0, 0);
-          //endDate.setHours(23, 59,59,999);
-          //query.where('date').equals(startDate);
-        }
-
-        console.log(
-          "querying within a time range of: " + startDate + " - " + endDate
-        );
-        query.where({ date: { $gte: startDate, $lte: endDate } });
-      } else if (startDate) query.where({ date: { $gte: startDate } });
-      else if (endDate) query.where({ date: { $lte: endDate } });
-
-      //query.sort('insectId');
-      query.sort("date");
-
-      console.log("starting to search observations");
-      query.exec(function (err, observationDetails) {
-        if (err) throw err;
-        console.log("search finished");
-        console.log("observation details: " + observationDetails);
-        // add the name of the insect to the observation detail
-
-        // make a list of referred insects
-        var finalInsectIds = [];
-        for (var i = 0; i < observationDetails.length; i++) {
-          if (
-            observationDetails[i].insect == "" ||
-            observationDetails[i].insect == null
-          )
-            console.log("observation detail insect is empty");
-          else finalInsectIds.push(observationDetails[i].insect);
-        }
-        console.log("finalInsectids: " + finalInsectIds);
-
-        Insect.find()
-          .where("_id")
-          .in(finalInsectIds)
-          .exec(function (err, insects) {
-            console.log(
-              "found insects for the observation details: " + insects
-            );
-            console.log(
-              "adding the name of the insect to the observation detail"
-            );
-
-            var joinedResults = [];
-
-            if (req.query.category)
-              console.log(
-                "search is narrowed by category:" + req.query.category
-              );
-
-            for (var i = 0; i < observationDetails.length; i++) {
-              for (var j = 0; j < insects.length; j++) {
-                if (req.query.category != "") {
-                  console.log("insects[j].category: " + insects[j].category);
-                  if (insects[j].category == req.query.category) {
-                    var insectIdStr = JSON.stringify(
-                      observationDetails[i].insect
-                    );
-                    console.log("insects[" + j + "]._id:" + insects[j]._id);
-                    console.log(
-                      "observationDetails[" + i + "].insect:" + insectIdStr
-                    );
-
-                    if (JSON.stringify(insects[j]._id) == insectIdStr) {
-                      console.log("joining result with category filtered");
-                      joinedResults.push({
-                        _id: observationDetails[i]._id,
-                        insect: observationDetails[i].insect,
-                        latinName: insects[j].latinName,
-                        count: observationDetails[i].count,
-                        date: observationDetails[i].date,
-                      });
-                    }
-                  }
-                } else {
-                  if (
-                    JSON.stringify(insects[j]._id) ==
-                    JSON.stringify(observationDetails[i].insect)
-                  ) {
-                    console.log("adding an joined result item");
-                    joinedResults.push({
-                      _id: observationDetails[i]._id,
-                      insect: observationDetails[i].insect,
-                      latinName: insects[j].latinName,
-                      count: observationDetails[i].count,
-                      date: observationDetails[i].date,
-                    });
-                  }
-                }
-              }
-            }
-
-            console.log("joinedresults length: " + joinedResults.length);
-
-            // join observation information to the observation detail result set
-            for (var i = 0; i < observations.length; i++) {
-              console.log("joining observation table");
-              for (var j = 0; j < joinedResults.length; j++) {
-                console.log("joinedResults id: " + joinedResults[j]._id);
-                for (var k = 0; k < observations[i].detail.length; k++) {
-                  console.log(
-                    "observations detail id: " + observations[i].detail[k]
-                  );
-
-                  if (
-                    JSON.stringify(observations[i].detail[k]) ==
-                    JSON.stringify(joinedResults[j]._id)
-                  ) {
-                    console.log(
-                      "joining observation detail params with result set"
-                    );
-                    joinedResults[j].location = observations[i].location;
-                    joinedResults[j].place = observations[i].place;
-                    joinedResults[j].country = observations[i].country;
-                    //joinedResults[j].location = observations[i].location;
-                    joinedResults[j].place = observations[i].place;
-                    joinedResults[j].farm = observations[i].farm;
-                    joinedResults[j].organicFarm = observations[i].organicFarm;
-                  }
-                }
-              }
-            }
-
-            console.log("joinedResults: " + joinedResults);
-
-            res.send(joinedResults);
-          });
-      });
-    };
-
-    // params: date, country, location, place, organicfarm
-    var insectId = req.query.insectId;
+    // params: date, country, location, place, organicfarm, name, language
     console.log("checking for dates");
     var startDate = req.query.startDate;
     var endDate = req.query.endDate;
     console.log("startdate: " + startDate + ", enddate: " + endDate);
     console.log("checking for place");
     var country = req.query.country;
-    var location = req.query.location;
+    var countryPart = req.query.countryPart;
 
     var place = req.query.place;
     var nofarm = req.query.nofarm;
@@ -967,10 +814,8 @@ module.exports = function (app, passport) {
     console.log("checking for insect");
     var name = req.query.name;
     var language = req.query.language;
-    var latin = "Latin";
 
-    var query = Observation.find();
-
+    // place specific query
     console.log("narrowing observation place search");
 
     console.log("organicFarm == 'false'");
@@ -984,9 +829,9 @@ module.exports = function (app, passport) {
       query.where("country").equals(country);
     }
 
-    if (location) {
-      console.log("by location: " + location);
-      query.where("location").equals(location);
+    if (countryPart) {
+      console.log("by countryPart: " + countryPart);
+      query.where("countryPart").equals(countryPart);
     }
 
     if (place) {
@@ -1013,67 +858,362 @@ module.exports = function (app, passport) {
       }
     }
 
-    console.log("checking location");
-    // search has been narrowed by location
-    if (country || location || place) {
-      console.log("Searching for observations...");
-      query.exec(function (err, observations) {
-        if (err) throw err;
-        console.log("finished searching observations.");
-        console.log(observations);
-        var observationDetailIds = [];
-        // collect referred observationdetails
-        for (var i = 0; i < observations.length; i++) {
-          for (var j = 0; j < observations[i].detail.length; j++)
-            observationDetailIds.push(observations[i].detail[j]);
-        }
+    //time specific search
+    var startDate;
+    var endDate;
 
-        var detailQuery;
-        if (observations.length > 0) {
-          console.log("query is narrowed by observation places");
-          detailQuery = ObservationDetail.find()
-            .where("_id")
-            .in(observationDetailIds);
-          console.log("req.query.name: " + name);
-          var query = Insect.find();
-          if (name != "" && name != "undefined" && name != undefined) {
-            console.log("query is narrowed by insect name");
-            if (language == latin) {
-              console.log("searching by latinname: " + name);
-              query.where("latinName").equals(name);
-            } else {
-              console.log("searching by translation name");
-              query.where("translations.name").equals(name);
-            }
-            query.exec(function (err, insects) {
-              if (err) throw err;
-              console.log("results: " + insects);
-              if (insects)
-                performQuery(
-                  detailQuery,
-                  observations,
-                  req,
-                  res,
-                  insects[0]._id
-                );
-              else res.send(null);
-            });
-          } else {
-            console.log("searching by date and place");
-            performQuery(detailQuery, observations, req, res, null);
-          }
-        } else {
-          console.log("no place specific search criteria was sent");
-          performQuery(
-            ObservationDetail.find({}),
-            observations,
-            req,
-            res,
-            null
-          );
-        }
-      });
+    startDate = new Date(req.query.startDate);
+    endDate = new Date(req.query.endDate);
+
+    console.log("startDate: " + startDate + " and enddate: " + endDate);
+
+    if (
+      startDate.getFullYear() == endDate.getFullYear() &&
+      startDate.getMonth() == endDate.getMonth() &&
+      startDate.getDate() == endDate.getDate()
+    ) {
+      console.log("startdate equals enddate.");
+      startDate.setDate(startDate.getDate() - 1);
     }
+
+    console.log(
+      "querying within a time range of: " + startDate + " - " + endDate
+    );
+    query.where({ date: { $gte: startDate, $lte: endDate } });
+
+    // perform first query without considering insect specific details
+    query = query.populate({
+      path: "insect",
+    });
+    query.exec(function (err, observations) {
+      if (err) {
+        console.log(
+          "place and time specific observation search throw err:",
+          err
+        );
+        throw err;
+      }
+      console.log("finished searching observations by place and time.");
+      console.log("observations: ", observations);
+      if (observations.length > 0)
+        console.log("observations[0].insect", observations[0].insect);
+
+      // search narrowed also by insect category
+      if (req.query.category) {
+        console.log("search narrowed also by category: ", req.query.category);
+        observations = observations.filter(
+          (observation) => observation.insect.category === req.query.category
+        );
+      } else if (name) {
+        console.log("search narrow also by name: ", name);
+        console.log("language: ", req.query.language);
+        if (req.query.language === "Latin") {
+          observations = observations.filter(
+            (observation) => observation.insect.latinName === name
+          );
+        } else {
+          console.log("searching by other language than latin");
+          observations = observations.filter((observation) => {
+            var foundTranslation = false;
+            observation.insect.translations.forEach((translation) => {
+              if (
+                translation.language === req.query.language &&
+                translation.name === name
+              ) {
+                console.log("found translation");
+                foundTranslation = true;
+              }
+            });
+            return foundTranslation;
+          });
+        }
+      }
+
+      return res.send(observations);
+    });
+
+    // var performQuery = function (query, observations, req, res, insectId) {
+    //   if (insectId) {
+    //     console.log("search narrowed by insectid");
+    //     query.where("insect").equals(insectId);
+    //   }
+
+    //   // time specific search
+    //   var startDate;
+    //   var endDate;
+
+    //   if (req.query.startDate != "") startDate = new Date(req.query.startDate);
+    //   if (req.query.endDate != "") endDate = new Date(req.query.endDate);
+
+    //   console.log("startDate: " + startDate + " and enddate: " + endDate);
+
+    //   if (startDate && endDate) {
+    //     if (
+    //       startDate.getFullYear() == endDate.getFullYear() &&
+    //       startDate.getMonth() == endDate.getMonth() &&
+    //       startDate.getDate() == endDate.getDate()
+    //     ) {
+    //       console.log("startdate equals enddate.");
+    //       startDate.setDate(startDate.getDate() - 1);
+    //       //startDate.setHours(0, 0, 0, 0);
+    //       //endDate.setHours(23, 59,59,999);
+    //       //query.where('date').equals(startDate);
+    //     }
+
+    //     console.log(
+    //       "querying within a time range of: " + startDate + " - " + endDate
+    //     );
+    //     query.where({ date: { $gte: startDate, $lte: endDate } });
+    //   } else if (startDate) query.where({ date: { $gte: startDate } });
+    //   else if (endDate) query.where({ date: { $lte: endDate } });
+
+    //   //query.sort('insectId');
+    //   query.sort("date");
+
+    //   console.log("starting to search observations");
+    //   query.exec(function (err, observationDetails) {
+    //     if (err) throw err;
+    //     console.log("search finished");
+    //     console.log("observation details: " + observationDetails);
+    //     // add the name of the insect to the observation detail
+
+    //     // make a list of referred insects
+    //     var finalInsectIds = [];
+    //     for (var i = 0; i < observationDetails.length; i++) {
+    //       if (
+    //         observationDetails[i].insect == "" ||
+    //         observationDetails[i].insect == null
+    //       )
+    //         console.log("observation detail insect is empty");
+    //       else finalInsectIds.push(observationDetails[i].insect);
+    //     }
+    //     console.log("finalInsectids: " + finalInsectIds);
+
+    //     Insect.find()
+    //       .where("_id")
+    //       .in(finalInsectIds)
+    //       .exec(function (err, insects) {
+    //         console.log(
+    //           "found insects for the observation details: " + insects
+    //         );
+    //         console.log(
+    //           "adding the name of the insect to the observation detail"
+    //         );
+
+    //         var joinedResults = [];
+
+    //         if (req.query.category)
+    //           console.log(
+    //             "search is narrowed by category:" + req.query.category
+    //           );
+
+    //         for (var i = 0; i < observationDetails.length; i++) {
+    //           for (var j = 0; j < insects.length; j++) {
+    //             if (req.query.category != "") {
+    //               console.log("insects[j].category: " + insects[j].category);
+    //               if (insects[j].category == req.query.category) {
+    //                 var insectIdStr = JSON.stringify(
+    //                   observationDetails[i].insect
+    //                 );
+    //                 console.log("insects[" + j + "]._id:" + insects[j]._id);
+    //                 console.log(
+    //                   "observationDetails[" + i + "].insect:" + insectIdStr
+    //                 );
+
+    //                 if (JSON.stringify(insects[j]._id) == insectIdStr) {
+    //                   console.log("joining result with category filtered");
+    //                   joinedResults.push({
+    //                     _id: observationDetails[i]._id,
+    //                     insect: observationDetails[i].insect,
+    //                     latinName: insects[j].latinName,
+    //                     count: observationDetails[i].count,
+    //                     date: observationDetails[i].date,
+    //                   });
+    //                 }
+    //               }
+    //             } else {
+    //               if (
+    //                 JSON.stringify(insects[j]._id) ==
+    //                 JSON.stringify(observationDetails[i].insect)
+    //               ) {
+    //                 console.log("adding an joined result item");
+    //                 joinedResults.push({
+    //                   _id: observationDetails[i]._id,
+    //                   insect: observationDetails[i].insect,
+    //                   latinName: insects[j].latinName,
+    //                   count: observationDetails[i].count,
+    //                   date: observationDetails[i].date,
+    //                 });
+    //               }
+    //             }
+    //           }
+    //         }
+
+    //         console.log("joinedresults length: " + joinedResults.length);
+
+    //         // join observation information to the observation detail result set
+    //         for (var i = 0; i < observations.length; i++) {
+    //           console.log("joining observation table");
+    //           for (var j = 0; j < joinedResults.length; j++) {
+    //             console.log("joinedResults id: " + joinedResults[j]._id);
+    //             for (var k = 0; k < observations[i].detail.length; k++) {
+    //               console.log(
+    //                 "observations detail id: " + observations[i].detail[k]
+    //               );
+
+    //               if (
+    //                 JSON.stringify(observations[i].detail[k]) ==
+    //                 JSON.stringify(joinedResults[j]._id)
+    //               ) {
+    //                 console.log(
+    //                   "joining observation detail params with result set"
+    //                 );
+    //                 joinedResults[j].location = observations[i].location;
+    //                 joinedResults[j].place = observations[i].place;
+    //                 joinedResults[j].country = observations[i].country;
+    //                 //joinedResults[j].location = observations[i].location;
+    //                 joinedResults[j].place = observations[i].place;
+    //                 joinedResults[j].farm = observations[i].farm;
+    //                 joinedResults[j].organicFarm = observations[i].organicFarm;
+    //               }
+    //             }
+    //           }
+    //         }
+
+    //         console.log("joinedResults: " + joinedResults);
+
+    //         res.send(joinedResults);
+    //       });
+    //   });
+    // };
+
+    // params: date, country, location, place, organicfarm
+    // var insectId = req.query.insectId;
+    // console.log("checking for dates");
+    // var startDate = req.query.startDate;
+    // var endDate = req.query.endDate;
+    // console.log("startdate: " + startDate + ", enddate: " + endDate);
+    // console.log("checking for place");
+    // var country = req.query.country;
+    // var location = req.query.location;
+
+    // var place = req.query.place;
+    // var nofarm = req.query.nofarm;
+    // var organicFarm = req.query.organicFarm;
+    // var nonOrganicFarm = req.query.nonOrganicFarm;
+    // console.log(
+    //   "organicfarm: " + organicFarm + ", nonorganicfarm: " + nonOrganicFarm
+    // );
+    // console.log("checking for insect");
+    // var name = req.query.name;
+    // var language = req.query.language;
+    // var latin = "Latin";
+
+    // var query = Observation.find();
+
+    // console.log("narrowing observation place search");
+
+    // console.log("organicFarm == 'false'");
+    // console.log(organicFarm == "false");
+    // console.log("organicFarm == 'true'");
+    // console.log(organicFarm == "true");
+
+    // if (country) {
+    //   console.log("by country: " + country);
+
+    //   query.where("country").equals(country);
+    // }
+
+    // if (location) {
+    //   console.log("by location: " + location);
+    //   query.where("location").equals(location);
+    // }
+
+    // if (place) {
+    //   console.log("by place: " + place);
+    //   query.where("place").equals(place);
+    // }
+    // console.log("nofarm: " + nofarm);
+
+    // console.log("by farmtype");
+    // farm = true;
+    // if (req.query.byType == "true") {
+    //   console.log("search is type specific");
+
+    //   if (organicFarm == "true") {
+    //     console.log("organicfarm");
+    //     query.where("organicFarm").equals(true);
+    //   } else if (nonOrganicFarm == "true") {
+    //     console.log("nonorganicfarm");
+    //     query.where("organicFarm").equals(false);
+    //   } else if (req.query.nofarm == "true") {
+    //     console.log("nofarm");
+
+    //     query.where("organicFarm").equals(undefined);
+    //   }
+    // }
+
+    // console.log("checking location");
+    // // search has been narrowed by location
+    // if (country || location || place) {
+    //   console.log("Searching for observations...");
+    //   query.exec(function (err, observations) {
+    //     if (err) throw err;
+    //     console.log("finished searching observations.");
+    //     console.log(observations);
+    //     var observationDetailIds = [];
+    //     // collect referred observationdetails
+    //     for (var i = 0; i < observations.length; i++) {
+    //       for (var j = 0; j < observations[i].detail.length; j++)
+    //         observationDetailIds.push(observations[i].detail[j]);
+    //     }
+
+    //     var detailQuery;
+    //     if (observations.length > 0) {
+    //       console.log("query is narrowed by observation places");
+    //       detailQuery = ObservationDetail.find()
+    //         .where("_id")
+    //         .in(observationDetailIds);
+    //       console.log("req.query.name: " + name);
+    //       var query = Insect.find();
+    //       if (name != "" && name != "undefined" && name != undefined) {
+    //         console.log("query is narrowed by insect name");
+    //         if (language == latin) {
+    //           console.log("searching by latinname: " + name);
+    //           query.where("latinName").equals(name);
+    //         } else {
+    //           console.log("searching by translation name");
+    //           query.where("translations.name").equals(name);
+    //         }
+    //         query.exec(function (err, insects) {
+    //           if (err) throw err;
+    //           console.log("results: " + insects);
+    //           if (insects)
+    //             performQuery(
+    //               detailQuery,
+    //               observations,
+    //               req,
+    //               res,
+    //               insects[0]._id
+    //             );
+    //           else res.send(null);
+    //         });
+    //       } else {
+    //         console.log("searching by date and place");
+    //         performQuery(detailQuery, observations, req, res, null);
+    //       }
+    //     } else {
+    //       console.log("no place specific search criteria was sent");
+    //       performQuery(
+    //         ObservationDetail.find({}),
+    //         observations,
+    //         req,
+    //         res,
+    //         null
+    //       );
+    //     }
+    //   });
+    // }
   });
 
   app.get("/collection/insert", function (req, res) {
