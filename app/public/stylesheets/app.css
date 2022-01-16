@@ -277,7 +277,8 @@ html {
 }
 
 .button-green:hover:disabled,
-.button-blue:hover:disabled {
+.button-blue:hover:disabled,
+.button-red:hover:disabled {
   cursor: not-allowed;
 }
 

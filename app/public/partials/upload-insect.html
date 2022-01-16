@@ -16,7 +16,9 @@
 			<li>{{translations.FINNISHNAME}}: </li>
 			<li><input id="finnishName" type="text" value="{{fiName}}" name="fiName" ng-model="fiName" /> </li>
 			<li>{{translations.LATINNAME}}: (*)</li>
-			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName" required latin-name-exists />
+			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName"
+					ng-model-options="{ updateOn: 'default blur', debounce: {'default': 300, 'blur': 0} }" required
+					latin-name-exists />
 				<p ng-if="latinNameReserved">This latin name has already been used.</p>
 				{{latinNameReq}}
 			</li>

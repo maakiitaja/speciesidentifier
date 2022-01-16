@@ -611,7 +611,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     };
 
     $scope.initMessages();
-    $scope.messageDelayTime = 3000;
+    $scope.messageDelayTime = 1500;
 
     // check connectivity
     if ($localStorage.connected) {
@@ -809,9 +809,14 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       var currentUser = $cookies.get("current.user");
       if (currentUser === "") {
         // attempt to remove the insect from local storage
+        $scope.disableAddOrRemove = true;
+        toggleLoadingSpinner($scope);
         $scope.removeInsectFromCollection($scope, $localStorage);
         return;
       }
+      $scope.disableAddOrRemove = true;
+      toggleLoadingSpinner($scope);
+
       $http({
         url: "/collection/remove",
         method: "GET",
@@ -878,11 +883,15 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     };
 
     $scope.add_to_collection = function () {
+      $scope.disableAddOrRemove = true;
+      toggleLoadingSpinner($scope);
+
       // guard if collection page has set the offline option
       if ($localStorage.connected == 0 || localStorage.connected === "0") {
         console.log(
           "addToCollection, collection page has set the offline option or synchronization issue"
         );
+
         setDelay(
           "messageCollectionAddOfflineFailure",
           $scope.messageDelayTime,
@@ -902,7 +911,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         Spider: [],
       };
       var duplicate = 0;
-
+      // 1. save to the localstorage
       if ($localStorage.collection) {
         console.log("category: " + $scope.insect.category);
         if ($localStorage.collection[$scope.insect.category].length > 0) {
@@ -948,7 +957,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         console.log("initialized localstorage");
         $scope.saveImagesToLocalStorage();
       }
-      // save to the server
+      // 2. save to the server
       if (!duplicate) {
         // check authentication status before going to the Server
         console.log("current.user: ", $cookies.get("current.user"));
@@ -985,6 +994,9 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         htmlEl.classList.remove("is-paused");
       }
       $scope.initMessages();
+      $scope.disableAddOrRemove = false;
+      toggleLoadingSpinner($scope);
+      $scope.$apply();
     };
 
     $scope.collection = function () {
