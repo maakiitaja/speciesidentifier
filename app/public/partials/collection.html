@@ -6,6 +6,22 @@
 		<strong>{{translations.OFFLINE}}</strong>
 
 	</div>
+	<div class="lds-center">
+		<div class="lds-spinner spinner-loading" id="spinner-search">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
 	<div ng-repeat=" insects in localStorage.collection">
 
 		<div ng-if="insects.length > 0">

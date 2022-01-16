@@ -184,7 +184,7 @@
 
 			</li>
 			<li>
-				<input type="text" ng-model="query.place" />
+				<input class="form-control-own" type="text" ng-model="query.place" />
 			</li>
 			<li>
 				{{translations.PLACETYPE}}:
@@ -221,16 +221,16 @@
 				{{translations.STARTDATE}}(*):
 			</li>
 			<li>
-				<input ng-click="ds_sh_search('startDate')" id="startDate" name="startdate" style="cursor: text"
-					ng-model="query.startDate" ng-required="dateRequired.startDate" />
+				<input class="form-control-own" ng-click="ds_sh_search('startDate')" id="startDate" name="startdate"
+					style="cursor: text" ng-model="query.startDate" ng-required="dateRequired.startDate" />
 				<!-- ng-required="dateRequired.startDate"/>-->
 			</li>
 			<li>
 				{{translations.ENDDATE}}(*):
 			</li>
 			<li>
-				<input ng-click="ds_sh_search('endDate')" id="endDate" name="enddate" style="cursor: text"
-					ng-model="query.endDate" ng-required="dateRequired.endDate" />
+				<input class="form-control-own" ng-click="ds_sh_search('endDate')" id="endDate" name="enddate"
+					style="cursor: text" ng-model="query.endDate" ng-required="dateRequired.endDate" />
 				<!-- ng-required="dateRequired.endDate"/>-->
 			</li>
 
@@ -261,19 +261,9 @@
 						</select>
 					</div>
 
-					<div ng-switch-when="byName">
-						{{translations.NAME}}: (*) <input type="text" ng-model="query.name" required />
+					<div class="by-name-container" ng-switch-when="byName">
+						<span>(*)</span> <input class="form-control-own" type="text" ng-model="query.name" required />
 						<br>
-
-						{{translations.LANGUAGE}}: (*)
-
-						<select name="language" ng-model="query.language" required>
-							<option value=""></option>
-							<option value="Latin">{{translations.LATIN}}</option>
-							<option value="en">{{translations.ENGLISH}}</option>
-							<option value="fi">{{translations.FINNISH}}</option>
-						</select>
-
 					</div>
 				</div>
 			</li>

@@ -265,7 +265,7 @@
   "SPIDER": "Spider",
   "CENTIPEDE": "centipede",
   "UPLOADINSECT": "Upload insect",
-  "IMAGELINKS": "Add image links (5)",
+  "IMAGELINKS": "Add image links (max 5)",
   "WIKIENTRY": "Wiki entry",
   "SELECTANIMAGETOUPLOAD": "Select image(s) (max 5)",
   "COLLECTIONPAGE": "Collection",

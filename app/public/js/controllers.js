@@ -173,15 +173,16 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
       }
 
       var name = "";
-      var language = "";
+
       var category = "";
       if ($scope.insectSearchSelection == "byCategory") {
         category = query.category;
         name = "";
-        language = "";
+
+        console.log("selected category: ", category);
       } else if ($scope.insectSearchSelection == "byName") {
+        console.log("search narrowed by name");
         name = query.name;
-        language = query.language;
         category = "";
       }
 
@@ -199,7 +200,6 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
           startDate: startDate,
           endDate: endDate,
           name: name,
-          language: language,
           category: category,
           nofarm: nofarm,
           organicFarm: organicFarm,
@@ -268,7 +268,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     // menu
     resetHeader();
     highlightElement("manage-button");
-
+    console.log("$scope.currentUser: ", $scope.currentUser);
     $http({
       url: "/uploadList",
       method: "GET",
@@ -309,7 +309,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
         console.log(list[data[i].category]);
       }
 
-      console.log(JSON.stringify(list));
+      //console.log(JSON.stringify(list));
       if (list.length == 0) {
         $scope.uploadList = {};
       } else {
@@ -1425,7 +1425,6 @@ insectIdentifierControllers.controller("ListCtrl", [
     $scope.searchParams = query;
     $scope.location = $location;
 
-    // get a list of beetles
     $http({
       url: "/insect/search",
       method: "GET",
@@ -1534,6 +1533,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
     $scope.localStorage = $localStorage;
     $scope.tmp = "";
+    $scope.location = $location;
     var name = "images/Scarabaeidae-Lehtisarviset tv20100621_081.jpg_thumb.jpg";
     console.log("$localStorage.name:" + $localStorage[name]);
     console.log("$scope.$localStorage.name:" + $scope.localStorage[name]);
@@ -1551,10 +1551,20 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
     $scope.collectionEmpty = collectionEmpty($localStorage.collection);
     console.log("collection empty: ", $scope.collectionEmpty);
-
+    var curUserEmpty = angular.equals({}, $scope.currentUser);
+    console.log("curUserEmpty: ", curUserEmpty);
+    if (curUserEmpty) {
+      return;
+    }
+    toggleLoadingSpinner($scope);
     $http
       .get("/collection/list")
       .success(function (data) {
+        if (!data) {
+          toggleLoadingSpinner($scope);
+          console.log("no data");
+          return;
+        }
         // add items to the localstorage by category
         if ($localStorage.collection == null) {
           $localStorage.collection = [];
@@ -1563,6 +1573,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         console.log("data: ", data);
 
         // Add items from the backend to the localstorage if there are no duplicates
+        // but do not remove anything from localstorage
         for (var ind in data) {
           var insect = data[ind];
           var duplicate = 0;
@@ -1588,14 +1599,13 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         }
         $scope.collectionEmpty = collectionEmpty($localStorage.collection);
         console.log("collection empty: ", $scope.collectionEmpty);
+        toggleLoadingSpinner($scope);
       })
       .error(function () {
         console.log("failed to refresh collection");
-        //window.alert($scope.translations.REFRESHINGCOLLECTION);
+        toggleLoadingSpinner($scope);
+        alert($scope.translations.REFRESHINGCOLLECTION);
       });
-
-    $scope.location = $location;
-    $scope.localStorage = $localStorage;
 
     $scope.viewOffline = function () {
       console.log("connected : " + !$scope.checkbox.offline);

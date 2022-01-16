@@ -10,13 +10,18 @@
 		<ul id="flex-table" class="flex-table">
 
 			<li>{{translations.ENGLISHNAME}}: </li>
-			<li style="min-width:200px"><input id="englishName" type="text" value="{{enName}}" name="enName"
+			<li style="min-width:200px">
+				<input class="form-control-own" id="englishName" type="text" value="{{enName}}" name="enName"
 					ng-model="enName" />
 			</li>
 			<li>{{translations.FINNISHNAME}}: </li>
-			<li><input id="finnishName" type="text" value="{{fiName}}" name="fiName" ng-model="fiName" /> </li>
+			<li>
+				<input class="form-control-own" id="finnishName" type="text" value="{{fiName}}" name="fiName"
+					ng-model="fiName" />
+			</li>
 			<li>{{translations.LATINNAME}}: (*)</li>
-			<li> <input id="latinName" type="text" name="latinName" ng-model="latinName"
+			<li>
+				<input class="form-control-own" id="latinName" type="text" name="latinName" ng-model="latinName"
 					ng-model-options="{ updateOn: 'default blur', debounce: {'default': 300, 'blur': 0} }" required
 					latin-name-exists />
 				<p ng-if="latinNameReserved">This latin name has already been used.</p>

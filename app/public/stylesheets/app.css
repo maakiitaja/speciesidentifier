@@ -84,10 +84,27 @@
   margin: 10px 30px;
   max-width: 200px;
 }
-.container-tag {
+.container-tag,
+.by-name-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* .fileupload-error-container {
+  padding: 30px;
+  margin-bottom: 50px !important;
+} */
+
+.container-empty-upload-list,
+.fileupload-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1300px;
+  margin: 50px auto !important;
+  padding: 50px 50px !important;
+  width: 80%;
 }
 
 /* alert box */
@@ -183,11 +200,6 @@ html {
 
 .pagination-hide {
   visibility: hidden;
-}
-
-.fileupload-error-container {
-  padding: 30px;
-  margin-bottom: 50px !important;
 }
 
 /* footer */
@@ -726,6 +738,9 @@ img.phone.active {
   width: 180px;
   margin: 5px;
   padding: 5px;
+}
+.form-control-own--sm {
+  padding: 0 !important;
 }
 
 select {

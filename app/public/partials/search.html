@@ -77,7 +77,7 @@
 
 				<li> {{translations.NAME}}: </li>
 				<li>
-					<input type="text" name="name" ng-model="query.name" />
+					<input class="form-control-own" type="text" name="name" ng-model="query.name" />
 
 				</li>
 				<li>{{translations.LANGUAGE}}: </li>
@@ -226,8 +226,8 @@
 					<li></li>
 					<li> {{translations.LATINNAME}}(*): </li>
 					<li>
-						<input type="text" id="observationLatinName" name="observationLatinName"
-							ng-model="params.observationLatinName"
+						<input class="form-control-own" type="text" id="observationLatinName"
+							name="observationLatinName" ng-model="params.observationLatinName"
 							ng-change="checkLatinname(params.observationLatinName)" ng-disabled="mainImageUrl"
 							required />
 					</li>
@@ -235,14 +235,15 @@
 						{{translations.DATE}}(*):
 					</li>
 					<li>
-						<input ng-click="ds_sh_search('date')" id="date" name="date" style="cursor: text"
-							ng-model="params.date" ng-required="dateRequired.date" />
+						<input class="form-control-own" ng-click="ds_sh_search('date')" id="date" name="date"
+							style="cursor: text" ng-model="params.date" ng-required="dateRequired.date" />
 					</li>
 					<li>
 						{{translations.COUNT}}(*):
 					</li>
 					<li>
-						<input type="number" id="count" name="count" ng-model="params.count" required />
+						<input class="form-control-own form-control-own--sm" type="number" id="count" name="count"
+							ng-model="params.count" min="1" required />
 					</li>
 					<input type="hidden" id="insectId" />
 
@@ -429,7 +430,8 @@
 						<li>
 							{{translations.PLACE}}(*):
 						</li>
-						<li> <input name="place" type="text" ng-model="params.place" required /></li>
+						<li> <input class="form-control-own" name="place" type="text" ng-model="params.place"
+								required /></li>
 
 						<li>
 							{{translations.PLACETYPE}}:
