@@ -67,7 +67,7 @@ myApp.directive("customOnChange", function () {
   };
 });
 
-myApp.directive("latinNameExists", function ($http, $q) {
+myApp.directive("latinName", function ($http, $q) {
   return {
     require: "ngModel",
     link: function (scope, element, attrs, ngModel) {
@@ -87,6 +87,14 @@ myApp.directive("latinNameExists", function ($http, $q) {
           scope.latinNameReserved = false;
           console.log("viewvalue equals scope value");
           return $q.resolve();
+        } else if (
+          scope.params &&
+          firstLetterToUppercase(viewValue) ===
+            scope.params.observationLatinName
+        ) {
+          scope.latinNameReserved = false;
+          console.log("viewvalue equals scope value");
+          return $q.resolve();
         }
 
         // check if the value is empty
@@ -102,13 +110,28 @@ myApp.directive("latinNameExists", function ($http, $q) {
             console.log("response latinname exist: ", response);
 
             if (response.data.msg) {
-              console.log("rejecting");
+              // latin-name-exists
+              if (scope.latinNameExists === true) {
+                console.log("rejecting");
+                scope.latinNameReserved = true;
+                return $q.reject();
+                // latin name does not exist
+              } else {
+                console.log("resolving");
+                scope.latinNameReserved = false;
+                return $q.resolve();
+              }
+            }
+            // message was null, given latin name does not exist
+            if (scope.latinNameExists === true) {
+              console.log("response ok");
+              scope.latinNameReserved = false;
+              return true;
+            } else {
+              console.log("response not ok");
               scope.latinNameReserved = true;
               return $q.reject();
             }
-            console.log("response ok");
-            scope.latinNameReserved = false;
-            return true;
           });
       };
       var firstLetterToUppercase = function (str) {

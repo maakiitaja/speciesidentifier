@@ -463,6 +463,17 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     };
 
     $scope.submit = function () {
+      // need to check if latinname has already been reserved
+      if ($scope.latinNameReserved) {
+        console.log("latinname has been reserved");
+        alert("check the latin name again");
+        // for form validation to work reset the field
+        $scope.latinName = "";
+
+        $scope.$apply();
+        return;
+      }
+
       // in case the main file input has been populated
       if ($scope.fileInputPopulated) {
         console.log("file input populated, submitting form");
@@ -499,30 +510,6 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     };
 
     $scope.checkPhotoRequired = function () {
-      // need to check if latinname has already been reserved
-      if ($scope.latinNameReserved) {
-        console.log("latinname has been reserved");
-        alert("check the latin name again");
-        // for form validation to work reset the field
-        $scope.latinName = "";
-
-        $scope.$apply();
-        return;
-      }
-
-      // in case the user has provided valid image links
-      // const el = document.getElementById("userPhotos2");
-      // console.log("el: ", el);
-      // console.log(" el.files.length: ", el.files.length);
-
-      // if (el && el.files.length > 0) {
-      //   console.log(
-      //     "valid image links were provided, disabling main file input validation"
-      //   );
-      //   $scope.isRequired = false;
-      //   return;
-      // }
-
       // check whether all pre-existing images all selected as removed
       var inputs = document.getElementsByClassName("photo-checkbox");
       console.log("photo checkbox inputs: ", inputs);
@@ -559,7 +546,6 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
         // check do we need to display warning for no photos selected -container
         $scope.checkPhotoRequired();
-        //$scope.noPhotosSelected = $scope.fileInputPopulated;
 
         // remove any files downloaded before
         document.getElementById("userPhotos2").value = null;
@@ -599,7 +585,6 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         $scope.numberOfImagesDownloaded = 0;
         console.log("$scope.fileInputPopulated: ", $scope.fileInputPopulated);
         $scope.checkPhotoRequired();
-        //$scope.noPhotosSelected = $scope.fileInputPopulated;
 
         // remove any files downloaded before
         document.getElementById("userPhotos2").value = null;
@@ -660,7 +645,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         $scope.numberOfImagesDownloaded = 0;
 
         // check do we need to display warning for no photos selected
-        $scope.noPhotosSelected = !$scope.fileInputPopulated;
+        $scope.checkPhotoRequired();
 
         $scope.$apply();
       }
@@ -670,6 +655,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     $scope.noPhotosSelected = false;
     $scope.fileInputPopulated = false;
     $scope.numberOfImagesDownloaded = 0;
+    $scope.latinNameExists = true;
 
     if ($location.search().fromUploadListPage == "1") {
       // update
@@ -935,13 +921,13 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
 
     $scope.removeFromCollection = function (insect) {
       // check authentication status before going to the Server
-      console.log("current.user: ", $cookies.get("current.user"));
       var currentUser = $cookies.get("current.user");
       if (currentUser === "") {
         // attempt to remove the insect from local storage
         $scope.disableAddOrRemove = true;
         toggleLoadingSpinner($scope);
         $scope.removeInsectFromCollection($scope, $localStorage);
+        toggleLoadingSpinner($scope);
         return;
       }
       $scope.disableAddOrRemove = true;
@@ -949,7 +935,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
 
       $http({
         url: "/collection/remove",
-        method: "GET",
+        method: "DELETE",
         params: { _id: insect._id },
       }).success(function (data) {
         console.log("data: " + data);
@@ -962,6 +948,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
             $localStorage
           );
           if (successLocalStorageRemoval) {
+            toggleLoadingSpinner($scope);
             return;
           }
 
@@ -972,6 +959,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
           console.log("failed to remove insect");
           alert("Failed to remove insect from collection.");
         }
+        toggleLoadingSpinner($scope);
       });
     };
 
@@ -1029,6 +1017,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         );
         $scope.messageCollectionAddOfflineFailure =
           $scope.translations.OFFLINEFAILURE;
+        toggleLoadingSpinner($scope);
         return;
       }
 
@@ -1108,6 +1097,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
           $scope.translations.ITEMALREADYINCOLLECTION;
         setDelay("messageAddFailure", $scope.messageDelayTime, $scope);
       }
+      toggleLoadingSpinner($scope);
     };
 
     $scope.addItemToCollection = function () {
@@ -1125,7 +1115,6 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       }
       $scope.initMessages();
       $scope.disableAddOrRemove = false;
-      toggleLoadingSpinner($scope);
       $scope.$apply();
     };
 
@@ -1152,6 +1141,9 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     // Header
     resetHeader();
     highlightElement("observation-button");
+
+    // init async validation of latin name
+    $scope.latinNameExists = false;
 
     // initialize form
     $scope.params = {

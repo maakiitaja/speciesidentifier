@@ -23,9 +23,9 @@
 			<li>
 				<input class="form-control-own" id="latinName" type="text" name="latinName" ng-model="latinName"
 					ng-model-options="{ updateOn: 'default blur', debounce: {'default': 300, 'blur': 0} }" required
-					latin-name-exists />
+					latin-name />
 				<p ng-if="latinNameReserved">This latin name has already been used.</p>
-				{{latinNameReq}}
+
 			</li>
 			<!--<td><span ng-show="myForm.latinName.$touched && myForm.latinName.$invalid">{{translations.LATINNAMEREQUIRED}}</span></td>-->
 
@@ -133,12 +133,14 @@
 						<div></div>
 					</div>
 				</div>
-				<div class="images-retrieved" ng-if="imagesDownloaded">
-					<p>{{numberOfImagesDownloaded}} images retrieved/ready</p>
+				<div class="images-retrieved" ng-if="imageLinks && imagesDownloaded">
+					<p>{{numberOfImagesDownloaded}} image links retrieved/ready</p>
 				</div>
 			</li>
 
-			<li> {{translations.SELECTANIMAGETOUPLOAD}}: <span ng-if="isRequired">(*)</span></li>
+			<li> {{translations.SELECTANIMAGETOUPLOAD}}:
+				<!--<span ng-if="isRequired">(*)</span>-->
+			</li>
 			<li>
 				<input type="file" id="userPhotos" name="userPhotos" ng-required="isRequired"
 					custom-on-change="fileChange" multiple />
@@ -148,8 +150,9 @@
 				</div>
 			</li>
 			<li></li>
-			<li>noPhotosSelected: {{noPhotosSelected}}
-				<div class="no-photos-selected-container" ng-if="noPhotosSelected">
+			<li>
+				<!--noPhotosSelected: {{noPhotosSelected}}-->
+				<div class="no-photos-selected-container no-photos-selected-container--danger" ng-if="noPhotosSelected">
 					<p> Please, select at least one photo</p>
 				</div>
 			</li>

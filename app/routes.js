@@ -326,7 +326,7 @@ module.exports = function (app, passport) {
     });
   });
 
-  app.get("/collection/remove", function (req, res) {
+  app.delete("/collection/remove", function (req, res) {
     if (req.isAuthenticated()) {
       console.log("searching user's compendium");
       Compendium.findOne({ _user: req.user.id }, function (err, compendium) {
@@ -667,29 +667,29 @@ module.exports = function (app, passport) {
       observation.count = req.query.count;
       if (!req.query.insectId) {
         // search by latin name
-        console.log("searching by latin name, ", latinName);
-
+        console.log("searching by latin name, ", req.query.latinName);
+        var latinName = req.query.latinName;
         // for case insensitive comparision
-        latinName[0] = latinName[0].toUpperCase();
+        if (latinName) {
+          latinName =
+            latinName.charAt(0).toUpperCase() + latinName.substring(1);
+        }
 
-        Insect.findOne(
-          { latinName: req.query.latinName },
-          function (err, insect) {
-            if (err) {
-              console.log(
-                "searching insect by latin name failed before saving observation"
-              );
-              throw err;
-            }
-            console.log("found insect by its latin name, ", insect);
-            if (!insect) {
-              console.log('couldn"t find insect');
-              return res.send(null);
-            }
-            observation.insect = insect;
-            performSave(observation, res);
+        Insect.findOne({ latinName: latinName }, function (err, insect) {
+          if (err) {
+            console.log(
+              "searching insect by latin name failed before saving observation"
+            );
+            throw err;
           }
-        );
+          console.log("found insect by its latin name, ", insect);
+          if (!insect) {
+            console.log('couldn"t find insect');
+            return res.send(null);
+          }
+          observation.insect = insect;
+          performSave(observation, res);
+        });
       } else {
         console.log("searching insect by its id, ", req.query.insectId);
         // search insect by id

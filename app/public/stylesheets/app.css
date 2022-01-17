@@ -85,6 +85,13 @@
   margin: 10px 30px;
   max-width: 200px;
 }
+
+.no-photos-selected-container--danger {
+  background-color: #db98b8 !important;
+  color: #7f201e !important;
+  border-color: #ebccd1 !important;
+}
+
 .container-tag,
 .by-name-container {
   display: flex;

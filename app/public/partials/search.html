@@ -233,9 +233,9 @@
 					<li> {{translations.LATINNAME}}(*): </li>
 					<li>
 						<input class="form-control-own" type="text" id="observationLatinName"
-							name="observationLatinName" ng-model="params.observationLatinName"
-							ng-change="checkLatinname(params.observationLatinName)" ng-disabled="mainImageUrl"
-							required />
+							name="observationLatinName" ng-model="params.observationLatinName" latin-name
+							ng-disabled="mainImageUrl" required />
+						<p ng-if="latinNameReserved">Check the latin name again.</p>
 					</li>
 					<li>
 						{{translations.DATE}}(*):
