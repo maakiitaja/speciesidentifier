@@ -290,5 +290,6 @@
   "OFFLINEMODE": "Offline moodi",
   "REMOVEPHOTO": "Poista",
   "DELETE": "Poista",
-  "FILEUPLOADERROR": "Pahoittelut, tapahtui kuvan lataamisvirhe, sillä kuvan maksimi koko ylitettiin. Mene takaisin hakusivulle "
+  "FILEUPLOADERROR": "Pahoittelut, tapahtui kuvan lataamisvirhe, sillä kuvan maksimi koko ylitettiin. Mene takaisin hakusivulle ",
+  "FILEUPLOADSUCCESS": "Hyönteinen on lisätty tai muokattu onnistuneesti"
 }

@@ -123,6 +123,13 @@ module.exports = function (app, passport) {
             newInsect.translations = [];
             console.log("writing translations");
             for (var j = 0; j < insect["translations"].length; j++) {
+              if (insect.translations[j].name) {
+                // for case insensitive sorting
+                insect.translations[j].name =
+                  insect.translations[j].name.charAt(0).toUpperCase() +
+                  insect.translations[j].name.slice(1);
+              }
+
               newInsect.translations.push({
                 language: insect["translations"][j].language,
                 name: insect["translations"][j].name,
@@ -130,7 +137,10 @@ module.exports = function (app, passport) {
             }
             console.log("newinsect translations: " + newInsect.translations);
             newInsect.userId = "1"; // default
-            newInsect.latinName = insect["latinName"];
+            // turn the first character to uppercase
+            var tmpLatinName = insect["latinName"];
+            tmpLatinName = tmpLatinName.charAt(0) + tmpLatinName.slice(1);
+            newInsect.latinName = tmpLatinName;
             newInsect.legs = insect["legs"];
             newInsect.primaryColor = insect["primaryColor"];
             newInsect.secondaryColor = insect["secondaryColor"];
@@ -216,10 +226,17 @@ module.exports = function (app, passport) {
   });
 
   app.get("/insect/search", function (req, res) {
+    console.log("search handler");
     var primaryColor = req.query.primaryColor;
     var secondaryColor = req.query.secondaryColor;
     var category = req.query.category;
     var legs = req.query.legs;
+    // for case insensitive comparision
+    if (req.query.name) {
+      console.log("turning first letter into uppercase");
+      req.query.name =
+        req.query.name.charAt(0).toUpperCase() + req.query.name.slice(1);
+    }
     var name = req.query.name;
     var language = req.query.language;
 
@@ -384,18 +401,20 @@ module.exports = function (app, passport) {
         return res.redirect("/#/fileuploaderror");
       }
 
-      if (!req.isAuthenticated()) {
-        return res.send(null);
-      }
       console.log("uploading or modifying insect");
       console.log("isupload: " + req.body.isUpload);
       console.log("insectId: " + req.body.insectId);
       console.log("userId:" + req.user.id);
 
       var isUpload = req.body.isUpload;
+
+      var firstLetterToUppercase = function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      };
+
       var handleUpload = async function (req, res, insect) {
         console.log("wiki: " + req.body.wiki);
-        insect.latinName = req.body.latinName;
+        insect.latinName = firstLetterToUppercase(req.body.latinName);
         insect.legs = req.body.legs;
         insect.primaryColor = req.body.primaryColor;
         insect.secondaryColor = req.body.secondaryColor;
@@ -403,13 +422,16 @@ module.exports = function (app, passport) {
         insect.category = req.body.category;
         insect.userId = req.user.id;
         console.log("insect.translations: " + insect.translations);
+        var enName = firstLetterToUppercase(req.body.enName);
+        var fiName = firstLetterToUppercase(req.body.fiName);
 
         if (isUpload) {
           console.log("adding new translations");
           console.log(insect);
           insect.translations = [];
-          insect.translations.push({ language: "en", name: req.body.enName });
-          insect.translations.push({ language: "fi", name: req.body.fiName });
+
+          insect.translations.push({ language: "en", name: enName });
+          insect.translations.push({ language: "fi", name: fiName });
           insect.translations.push({
             language: "Latin",
             name: insect.latinName,
@@ -417,9 +439,9 @@ module.exports = function (app, passport) {
         } else {
           console.log("updating names.");
 
-          insect.translations[0].name = req.body.enName;
-          insect.translations[1].name = req.body.fiName;
-          insect.translations[2].name = req.body.latinName;
+          insect.translations[0].name = enName;
+          insect.translations[1].name = fiName;
+          insect.translations[2].name = insect.latinName;
         }
         console.log("insect.translations: " + insect.translations);
         console.log("insect.translations[0]: " + insect.translations[0]);
@@ -465,11 +487,12 @@ module.exports = function (app, passport) {
 
         if (isUpload == "1") {
           console.log("saving insect");
+
           insect.save(function (err) {
             if (err) throw err;
             console.log("Insect saved");
             console.log("insect: " + insect);
-            res.redirect("/#/main");
+            return res.redirect("/#/main?fileuploadsuccess=1");
           });
         } else {
           console.log("updating insect");
@@ -489,7 +512,7 @@ module.exports = function (app, passport) {
           await Insect.updateOne(conditions, update);
           console.log("insect updated");
           try {
-            return res.redirect("/#/main");
+            return res.redirect("/#/main?fileuploadsuccess=1");
           } catch (err) {
             console.log("error in redirect");
             return res.send(null);
@@ -582,10 +605,11 @@ module.exports = function (app, passport) {
 
   app.post("/latinNameExists", function (req, res) {
     console.log("latinNameExist function req.body: ", req.body);
-    Insect.findOne({ latinName: req.body.latinName }).exec(function (
-      err,
-      insect
-    ) {
+    // case insensitive
+    var latinName = req.body.latinName;
+    latinName = latinName.charAt(0).toUpperCase() + latinName.substring(1);
+
+    Insect.findOne({ latinName: latinName }).exec(function (err, insect) {
       if (err) throw err;
       if (insect) {
         console.log("found latinname");
@@ -644,6 +668,10 @@ module.exports = function (app, passport) {
       if (!req.query.insectId) {
         // search by latin name
         console.log("searching by latin name, ", latinName);
+
+        // for case insensitive comparision
+        latinName[0] = latinName[0].toUpperCase();
+
         Insect.findOne(
           { latinName: req.query.latinName },
           function (err, insect) {
@@ -919,6 +947,9 @@ module.exports = function (app, passport) {
         // });
 
         console.log("searching by any language");
+        // for case insensitive comparision
+        name = name.charAt(0).toUpperCase() + name.slice(1);
+
         observations = observations.filter((observation) => {
           var foundTranslation = false;
           if (!observation.insect) {

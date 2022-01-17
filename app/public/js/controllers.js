@@ -1091,6 +1091,8 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       farmType: "other",
       observationLatinName: "",
     };
+    // disable fileupload success message
+    $scope.showFileuploadSuccessMessage = "";
 
     // toggle selected insect image flag
     $scope.toggleSelectedInsectImage = true;
@@ -1168,15 +1170,6 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     $scope.setPagedInsects = function (insects) {
       setPagedInsects(insects, $scope);
     };
-
-    // $scope.setDelay = function (el, ms) {
-    //   console.log("in set delay, el:", el);
-    //   const timeoutF = function (elName) {
-    //     console.log("setdelay: calling callb, elName:", elName);
-    //     $scope.callb(elName);
-    //   };
-    //   setTimeout(timeoutF, ms, el);
-    // };
 
     $scope.callb = function (el) {
       console.log("callb addobservation, el: ", el);
@@ -1349,6 +1342,10 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $timeout,
     $rootScope
   ) {
+    // Update the main header
+    resetHeader();
+    highlightElement("search-header");
+    $scope.showFileuploadSuccessMessage = "";
     if ($rootScope.search) {
       console.log("SearchCtrl, header search button clicked");
     }
@@ -1366,11 +1363,6 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $scope.resize = {};
     $scope.resize.fromAddObservationsCtrl = false;
 
-    // Update the main header
-
-    resetHeader();
-    highlightElement("search-header");
-
     // Pagination
     $scope.itemsPerPage = 8;
     if ($scope.selectedInsect === undefined) {
@@ -1380,8 +1372,18 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $scope.pagedInsects = [];
 
     $scope.fromObservationPage = 0;
-
-    if ($location.search().returningFromDetailPage == "1") {
+    console.log(
+      "$location.search().fileuploadsuccess, ",
+      $location.search().fileuploadsuccess
+    );
+    if ($location.search().fileuploadsuccess === "1") {
+      $scope.$watch("translations", function (val) {
+        $scope.showFileuploadSuccessMessage =
+          $scope.translations.FILEUPLOADSUCCESS;
+        console.log("inside scope.watch for translations");
+        setDelay("showFileuploadSuccessMessage", 3000, $scope);
+      });
+    } else if ($location.search().returningFromDetailPage == "1") {
       console.log("returning from detail page");
       // guard for page reloads
       console.log(
@@ -1418,6 +1420,15 @@ insectIdentifierControllers.controller("SearchCtrl", [
       }
       $scope.imgs = imgs;
     }
+
+    $scope.callb = function (el) {
+      console.log("callb addobservation, el: ", el);
+      var htmlEl = document.getElementById(el);
+      if (htmlEl.classList.contains("is-paused")) {
+        htmlEl.classList.remove("is-paused");
+      }
+      $scope.showFileuploadSuccessMessage = "";
+    };
 
     $scope.search = function (query) {
       SearchService.search($scope, $localStorage, query);

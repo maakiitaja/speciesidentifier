@@ -80,7 +80,8 @@
 		{{messageRemovedFailure}}</div>
 	<div id="messageRemovedSuccess" ng-if='messageRemovedSuccess != ""' class="alert alert-success is-paused fade-out">
 		{{messageRemovedSuccess}}</div>
-	<div ng-if="messageCollectionAddOfflineFailure != ''" class="alert alert-danger is-paused fade-out">
+	<div id="messageCollectionAddOfflineFailure" ng-if="messageCollectionAddOfflineFailure != ''"
+		class="alert alert-danger is-paused fade-out">
 		{{messageCollectionAddOfflineFailure}}
 	</div>
 	<div class="lds-center">

@@ -286,5 +286,6 @@
   "OFFLINEFAILURE": "Failed to add item to the collection. Reason offline mode or synchronization issue.",
   "REMOVEPHOTO": "Remove",
   "DELETE": "Delete",
-  "FILEUPLOADERROR": "Sorry, a file upload error occured. Maximum size of file was exceeded. Go back to search page from "
+  "FILEUPLOADERROR": "Sorry, a file upload error occured. Maximum size of file was exceeded. Go back to search page from ",
+  "FILEUPLOADSUCCESS": "Insect was created or modified successfully."
 }

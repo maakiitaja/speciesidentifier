@@ -78,13 +78,17 @@ myApp.directive("latinNameExists", function ($http, $q) {
         console.log("scope.latinName: ", scope.latinName);
         //console.log("scope.insect.latinName: ", scope.insect.latinName);
         // check whether the new value is the same as the scope valueProperties
-        if (scope.insect && viewValue === scope.insect.latinName) {
+
+        if (
+          scope.insect &&
+          firstLetterToUppercase(viewValue) === scope.insect.latinName
+        ) {
           scope.latinNameReserved = false;
           console.log("viewvalue equals scope value");
           return $q.resolve();
         }
 
-        // check if the value is is empty
+        // check if the value is empty
         if (viewValue === "") {
           console.log("viewvalue is empty");
           scope.latinNameReserved = false;
@@ -105,6 +109,9 @@ myApp.directive("latinNameExists", function ($http, $q) {
             scope.latinNameReserved = false;
             return true;
           });
+      };
+      var firstLetterToUppercase = function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
       };
     },
   };
