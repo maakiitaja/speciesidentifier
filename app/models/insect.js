@@ -11,7 +11,6 @@ var InsectSchema = new Schema({
   translations: [TranslationSchema],
   latinName: String,
   wiki: String,
-  territory: [String],
   primaryColor: String,
   secondaryColor: String,
   legs: Number,

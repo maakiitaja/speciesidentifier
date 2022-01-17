@@ -106,17 +106,15 @@ module.exports = function (app, passport) {
         var i = 0;
         console.log("insects.length: " + insects.length);
         var insectLength = insects.length;
-        for (var i = 0; i < insectLength; i++) {
-          console.log(insects[i]);
-          for (var name in insects[i]) {
-            //console.log("Item name: " + name);
-            //console.log("Prop: " + insects[i][name]);
-          }
-        }
+        console.log(insects[0]);
 
         // empty the collection
         Insect.remove(function (err) {
-          if (err) throw err;
+          if (err) {
+            console.log("got error while removing insects, err:", err);
+            throw err;
+          }
+
           for (var i = 0; i < insects.length; i++) {
             var insect = insects[i];
 
@@ -124,42 +122,41 @@ module.exports = function (app, passport) {
 
             newInsect.translations = [];
             console.log("writing translations");
-            for (var j = 0; j < insect["names"].length; j++) {
+            for (var j = 0; j < insect["translations"].length; j++) {
               newInsect.translations.push({
-                language: insect["names"][j].language,
-                name: insect["names"][j].name,
+                language: insect["translations"][j].language,
+                name: insect["translations"][j].name,
               });
             }
             console.log("newinsect translations: " + newInsect.translations);
             newInsect.userId = "1"; // default
-            newInsect.latinName = insect["LatinName"];
-            newInsect.legs = insect["Legs"];
-            newInsect.territory = insect["Territory"];
-            newInsect.primaryColor = insect["PrimaryColor"];
-            newInsect.secondaryColor = insect["SecondaryColor"];
-            newInsect.wiki = insect["Wiki"];
+            newInsect.latinName = insect["latinName"];
+            newInsect.legs = insect["legs"];
+            newInsect.primaryColor = insect["primaryColor"];
+            newInsect.secondaryColor = insect["secondaryColor"];
+            newInsect.wiki = insect["wiki"];
             newInsect.images = [];
-            var imagesTmp = insect["Images"].split(",");
 
-            for (var ind in imagesTmp) {
+            console.log(
+              "insect[images]:",
+              insect.images,
+              " with length: ",
+              insect.images.length
+            );
+
+            for (var j = 0; j < insect.images.length; j++) {
               //console.log("image name: " + imagesTmp[ind]);
+              var image = insect.images[j];
               if (path.sep === "\\") {
                 console.log("path seperator is \\");
-                //var index = imagesTmp[ind].indexOf('/');
-                //console.log('index: '+index);
-                var str = imagesTmp[ind];
-                //console.log('str[index]'+str[index]);
-                //str[index] = "\\";
-                str = str.split("/").join("\\");
-                //console.log("str: " + str);
-                imagesTmp[ind] = str;
-                //console.log("image: " + imagesTmp[ind]);
+
+                image = image.split("/").join("\\");
               }
-              newInsect.images.push(imagesTmp[ind]);
+              newInsect.images.push(image);
             }
             console.log("newInsect.images: " + newInsect.images);
 
-            newInsect.category = insect["Category"];
+            newInsect.category = insect["category"];
 
             //thumb picture
             // for (var ind in imagesTmp) {
@@ -377,6 +374,10 @@ module.exports = function (app, passport) {
   /* Upload or modify insect */
   app.post("/insect/insert", function (req, res) {
     upload(req, res, function (err) {
+      if (!req.isAuthenticated()) {
+        return res.send("not authenticated");
+      }
+
       if (err) {
         console.log("got upload error, file limit exceeded?, err: ", err);
         // would need to redirect to error view
@@ -409,14 +410,16 @@ module.exports = function (app, passport) {
           insect.translations = [];
           insect.translations.push({ language: "en", name: req.body.enName });
           insect.translations.push({ language: "fi", name: req.body.fiName });
+          insect.translations.push({
+            language: "Latin",
+            name: insect.latinName,
+          });
         } else {
           console.log("updating names.");
-          console.log("insect.translations[0]: " + insect.translations[0]);
-          console.log(
-            "insect.translations[0].name: " + insect.translations[0].name
-          );
+
           insect.translations[0].name = req.body.enName;
           insect.translations[1].name = req.body.fiName;
+          insect.translations[2].name = req.body.latinName;
         }
         console.log("insect.translations: " + insect.translations);
         console.log("insect.translations[0]: " + insect.translations[0]);
@@ -640,7 +643,7 @@ module.exports = function (app, passport) {
       observation.count = req.query.count;
       if (!req.query.insectId) {
         // search by latin name
-        console.log("searching by latin name");
+        console.log("searching by latin name, ", latinName);
         Insect.findOne(
           { latinName: req.query.latinName },
           function (err, insect) {
@@ -651,6 +654,10 @@ module.exports = function (app, passport) {
               throw err;
             }
             console.log("found insect by its latin name, ", insect);
+            if (!insect) {
+              console.log('couldn"t find insect');
+              return res.send(null);
+            }
             observation.insect = insect;
             performSave(observation, res);
           }
@@ -712,6 +719,19 @@ module.exports = function (app, passport) {
     }
   });
 
+  app.get("/observation/list", function (req, res) {
+    console.log("observation list");
+    var query = Observation.find({}).populate({ path: "insect" });
+    query.exec(function (err, observations) {
+      if (err) {
+        console.log("observation list err:", err);
+        throw err;
+      }
+      console.log("found observations: ", observations);
+      return res.send("success");
+    });
+  });
+
   app.delete("/insect/delete", function (req, res) {
     console.log("compendium deletes");
 
@@ -746,7 +766,7 @@ module.exports = function (app, passport) {
       });
   });
 
-  app.get("/observation/browse", function (req, res) {
+  app.get("/observation/browse", async function (req, res) {
     console.log("observation browse");
     var query = Observation.find();
 
@@ -853,46 +873,71 @@ module.exports = function (app, passport) {
         throw err;
       }
       console.log("finished searching observations by place and time.");
-      console.log("observations[0]: ", observations[0]);
-      if (observations.length > 0)
+      console.log;
+      if (observations.length > 0) {
+        console.log("observations[0]:", observations);
         console.log("observations[0].insect", observations[0].insect);
+      } else {
+        return res.send(null);
+      }
 
       // search narrowed also by insect category
       if (req.query.category) {
         console.log("search narrowed also by category: ", req.query.category);
-        observations = observations.filter(
-          (observation) => observation.insect.category === req.query.category
-        );
-      } else if (name) {
-        console.log("search narrow also by name: ", name);
-        console.log("language: ", req.query.language);
-
-        const observationsByLatinName = observations.filter(
-          (observation) => observation.insect.latinName === name
-        );
-
-        console.log("searching by other language than latin");
-        const observationsByNonLatinName = observations.filter(
-          (observation) => {
-            var foundTranslation = false;
-            observation.insect.translations.forEach((translation) => {
-              if (translation.name === name) {
-                console.log("found translation");
-                foundTranslation = true;
-              }
-            });
-            return foundTranslation;
+        observations = observations.filter((observation) => {
+          if (!observation.insect) {
+            return false;
           }
-        );
-        console.log("joining the translation arrays");
-        // join the two arrays
-        observations = [
-          ...observationsByNonLatinName,
-          ...observationsByLatinName,
-        ];
-      }
+          return observation.insect.category === req.query.category;
+        });
 
-      return res.send(observations);
+        return res.send(observations);
+      } else if (name) {
+        console.log("search narrowed also by name: ", name);
+        console.log("language: ", req.query.language);
+        var firstObs = observations[0]._id.toString();
+
+        // another query based on name { $and: [{ age: { $gt: 2 } }, { age: { $lte: 4 } }] }
+        //
+        //  $and: [{ _id: { $in: ids } }, { country: { $eq: country } }],
+        // $and: [{ _id: { $in: ids } }, { 'insect.latinName': { $eq: 'Aglais io' } }],
+
+        //  {'children.age': {$gte: 18}},
+        //{children:{$elemMatch:{age: {$gte: 18}}}})
+        // {insect: {$elemMatch: {latinName: {$eq: 'Aglais io'}}}}
+
+        // var observationsByNameQuery = Observation.find(
+        //   {
+        //     $and: [
+        //       { _id: { $in: ids } },
+        //       { "insect.latinName": { $eq: "Aglais io" } },
+        //     ],
+        //   },
+        //   { insect: { $elemMatch: { latinName: { $eq: "Aglais io" } } } }
+        // ).populate({
+        //   path: "insect",
+        // });
+
+        console.log("searching by any language");
+        observations = observations.filter((observation) => {
+          var foundTranslation = false;
+          if (!observation.insect) {
+            return false;
+          }
+          observation.insect.translations.forEach((translation) => {
+            if (translation.name === name) {
+              console.log("found translation");
+              foundTranslation = true;
+            }
+          });
+          return foundTranslation;
+        });
+
+        return res.send(observations);
+      } else {
+        console.log("returning results");
+        return res.send(observations);
+      }
     });
   });
 
@@ -1015,31 +1060,27 @@ module.exports = function (app, passport) {
     res.sendFile("index.html");
   });
   // a full list of insects
-  app.get("/user/list", function (req, res) {
+  app.get("/insect/addlatinname", function (req, res) {
     // get all the insects
-
-    var email = "mauri.f@suomi.fi";
-    console.log("before database record is created");
-
-    var insectCollection = new Insect();
-    console.log("after database record creation");
-
-    Insect.find({}, function (err, insects) {
+    var query = Insect.find({}).select(
+      "latinName category wiki legs primaryColor secondaryColor translations images -_id"
+    );
+    query.exec(function (err, insects) {
       if (err) {
         console.log(err);
+        throw err;
       }
 
-      console.log("found insects: " + insects);
+      insects.forEach(function (insect) {
+        insect.translations.push({
+          language: "Latin",
+          name: insect.latinName,
+        });
+      });
+
+      console.log("found insects: " + JSON.stringify(insects));
+      return res.redirect("/#/main");
     });
-    User.findOne({ "local.email": email }, function (err, user) {
-      //user.find({}, function(err, insects) {
-      if (err) {
-        console.log(err);
-      }
-      // object of all the users
-      console.log("found user: " + user);
-      return res.send(user);
-    }); //
   }); //
 
   // =====================================

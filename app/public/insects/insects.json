@@ -1,1648 +1,3111 @@
 [
   {
-    "names": [{ "language": "fi", "name": "Neitoperhonen" }],
-    "LatinName": "Aglais io",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Aglais io.jpeg,images/aglais_io_wiki.jpg,images/aglais_io_black.jpg",
-    "Wiki": "Aglais_io"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Lehtokiitäjäinen" }],
-    "LatinName": "Carabus nemoralis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Carabus nemoralis lehtokiitäjäinen tv20130514_009.jpg",
-    "Wiki": "Carabus_nemoralis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Mäkiloimukiitäjäinen" }],
-    "LatinName": "Badister bullatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Badister bullatus mäkiloimukiitäjäinen tv20140519_034.jpg",
-    "Wiki": "Badister_bullatus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Kaunosylkikuoriainen" }],
-    "LatinName": "Cantharis pellucida",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Cantharis pellucida kaunosylkikuoriainen tv20140603_002.jpg",
-    "Wiki": "Cantharis_pellucida"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Vihersysikiitäjäinen" }],
-    "LatinName": "Poecilus versicolor",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Poecilus versicolor Vihersysikiitäjäinen tv20140418_008.jpg",
-    "Wiki": "poecilus_versicolor"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Vaskisysikiitäjäinen" }],
-    "LatinName": "Poecilus cupreus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Poecilus cupreus vaskisysikiitäjäinen tv20140427_043.jpg",
-    "Wiki": "Poecilus_cupreus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Härmejäärä" }],
-    "LatinName": "Agapanthia villosoviridescens",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Agapanthia villosoviridescens harmejaara tv20110629_038.jpg",
-    "Wiki": "Agapanthia_villosoviridescens"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Juomujäärä" }],
-    "LatinName": "Brachyta interrogationis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Brachyta interrogationis juomujäärä tv20120613_001.jpg",
-    "Wiki": "Brachyta_interrogationis"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Lude" }],
-    "LatinName": "Cimex lectulárius",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Cimex lectulárius.jpeg",
-    "Wiki": "Cimex_lectularius"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Tulilude" }],
-    "LatinName": "Pyrrocoris ápterus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Pyrrocoris apterus.jpeg",
-    "Wiki": "Pyrrocoris_apterus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Parihammaslude" }],
-    "LatinName": "Picromérus bidens",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Picromerus bidens.jpeg",
-    "Wiki": "Picromerus_bidens"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Juovalude" }],
-    "LatinName": "Graphosoma itálicum",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Graphosoma itálicum.jpeg",
-    "Wiki": "Graphosoma_italicum"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Kaalilude" }],
-    "LatinName": "Eurýdema oleráceum",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Red",
-    "Territory": "",
-    "Images": "images/Eurýdema oleráceum.jpeg",
-    "Wiki": "Eurydema_oleraceum"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Vaahtokaskas" }],
-    "LatinName": "Lepyronia coleoptrata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Lepyronia coleoptrata.jpeg",
-    "Wiki": "Lepyronia_coleoprata"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Luumukirva" }],
-    "LatinName": "Hyalopterus pruni",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Green",
-    "Territory": "",
-    "Images": "images/Hyalopterus pruni.jpeg",
-    "Wiki": "Hyalopterus_pruni"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Ruusukilpikirva" }],
-    "LatinName": "Aulacaspis rosae",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Aulacaspis rosae.jpeg",
-    "Wiki": "Aulacaspis_rosae"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Kenttäkiitäjäinen" }],
-    "LatinName": "Cicindela campestris",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Cicindela campestris.jpeg",
-    "Wiki": "Cicindela_campestris"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Myyräkiitäjäinen" }],
-    "LatinName": "Clivina fossor",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Clivina fossor.jpeg",
-    "Wiki": "Clivina_fossor"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Metallikiitäjäinen" }],
-    "LatinName": "Harpalus aeneus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Bronze",
-    "Territory": "",
-    "Images": "images/Harpalus aeneus.jpeg",
-    "Wiki": "Harpalus_aeneus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Hopeaseppä" }],
-    "LatinName": "Gyrinus substriatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Gyrinus substriatus.jpeg",
-    "Wiki": "Gyrinus_substriatus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Täplänupiainen" }],
-    "LatinName": "Stenus caesareus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Red",
-    "Territory": "",
-    "Images": "images/Stenus caesareus.jpeg",
-    "Wiki": "Stenus_caesareus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Keisarilyhytsiipi" }],
-    "LatinName": "Staphylinus caesareus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Staphylinus caesareus.jpeg",
-    "Wiki": "Staphylinus_caesareus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Sokkokuoriainen" }],
-    "LatinName": "Claviger testaceus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Claviger testaceus.jpeg",
-    "Wiki": "Claviger_testaceus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Muurahaiskuoriainen" }],
-    "LatinName": "Thanasimus formicarius",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Thanasimus formicarius.jpeg",
-    "Wiki": "Thanasimus_formicarius"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Metsäsylkikuoriainen" }],
-    "LatinName": "Absidia schoenherri",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Absidia schoenherri metsäsylkikuoriainen tv20110619_002.jpg",
-    "Wiki": "Absidia_schoenherri"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Hakasylkikuoriainen" }],
-    "LatinName": "Rhagonycha lignosa",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Rhagonycha lignosa.jpeg",
-    "Wiki": "Rhagonycha_lignosa"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Nummikiitäjäinen" }],
-    "LatinName": "Cicindela sylvatica",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/Cicindela sylvatica nummikiitäjäinen tv20100607_010.jpg",
-    "Wiki": "Cicindela_sylvatica"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Aitosysikiitäjäinen" }],
-    "LatinName": "Pterostichus melanarius",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Pterostichus melanarius aitosysikiitäjäinen tv20140522_029.jpg",
-    "Wiki": "Pterostichus_melanarius"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Carabidae-Maakiitäjäiset" }],
-    "LatinName": "Pterostichus sp",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Pterostichus sp. tv20120525_009.jpg",
-    "Wiki": "Pterostichus_sp"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Töpökukkajäärä" }],
-    "LatinName": "Anoplodera maculicornis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Anoplodera maculicornis topokukkajaara tv20060724_106.jpg",
-    "Wiki": "Anoplodera_maculicornis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Hentokukkajäärä" }],
-    "LatinName": "Alosterna tabacicolor",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Alosterna tabacicolor hentokukkajaara tv20140605_005.jpg",
-    "Wiki": "Alosterna_tabacicolor"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Korpikukkajäärä" }],
-    "LatinName": "Anoplodera reyi",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Anoplodera reyi korpikukkajaara tv20130610_053.jpg",
-    "Wiki": "Anoplodera_reyi"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Rusokukkajäärä" }],
-    "LatinName": "Anoplodera rubra",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Anoplodera rubra rusokukkajaara tv20110728_003.jpg",
-    "Wiki": "Anoplodera_rubra"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Hurmekukkajäärä" }],
-    "LatinName": "Anoplodera sanguinolenta",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Anoplodera sanguinolenta hurmekukkajaara tv20120727_046.jpg",
-    "Wiki": "Anoplodera_sanguinolenta"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Viherkukkajäärä" }],
-    "LatinName": "Anoplodera virens",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Anoplodera virens viherkukkajaara tv20090802_043.jpg",
-    "Wiki": "Anoplodera_virens"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Käpyjäärä" }],
-    "LatinName": "Cortodera femorata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Cortodera femorata käpyjäärä tv20130609_021.jpg",
-    "Wiki": "Cortodera_femorata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Hoikkakukkajäärä" }],
-    "LatinName": "Leptura melanura",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Leptura melanura hoikkakukkajäärä tv20130707_002.jpg",
-    "Wiki": "Leptura_melanura"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Nelivyöjäärä" }],
-    "LatinName": "Leptura quadrifasciata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Violet",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Leptura quadrifasciata nelivyöjäärä tv20100723_011.jpg",
-    "Wiki": "Leptura_quadrifasciata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pajujäärä" }],
-    "LatinName": "Oberea oculata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Oberea oculata pajujäärä tv20100812_015.jpg",
-    "Wiki": "Oberea_oculata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Lehtikantojäärä" }],
-    "LatinName": "Rhagium mordax",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Grey",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Rhagium mordax lehtikantojäärä tv20120609_018.jpg",
-    "Wiki": "Rhagium_mordax"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Runkohaapsiainen" }],
-    "LatinName": "Saperda carcharias",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Grey",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Saperda carcharias runkohaapsiainen tv20110813_043.jpg",
-    "Wiki": "Saperda_carcharias"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Horsmakuoriainen" }],
-    "LatinName": "Bromius obscurus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Bromius obscurus horsmakuoriainen tv20130524_006.jpg",
-    "Wiki": "Bromius_obscurus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Chrysomelidae-Lehtikuoriaiset" }],
-    "LatinName": "Cassida sp",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Cassida sp. tv20120815_018.jpg",
-    "Wiki": "Cassida_sp"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pimperikuoriainen" }],
-    "LatinName": "Chrysolina staphylaea",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Chrysolina staphylaea pimperikuoriainen tv20131007_002.jpg",
-    "Wiki": "Chrysolina_staphylaea"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Isohaavanlehtikuoriainen" }],
-    "LatinName": "Chrysomela populi",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Chrysomela populi isohaavanlehtikuoriainen tv20110522_014.jpg",
-    "Wiki": "Chrysomela_populi"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Rusolehtikuoriainen" }],
-    "LatinName": "Chrysomela tremula",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Chrysomela tremula rusolehtikuoriainen tv20120609_017.jpg",
-    "Wiki": "Chrysomela_tremula"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Täplälehtikuoriainen" }],
-    "LatinName": "Chrysomela vigintipunctata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Chrysomela vigintipunctata täplälehtikuoriainen tv20120726_026.jpg",
-    "Wiki": "Chrysomela_vigintipunctata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Muurahaispääkkö" }],
-    "LatinName": "Clytra quadripunctata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Orange",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Clytra quadripunctata muurahaispääkkö tv20130605_017.jpg",
-    "Wiki": "Clytra_quadripunctata"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Pajukirppa" }],
-    "LatinName": "Crepidodera fulvicornis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Crepidodera fulvicornis pajukirppa tv20130520_006.jpg",
-    "Wiki": "Crepidodera_fulvicornis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Välkeruokokuoriainen" }],
-    "LatinName": "Donacia aquatica",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Violet",
-    "SecondaryColor": "Silver",
-    "Territory": "",
-    "Images": "images/Donacia aquatica välkeruokokuoriainen tv20130522_016.jpg",
-    "Wiki": "Donacia_aquatica"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Lummekuoriainen" }],
-    "LatinName": "Donacia crassipes",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Donacia crassipes lummekuoriainen tv20110626_004.jpg",
-    "Wiki": "Donacia_crassipes"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pajunälvikäs" }],
-    "LatinName": "Galerucella lineola",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Galerucella lineola pajunälvikäs tv20130522_001.jpg",
-    "Wiki": "Galerucella_lineola"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Tuomen-/pihlajanruskokalvaja" }],
-    "LatinName": "Gonioctena intermedia",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Orange",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/Gonioctena intermedia G. pallida tv20120528_021.jpg",
-    "Wiki": "Gonioctena_intermedia"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pajunruskokalvaja" }],
-    "LatinName": "Gonioctena viminalis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Gonioctena viminalis.jpeg",
-    "Wiki": "Gonioctena_viminalis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Leinikkikuoriainen" }],
-    "LatinName": "Hydrothassa marginella",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Hydrothassa marginella leinikkikuoriainen tv20130522_003.jpg",
-    "Wiki": "Hydrothassa_marginella"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kielokukko" }],
-    "LatinName": "Lilioceris merdigera",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Lilioceris merdigera kielokukko tv20140526_053.jpg",
-    "Wiki": "Lilioceris_merdigera"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Raitanälvikäs" }],
-    "LatinName": "Lochmaea caprea",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Lochmaea caprea raitanälvikäs tv20130518_008.jpg",
-    "Wiki": "Lochmaea_caprea"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Pallokalvaja" }],
-    "LatinName": "Plagiodera versicolora",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Blue",
-    "SecondaryColor": "Green",
-    "Territory": "",
-    "Images": "images/Plagiodera versicolora pallokalvaja tv20090802_053.jpg",
-    "Wiki": "Plagiodera_versicolora"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Isopirkko" }],
-    "LatinName": "Anatis ocellata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Anatis ocellata isopirkko tv20110531_008.jpg",
-    "Wiki": "Anatis_ocellata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pensaspisarpirkko" }],
-    "LatinName": "Calvia quatuordecimguttata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Orange",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/Calvia quatuordecimguttata pensaspisarpirkko tv20130521_007.jpg",
-    "Wiki": "Calvia_quatuordecimguttata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Viisipistepirkko" }],
-    "LatinName": "Coccinella quinquepunctata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Coccinella quinquepunctata viisipistepirkko tv20120820_067.jpg",
-    "Wiki": "Coccinella_quinquepunctata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kanervapirkko" }],
-    "LatinName": "Coccinella hieroglyphica",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Yellow",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Coccinella hieroglyphica kanervapirkko tv20140426_013.jpg",
-    "Wiki": "Coccinella_hieroglyphica"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Seitsenpistepirkko" }],
-    "LatinName": "Coccinella septempunctata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Coccinella septempunctata seitsenpistepirkko.jpg",
-    "Wiki": "Coccinella_septempunctata"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Kuutäpläpirkko" }],
-    "LatinName": "Chilocorus renipustulatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Chilocorus renipustulatus.jpeg",
-    "Wiki": "Chilocorus_renipustulatus"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Ihrakuoriainen" }],
-    "LatinName": "Dermestes lardarius",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Dermestes lardarius.jpeg",
-    "Wiki": "Dermestes_lardarius"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Turkiskuoriainen" }],
-    "LatinName": "Attagenus pellio",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Attagenus pellio.jpeg",
-    "Wiki": "Attagenus_pellio"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Haudankaivaja" }],
-    "LatinName": "Necrophorus vespillo",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Necrophorus vespillo.jpeg",
-    "Wiki": "Necrophorus_vespillo"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Musta turkkilo" }],
-    "LatinName": "Nicrophorus humator",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Nicrophorus humator.jpeg",
-    "Wiki": "Nicrophorus_humator"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Raatokuoriainen" }],
-    "LatinName": "Oiceoptoma thoracicum",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Oiceoptoma thoracicum.jpeg",
-    "Wiki": "Oiceoptoma_thoracicum"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "" }],
-    "LatinName": "Papilious demelous",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/papilio_demoleus.jpg",
-    "Wiki": "Papilio_machaon"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Ritariperhonen" }],
-    "LatinName": "Papilio machaon",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Blue",
-    "Territory": "",
-    "Images": "images/Papilio machaon.jpeg",
-    "Wiki": "Papilio_machaon"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Apolloperhonen" }],
-    "LatinName": "Parnassius apollo",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Parnassius apollo.jpeg",
-    "Wiki": "Parnassius_apollo"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Kaaliperhonen" }],
-    "LatinName": "Pieris brassicae",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Pieris brassicae.jpeg",
-    "Wiki": "Pieris_brassicae"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Lanttuperhonen" }],
-    "LatinName": "Pieris napi",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Pieris napi.jpeg",
-    "Wiki": "Pieris_napi"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Sitruunaperhonen" }],
-    "LatinName": "Gonepteryx rhamni",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "Yellow",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Gonepteryx_rhamni.jpeg",
-    "Wiki": "Gonepteryx_rhamni"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Orapihlajaperhonen" }],
-    "LatinName": "Aporia crataegi",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Aporia crataeg.jpeg",
-    "Wiki": "Aporia_crataegi"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Auroraperhonen" }],
-    "LatinName": "Anthocharis cardamines",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Anthocharis cardamines.jpeg",
-    "Wiki": "Anthocharis_cardamines"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Suon keltaperhonen" }],
-    "LatinName": "Colias palaeno",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "Yellow",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Colias palaeno.jpeg",
-    "Wiki": "Colias_palaeno"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Haapaperhonen" }],
-    "LatinName": "Limentis populi",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Limentis_populi.jpeg",
-    "Wiki": "Limentis_populi"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kirjosylkikuoriainen" }],
-    "LatinName": "Cantharis figurata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Cantharis figurata kirjosylkikuoriainen tv20130610_080.jpg",
-    "Wiki": "Cantharis_figurata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Tummasylkikuoriainen" }],
-    "LatinName": "Cantharis obscura",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Cantharis obscura tummasylkikuoriainen tv20140530_010.jpg",
-    "Wiki": "Cantharis_obscura"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kirjosylkikuoriainen" }],
-    "LatinName": "Pterostichus nigrita",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Pterostichus nigrita rhaeticus tv20140418_038.jpg",
-    "Wiki": "Pterostichus_nigrita"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Syyläkyrmykärsäkäs" }],
-    "LatinName": "Cionus scrophulariae",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Grey",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Cionus scrophulariae syyläkyrmykärsäkäs tv20120525_017.jpg",
-    "Wiki": "Cionus_scrophulariae"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Tukkimiehentäi" }],
-    "LatinName": "Hylobius abietis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/Hylobius_abietis_tukkimiehentai.jpg",
-    "Wiki": "Hylobius_abietis"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "" }],
-    "LatinName": "Hypera pollux",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Hypera pollux tv20140526_013.jpg",
-    "Wiki": "Hypera_pollux"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Viherlehtikärsäkäs" }],
-    "LatinName": "Phyllobius argentatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Phyllobius argentatus viherlehtikärsäkäs tv20120715_022.jpg",
-    "Wiki": "Phyllobius_argentatus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kärsäkkäät" }],
-    "LatinName": "Phyllobius sp",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Phyllobius sp. tv20130707_024.jpg",
-    "Wiki": ""
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kiiltosuomukärsäkäs" }],
-    "LatinName": "Polydrusus mollis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Polydrusus mollis kiiltosuomukärsäkäs tv20120603_002.jpg",
-    "Wiki": "Polydrusus_mollis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Karvasuomukärsäkäs" }],
-    "LatinName": "Polydrusus pilosus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Grey",
-    "Territory": "",
-    "Images": "images/Polydrusus pilosus karvasuomukärsäkäs tv20110516_009.jpg",
-    "Wiki": "Polydrusus_pilosus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Aaltosuomukärsäkäs" }],
-    "LatinName": "Polydrusus undatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/Polydrusus undatus aaltosuomukärsäkäs tv20130520_012.jpg",
-    "Wiki": "Polydrusus_undatus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Syyläkyrmykärsäkäs" }],
-    "LatinName": "Hylobius abietis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Grey",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Hylobius abietis tukkimiehentäi tv20120524_020.jpg",
-    "Wiki": "Hylobius_abietis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Hiirokuoriainen" }],
-    "LatinName": "Dascillus cervinus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Dascillus cervinus hiirokuoriainen tv20120716_013.jpg",
-    "Wiki": "Dascillus_cervinus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Ruutuseppä" }],
-    "LatinName": "Actenicerus sjaelandicus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Actenicerus sjaelandicus ruutuseppa tv20120801_001.jpg",
-    "Wiki": "Actenicerus_sjaelandicus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Mustaperäseppä" }],
-    "LatinName": "Ampedus balteatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Ampedus_balteatus.jpg",
-    "Wiki": "Ampedus_balteatus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Sysiseppä" }],
-    "LatinName": "Ampedus nigrinus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Ampedus nigrinus sysiseppa tv20140607_042.jpg",
-    "Wiki": "Ampedus_nigrinus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Puikkoseppä" }],
-    "LatinName": "Athous subfuscus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Athous subfuscus puikkoseppä tv20140604_045.jpg",
-    "Wiki": "Athous_subfuscus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Punasäkäseppä" }],
-    "LatinName": "Cardiophorus ruficollis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Cardiophorus ruficollis punasäkäseppä tv20140427_054.jpg",
-    "Wiki": "Cardiophorus_ruficollis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kampaseppä -koiras" }],
-    "LatinName": "Ctenicera pectinicornis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Ctenicera pectinicornis kampaseppä -koiras tv20120604_016.jpg",
-    "Wiki": "Ctenicera_pectinicornis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kampaseppä -naaras" }],
-    "LatinName": "Ctenicera pectinicornis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Green",
-    "Territory": "",
-    "Images": "images/Ctenicera pectinicornis kampaseppä -naaras tv20130611_001.jpg",
-    "Wiki": "Ctenicera_pectinicornis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Juomuseppä" }],
-    "LatinName": "Dalopius marginatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Dalopius marginatus juomuseppä tv20130530_001.jpg",
-    "Wiki": "Dalopius marginatus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Ruskohammasseppä" }],
-    "LatinName": "Denticollis linearis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Denticollis linearis ruskohammasseppä tv20120609_003.jpg",
-    "Wiki": "Denticollis linearis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Hiirakkoseppä" }],
-    "LatinName": "Prosternon tessellatum",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Prosternon tessellatum hiirakkoseppä tv20080602_056.jpg",
-    "Wiki": "Prosternon tessellatum"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Laakaseppä" }],
-    "LatinName": "Selatosomus impressus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Selatosomus impressus laakaseppä tv20130525_005.jpg",
-    "Wiki": "Selatosomus impressus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Aurorakuoriainen" }],
-    "LatinName": "Dictyoptera aurora",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Dictyoptera aurora aurorakuoriainen tv20130531_005.jpg",
-    "Wiki": "Dictyoptera aurora"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Rusokuoriainen" }],
-    "LatinName": "Lygistopterus sanguineus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Lygistopterus sanguineus rusokuoriainen tv20110628_034.jpg",
-    "Wiki": "Lygistopterus sanguineus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pikkupunakuoriainen" }],
-    "LatinName": "Platycis minuta",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Platycis minuta pikkupunakuoriainen tv20110726_024.jpg",
-    "Wiki": "Platycis minuta"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pikkuviherikäs" }],
-    "LatinName": "Cordylepherus viridis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Cordylepherus viridis pikkuviherikäs tv20070607_002.jpg",
-    "Wiki": "Cordylepherus viridis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Mordellidae-Syöksykuoriaiset" }],
-    "LatinName": "Mordella sp",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Mordella sp. tv20120812_005.jpg",
-    "Wiki": "Mordella sp"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Silkkihälvekäs" }],
-    "LatinName": "Cychramus luteus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Red",
-    "Territory": "",
-    "Images": "images/Cychramus luteus silkkihälvekäs tv20120704_005.jpg",
-    "Wiki": "Cychramus luteus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kuperamäihiäinen" }],
-    "LatinName": "Glischrochilus hortensis",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Glischrochilus hortensis kuperamäihiäinen tv20130625_002.jpg",
-    "Wiki": "Glischrochilus hortensis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Nitidulidae-Kiiltokuoriaiset" }],
-    "LatinName": "Meligethes sp",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Meligethes sp. tv20120817_012.jpg",
-    "Wiki": "Meligethes sp"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Hoikkapaksureisi" }],
-    "LatinName": "Oedemera lurida",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Silver",
-    "SecondaryColor": "Grey",
-    "Territory": "",
-    "Images": "images/Oedemera lurida hoikkapaksureisi tv20110618_035.jpg",
-    "Wiki": "Oedemera lurida"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Viherpaksureisi" }],
-    "LatinName": "Oedemera virescens",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Oedemera virescens viherpaksureisi tv20140525_012.jpg",
-    "Wiki": "Oedemera virescens"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kuparikuoriainen" }],
-    "LatinName": "Potosia cuprea",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Copper",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Potosia cuprea kuparikuoriainen tv20110810_009.jpg",
-    "Wiki": "Potosia cuprea"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kultakuoriainen" }],
-    "LatinName": "Cetonia aurata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Golden",
-    "Territory": "",
-    "Images": "images/Scarabaeidae-Lehtisarviset tv20100621_081.jpg",
-    "Wiki": "Cetonia aurata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kimalaiskuoriainen" }],
-    "LatinName": "Trichius fasciatus",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Trichius fasciatus kimalaiskuoriainen tv20120717_012.jpg",
-    "Wiki": "Trichius fasciatus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Etanahaiskiainen" }],
-    "LatinName": "Phosphuga atrata",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Phosphuga atrata etanahaiskiainen tv20140507_009.jpg",
-    "Wiki": "Phosphuga atrata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Lyhytsiipiset" }],
-    "LatinName": "Staphylinidae",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Staphylinidae-Lyhytsiipiset tv20140419_005.jpg",
-    "Wiki": "Staphylinidae"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Punaristikki" }],
-    "LatinName": "Araneus alsine",
-    "Category": "Spider",
-    "Legs": "8",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Araneus alsine punaristikki tv20130623_010.jpg",
-    "Wiki": "Araneus alsine"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Aitoristikki" }],
-    "LatinName": "Araneus diadematus",
-    "Category": "Spider",
-    "Legs": "8",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Araneus diadematus aitoristikki tv20130818_002.jpg",
-    "Wiki": "Araneus diadematus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Pikkukurkukki" }],
-    "LatinName": "Araniella cucurbitina",
-    "Category": "Spider",
-    "Legs": "8",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Orange",
-    "Territory": "",
-    "Images": "images/Araniella cucurbitina pikkukurkukki tv20120727_032.jpg",
-    "Wiki": "Araniella cucurbitina"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Tarharistihämähäkki" }],
-    "LatinName": "Argiope trifasciata",
-    "Category": "Spider",
-    "Legs": "8",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Yellow",
-    "Territory": "",
-    "Images": "images/Argiope trifasciata tarharistihämähäkki tv20131231_071.jpg",
-    "Wiki": "Argiope trifasciata"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Teltakki" }],
-    "LatinName": "Cyrtophora citricola",
-    "Category": "Spider",
-    "Legs": "8",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/Cyrtophora citricola teltakki tv20140103_013.jpg",
-    "Wiki": "Cyrtophora citricola"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Araneidae-Ristihämähäkit" }],
-    "LatinName": "Mangora acalypha",
-    "Category": "Spider",
-    "Legs": "8",
-    "PrimaryColor": "White",
-    "SecondaryColor": "Grey",
-    "Territory": "",
-    "Images": "images/Mangora acalypha tv20140104_028.jpg",
-    "Wiki": "Mangora acalypha"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Villakilpikirva" }],
-    "LatinName": "Pseudococcidae",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/villakilpikirva_495px.jpg",
-    "Wiki": "Pseudococcidae"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kilpikirva" }],
-    "LatinName": "Aspidiotus, Coccus, Saissetia",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/kilpikirva_495px.jpg",
-    "Wiki": "Aspidiotus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Lehtikirva" }],
-    "LatinName": "Aphididae",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Green",
-    "SecondaryColor": "Green",
-    "Territory": "",
-    "Images": "images/lehtikirva_495px.jpg",
-    "Wiki": "Aphididae"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Ansarijauhiainen" }],
-    "LatinName": "Trialeurodes vaporariorum",
-    "Category": "Butterfly",
-    "Legs": "4",
-    "PrimaryColor": "White",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/ansarijauhiainen_495px.jpg",
-    "Wiki": "Trialeurodes vaporariorum"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Liljakukko" }],
-    "LatinName": "Lilioceris lilii",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Red",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Lilioceris lilii liljakukko tv20130622_009.jpg",
-    "Wiki": "Lilioceris lilii"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Seinalukki" }],
-    "LatinName": "Phalangium opilio",
-    "Category": "Spider",
-    "Legs": "8",
-    "PrimaryColor": "Copper",
-    "SecondaryColor": "Silver",
-    "Territory": "",
-    "Images": "images/seinalukki_495px.jpg",
-    "Wiki": "Phalangium opilio"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Museokuoriainen" }],
-    "LatinName": "Anthrenus museorum",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Museokuoriainen.jpg",
-    "Wiki": "Anthrenus museorum"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Faaraomuurahainen" }],
-    "LatinName": "Monomoriun pharaonis",
-    "Category": "Ant",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Red",
-    "Territory": "",
-    "Images": "images/Faaraomuurahainen_495px.jpg",
-    "Wiki": "Monomoriun pharaonis"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kekomuurahainen" }],
-    "LatinName": "Formica rufa",
-    "Category": "Ant",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/kekomuurahainen_495px.jpg",
-    "Wiki": "Formica rufa"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Hevosmuurahainen" }],
-    "LatinName": "Camponotus herculeanus",
-    "Category": "Ant",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Hevosmuurahainen_495px.jpg",
-    "Wiki": "Camponotus herculeanus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Sokerimuurahainen" }],
-    "LatinName": "Lasius niger",
-    "Category": "Ant",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/sokerimuurahainen_mauriainen_495px.jpg",
-    "Wiki": "Lasius niger"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Siloviholainen" }],
-    "LatinName": "Myrmica rubra",
-    "Category": "Ant",
-    "Legs": "6",
-    "PrimaryColor": "Orange",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/kusiainen_495px.jpg",
-    "Wiki": "Myrmica rubra"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Lentomuurahainen" }],
-    "LatinName": "Lasius niger",
-    "Category": "Beetle",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Violet",
-    "Territory": "",
-    "Images": "images/Mauriainen-lasius-niger.jpg",
-    "Wiki": "Lasius_niger"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Ampiainen" }],
-    "LatinName": "Vespidae",
-    "Category": "Bee",
-    "Legs": "6",
-    "PrimaryColor": "Yellow",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/ampiaiset_495px.jpg",
-    "Wiki": "Vespidae"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Kimalainen" }],
-    "LatinName": "Bombus",
-    "Category": "Bee",
-    "Legs": "6",
-    "PrimaryColor": "Yellow",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/kimalaiset_495px.jpg",
-    "Wiki": "Bombus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Tarhamehiläinen" }],
-    "LatinName": "Apis mellifera",
-    "Category": "Bee",
-    "Legs": "6",
-    "PrimaryColor": "Yellow",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/mehilaiset_495px.jpg",
-    "Wiki": "Apis mellifera"
-  },
-
-  {
-    "names": [{ "language": "fi", "name": "Mäkärä" }],
-    "LatinName": "Simuliidae",
-    "Category": "General",
-    "Legs": "6",
-    "PrimaryColor": "Grey",
-    "SecondaryColor": "White",
-    "Territory": "",
-    "Images": "images/makara_495px.jpg",
-    "Wiki": "Simuliidae"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Polttiainen" }],
-    "LatinName": "Ceratopogonidae",
-    "Category": "General",
-    "Legs": "6",
-    "PrimaryColor": "Grey",
-    "SecondaryColor": "Grey",
-    "Territory": "",
-    "Images": "images/polttiainen_495px.jpg",
-    "Wiki": "Ceratopogonidae"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Puutiainen" }],
-    "LatinName": "Ixodes ricinus",
-    "Category": "General",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Brown",
-    "Territory": "",
-    "Images": "images/Punkki.jpg",
-    "Wiki": "Ixodes ricinus"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Mahla-/banaanikärpänen" }],
-    "LatinName": "Drosophila melanogaster",
-    "Category": "Bee",
-    "Legs": "6",
-    "PrimaryColor": "Brown",
-    "SecondaryColor": "Black",
-    "Territory": "",
-    "Images": "images/Mahta_eli_banaanikarpanen.jpg",
-    "Wiki": "Drosophila melanogaster"
-  },
-  {
-    "names": [{ "language": "fi", "name": "Huonekärpanen" }],
-    "LatinName": "Musca domestica",
-    "Category": "Bee",
-    "Legs": "6",
-    "PrimaryColor": "Black",
-    "SecondaryColor": "Red",
-    "Territory": "",
-    "Images": "images/Huonekarpanen_495px.jpg",
-    "Wiki": "Musca domestica"
+    "images": [
+      "images/Aglais io.jpeg",
+      "images/aglais_io_wiki.jpg",
+      "images/aglais_io_black.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Neitoperhonen",
+        "_id": "61e51f60216fd132436d4d86"
+      },
+      {
+        "language": "Latin",
+        "name": "Aglais io",
+        "_id": "61e5229252948490eb920826"
+      }
+    ],
+    "latinName": "Aglais io",
+    "legs": 4,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Aglais_io",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Carabus nemoralis lehtokiitäjäinen tv20130514_009.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Lehtokiitäjäinen",
+        "_id": "61e51f60216fd132436d4d88"
+      },
+      {
+        "language": "Latin",
+        "name": "Carabus nemoralis",
+        "_id": "61e5229252948490eb920827"
+      }
+    ],
+    "latinName": "Carabus nemoralis",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Violet",
+    "wiki": "Carabus_nemoralis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Cantharis pellucida kaunosylkikuoriainen tv20140603_002.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kaunosylkikuoriainen",
+        "_id": "61e51f60216fd132436d4d8c"
+      },
+      {
+        "language": "Latin",
+        "name": "Cantharis pellucida",
+        "_id": "61e5229252948490eb920828"
+      }
+    ],
+    "latinName": "Cantharis pellucida",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Cantharis_pellucida",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Badister bullatus mäkiloimukiitäjäinen tv20140519_034.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Mäkiloimukiitäjäinen",
+        "_id": "61e51f60216fd132436d4d8a"
+      },
+      {
+        "language": "Latin",
+        "name": "Badister bullatus",
+        "_id": "61e5229252948490eb920829"
+      }
+    ],
+    "latinName": "Badister bullatus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Badister_bullatus",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Poecilus versicolor Vihersysikiitäjäinen tv20140418_008.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Vihersysikiitäjäinen",
+        "_id": "61e51f60216fd132436d4d8e"
+      },
+      {
+        "language": "Latin",
+        "name": "Poecilus versicolor",
+        "_id": "61e5229252948490eb92082a"
+      }
+    ],
+    "latinName": "Poecilus versicolor",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Brown",
+    "wiki": "poecilus_versicolor",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Poecilus cupreus vaskisysikiitäjäinen tv20140427_043.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Vaskisysikiitäjäinen",
+        "_id": "61e51f60216fd132436d4d90"
+      },
+      {
+        "language": "Latin",
+        "name": "Poecilus cupreus",
+        "_id": "61e5229252948490eb92082b"
+      }
+    ],
+    "latinName": "Poecilus cupreus",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Brown",
+    "wiki": "Poecilus_cupreus",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Agapanthia villosoviridescens harmejaara tv20110629_038.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Härmejäärä",
+        "_id": "61e51f60216fd132436d4d92"
+      },
+      {
+        "language": "Latin",
+        "name": "Agapanthia villosoviridescens",
+        "_id": "61e5229252948490eb92082c"
+      }
+    ],
+    "latinName": "Agapanthia villosoviridescens",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Agapanthia_villosoviridescens",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Brachyta interrogationis juomujäärä tv20120613_001.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Juomujäärä",
+        "_id": "61e51f60216fd132436d4d94"
+      },
+      {
+        "language": "Latin",
+        "name": "Brachyta interrogationis",
+        "_id": "61e5229252948490eb92082d"
+      }
+    ],
+    "latinName": "Brachyta interrogationis",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Brachyta_interrogationis",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Cimex lectulárius.jpeg"],
+    "translations": [
+      { "language": "fi", "name": "Lude", "_id": "61e51f61216fd132436d4d96" },
+      {
+        "language": "Latin",
+        "name": "Cimex lectulárius",
+        "_id": "61e5229252948490eb92082e"
+      }
+    ],
+    "latinName": "Cimex lectulárius",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Brown",
+    "wiki": "Cimex_lectularius",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Pyrrocoris apterus.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Tulilude",
+        "_id": "61e51f61216fd132436d4d98"
+      },
+      {
+        "language": "Latin",
+        "name": "Pyrrocoris ápterus",
+        "_id": "61e5229252948490eb92082f"
+      }
+    ],
+    "latinName": "Pyrrocoris ápterus",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Pyrrocoris_apterus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Picromerus bidens.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Parihammaslude",
+        "_id": "61e51f61216fd132436d4d9a"
+      },
+      {
+        "language": "Latin",
+        "name": "Picromérus bidens",
+        "_id": "61e5229252948490eb920830"
+      }
+    ],
+    "latinName": "Picromérus bidens",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Brown",
+    "wiki": "Picromerus_bidens",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Graphosoma itálicum.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Juovalude",
+        "_id": "61e51f61216fd132436d4d9c"
+      },
+      {
+        "language": "Latin",
+        "name": "Graphosoma itálicum",
+        "_id": "61e5229252948490eb920831"
+      }
+    ],
+    "latinName": "Graphosoma itálicum",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Graphosoma_italicum",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Eurýdema oleráceum.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kaalilude",
+        "_id": "61e51f61216fd132436d4d9e"
+      },
+      {
+        "language": "Latin",
+        "name": "Eurýdema oleráceum",
+        "_id": "61e5229252948490eb920832"
+      }
+    ],
+    "latinName": "Eurýdema oleráceum",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Red",
+    "wiki": "Eurydema_oleraceum",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Lepyronia coleoptrata.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Vaahtokaskas",
+        "_id": "61e51f61216fd132436d4da0"
+      },
+      {
+        "language": "Latin",
+        "name": "Lepyronia coleoptrata",
+        "_id": "61e5229252948490eb920833"
+      }
+    ],
+    "latinName": "Lepyronia coleoptrata",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Lepyronia_coleoprata",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Hyalopterus pruni.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Luumukirva",
+        "_id": "61e51f61216fd132436d4da2"
+      },
+      {
+        "language": "Latin",
+        "name": "Hyalopterus pruni",
+        "_id": "61e5229252948490eb920834"
+      }
+    ],
+    "latinName": "Hyalopterus pruni",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Green",
+    "wiki": "Hyalopterus_pruni",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Aulacaspis rosae.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Ruusukilpikirva",
+        "_id": "61e51f61216fd132436d4da4"
+      },
+      {
+        "language": "Latin",
+        "name": "Aulacaspis rosae",
+        "_id": "61e5229252948490eb920835"
+      }
+    ],
+    "latinName": "Aulacaspis rosae",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Brown",
+    "wiki": "Aulacaspis_rosae",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Cicindela campestris.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kenttäkiitäjäinen",
+        "_id": "61e51f61216fd132436d4da6"
+      },
+      {
+        "language": "Latin",
+        "name": "Cicindela campestris",
+        "_id": "61e5229252948490eb920836"
+      }
+    ],
+    "latinName": "Cicindela campestris",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Yellow",
+    "wiki": "Cicindela_campestris",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Clivina fossor.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Myyräkiitäjäinen",
+        "_id": "61e51f61216fd132436d4da8"
+      },
+      {
+        "language": "Latin",
+        "name": "Clivina fossor",
+        "_id": "61e5229252948490eb920837"
+      }
+    ],
+    "latinName": "Clivina fossor",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Clivina_fossor",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Harpalus aeneus.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Metallikiitäjäinen",
+        "_id": "61e51f61216fd132436d4daa"
+      },
+      {
+        "language": "Latin",
+        "name": "Harpalus aeneus",
+        "_id": "61e5229252948490eb920838"
+      }
+    ],
+    "latinName": "Harpalus aeneus",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Bronze",
+    "wiki": "Harpalus_aeneus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Gyrinus substriatus.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hopeaseppä",
+        "_id": "61e51f61216fd132436d4dac"
+      },
+      {
+        "language": "Latin",
+        "name": "Gyrinus substriatus",
+        "_id": "61e5229252948490eb920839"
+      }
+    ],
+    "latinName": "Gyrinus substriatus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Gyrinus_substriatus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Stenus caesareus.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Täplänupiainen",
+        "_id": "61e51f61216fd132436d4dae"
+      },
+      {
+        "language": "Latin",
+        "name": "Stenus caesareus",
+        "_id": "61e5229252948490eb92083a"
+      }
+    ],
+    "latinName": "Stenus caesareus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Red",
+    "wiki": "Stenus_caesareus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Staphylinus caesareus.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Keisarilyhytsiipi",
+        "_id": "61e51f61216fd132436d4db0"
+      },
+      {
+        "language": "Latin",
+        "name": "Staphylinus caesareus",
+        "_id": "61e5229252948490eb92083b"
+      }
+    ],
+    "latinName": "Staphylinus caesareus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Staphylinus_caesareus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Claviger testaceus.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Sokkokuoriainen",
+        "_id": "61e51f61216fd132436d4db2"
+      },
+      {
+        "language": "Latin",
+        "name": "Claviger testaceus",
+        "_id": "61e5229252948490eb92083c"
+      }
+    ],
+    "latinName": "Claviger testaceus",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Brown",
+    "wiki": "Claviger_testaceus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Thanasimus formicarius.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Muurahaiskuoriainen",
+        "_id": "61e51f61216fd132436d4db4"
+      },
+      {
+        "language": "Latin",
+        "name": "Thanasimus formicarius",
+        "_id": "61e5229252948490eb92083d"
+      }
+    ],
+    "latinName": "Thanasimus formicarius",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Thanasimus_formicarius",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Absidia schoenherri metsäsylkikuoriainen tv20110619_002.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Metsäsylkikuoriainen",
+        "_id": "61e51f61216fd132436d4db6"
+      },
+      {
+        "language": "Latin",
+        "name": "Absidia schoenherri",
+        "_id": "61e5229252948490eb92083e"
+      }
+    ],
+    "latinName": "Absidia schoenherri",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Absidia_schoenherri",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Rhagonycha lignosa.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hakasylkikuoriainen",
+        "_id": "61e51f61216fd132436d4db8"
+      },
+      {
+        "language": "Latin",
+        "name": "Rhagonycha lignosa",
+        "_id": "61e5229252948490eb92083f"
+      }
+    ],
+    "latinName": "Rhagonycha lignosa",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Rhagonycha_lignosa",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Cicindela sylvatica nummikiitäjäinen tv20100607_010.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Nummikiitäjäinen",
+        "_id": "61e51f61216fd132436d4dba"
+      },
+      {
+        "language": "Latin",
+        "name": "Cicindela sylvatica",
+        "_id": "61e5229252948490eb920840"
+      }
+    ],
+    "latinName": "Cicindela sylvatica",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "White",
+    "wiki": "Cicindela_sylvatica",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Pterostichus melanarius aitosysikiitäjäinen tv20140522_029.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Aitosysikiitäjäinen",
+        "_id": "61e51f61216fd132436d4dbc"
+      },
+      {
+        "language": "Latin",
+        "name": "Pterostichus melanarius",
+        "_id": "61e5229252948490eb920841"
+      }
+    ],
+    "latinName": "Pterostichus melanarius",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Pterostichus_melanarius",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Pterostichus sp. tv20120525_009.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Carabidae-Maakiitäjäiset",
+        "_id": "61e51f61216fd132436d4dbe"
+      },
+      {
+        "language": "Latin",
+        "name": "Pterostichus sp",
+        "_id": "61e5229252948490eb920842"
+      }
+    ],
+    "latinName": "Pterostichus sp",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Pterostichus_sp",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Anoplodera maculicornis topokukkajaara tv20060724_106.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Töpökukkajäärä",
+        "_id": "61e51f61216fd132436d4dc0"
+      },
+      {
+        "language": "Latin",
+        "name": "Anoplodera maculicornis",
+        "_id": "61e5229252948490eb920843"
+      }
+    ],
+    "latinName": "Anoplodera maculicornis",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Anoplodera_maculicornis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Alosterna tabacicolor hentokukkajaara tv20140605_005.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hentokukkajäärä",
+        "_id": "61e51f61216fd132436d4dc2"
+      },
+      {
+        "language": "Latin",
+        "name": "Alosterna tabacicolor",
+        "_id": "61e5229252948490eb920844"
+      }
+    ],
+    "latinName": "Alosterna tabacicolor",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Alosterna_tabacicolor",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Anoplodera reyi korpikukkajaara tv20130610_053.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Korpikukkajäärä",
+        "_id": "61e51f61216fd132436d4dc4"
+      },
+      {
+        "language": "Latin",
+        "name": "Anoplodera reyi",
+        "_id": "61e5229252948490eb920845"
+      }
+    ],
+    "latinName": "Anoplodera reyi",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Anoplodera_reyi",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Anoplodera rubra rusokukkajaara tv20110728_003.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Rusokukkajäärä",
+        "_id": "61e51f61216fd132436d4dc6"
+      },
+      {
+        "language": "Latin",
+        "name": "Anoplodera rubra",
+        "_id": "61e5229252948490eb920846"
+      }
+    ],
+    "latinName": "Anoplodera rubra",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Anoplodera_rubra",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Anoplodera sanguinolenta hurmekukkajaara tv20120727_046.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hurmekukkajäärä",
+        "_id": "61e51f61216fd132436d4dc8"
+      },
+      {
+        "language": "Latin",
+        "name": "Anoplodera sanguinolenta",
+        "_id": "61e5229252948490eb920847"
+      }
+    ],
+    "latinName": "Anoplodera sanguinolenta",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Anoplodera_sanguinolenta",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Anoplodera virens viherkukkajaara tv20090802_043.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Viherkukkajäärä",
+        "_id": "61e51f61216fd132436d4dca"
+      },
+      {
+        "language": "Latin",
+        "name": "Anoplodera virens",
+        "_id": "61e5229252948490eb920848"
+      }
+    ],
+    "latinName": "Anoplodera virens",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Yellow",
+    "wiki": "Anoplodera_virens",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Cortodera femorata käpyjäärä tv20130609_021.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Käpyjäärä",
+        "_id": "61e51f61216fd132436d4dcc"
+      },
+      {
+        "language": "Latin",
+        "name": "Cortodera femorata",
+        "_id": "61e5229252948490eb920849"
+      }
+    ],
+    "latinName": "Cortodera femorata",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Cortodera_femorata",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Leptura melanura hoikkakukkajäärä tv20130707_002.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hoikkakukkajäärä",
+        "_id": "61e51f61216fd132436d4dce"
+      },
+      {
+        "language": "Latin",
+        "name": "Leptura melanura",
+        "_id": "61e5229252948490eb92084a"
+      }
+    ],
+    "latinName": "Leptura melanura",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Leptura_melanura",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Leptura quadrifasciata nelivyöjäärä tv20100723_011.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Nelivyöjäärä",
+        "_id": "61e51f61216fd132436d4dd0"
+      },
+      {
+        "language": "Latin",
+        "name": "Leptura quadrifasciata",
+        "_id": "61e5229252948490eb92084b"
+      }
+    ],
+    "latinName": "Leptura quadrifasciata",
+    "legs": 6,
+    "primaryColor": "Violet",
+    "secondaryColor": "Yellow",
+    "wiki": "Leptura_quadrifasciata",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Oberea oculata pajujäärä tv20100812_015.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pajujäärä",
+        "_id": "61e51f61216fd132436d4dd2"
+      },
+      {
+        "language": "Latin",
+        "name": "Oberea oculata",
+        "_id": "61e5229252948490eb92084c"
+      }
+    ],
+    "latinName": "Oberea oculata",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Oberea_oculata",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Rhagium mordax lehtikantojäärä tv20120609_018.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Lehtikantojäärä",
+        "_id": "61e51f61216fd132436d4dd4"
+      },
+      {
+        "language": "Latin",
+        "name": "Rhagium mordax",
+        "_id": "61e5229252948490eb92084d"
+      }
+    ],
+    "latinName": "Rhagium mordax",
+    "legs": 6,
+    "primaryColor": "Grey",
+    "secondaryColor": "Black",
+    "wiki": "Rhagium_mordax",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Saperda carcharias runkohaapsiainen tv20110813_043.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Runkohaapsiainen",
+        "_id": "61e51f61216fd132436d4dd6"
+      },
+      {
+        "language": "Latin",
+        "name": "Saperda carcharias",
+        "_id": "61e5229252948490eb92084e"
+      }
+    ],
+    "latinName": "Saperda carcharias",
+    "legs": 6,
+    "primaryColor": "Grey",
+    "secondaryColor": "Black",
+    "wiki": "Saperda_carcharias",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Bromius obscurus horsmakuoriainen tv20130524_006.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Horsmakuoriainen",
+        "_id": "61e51f61216fd132436d4dd8"
+      },
+      {
+        "language": "Latin",
+        "name": "Bromius obscurus",
+        "_id": "61e5229252948490eb92084f"
+      }
+    ],
+    "latinName": "Bromius obscurus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Bromius_obscurus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Cassida sp. tv20120815_018.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Chrysomelidae-Lehtikuoriaiset",
+        "_id": "61e51f61216fd132436d4dda"
+      },
+      {
+        "language": "Latin",
+        "name": "Cassida sp",
+        "_id": "61e5229252948490eb920850"
+      }
+    ],
+    "latinName": "Cassida sp",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Violet",
+    "wiki": "Cassida_sp",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Chrysolina staphylaea pimperikuoriainen tv20131007_002.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pimperikuoriainen",
+        "_id": "61e51f61216fd132436d4ddc"
+      },
+      {
+        "language": "Latin",
+        "name": "Chrysolina staphylaea",
+        "_id": "61e5229252948490eb920851"
+      }
+    ],
+    "latinName": "Chrysolina staphylaea",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Brown",
+    "wiki": "Chrysolina_staphylaea",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Chrysomela populi isohaavanlehtikuoriainen tv20110522_014.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Isohaavanlehtikuoriainen",
+        "_id": "61e51f61216fd132436d4dde"
+      },
+      {
+        "language": "Latin",
+        "name": "Chrysomela populi",
+        "_id": "61e5229252948490eb920852"
+      }
+    ],
+    "latinName": "Chrysomela populi",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Chrysomela_populi",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Chrysomela tremula rusolehtikuoriainen tv20120609_017.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Rusolehtikuoriainen",
+        "_id": "61e51f61216fd132436d4de0"
+      },
+      {
+        "language": "Latin",
+        "name": "Chrysomela tremula",
+        "_id": "61e5229252948490eb920853"
+      }
+    ],
+    "latinName": "Chrysomela tremula",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Chrysomela_tremula",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Chrysomela vigintipunctata täplälehtikuoriainen tv20120726_026.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Täplälehtikuoriainen",
+        "_id": "61e51f61216fd132436d4de2"
+      },
+      {
+        "language": "Latin",
+        "name": "Chrysomela vigintipunctata",
+        "_id": "61e5229252948490eb920854"
+      }
+    ],
+    "latinName": "Chrysomela vigintipunctata",
+    "legs": 6,
+    "primaryColor": "White",
+    "secondaryColor": "Black",
+    "wiki": "Chrysomela_vigintipunctata",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Clytra quadripunctata muurahaispääkkö tv20130605_017.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Muurahaispääkkö",
+        "_id": "61e51f61216fd132436d4de4"
+      },
+      {
+        "language": "Latin",
+        "name": "Clytra quadripunctata",
+        "_id": "61e5229252948490eb920855"
+      }
+    ],
+    "latinName": "Clytra quadripunctata",
+    "legs": 6,
+    "primaryColor": "Orange",
+    "secondaryColor": "Black",
+    "wiki": "Clytra_quadripunctata",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Crepidodera fulvicornis pajukirppa tv20130520_006.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pajukirppa",
+        "_id": "61e51f61216fd132436d4de6"
+      },
+      {
+        "language": "Latin",
+        "name": "Crepidodera fulvicornis",
+        "_id": "61e5229252948490eb920856"
+      }
+    ],
+    "latinName": "Crepidodera fulvicornis",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Crepidodera_fulvicornis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Donacia aquatica välkeruokokuoriainen tv20130522_016.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Välkeruokokuoriainen",
+        "_id": "61e51f61216fd132436d4de8"
+      },
+      {
+        "language": "Latin",
+        "name": "Donacia aquatica",
+        "_id": "61e5229252948490eb920857"
+      }
+    ],
+    "latinName": "Donacia aquatica",
+    "legs": 6,
+    "primaryColor": "Violet",
+    "secondaryColor": "Silver",
+    "wiki": "Donacia_aquatica",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Donacia crassipes lummekuoriainen tv20110626_004.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Lummekuoriainen",
+        "_id": "61e51f61216fd132436d4dea"
+      },
+      {
+        "language": "Latin",
+        "name": "Donacia crassipes",
+        "_id": "61e5229252948490eb920858"
+      }
+    ],
+    "latinName": "Donacia crassipes",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Yellow",
+    "wiki": "Donacia_crassipes",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Galerucella lineola pajunälvikäs tv20130522_001.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pajunälvikäs",
+        "_id": "61e51f61216fd132436d4dec"
+      },
+      {
+        "language": "Latin",
+        "name": "Galerucella lineola",
+        "_id": "61e5229252948490eb920859"
+      }
+    ],
+    "latinName": "Galerucella lineola",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Galerucella_lineola",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Gonioctena intermedia G. pallida tv20120528_021.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Tuomen-/pihlajanruskokalvaja",
+        "_id": "61e51f61216fd132436d4dee"
+      },
+      {
+        "language": "Latin",
+        "name": "Gonioctena intermedia",
+        "_id": "61e5229252948490eb92085a"
+      }
+    ],
+    "latinName": "Gonioctena intermedia",
+    "legs": 6,
+    "primaryColor": "Orange",
+    "secondaryColor": "White",
+    "wiki": "Gonioctena_intermedia",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Gonioctena viminalis.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pajunruskokalvaja",
+        "_id": "61e51f61216fd132436d4df0"
+      },
+      {
+        "language": "Latin",
+        "name": "Gonioctena viminalis",
+        "_id": "61e5229252948490eb92085b"
+      }
+    ],
+    "latinName": "Gonioctena viminalis",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Gonioctena_viminalis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Hydrothassa marginella leinikkikuoriainen tv20130522_003.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Leinikkikuoriainen",
+        "_id": "61e51f61216fd132436d4df2"
+      },
+      {
+        "language": "Latin",
+        "name": "Hydrothassa marginella",
+        "_id": "61e5229252948490eb92085c"
+      }
+    ],
+    "latinName": "Hydrothassa marginella",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Yellow",
+    "wiki": "Hydrothassa_marginella",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Lilioceris merdigera kielokukko tv20140526_053.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kielokukko",
+        "_id": "61e51f61216fd132436d4df4"
+      },
+      {
+        "language": "Latin",
+        "name": "Lilioceris merdigera",
+        "_id": "61e5229252948490eb92085d"
+      }
+    ],
+    "latinName": "Lilioceris merdigera",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Lilioceris_merdigera",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Lochmaea caprea raitanälvikäs tv20130518_008.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Raitanälvikäs",
+        "_id": "61e51f61216fd132436d4df6"
+      },
+      {
+        "language": "Latin",
+        "name": "Lochmaea caprea",
+        "_id": "61e5229252948490eb92085e"
+      }
+    ],
+    "latinName": "Lochmaea caprea",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Lochmaea_caprea",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Plagiodera versicolora pallokalvaja tv20090802_053.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pallokalvaja",
+        "_id": "61e51f61216fd132436d4df8"
+      },
+      {
+        "language": "Latin",
+        "name": "Plagiodera versicolora",
+        "_id": "61e5229252948490eb92085f"
+      }
+    ],
+    "latinName": "Plagiodera versicolora",
+    "legs": 6,
+    "primaryColor": "Blue",
+    "secondaryColor": "Green",
+    "wiki": "Plagiodera_versicolora",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Anatis ocellata isopirkko tv20110531_008.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Isopirkko",
+        "_id": "61e51f61216fd132436d4dfa"
+      },
+      {
+        "language": "Latin",
+        "name": "Anatis ocellata",
+        "_id": "61e5229252948490eb920860"
+      }
+    ],
+    "latinName": "Anatis ocellata",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Anatis_ocellata",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Calvia quatuordecimguttata pensaspisarpirkko tv20130521_007.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pensaspisarpirkko",
+        "_id": "61e51f61216fd132436d4dfc"
+      },
+      {
+        "language": "Latin",
+        "name": "Calvia quatuordecimguttata",
+        "_id": "61e5229252948490eb920861"
+      }
+    ],
+    "latinName": "Calvia quatuordecimguttata",
+    "legs": 6,
+    "primaryColor": "Orange",
+    "secondaryColor": "White",
+    "wiki": "Calvia_quatuordecimguttata",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Coccinella quinquepunctata viisipistepirkko tv20120820_067.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Viisipistepirkko",
+        "_id": "61e51f61216fd132436d4dfe"
+      },
+      {
+        "language": "Latin",
+        "name": "Coccinella quinquepunctata",
+        "_id": "61e5229252948490eb920862"
+      }
+    ],
+    "latinName": "Coccinella quinquepunctata",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Coccinella_quinquepunctata",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Coccinella hieroglyphica kanervapirkko tv20140426_013.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kanervapirkko",
+        "_id": "61e51f61216fd132436d4e00"
+      },
+      {
+        "language": "Latin",
+        "name": "Coccinella hieroglyphica",
+        "_id": "61e5229252948490eb920863"
+      }
+    ],
+    "latinName": "Coccinella hieroglyphica",
+    "legs": 6,
+    "primaryColor": "Yellow",
+    "secondaryColor": "Black",
+    "wiki": "Coccinella_hieroglyphica",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Coccinella septempunctata seitsenpistepirkko.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Seitsenpistepirkko",
+        "_id": "61e51f61216fd132436d4e02"
+      },
+      {
+        "language": "Latin",
+        "name": "Coccinella septempunctata",
+        "_id": "61e5229252948490eb920864"
+      }
+    ],
+    "latinName": "Coccinella septempunctata",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Coccinella_septempunctata",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Chilocorus renipustulatus.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kuutäpläpirkko",
+        "_id": "61e51f61216fd132436d4e04"
+      },
+      {
+        "language": "Latin",
+        "name": "Chilocorus renipustulatus",
+        "_id": "61e5229252948490eb920865"
+      }
+    ],
+    "latinName": "Chilocorus renipustulatus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Chilocorus_renipustulatus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Dermestes lardarius.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Ihrakuoriainen",
+        "_id": "61e51f61216fd132436d4e06"
+      },
+      {
+        "language": "Latin",
+        "name": "Dermestes lardarius",
+        "_id": "61e5229252948490eb920866"
+      }
+    ],
+    "latinName": "Dermestes lardarius",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Dermestes_lardarius",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Attagenus pellio.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Turkiskuoriainen",
+        "_id": "61e51f61216fd132436d4e08"
+      },
+      {
+        "language": "Latin",
+        "name": "Attagenus pellio",
+        "_id": "61e5229252948490eb920867"
+      }
+    ],
+    "latinName": "Attagenus pellio",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Attagenus_pellio",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Necrophorus vespillo.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Haudankaivaja",
+        "_id": "61e51f61216fd132436d4e0a"
+      },
+      {
+        "language": "Latin",
+        "name": "Necrophorus vespillo",
+        "_id": "61e5229252948490eb920868"
+      }
+    ],
+    "latinName": "Necrophorus vespillo",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Necrophorus_vespillo",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Oiceoptoma thoracicum.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Raatokuoriainen",
+        "_id": "61e51f61216fd132436d4e0e"
+      },
+      {
+        "language": "Latin",
+        "name": "Oiceoptoma thoracicum",
+        "_id": "61e5229252948490eb920869"
+      }
+    ],
+    "latinName": "Oiceoptoma thoracicum",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Oiceoptoma_thoracicum",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Nicrophorus humator.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Musta turkkilo",
+        "_id": "61e51f61216fd132436d4e0c"
+      },
+      {
+        "language": "Latin",
+        "name": "Nicrophorus humator",
+        "_id": "61e5229252948490eb92086a"
+      }
+    ],
+    "latinName": "Nicrophorus humator",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Nicrophorus_humator",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/papilio_demoleus.jpg"],
+    "translations": [
+      { "language": "fi", "name": "", "_id": "61e51f61216fd132436d4e10" },
+      {
+        "language": "Latin",
+        "name": "Papilious demelous",
+        "_id": "61e5229252948490eb92086b"
+      }
+    ],
+    "latinName": "Papilious demelous",
+    "legs": 4,
+    "primaryColor": "Black",
+    "secondaryColor": "White",
+    "wiki": "Papilio_machaon",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Papilio machaon.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Ritariperhonen",
+        "_id": "61e51f61216fd132436d4e12"
+      },
+      {
+        "language": "Latin",
+        "name": "Papilio machaon",
+        "_id": "61e5229252948490eb92086c"
+      }
+    ],
+    "latinName": "Papilio machaon",
+    "legs": 4,
+    "primaryColor": "White",
+    "secondaryColor": "Blue",
+    "wiki": "Papilio_machaon",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Parnassius apollo.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Apolloperhonen",
+        "_id": "61e51f61216fd132436d4e14"
+      },
+      {
+        "language": "Latin",
+        "name": "Parnassius apollo",
+        "_id": "61e5229252948490eb92086d"
+      }
+    ],
+    "latinName": "Parnassius apollo",
+    "legs": 4,
+    "primaryColor": "White",
+    "secondaryColor": "Orange",
+    "wiki": "Parnassius_apollo",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Pieris brassicae.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kaaliperhonen",
+        "_id": "61e51f61216fd132436d4e16"
+      },
+      {
+        "language": "Latin",
+        "name": "Pieris brassicae",
+        "_id": "61e5229252948490eb92086e"
+      }
+    ],
+    "latinName": "Pieris brassicae",
+    "legs": 4,
+    "primaryColor": "White",
+    "secondaryColor": "Black",
+    "wiki": "Pieris_brassicae",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Pieris napi.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Lanttuperhonen",
+        "_id": "61e51f61216fd132436d4e18"
+      },
+      {
+        "language": "Latin",
+        "name": "Pieris napi",
+        "_id": "61e5229252948490eb92086f"
+      }
+    ],
+    "latinName": "Pieris napi",
+    "legs": 4,
+    "primaryColor": "White",
+    "secondaryColor": "Black",
+    "wiki": "Pieris_napi",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Gonepteryx_rhamni.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Sitruunaperhonen",
+        "_id": "61e51f61216fd132436d4e1a"
+      },
+      {
+        "language": "Latin",
+        "name": "Gonepteryx rhamni",
+        "_id": "61e5229252948490eb920870"
+      }
+    ],
+    "latinName": "Gonepteryx rhamni",
+    "legs": 4,
+    "primaryColor": "Yellow",
+    "secondaryColor": "Yellow",
+    "wiki": "Gonepteryx_rhamni",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Aporia crataeg.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Orapihlajaperhonen",
+        "_id": "61e51f61216fd132436d4e1c"
+      },
+      {
+        "language": "Latin",
+        "name": "Aporia crataegi",
+        "_id": "61e5229252948490eb920871"
+      }
+    ],
+    "latinName": "Aporia crataegi",
+    "legs": 4,
+    "primaryColor": "White",
+    "secondaryColor": "Black",
+    "wiki": "Aporia_crataegi",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Anthocharis cardamines.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Auroraperhonen",
+        "_id": "61e51f61216fd132436d4e1e"
+      },
+      {
+        "language": "Latin",
+        "name": "Anthocharis cardamines",
+        "_id": "61e5229252948490eb920872"
+      }
+    ],
+    "latinName": "Anthocharis cardamines",
+    "legs": 4,
+    "primaryColor": "White",
+    "secondaryColor": "Orange",
+    "wiki": "Anthocharis_cardamines",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Colias palaeno.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Suon keltaperhonen",
+        "_id": "61e51f61216fd132436d4e20"
+      },
+      {
+        "language": "Latin",
+        "name": "Colias palaeno",
+        "_id": "61e5229252948490eb920873"
+      }
+    ],
+    "latinName": "Colias palaeno",
+    "legs": 4,
+    "primaryColor": "Yellow",
+    "secondaryColor": "Black",
+    "wiki": "Colias_palaeno",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Limentis_populi.jpeg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Haapaperhonen",
+        "_id": "61e51f61216fd132436d4e22"
+      },
+      {
+        "language": "Latin",
+        "name": "Limentis populi",
+        "_id": "61e5229252948490eb920874"
+      }
+    ],
+    "latinName": "Limentis populi",
+    "legs": 4,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Limentis_populi",
+    "category": "Butterfly"
+  },
+  {
+    "images": [
+      "images/Cantharis figurata kirjosylkikuoriainen tv20130610_080.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kirjosylkikuoriainen",
+        "_id": "61e51f61216fd132436d4e24"
+      },
+      {
+        "language": "Latin",
+        "name": "Cantharis figurata",
+        "_id": "61e5229252948490eb920875"
+      }
+    ],
+    "latinName": "Cantharis figurata",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Cantharis_figurata",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Cantharis obscura tummasylkikuoriainen tv20140530_010.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Tummasylkikuoriainen",
+        "_id": "61e51f61216fd132436d4e26"
+      },
+      {
+        "language": "Latin",
+        "name": "Cantharis obscura",
+        "_id": "61e5229252948490eb920876"
+      }
+    ],
+    "latinName": "Cantharis obscura",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Yellow",
+    "wiki": "Cantharis_obscura",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Pterostichus nigrita rhaeticus tv20140418_038.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kirjosylkikuoriainen",
+        "_id": "61e51f61216fd132436d4e28"
+      },
+      {
+        "language": "Latin",
+        "name": "Pterostichus nigrita",
+        "_id": "61e5229252948490eb920877"
+      }
+    ],
+    "latinName": "Pterostichus nigrita",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Pterostichus_nigrita",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Cionus scrophulariae syyläkyrmykärsäkäs tv20120525_017.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Syyläkyrmykärsäkäs",
+        "_id": "61e51f61216fd132436d4e2a"
+      },
+      {
+        "language": "Latin",
+        "name": "Cionus scrophulariae",
+        "_id": "61e5229252948490eb920878"
+      }
+    ],
+    "latinName": "Cionus scrophulariae",
+    "legs": 6,
+    "primaryColor": "Grey",
+    "secondaryColor": "Violet",
+    "wiki": "Cionus_scrophulariae",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Hylobius_abietis_tukkimiehentai.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Tukkimiehentäi",
+        "_id": "61e51f61216fd132436d4e2c"
+      },
+      {
+        "language": "Latin",
+        "name": "Hylobius abietis",
+        "_id": "61e5229252948490eb920879"
+      }
+    ],
+    "latinName": "Hylobius abietis",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "White",
+    "wiki": "Hylobius_abietis",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Hypera pollux tv20140526_013.jpg"],
+    "translations": [
+      { "language": "fi", "name": "", "_id": "61e51f61216fd132436d4e2e" },
+      {
+        "language": "Latin",
+        "name": "Hypera pollux",
+        "_id": "61e5229252948490eb92087a"
+      }
+    ],
+    "latinName": "Hypera pollux",
+    "legs": 6,
+    "primaryColor": "White",
+    "secondaryColor": "Brown",
+    "wiki": "Hypera_pollux",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Phyllobius argentatus viherlehtikärsäkäs tv20120715_022.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Viherlehtikärsäkäs",
+        "_id": "61e51f61216fd132436d4e30"
+      },
+      {
+        "language": "Latin",
+        "name": "Phyllobius argentatus",
+        "_id": "61e5229252948490eb92087b"
+      }
+    ],
+    "latinName": "Phyllobius argentatus",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Black",
+    "wiki": "Phyllobius_argentatus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Phyllobius sp. tv20130707_024.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kärsäkkäät",
+        "_id": "61e51f61216fd132436d4e32"
+      },
+      {
+        "language": "Latin",
+        "name": "Phyllobius sp",
+        "_id": "61e5229252948490eb92087c"
+      }
+    ],
+    "latinName": "Phyllobius sp",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Black",
+    "wiki": "",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Polydrusus mollis kiiltosuomukärsäkäs tv20120603_002.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kiiltosuomukärsäkäs",
+        "_id": "61e51f61216fd132436d4e34"
+      },
+      {
+        "language": "Latin",
+        "name": "Polydrusus mollis",
+        "_id": "61e5229252948490eb92087d"
+      }
+    ],
+    "latinName": "Polydrusus mollis",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Polydrusus_mollis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Polydrusus pilosus karvasuomukärsäkäs tv20110516_009.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Karvasuomukärsäkäs",
+        "_id": "61e51f61216fd132436d4e36"
+      },
+      {
+        "language": "Latin",
+        "name": "Polydrusus pilosus",
+        "_id": "61e5229252948490eb92087e"
+      }
+    ],
+    "latinName": "Polydrusus pilosus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Grey",
+    "wiki": "Polydrusus_pilosus",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Polydrusus undatus aaltosuomukärsäkäs tv20130520_012.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Aaltosuomukärsäkäs",
+        "_id": "61e51f61216fd132436d4e38"
+      },
+      {
+        "language": "Latin",
+        "name": "Polydrusus undatus",
+        "_id": "61e5229252948490eb92087f"
+      }
+    ],
+    "latinName": "Polydrusus undatus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "White",
+    "wiki": "Polydrusus_undatus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Hylobius abietis tukkimiehentäi tv20120524_020.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Syyläkyrmykärsäkäs",
+        "_id": "61e51f61216fd132436d4e3a"
+      },
+      {
+        "language": "Latin",
+        "name": "Hylobius abietis",
+        "_id": "61e5229252948490eb920880"
+      }
+    ],
+    "latinName": "Hylobius abietis",
+    "legs": 6,
+    "primaryColor": "Grey",
+    "secondaryColor": "Violet",
+    "wiki": "Hylobius_abietis",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Dascillus cervinus hiirokuoriainen tv20120716_013.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hiirokuoriainen",
+        "_id": "61e51f61216fd132436d4e3c"
+      },
+      {
+        "language": "Latin",
+        "name": "Dascillus cervinus",
+        "_id": "61e5229252948490eb920881"
+      }
+    ],
+    "latinName": "Dascillus cervinus",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Dascillus_cervinus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Actenicerus sjaelandicus ruutuseppa tv20120801_001.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Ruutuseppä",
+        "_id": "61e51f61216fd132436d4e3e"
+      },
+      {
+        "language": "Latin",
+        "name": "Actenicerus sjaelandicus",
+        "_id": "61e5229252948490eb920882"
+      }
+    ],
+    "latinName": "Actenicerus sjaelandicus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Violet",
+    "wiki": "Actenicerus_sjaelandicus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Ampedus_balteatus.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Mustaperäseppä",
+        "_id": "61e51f61216fd132436d4e40"
+      },
+      {
+        "language": "Latin",
+        "name": "Ampedus balteatus",
+        "_id": "61e5229252948490eb920883"
+      }
+    ],
+    "latinName": "Ampedus balteatus",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Ampedus_balteatus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Ampedus nigrinus sysiseppa tv20140607_042.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Sysiseppä",
+        "_id": "61e51f61216fd132436d4e42"
+      },
+      {
+        "language": "Latin",
+        "name": "Ampedus nigrinus",
+        "_id": "61e5229252948490eb920884"
+      }
+    ],
+    "latinName": "Ampedus nigrinus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Ampedus_nigrinus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Athous subfuscus puikkoseppä tv20140604_045.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Puikkoseppä",
+        "_id": "61e51f61216fd132436d4e44"
+      },
+      {
+        "language": "Latin",
+        "name": "Athous subfuscus",
+        "_id": "61e5229252948490eb920885"
+      }
+    ],
+    "latinName": "Athous subfuscus",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Athous_subfuscus",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Cardiophorus ruficollis punasäkäseppä tv20140427_054.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Punasäkäseppä",
+        "_id": "61e51f61216fd132436d4e46"
+      },
+      {
+        "language": "Latin",
+        "name": "Cardiophorus ruficollis",
+        "_id": "61e5229252948490eb920886"
+      }
+    ],
+    "latinName": "Cardiophorus ruficollis",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Cardiophorus_ruficollis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Ctenicera pectinicornis kampaseppä -koiras tv20120604_016.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kampaseppä -koiras",
+        "_id": "61e51f61216fd132436d4e48"
+      },
+      {
+        "language": "Latin",
+        "name": "Ctenicera pectinicornis",
+        "_id": "61e5229252948490eb920887"
+      }
+    ],
+    "latinName": "Ctenicera pectinicornis",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Ctenicera_pectinicornis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Ctenicera pectinicornis kampaseppä -naaras tv20130611_001.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kampaseppä -naaras",
+        "_id": "61e51f61216fd132436d4e4a"
+      },
+      {
+        "language": "Latin",
+        "name": "Ctenicera pectinicornis",
+        "_id": "61e5229252948490eb920888"
+      }
+    ],
+    "latinName": "Ctenicera pectinicornis",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Green",
+    "wiki": "Ctenicera_pectinicornis",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Dalopius marginatus juomuseppä tv20130530_001.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Juomuseppä",
+        "_id": "61e51f61216fd132436d4e4c"
+      },
+      {
+        "language": "Latin",
+        "name": "Dalopius marginatus",
+        "_id": "61e5229252948490eb920889"
+      }
+    ],
+    "latinName": "Dalopius marginatus",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Dalopius marginatus",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Denticollis linearis ruskohammasseppä tv20120609_003.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Ruskohammasseppä",
+        "_id": "61e51f61216fd132436d4e4e"
+      },
+      {
+        "language": "Latin",
+        "name": "Denticollis linearis",
+        "_id": "61e5229252948490eb92088a"
+      }
+    ],
+    "latinName": "Denticollis linearis",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Brown",
+    "wiki": "Denticollis linearis",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Prosternon tessellatum hiirakkoseppä tv20080602_056.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hiirakkoseppä",
+        "_id": "61e51f61216fd132436d4e50"
+      },
+      {
+        "language": "Latin",
+        "name": "Prosternon tessellatum",
+        "_id": "61e5229252948490eb92088b"
+      }
+    ],
+    "latinName": "Prosternon tessellatum",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Prosternon tessellatum",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Selatosomus impressus laakaseppä tv20130525_005.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Laakaseppä",
+        "_id": "61e51f61216fd132436d4e52"
+      },
+      {
+        "language": "Latin",
+        "name": "Selatosomus impressus",
+        "_id": "61e5229252948490eb92088c"
+      }
+    ],
+    "latinName": "Selatosomus impressus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Selatosomus impressus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Dictyoptera aurora aurorakuoriainen tv20130531_005.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Aurorakuoriainen",
+        "_id": "61e51f61216fd132436d4e54"
+      },
+      {
+        "language": "Latin",
+        "name": "Dictyoptera aurora",
+        "_id": "61e5229252948490eb92088d"
+      }
+    ],
+    "latinName": "Dictyoptera aurora",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Orange",
+    "wiki": "Dictyoptera aurora",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Lygistopterus sanguineus rusokuoriainen tv20110628_034.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Rusokuoriainen",
+        "_id": "61e51f61216fd132436d4e56"
+      },
+      {
+        "language": "Latin",
+        "name": "Lygistopterus sanguineus",
+        "_id": "61e5229252948490eb92088e"
+      }
+    ],
+    "latinName": "Lygistopterus sanguineus",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Lygistopterus sanguineus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Platycis minuta pikkupunakuoriainen tv20110726_024.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pikkupunakuoriainen",
+        "_id": "61e51f61216fd132436d4e58"
+      },
+      {
+        "language": "Latin",
+        "name": "Platycis minuta",
+        "_id": "61e5229252948490eb92088f"
+      }
+    ],
+    "latinName": "Platycis minuta",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Platycis minuta",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Cordylepherus viridis pikkuviherikäs tv20070607_002.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pikkuviherikäs",
+        "_id": "61e51f61216fd132436d4e5a"
+      },
+      {
+        "language": "Latin",
+        "name": "Cordylepherus viridis",
+        "_id": "61e5229252948490eb920890"
+      }
+    ],
+    "latinName": "Cordylepherus viridis",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Black",
+    "wiki": "Cordylepherus viridis",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Mordella sp. tv20120812_005.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Mordellidae-Syöksykuoriaiset",
+        "_id": "61e51f61216fd132436d4e5c"
+      },
+      {
+        "language": "Latin",
+        "name": "Mordella sp",
+        "_id": "61e5229252948490eb920891"
+      }
+    ],
+    "latinName": "Mordella sp",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Brown",
+    "wiki": "Mordella sp",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Cychramus luteus silkkihälvekäs tv20120704_005.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Silkkihälvekäs",
+        "_id": "61e51f61216fd132436d4e5e"
+      },
+      {
+        "language": "Latin",
+        "name": "Cychramus luteus",
+        "_id": "61e5229252948490eb920892"
+      }
+    ],
+    "latinName": "Cychramus luteus",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Red",
+    "wiki": "Cychramus luteus",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Glischrochilus hortensis kuperamäihiäinen tv20130625_002.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kuperamäihiäinen",
+        "_id": "61e51f61216fd132436d4e60"
+      },
+      {
+        "language": "Latin",
+        "name": "Glischrochilus hortensis",
+        "_id": "61e5229252948490eb920893"
+      }
+    ],
+    "latinName": "Glischrochilus hortensis",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Orange",
+    "wiki": "Glischrochilus hortensis",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Meligethes sp. tv20120817_012.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Nitidulidae-Kiiltokuoriaiset",
+        "_id": "61e51f61216fd132436d4e62"
+      },
+      {
+        "language": "Latin",
+        "name": "Meligethes sp",
+        "_id": "61e5229252948490eb920894"
+      }
+    ],
+    "latinName": "Meligethes sp",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Meligethes sp",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Oedemera lurida hoikkapaksureisi tv20110618_035.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hoikkapaksureisi",
+        "_id": "61e51f61216fd132436d4e64"
+      },
+      {
+        "language": "Latin",
+        "name": "Oedemera lurida",
+        "_id": "61e5229252948490eb920895"
+      }
+    ],
+    "latinName": "Oedemera lurida",
+    "legs": 6,
+    "primaryColor": "Silver",
+    "secondaryColor": "Grey",
+    "wiki": "Oedemera lurida",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Oedemera virescens viherpaksureisi tv20140525_012.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Viherpaksureisi",
+        "_id": "61e51f61216fd132436d4e66"
+      },
+      {
+        "language": "Latin",
+        "name": "Oedemera virescens",
+        "_id": "61e5229252948490eb920896"
+      }
+    ],
+    "latinName": "Oedemera virescens",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Black",
+    "wiki": "Oedemera virescens",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Potosia cuprea kuparikuoriainen tv20110810_009.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kuparikuoriainen",
+        "_id": "61e51f61216fd132436d4e68"
+      },
+      {
+        "language": "Latin",
+        "name": "Potosia cuprea",
+        "_id": "61e5229252948490eb920897"
+      }
+    ],
+    "latinName": "Potosia cuprea",
+    "legs": 6,
+    "primaryColor": "Copper",
+    "secondaryColor": "Violet",
+    "wiki": "Potosia cuprea",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Scarabaeidae-Lehtisarviset tv20100621_081.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kultakuoriainen",
+        "_id": "61e51f61216fd132436d4e6a"
+      },
+      {
+        "language": "Latin",
+        "name": "Cetonia aurata",
+        "_id": "61e5229252948490eb920898"
+      }
+    ],
+    "latinName": "Cetonia aurata",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Golden",
+    "wiki": "Cetonia aurata",
+    "category": "Beetle"
+  },
+  {
+    "images": [
+      "images/Trichius fasciatus kimalaiskuoriainen tv20120717_012.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kimalaiskuoriainen",
+        "_id": "61e51f61216fd132436d4e6c"
+      },
+      {
+        "language": "Latin",
+        "name": "Trichius fasciatus",
+        "_id": "61e5229252948490eb920899"
+      }
+    ],
+    "latinName": "Trichius fasciatus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Trichius fasciatus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Phosphuga atrata etanahaiskiainen tv20140507_009.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Etanahaiskiainen",
+        "_id": "61e51f61216fd132436d4e6e"
+      },
+      {
+        "language": "Latin",
+        "name": "Phosphuga atrata",
+        "_id": "61e5229252948490eb92089a"
+      }
+    ],
+    "latinName": "Phosphuga atrata",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Black",
+    "wiki": "Phosphuga atrata",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Staphylinidae-Lyhytsiipiset tv20140419_005.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Lyhytsiipiset",
+        "_id": "61e51f61216fd132436d4e70"
+      },
+      {
+        "language": "Latin",
+        "name": "Staphylinidae",
+        "_id": "61e5229252948490eb92089b"
+      }
+    ],
+    "latinName": "Staphylinidae",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Violet",
+    "wiki": "Staphylinidae",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Araneus alsine punaristikki tv20130623_010.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Punaristikki",
+        "_id": "61e51f61216fd132436d4e72"
+      },
+      {
+        "language": "Latin",
+        "name": "Araneus alsine",
+        "_id": "61e5229252948490eb92089c"
+      }
+    ],
+    "latinName": "Araneus alsine",
+    "legs": 8,
+    "primaryColor": "Red",
+    "secondaryColor": "Brown",
+    "wiki": "Araneus alsine",
+    "category": "Spider"
+  },
+  {
+    "images": ["images/Araneus diadematus aitoristikki tv20130818_002.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Aitoristikki",
+        "_id": "61e51f61216fd132436d4e74"
+      },
+      {
+        "language": "Latin",
+        "name": "Araneus diadematus",
+        "_id": "61e5229252948490eb92089d"
+      }
+    ],
+    "latinName": "Araneus diadematus",
+    "legs": 8,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Araneus diadematus",
+    "category": "Spider"
+  },
+  {
+    "images": ["images/Araniella cucurbitina pikkukurkukki tv20120727_032.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Pikkukurkukki",
+        "_id": "61e51f61216fd132436d4e76"
+      },
+      {
+        "language": "Latin",
+        "name": "Araniella cucurbitina",
+        "_id": "61e5229252948490eb92089e"
+      }
+    ],
+    "latinName": "Araniella cucurbitina",
+    "legs": 8,
+    "primaryColor": "Green",
+    "secondaryColor": "Orange",
+    "wiki": "Araniella cucurbitina",
+    "category": "Spider"
+  },
+  {
+    "images": [
+      "images/Argiope trifasciata tarharistihämähäkki tv20131231_071.jpg"
+    ],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Tarharistihämähäkki",
+        "_id": "61e51f61216fd132436d4e78"
+      },
+      {
+        "language": "Latin",
+        "name": "Argiope trifasciata",
+        "_id": "61e5229252948490eb92089f"
+      }
+    ],
+    "latinName": "Argiope trifasciata",
+    "legs": 8,
+    "primaryColor": "White",
+    "secondaryColor": "Yellow",
+    "wiki": "Argiope trifasciata",
+    "category": "Spider"
+  },
+  {
+    "images": ["images/Cyrtophora citricola teltakki tv20140103_013.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Teltakki",
+        "_id": "61e51f61216fd132436d4e7a"
+      },
+      {
+        "language": "Latin",
+        "name": "Cyrtophora citricola",
+        "_id": "61e5229252948490eb9208a0"
+      }
+    ],
+    "latinName": "Cyrtophora citricola",
+    "legs": 8,
+    "primaryColor": "Black",
+    "secondaryColor": "White",
+    "wiki": "Cyrtophora citricola",
+    "category": "Spider"
+  },
+  {
+    "images": ["images/Mangora acalypha tv20140104_028.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Araneidae-Ristihämähäkit",
+        "_id": "61e51f61216fd132436d4e7c"
+      },
+      {
+        "language": "Latin",
+        "name": "Mangora acalypha",
+        "_id": "61e5229252948490eb9208a1"
+      }
+    ],
+    "latinName": "Mangora acalypha",
+    "legs": 8,
+    "primaryColor": "White",
+    "secondaryColor": "Grey",
+    "wiki": "Mangora acalypha",
+    "category": "Spider"
+  },
+  {
+    "images": ["images/villakilpikirva_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Villakilpikirva",
+        "_id": "61e51f61216fd132436d4e7e"
+      },
+      {
+        "language": "Latin",
+        "name": "Pseudococcidae",
+        "_id": "61e5229252948490eb9208a2"
+      }
+    ],
+    "latinName": "Pseudococcidae",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Violet",
+    "wiki": "Pseudococcidae",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/kilpikirva_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kilpikirva",
+        "_id": "61e51f61216fd132436d4e80"
+      },
+      {
+        "language": "Latin",
+        "name": "Aspidiotus, Coccus, Saissetia",
+        "_id": "61e5229252948490eb9208a3"
+      }
+    ],
+    "latinName": "Aspidiotus, Coccus, Saissetia",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Brown",
+    "wiki": "Aspidiotus",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/lehtikirva_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Lehtikirva",
+        "_id": "61e51f61216fd132436d4e82"
+      },
+      {
+        "language": "Latin",
+        "name": "Aphididae",
+        "_id": "61e5229252948490eb9208a4"
+      }
+    ],
+    "latinName": "Aphididae",
+    "legs": 6,
+    "primaryColor": "Green",
+    "secondaryColor": "Green",
+    "wiki": "Aphididae",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/ansarijauhiainen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Ansarijauhiainen",
+        "_id": "61e51f61216fd132436d4e84"
+      },
+      {
+        "language": "Latin",
+        "name": "Trialeurodes vaporariorum",
+        "_id": "61e5229252948490eb9208a5"
+      }
+    ],
+    "latinName": "Trialeurodes vaporariorum",
+    "legs": 4,
+    "primaryColor": "White",
+    "secondaryColor": "White",
+    "wiki": "Trialeurodes vaporariorum",
+    "category": "Butterfly"
+  },
+  {
+    "images": ["images/Lilioceris lilii liljakukko tv20130622_009.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Liljakukko",
+        "_id": "61e51f61216fd132436d4e86"
+      },
+      {
+        "language": "Latin",
+        "name": "Lilioceris lilii",
+        "_id": "61e5229252948490eb9208a6"
+      }
+    ],
+    "latinName": "Lilioceris lilii",
+    "legs": 6,
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "wiki": "Lilioceris lilii",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/seinalukki_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Seinalukki",
+        "_id": "61e51f61216fd132436d4e88"
+      },
+      {
+        "language": "Latin",
+        "name": "Phalangium opilio",
+        "_id": "61e5229252948490eb9208a7"
+      }
+    ],
+    "latinName": "Phalangium opilio",
+    "legs": 8,
+    "primaryColor": "Copper",
+    "secondaryColor": "Silver",
+    "wiki": "Phalangium opilio",
+    "category": "Spider"
+  },
+  {
+    "images": ["images/Museokuoriainen.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Museokuoriainen",
+        "_id": "61e51f61216fd132436d4e8a"
+      },
+      {
+        "language": "Latin",
+        "name": "Anthrenus museorum",
+        "_id": "61e5229252948490eb9208a8"
+      }
+    ],
+    "latinName": "Anthrenus museorum",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Anthrenus museorum",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/Faaraomuurahainen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Faaraomuurahainen",
+        "_id": "61e51f61216fd132436d4e8c"
+      },
+      {
+        "language": "Latin",
+        "name": "Monomoriun pharaonis",
+        "_id": "61e5229252948490eb9208a9"
+      }
+    ],
+    "latinName": "Monomoriun pharaonis",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Red",
+    "wiki": "Monomoriun pharaonis",
+    "category": "Ant"
+  },
+  {
+    "images": ["images/kekomuurahainen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kekomuurahainen",
+        "_id": "61e51f61216fd132436d4e8e"
+      },
+      {
+        "language": "Latin",
+        "name": "Formica rufa",
+        "_id": "61e5229252948490eb9208aa"
+      }
+    ],
+    "latinName": "Formica rufa",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Formica rufa",
+    "category": "Ant"
+  },
+  {
+    "images": ["images/Hevosmuurahainen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Hevosmuurahainen",
+        "_id": "61e51f61216fd132436d4e90"
+      },
+      {
+        "language": "Latin",
+        "name": "Camponotus herculeanus",
+        "_id": "61e5229252948490eb9208ab"
+      }
+    ],
+    "latinName": "Camponotus herculeanus",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Camponotus herculeanus",
+    "category": "Ant"
+  },
+  {
+    "images": ["images/sokerimuurahainen_mauriainen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Sokerimuurahainen",
+        "_id": "61e51f61216fd132436d4e92"
+      },
+      {
+        "language": "Latin",
+        "name": "Lasius niger",
+        "_id": "61e5229252948490eb9208ac"
+      }
+    ],
+    "latinName": "Lasius niger",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Lasius niger",
+    "category": "Ant"
+  },
+  {
+    "images": ["images/kusiainen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Siloviholainen",
+        "_id": "61e51f61216fd132436d4e94"
+      },
+      {
+        "language": "Latin",
+        "name": "Myrmica rubra",
+        "_id": "61e5229252948490eb9208ad"
+      }
+    ],
+    "latinName": "Myrmica rubra",
+    "legs": 6,
+    "primaryColor": "Orange",
+    "secondaryColor": "Brown",
+    "wiki": "Myrmica rubra",
+    "category": "Ant"
+  },
+  {
+    "images": ["images/Mauriainen-lasius-niger.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Lentomuurahainen",
+        "_id": "61e51f61216fd132436d4e96"
+      },
+      {
+        "language": "Latin",
+        "name": "Lasius niger",
+        "_id": "61e5229252948490eb9208ae"
+      }
+    ],
+    "latinName": "Lasius niger",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Violet",
+    "wiki": "Lasius_niger",
+    "category": "Beetle"
+  },
+  {
+    "images": ["images/ampiaiset_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Ampiainen",
+        "_id": "61e51f61216fd132436d4e98"
+      },
+      {
+        "language": "Latin",
+        "name": "Vespidae",
+        "_id": "61e5229252948490eb9208af"
+      }
+    ],
+    "latinName": "Vespidae",
+    "legs": 6,
+    "primaryColor": "Yellow",
+    "secondaryColor": "Black",
+    "wiki": "Vespidae",
+    "category": "Bee"
+  },
+  {
+    "images": ["images/kimalaiset_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Kimalainen",
+        "_id": "61e51f61216fd132436d4e9a"
+      },
+      {
+        "language": "Latin",
+        "name": "Bombus",
+        "_id": "61e5229252948490eb9208b0"
+      }
+    ],
+    "latinName": "Bombus",
+    "legs": 6,
+    "primaryColor": "Yellow",
+    "secondaryColor": "Black",
+    "wiki": "Bombus",
+    "category": "Bee"
+  },
+  {
+    "images": ["images/mehilaiset_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Tarhamehiläinen",
+        "_id": "61e51f61216fd132436d4e9c"
+      },
+      {
+        "language": "Latin",
+        "name": "Apis mellifera",
+        "_id": "61e5229252948490eb9208b1"
+      }
+    ],
+    "latinName": "Apis mellifera",
+    "legs": 6,
+    "primaryColor": "Yellow",
+    "secondaryColor": "Black",
+    "wiki": "Apis mellifera",
+    "category": "Bee"
+  },
+  {
+    "images": ["images/makara_495px.jpg"],
+    "translations": [
+      { "language": "fi", "name": "Mäkärä", "_id": "61e51f61216fd132436d4e9e" },
+      {
+        "language": "Latin",
+        "name": "Simuliidae",
+        "_id": "61e5229252948490eb9208b2"
+      }
+    ],
+    "latinName": "Simuliidae",
+    "legs": 6,
+    "primaryColor": "Grey",
+    "secondaryColor": "White",
+    "wiki": "Simuliidae",
+    "category": "General"
+  },
+  {
+    "images": ["images/polttiainen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Polttiainen",
+        "_id": "61e51f61216fd132436d4ea0"
+      },
+      {
+        "language": "Latin",
+        "name": "Ceratopogonidae",
+        "_id": "61e5229252948490eb9208b3"
+      }
+    ],
+    "latinName": "Ceratopogonidae",
+    "legs": 6,
+    "primaryColor": "Grey",
+    "secondaryColor": "Grey",
+    "wiki": "Ceratopogonidae",
+    "category": "General"
+  },
+  {
+    "images": ["images/Punkki.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Puutiainen",
+        "_id": "61e51f61216fd132436d4ea2"
+      },
+      {
+        "language": "Latin",
+        "name": "Ixodes ricinus",
+        "_id": "61e5229252948490eb9208b4"
+      }
+    ],
+    "latinName": "Ixodes ricinus",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Brown",
+    "wiki": "Ixodes ricinus",
+    "category": "General"
+  },
+  {
+    "images": ["images/Mahta_eli_banaanikarpanen.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Mahla-/banaanikärpänen",
+        "_id": "61e51f61216fd132436d4ea4"
+      },
+      {
+        "language": "Latin",
+        "name": "Drosophila melanogaster",
+        "_id": "61e5229252948490eb9208b5"
+      }
+    ],
+    "latinName": "Drosophila melanogaster",
+    "legs": 6,
+    "primaryColor": "Brown",
+    "secondaryColor": "Black",
+    "wiki": "Drosophila melanogaster",
+    "category": "Bee"
+  },
+  {
+    "images": ["images/Huonekarpanen_495px.jpg"],
+    "translations": [
+      {
+        "language": "fi",
+        "name": "Huonekärpanen",
+        "_id": "61e51f61216fd132436d4ea6"
+      },
+      {
+        "language": "Latin",
+        "name": "Musca domestica",
+        "_id": "61e5229252948490eb9208b6"
+      }
+    ],
+    "latinName": "Musca domestica",
+    "legs": 6,
+    "primaryColor": "Black",
+    "secondaryColor": "Red",
+    "wiki": "Musca domestica",
+    "category": "Bee"
   }
 ]

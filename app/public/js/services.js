@@ -83,7 +83,6 @@ insectIdentifierApp.factory("UserRestService", [
         $http
           .get("/currentUser")
           .success(function (data) {
-            console.log("UserRestService currentUser: " + JSON.stringify(data));
             callback(data);
           })
           .error(function () {
@@ -123,7 +122,7 @@ insectIdentifierApp.factory("SearchService", [
               category: query.category,
               legs: query.legs,
               name: query.name,
-              language: query.language,
+              //language: query.language,
             },
           }).success(function (data) {
             console.log("receiving search results.");

@@ -11,7 +11,7 @@
 
 			</li>
 			<li>
-				<select name="country" ng-model="query.country" required>
+				<select class="form-control-own" name="country" ng-model="query.country" required>
 					<option value=""></option>
 					<option value="FINLAND">{{translations.FINLAND}} </option>
 					<option value="SWEDEN">{{translations.SWEDEN}} </option>
@@ -341,7 +341,7 @@ date | insectname | category
 				</thead>
 				<tbody class="tbody-observation--sm" role="rowgroup">
 					<tr role="row" ng-repeat="observation in observations" class="observation-row--sm">
-						<td role="cell" class="cell-observation--sm">{{observation.insect.latinName}}</td>
+						<td role="cell" class="cell-observation--sm">{{observation.name}}</td>
 						<td role="cell" class="cell-observation--sm">{{observation.date}}</td>
 						<td role="cell" class="cell-observation--sm">{{observation.count}}</td>
 						<td role="cell" class="cell-observation--sm">{{translations[observation.country]}}</td>
@@ -369,7 +369,7 @@ date | insectname | category
 					</thead>
 					<tbody class="observation-table-body">
 						<tr ng-repeat="observation in observations" class="observation-row">
-							<td class="cell-observation">{{observation.insect.latinName}}</td>
+							<td class="cell-observation">{{observation.name}}</td>
 							<td class="cell-observation">{{observation.date}}</td>
 							<td class="cell-observation">{{observation.count}}</td>
 							<td class="cell-observation">{{translations[observation.country]}}</td>

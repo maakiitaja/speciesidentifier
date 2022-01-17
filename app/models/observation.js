@@ -4,7 +4,6 @@ var Schema = mongoose.Schema;
 
 var ObservationSchema = new Schema({
   country: String,
-  county: String,
   countryPart: String /* direction of compass or middle */,
   organicFarm: Boolean,
   place: String,

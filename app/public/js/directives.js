@@ -76,7 +76,7 @@ myApp.directive("latinNameExists", function ($http, $q) {
       ) {
         console.log("viewvalue: ", viewValue);
         console.log("scope.latinName: ", scope.latinName);
-        console.log("scope.insect.latinName: ", scope.insect.latinName);
+        //console.log("scope.insect.latinName: ", scope.insect.latinName);
         // check whether the new value is the same as the scope valueProperties
         if (scope.insect && viewValue === scope.insect.latinName) {
           scope.latinNameReserved = false;
@@ -172,7 +172,7 @@ myApp.directive("header", function () {
         $localStorage
       ) {
         // initialize current user for header menu item highlighing to work when reloading a page
-        $scope.currentUser = {};
+        //$scope.currentUser = {};
 
         if (!$cookies.get("lang")) {
           console.log("no lang chosen.");

@@ -131,6 +131,29 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
       }
     };
 
+    $scope.addLatinName = function (observations) {
+      console.log(
+        "starting to loop through observations with lenght: ",
+        observations.length
+      );
+      observations.forEach(function (observation, data_index) {
+        // filter
+        console.log("observation: ", observation);
+        if (!observation.insect) {
+          return;
+        }
+        observation.insect.translations.every(function (translation) {
+          if (translation.language === "Latin") {
+            console.log("setting name: ", translation.name);
+            observations[data_index].name = translation.name;
+            // break
+            return false;
+          }
+          return true;
+        });
+      });
+    };
+
     $scope.searchObservations = function (query) {
       // show loading spinner
       var spinnerEl = document.getElementById("spinner-search");
@@ -209,6 +232,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
       }).success(function (data) {
         $scope.observations = data;
         for (var i = 0; i < data.length; i++) {
+          // date
           var formattedDate = new Date();
           var rawDate = new Date(data[i].date);
           console.log("data[i].date: " + data[i].date);
@@ -224,6 +248,8 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
           console.log("formatted date: " + formattedDate);
           $scope.observations[i].date = formattedDate;
           console.log("data[i].organicFarm: " + data[i].organicFarm);
+
+          // place type
           if (data[i].organicFarm == true || data[i].organicFarm == false) {
             if (data[i].organicFarm)
               $scope.observations[i].farmType = $scope.translations.ORGANICTYPE;
@@ -231,6 +257,21 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
               $scope.observations[i].farmType =
                 $scope.translations.NONORGANICTYPE;
           } else $scope.observations[i].farmType = $scope.translations.NOFARM;
+        }
+
+        // add name to the observations
+        if (
+          !$scope.insectSearchSelection ||
+          $scope.insectSearchSelection === "byCategory"
+        ) {
+          // search latin name
+          console.log("adding latin name");
+          $scope.addLatinName(data);
+        } else {
+          console.log("adding given name");
+          data.forEach(function (observation) {
+            observation.name = name;
+          });
         }
 
         if (data && data.length > 0) $scope.searchResults = "showResults";
@@ -576,8 +617,10 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
       console.log("insect.translations: " + insect.translations);
 
       if (insect.translations && insect.translations.length > 0) {
-        $scope.enName = insect.translations[0].name;
-        $scope.fiName = insect.translations[1].name;
+        insect.translations.forEach(function (translation) {
+          if (translation.language === "fi") $scope.fiName = translation.name;
+          if (translation.language === "en") $scope.enName = translation.name;
+        });
       }
 
       $scope.latinName = insect.latinName;
