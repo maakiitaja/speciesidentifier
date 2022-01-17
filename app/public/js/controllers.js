@@ -442,6 +442,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
           $scope.isRequired = false;
           console.log("setting file input populated to true");
           $scope.fileInputPopulated = true;
+          $scope.noPhotosSelected = false;
           $scope.$apply();
           // show the files in form
           // document.getElementById("showFiles").innerHTML =
@@ -452,8 +453,48 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
           $scope.isRequired = true;
           $scope.fileInputPopulated = false;
           document.getElementById("userPhotos").value = null;
+
+          if ($scope.numberOfImagesDownloaded == 0) {
+            $scope.noPhotosSelected = true;
+          }
           $scope.$apply();
         }
+      }
+    };
+
+    $scope.submit = function () {
+      // in case the main file input has been populated
+      if ($scope.fileInputPopulated) {
+        console.log("file input populated, submitting form");
+        var form = document.getElementById("myForm");
+        //form.submit();
+
+        return;
+      }
+
+      // check that the insect has at least one picture
+      if ($scope.isRequired) {
+        alert("Please, select at least one photo");
+        $scope.noPhotosSelected = true;
+        var form = document.getElementById("myForm");
+        // attempt to submit the form
+        //form.submit();
+      } else {
+        console.log("user has selected at least one photo");
+      }
+    };
+
+    $scope.checkPhotoRequiredAfterImageLinks = function () {
+      const el = document.getElementById("userPhotos2");
+      console.log("el: ", el);
+      console.log(" el.files.length: ", el.files.length);
+
+      if (el && el.files.length > 0) {
+        console.log(
+          "valid image links were provided, disabling main file input validation"
+        );
+        $scope.isRequired = false;
+        return;
       }
     };
 
@@ -469,24 +510,20 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         return;
       }
 
-      console.log("check photo required.");
-      // in case the main file input has been populated
-      if ($scope.fileInputPopulated) {
-        return;
-      }
-
       // in case the user has provided valid image links
-      const el = document.getElementById("userPhotos2");
-      console.log("el: ", el);
-      console.log(" el.files.length: ", el.files.length);
+      // const el = document.getElementById("userPhotos2");
+      // console.log("el: ", el);
+      // console.log(" el.files.length: ", el.files.length);
 
-      if (el && el.files.length > 0) {
-        console.log(
-          "valid image links were provided, disabling main file input validation"
-        );
-        $scope.isRequired = false;
-        return;
-      }
+      // if (el && el.files.length > 0) {
+      //   console.log(
+      //     "valid image links were provided, disabling main file input validation"
+      //   );
+      //   $scope.isRequired = false;
+      //   return;
+      // }
+
+      // check whether all pre-existing images all selected as removed
       var inputs = document.getElementsByClassName("photo-checkbox");
       console.log("photo checkbox inputs: ", inputs);
       var isRequired = true;
@@ -501,6 +538,13 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
       $scope.isRequired = isRequired;
 
+      // show warning
+      if ($scope.numberOfImagesDownloaded > 0) {
+        $scope.noPhotosSelected = false;
+      } else {
+        $scope.noPhotosSelected = isRequired;
+      }
+
       return;
     };
 
@@ -509,8 +553,17 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
       // trim whitespace and check if imagelinks are empty
       if (!$scope.imageLinks.trim()) {
+        console.log("$scope.imagesDownloaded: ", $scope.imagesDownloaded);
         $scope.imagesDownloaded = true;
         $scope.numberOfImagesDownloaded = 0;
+
+        // check do we need to display warning for no photos selected -container
+        $scope.checkPhotoRequired();
+        //$scope.noPhotosSelected = $scope.fileInputPopulated;
+
+        // remove any files downloaded before
+        document.getElementById("userPhotos2").value = null;
+        //$scope.$apply();
 
         return;
       }
@@ -541,6 +594,16 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
       if (!validFiles) {
         alert("Invalid file(s). Accepted formats: jpg/jpeg/png");
+        console.log("$scope.imagesDownloaded: ", $scope.imagesDownloaded);
+        $scope.imagesDownloaded = true;
+        $scope.numberOfImagesDownloaded = 0;
+        console.log("$scope.fileInputPopulated: ", $scope.fileInputPopulated);
+        $scope.checkPhotoRequired();
+        //$scope.noPhotosSelected = $scope.fileInputPopulated;
+
+        // remove any files downloaded before
+        document.getElementById("userPhotos2").value = null;
+        //$scope.$apply();
         return;
       }
       console.log("image link validation passed");
@@ -584,7 +647,9 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         $scope.numberOfImagesDownloaded = container.files.length;
 
         // perform validation
-        $scope.checkPhotoRequired();
+        $scope.isRequired = false;
+        $scope.noPhotosSelected = false;
+
         $scope.$apply();
       } catch (err) {
         console.log("failed to load images");
@@ -594,11 +659,17 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         $scope.imagesDownloaded = true;
         $scope.numberOfImagesDownloaded = 0;
 
-        // perform validation
-        $scope.checkPhotoRequired();
+        // check do we need to display warning for no photos selected
+        $scope.noPhotosSelected = !$scope.fileInputPopulated;
+
         $scope.$apply();
       }
     };
+
+    // initialization
+    $scope.noPhotosSelected = false;
+    $scope.fileInputPopulated = false;
+    $scope.numberOfImagesDownloaded = 0;
 
     if ($location.search().fromUploadListPage == "1") {
       // update

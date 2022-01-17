@@ -5,7 +5,7 @@
 <div ng-if="isUpload==0">
 	<h1>{{translations.MODIFYPAGE}}</h1>
 </div>
-<form action="/insect/insert" name="myForm" enctype="multipart/form-data" method="post">
+<form action="/insect/insert" name="myForm" id="myForm" enctype="multipart/form-data" method="post">
 	<div class="flex-center">
 		<ul id="flex-table" class="flex-table">
 
@@ -108,11 +108,12 @@
 			</li>
 
 			<li> {{translations.WIKIENTRY}}:</li>
-			<li> <input id="wiki" type="text" name="wiki" ng-model="wiki" />
+			<li> <input class="form-control-own" id="wiki" type="text" name="wiki" ng-model="wiki" />
 			</li>
 
 			<li>
-				{{translations.IMAGELINKS}}:</li>
+				{{translations.IMAGELINKS}}:
+			</li>
 			<li>
 				<textarea id="imageLinks" rows="3" ng-change="downloadImageLinks()" name="imageLinks"
 					ng-model="imageLinks"></textarea>
@@ -146,16 +147,23 @@
 
 				</div>
 			</li>
+			<li></li>
+			<li>noPhotosSelected: {{noPhotosSelected}}
+				<div class="no-photos-selected-container" ng-if="noPhotosSelected">
+					<p> Please, select at least one photo</p>
+				</div>
+			</li>
 
-			<li> </li>
+			<li><span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
+			</li>
 			<li class="hidden-file-input">
-				<input type="file" id="userPhotos2" name="userPhotos2" custom-on-change="fileChange" multiple />
+				<input type="file" id="userPhotos2" name="userPhotos2" multiple />
 
 				<div id="showFiles">
 
 				</div>
 			</li>
-			<span ng-show="myForm.userPhotos.$touched && myForm.userPhotos.$invalid">A photo is required.</span>
+			<li></li>
 
 
 			<input type="hidden" id="isUpload" name="isUpload" value="{{isUpload}}" ng-model="isUpload" />
@@ -185,13 +193,13 @@
 
 	<div>
 		<div ng-if="isUpload==1">
-			<button id="uploadSubmit" type="submit" ng-click="checkPhotoRequired()" class="button button-blue centered"
+			<button id="uploadSubmit" type="submit" ng-click="submit()" class="button button-blue centered"
 				value="{{translations.UPLOAD}}"
 				ng-disabled="disableUpload || myForm.$pending">{{translations.UPLOAD}}</button>
 
 		</div>
 		<div ng-if="isUpload==0" class="button-grid">
-			<button id="updateSubmit" ng-click="checkPhotoRequired()" type="submit" class="button button-blue centered"
+			<button id="updateSubmit" ng-click="submit()" type="submit" class="button button-blue centered"
 				value="{{translations.SAVE}}"
 				ng-disabled="disableUpload || myForm.$pending">{{translations.SAVE}}</button>
 			<button id="deleteInsect" type="button" ng-click="deleteInsect()" class="button button-red centered"
