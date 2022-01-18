@@ -75,6 +75,24 @@ function getVw() {
   return vw;
 }
 
+function getInsectIdsFromLocalCollection(collection) {
+  var ids = [];
+
+  if (collection === undefined) {
+    return null;
+  }
+  console.log("collection: ", collection);
+
+  for (var ind in collection) {
+    console.log("category ", ind);
+    console.log("category.length ", collection[ind].length);
+    collection[ind].forEach(function (id) {
+      ids.push(id);
+    });
+  }
+  return ids;
+}
+
 function collectionEmpty(collection) {
   var isEmpty = true;
 

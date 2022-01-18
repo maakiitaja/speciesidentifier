@@ -1,4 +1,5 @@
 "use strict";
+
 //lets require/import the mongodb native drivers.
 //var mongodb = require('mongodb');
 /* Controllers */
@@ -389,7 +390,10 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         return;
       }
 
-      var params = { insectId: $scope.insect._id };
+      var params = {
+        insectId: $scope.insect._id,
+        user: $location.search().currentUser,
+      };
       $http({
         url: "/insect/delete",
         method: "DELETE",
@@ -655,7 +659,6 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     $scope.noPhotosSelected = false;
     $scope.fileInputPopulated = false;
     $scope.numberOfImagesDownloaded = 0;
-    $scope.latinNameExists = true;
 
     if ($location.search().fromUploadListPage == "1") {
       // update
@@ -748,25 +751,25 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     console.log("prevUrl: " + $scope.prevUrl);
     console.log("insect: " + $scope.insect);
     $scope.addCollection = "false";
-    // search
-    if ($scope.prevUrl == "#/list") {
-      $http({
-        url: "/collection/searchItem",
-        params: { insectId: $scope.insect._id },
-        method: "GET",
-      }).then(function (response) {
-        // add items to the localstorage by category
-        console.log("response: " + JSON.stringify(response));
-        console.log("response.data: " + response.data);
-        if (response.data && response.data != "") {
-          $scope.inCollection = 1;
-          console.log("disabled add collection");
-        } else {
-          $scope.inCollection = 0;
-          console.log("enabling add collection");
-        }
-      });
-    }
+    // // search
+    // if ($scope.prevUrl == "#/list") {
+    //   $http({
+    //     url: "/collection/searchItem",
+    //     params: { insectId: $scope.insect._id },
+    //     method: "GET",
+    //   }).then(function (response) {
+    //     // add items to the localstorage by category
+    //     console.log("response: " + JSON.stringify(response));
+    //     console.log("response.data: " + response.data);
+    //     if (response.data && response.data != "") {
+    //       $scope.inCollection = 1;
+    //       console.log("disabled add collection");
+    //     } else {
+    //       $scope.inCollection = 0;
+    //       console.log("enabling add collection");
+    //     }
+    //   });
+    // }
     if ($scope.prevUrl === "#/collection") {
       $scope.inCollection = 1;
     }
@@ -923,63 +926,69 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       // check authentication status before going to the Server
       var currentUser = $cookies.get("current.user");
       if (currentUser === "") {
-        // attempt to remove the insect from local storage
+        // attempt to remove the insect from local collection
         $scope.disableAddOrRemove = true;
         toggleLoadingSpinner($scope);
-        $scope.removeInsectFromCollection($scope, $localStorage);
+        $scope.removeInsectFromLocalCollection($scope, $localStorage);
         toggleLoadingSpinner($scope);
         return;
       }
       $scope.disableAddOrRemove = true;
       toggleLoadingSpinner($scope);
 
+      // remove the insect from the remote collection
       $http({
         url: "/collection/remove",
         method: "DELETE",
-        params: { _id: insect._id },
-      }).success(function (data) {
-        console.log("data: " + data);
-        if (data == "success") {
-          $scope.removeInsectFromCollection($scope, $localStorage);
-        } else {
-          // check first whether the insect is in the localstorage collection
-          var successLocalStorageRemoval = $scope.removeInsectFromCollection(
-            $scope,
-            $localStorage
-          );
-          if (successLocalStorageRemoval) {
-            toggleLoadingSpinner($scope);
-            return;
+        params: { insectId: insect._id, user: $location.search().currentUser },
+      })
+        .success(function (data) {
+          console.log("data: " + data);
+          if (data == "success") {
+            // found item in the remote collection, remove it next from the local collection
+            console.log("found item in the remote collection");
+            $scope.removeInsectFromLocalCollection($scope, $localStorage);
+          } else {
+            // failed to remove the insect from the remote collection
+            console.log(
+              "failed to remove the insect from the remote collection"
+            );
+            $scope.removeInsectFromLocalCollection($scope, $localStorage);
           }
-
-          $scope.messageRemovedFailure =
-            $scope.translations.FAILEDTOREMOVEINSECTFROMCOLLECTION;
-          setDelay("messageRemovedFailure", $scope.messageDelayTime, $scope);
-          $scope.inCollection = 0;
-          console.log("failed to remove insect");
-          alert("Failed to remove insect from collection.");
-        }
-        toggleLoadingSpinner($scope);
-      });
+          toggleLoadingSpinner($scope);
+        })
+        .error(function (err) {
+          console.log(
+            "got error while removing item from collection, err:",
+            err
+          );
+          alert("got error while removing item from collection, err:", err);
+          toggleLoadingSpinner($scope);
+        });
     };
 
-    $scope.removeInsectFromCollection = function ($scope, $localStorage) {
+    $scope.removeInsectFromLocalCollection = function ($scope, $localStorage) {
       var category = $scope.insect.category;
-      console.log(
-        "category: " +
-          category +
-          ", with length: " +
-          $localStorage.collection[category].length +
-          ", $localStorage.collection[category][0]: " +
-          $localStorage.collection[category][0]
-      );
+
       var success = false;
 
+      // remove the insect from local collection
       for (var i = 0; i < $localStorage.collection[category].length; i++) {
         if ($localStorage.collection[category][i]._id == $scope.insect._id) {
           console.log("found insect from local storage at position: " + i);
 
           $localStorage.collection[category].splice(i, 1);
+          // remove the latinname and id in local collection
+          $localStorage.collection.latinNames =
+            $localStorage.collection.latinNames.filter(
+              (latinName) => latinName !== $scope.insect.latinName
+            );
+          // remove the insect id from local collection
+          $localStorage.collection.insectIds =
+            $localStorage.collection.insectIds.filter(
+              (insectId) => insectId !== $scope.insect._id
+            );
+
           success = true;
           break;
         }
@@ -1021,31 +1030,34 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         return;
       }
 
-      var insectsByCategory = {
+      var collection = {
         Ant: [],
         Bee: [],
         Beetle: [],
         Butterfly: [],
         Centipede: [],
         Spider: [],
+        latinNames: [],
+        insectIds: [],
       };
       var duplicate = 0;
+
       // 1. save to the localstorage
       if ($localStorage.collection) {
         console.log("category: " + $scope.insect.category);
+        // check for duplicate
         if ($localStorage.collection[$scope.insect.category].length > 0) {
           var duplicate = 0;
-          // search matches
 
-          var t = $localStorage.collection[$scope.insect.category];
+          var category = $localStorage.collection[$scope.insect.category];
 
-          console.log(t);
-          //console.log(t[0].names[0].name);
-          for (var i = 0; i < t.length; i++) {
-            var lsInsect = t[i];
-            console.log(lsInsect._id);
+          console.log(category);
 
-            if (lsInsect._id == $scope.insect._id) {
+          for (var i = 0; i < category.length; i++) {
+            var tmpInsect = category[i];
+            console.log(tmpInsect._id);
+
+            if (tmpInsect._id == $scope.insect._id) {
               console.log(
                 "found duplicate between localstorage and server data"
               );
@@ -1057,25 +1069,48 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
             $localStorage.collection[$scope.insect.category].push(
               $scope.insect
             );
+            // add latin name to the localStorage
+            if ($localStorage.collection.latinNames) {
+              console.log(
+                "saving reference information about insect to localStorage"
+              );
+              $localStorage.collection.latinNames.push($scope.insect.latinName);
+              $localStorage.collection.insectIds.push($scope.insect._id);
+            }
             console.log("not a duplicate");
             $scope.saveImagesToLocalStorage();
             //alert("Saved insect to collection");
           }
         } else {
-          $localStorage.collection[$scope.insect.category].push($scope.insect);
-          console.log(
-            "found no insects int the category: " +
-              $localStorage.collection[$scope.insect.category]
-          );
-          $scope.saveImagesToLocalStorage();
+          if ($localStorage.collection.insectsIds) {
+            $localStorage.collection[$scope.insect.category].push(
+              $scope.insect
+            );
+            // add latin name to the localStorage
+            $localStorage.collection.latinNames.push($scope.insect.latinName);
+            $localStorage.collection.insectIds.push($scope.insect._id);
+            console.log(
+              "found no insects in the category: " +
+                $localStorage.collection[$scope.insect.category]
+            );
+            $scope.saveImagesToLocalStorage();
+          } else {
+            alert(
+              "no collection exists in localstorage or it doesn't reflect the new structure, has it been removed?"
+            );
+          }
         }
       } else {
         $localStorage.collection = [];
-        $localStorage.collection = insectsByCategory;
+        $localStorage.collection = collection;
         $localStorage.collection[$scope.insect.category].push($scope.insect);
+        // add latin name to the localStorage
+        $localStorage.collection.latinNames.push($scope.insect.latinName);
+        $localStorage.collection.insectIds.push($scope.insect._id);
         console.log("initialized localstorage");
         $scope.saveImagesToLocalStorage();
       }
+
       // 2. save to the server
       if (!duplicate) {
         // check authentication status before going to the Server
@@ -1083,14 +1118,45 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         var currentUser = $cookies.get("current.user");
         if (currentUser === "") {
           $scope.addItemToCollection();
+          toggleLoadingSpinner($scope);
+          return;
         }
+
+        // insert the item to the remote collection
         $http({
           url: "/collection/insert",
-          method: "GET",
-          params: { insectId: $scope.insect._id },
-        }).success(function (data) {
-          $scope.addItemToCollection();
-        });
+          method: "POST",
+          params: {
+            insectId: $scope.insect._id,
+            user: $location.search().currentUser,
+          },
+        })
+          .success(function (data) {
+            if (data) {
+              console.log("successfully added item to remote collection");
+              if (
+                !$localStorage.collection.insectIds.includes($scope.insect._id)
+              ) {
+                console.log("adding insect id to local storage");
+                $localStorage.collection.insectIds.push($scope.insect._id);
+              } else {
+                console.log("found insect id already from local storage");
+              }
+              $scope.addItemToCollection();
+            } else {
+              console.log("inserting item to the remote database failed");
+            }
+          })
+          .error(function (err) {
+            console.log(
+              "got error while saving item to the remote collection, err:",
+              err
+            );
+            alert(
+              "got error while saving item to the remote collection, err:",
+              err
+            );
+          });
       } else {
         console.log("translations.ITEMALREADYINCOLLECTION");
         $scope.messageCollectionAddFailure =
@@ -1141,9 +1207,6 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     // Header
     resetHeader();
     highlightElement("observation-button");
-
-    // init async validation of latin name
-    $scope.latinNameExists = false;
 
     // initialize form
     $scope.params = {
@@ -1664,65 +1727,135 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       Butterfly: [],
       Centipede: [],
       Spider: [],
+      insectIds: [],
+      latinNames: [],
     };
 
-    $scope.collectionEmpty = collectionEmpty($localStorage.collection);
-    console.log("collection empty: ", $scope.collectionEmpty);
     var curUserEmpty = angular.equals({}, $scope.currentUser);
     console.log("curUserEmpty: ", curUserEmpty);
     if (curUserEmpty) {
+      // check whether collection is empty
+      $scope.collectionEmpty = collectionEmpty($localStorage.collection);
+      console.log("collection empty: ", $scope.collectionEmpty);
       return;
     }
     toggleLoadingSpinner($scope);
-    $http
-      .get("/collection/list")
+    var params = { user: $location.search().currentUser };
+    // search for existing remote collection
+    $http({ url: "/collection/list", params: params })
       .success(function (data) {
-        if (!data) {
-          toggleLoadingSpinner($scope);
-          console.log("no data");
-          return;
-        }
-        // add items to the localstorage by category
-        if ($localStorage.collection == null) {
-          $localStorage.collection = [];
-          $localStorage.collection = insectsByCategory;
-        }
         console.log("data: ", data);
+        if (!data) {
+          console.log("no data");
+          // no existing remote collection
+          let params;
+          if ($localStorage.collection && $localStorage.collection.insectIds) {
+            params = { insectIds: $localStorage.collection.insectIds };
+          }
 
-        // Add items from the backend to the localstorage if there are no duplicates
-        // but do not remove anything from localstorage
-        for (var ind in data) {
-          var insect = data[ind];
-          var duplicate = 0;
-          //console.log("localStorage: "+JSON.stringify($localStorage));
-          var t = $localStorage.collection[insect.category];
-          //console.log(t.length);
-          //console.log(t[0].name);
-          for (var i = 0; i < t.length; i++) {
-            var lsInsect = t[i];
-            //console.log(lsInsect.name);
+          // synchronize all items in local storage with the remote (push local changes)
+          $http({
+            url: "/collection/insertmany",
+            method: "POST",
+            params: params,
+          })
+            .success(function (data) {
+              if (data) {
+                console.log("synced the remote and local collections");
+                console.log("data: ", data);
+                $collection.insectIds = data.insectIds;
+              } else {
+                console.log(
+                  "failed to sync between remote and local collections"
+                );
+              }
+            })
+            .error(function (err) {
+              console.log(
+                "error occured during syncing remote and local collection"
+              );
+            });
 
-            if (lsInsect.name == insect.name) {
-              //console.log("found duplicate between localstorage and server data");
-              // found duplicate
-              duplicate = true;
+          toggleLoadingSpinner($scope);
+        } else {
+          // here it is needed to check whether local collection reflects the remote collection
+
+          if ($localStorage.collection === null) {
+            console.log("initializing localstorage");
+
+            $localStorage.collection = [];
+            $localStorage.collection = insectsByCategory;
+          }
+          console.log("data: ", data);
+
+          // 1. Add items from the backend to the localstorage if there are no duplicates
+          // but do not remove anything from localstorage
+          for (var ind in data) {
+            console.log("iterating over data");
+            var insectData = data[ind];
+            var duplicate = 0;
+
+            var category = $localStorage.collection[insectData.category];
+
+            for (var i = 0; i < category.length; i++) {
+              var localInsect = category[i];
+
+              if (localInsect._id == insectData._id) {
+                console.log(
+                  "found duplicate between localstorage and server data for insect: ",
+                  localInsect.latinName
+                );
+                // found duplicate
+                duplicate = true;
+              }
+            }
+            if (!duplicate) {
+              console.log(
+                "adding local collection data with insect id: ",
+                insectData._id
+              );
+
+              $localStorage.collection[insectData.category].push(insectData);
+              $localStorage.collection[insectData.category].insectIds.push(
+                insectData._id
+              );
+              $localStorage.collection[insectData.category].latinNames.push(
+                insectData.latinName
+              );
             }
           }
-          if (!duplicate) {
-            // add thumbs from localstorage as needed
 
-            $localStorage.collection[insect.category].push(insect);
+          // 2. sync the updated local collection with the remote collection
+          if ($localStorage.collection.insectIds) {
+            console.log("about to perform sync operation");
+            var syncIds = [];
+            $localStorage.collection.insectIds.forEach(function (
+              insectId,
+              ind
+            ) {
+              if (!data.includes(insectId)) {
+                syncIds.push(insectId);
+              }
+            });
+
+            // perform sync operation
+            $http({
+              url: "/collection/insertmany",
+              insectIds: syncIds,
+              user: $location.search().currentUser,
+            }).success(function (response) {});
           }
+
+          toggleLoadingSpinner($scope);
         }
-        $scope.collectionEmpty = collectionEmpty($localStorage.collection);
-        console.log("collection empty: ", $scope.collectionEmpty);
-        toggleLoadingSpinner($scope);
       })
       .error(function () {
         console.log("failed to refresh collection");
         toggleLoadingSpinner($scope);
         alert($scope.translations.REFRESHINGCOLLECTION);
       });
+    $scope.collectionEmpty = collectionEmpty($localStorage.collection);
+    console.log("collection empty: ", $scope.collectionEmpty);
 
     $scope.viewOffline = function () {
       console.log("connected : " + !$scope.checkbox.offline);

@@ -221,7 +221,7 @@
 
 		<h2><span>02</span> {{translations.OBSERVATION}} </h2>
 
-		<form ng-submit="addObservation(params)">
+		<form ng-submit="addObservation(params)" name="myForm" id="myForm">
 			<div class="flex-center">
 				<ul id="flex-table" class="flex-table">
 					<!-- insect specific -->
@@ -234,8 +234,10 @@
 					<li>
 						<input class="form-control-own" type="text" id="observationLatinName"
 							name="observationLatinName" ng-model="params.observationLatinName" latin-name
-							ng-disabled="mainImageUrl" required />
-						<p ng-if="latinNameReserved">Check the latin name again.</p>
+							ng-disabled="mainImageUrl"
+							ng-model-options="{ updateOn: 'default blur', debounce: {'default': 300, 'blur': 0} }"
+							required />
+						<p ng-if="latinNameReserved">Please, check the latin name again.</p>
 					</li>
 					<li>
 						{{translations.DATE}}(*):
@@ -467,8 +469,9 @@
 				<div class='js-fade fade-out is-paused alert alert-danger' id="messageAddFailure"
 					ng-if='addObservationFailure != ""'>{{addObservationFailure}}</div>
 			</div>
-			<button type="submit" id="observationSubmit" type="button"
-				class="button button-blue centered">{{translations.ADDOBSERVATION}}</button>
+
+			<button type="submit" id="observationSubmit" ng-disabled="latinNameNotReserved || myForm.$pending"
+				type="button" class="button button-blue centered">{{translations.ADDOBSERVATION}}</button>
 		</form>
 
 	</div> <!-- end of add observation panel -->

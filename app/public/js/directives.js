@@ -87,14 +87,6 @@ myApp.directive("latinName", function ($http, $q) {
           scope.latinNameReserved = false;
           console.log("viewvalue equals scope value");
           return $q.resolve();
-        } else if (
-          scope.params &&
-          firstLetterToUppercase(viewValue) ===
-            scope.params.observationLatinName
-        ) {
-          scope.latinNameReserved = false;
-          console.log("viewvalue equals scope value");
-          return $q.resolve();
         }
 
         // check if the value is empty
@@ -111,25 +103,25 @@ myApp.directive("latinName", function ($http, $q) {
 
             if (response.data.msg) {
               // latin-name-exists
-              if (scope.latinNameExists === true) {
+              if (!scope.fromObservationPage) {
                 console.log("rejecting");
                 scope.latinNameReserved = true;
                 return $q.reject();
                 // latin name does not exist
               } else {
                 console.log("resolving");
-                scope.latinNameReserved = false;
+                scope.latinNameNotReserved = false;
                 return $q.resolve();
               }
             }
             // message was null, given latin name does not exist
-            if (scope.latinNameExists === true) {
+            if (!scope.fromObservationPage === true) {
               console.log("response ok");
               scope.latinNameReserved = false;
               return true;
             } else {
               console.log("response not ok");
-              scope.latinNameReserved = true;
+              scope.latinNameNotReserved = true;
               return $q.reject();
             }
           });
