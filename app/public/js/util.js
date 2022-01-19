@@ -101,10 +101,10 @@ function collectionEmpty(collection) {
   }
   console.log("collection: ", collection);
 
-  for (var ind in collection) {
+  for (var ind in collection.insectsByCategory) {
     console.log("category ", ind);
-    console.log("category.length ", collection[ind].length);
-    if (collection[ind].length > 0) {
+    console.log("category.length ", collection.insectsByCategory[ind].length);
+    if (collection.insectsByCategory[ind].length > 0) {
       isEmpty = false;
       break;
     }
@@ -249,4 +249,80 @@ function toggleLoadingSpinner($scope) {
   } else {
     console.log("couldn't toggle loading spinner");
   }
+}
+
+function getBase64FromImage(id, name, $localStorage) {
+  console.log("getbase64fromimageurl, id: " + id + " and name: " + name);
+  var img = getImg(id, name);
+
+  img.setAttribute("crossOrigin", "anonymous");
+
+  img.onload = function () {
+    console.log("img.onload");
+    var canvas = document.createElement("canvas");
+    console.log("this.width: " + this.width + " this.height: " + this.height);
+
+    // thumb.jpg
+    console.log(
+      "name.substring: " + name.substring(name.length - 9, name.length)
+    );
+    if (name.substring(name.length - 9, name.length) == "thumb.jpg") {
+      // resize
+      img.width = 150;
+      img.height = 150;
+      canvas.width = 150;
+      canvas.heigth = 150;
+    } else {
+      canvas.width = this.width;
+      canvas.height = this.height;
+    }
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(this, 0, 0);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    //alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+
+    // set to localstorage
+    //name = name.replace(/^ ', "");
+
+    console.log("saving image with name: " + name + " to localstorage");
+    // TODO catch max size reached
+    $localStorage[name] = dataURL;
+  };
+}
+
+function saveImagesToLocalStorage($scope, $localStorage) {
+  /* loop through insect's images */
+
+  console.log("saving images to local storage");
+
+  for (var i = 0; i < $scope.insect.images.length; i++) {
+    // full pics
+    console.log("before saving image to localstorage");
+    getBase64FromImage("mainimage", $scope.insect.images[i], $localStorage);
+    console.log("after saving image to localstorage");
+
+    // thumbs
+    if ($scope.insect.images.length > 1) {
+      getBase64FromImage(
+        $scope.insect.images[i] + "_thumb.jpg",
+        $scope.insect.images[i] + "_thumb.jpg",
+        $localStorage
+      );
+      console.log("saved thumb to localstorage");
+    } else {
+      getBase64FromImage(
+        "mainimage",
+        $scope.insect.images[i] + "_thumb.jpg",
+        $localStorage
+      );
+      console.log("saved and resized thumb to localstorage");
+    }
+  }
+}
+
+function userAuthenticated($scope) {
+  return !angular.equals({}, $scope.currentUser);
 }

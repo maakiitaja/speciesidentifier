@@ -328,6 +328,9 @@ module.exports = function (app, passport) {
           .exec(function (err, results) {
             if (err) throw err;
             console.log("results: " + results);
+            if (results.length === 0) {
+              results = null;
+            }
             return res.send(results);
           });
       }
@@ -336,11 +339,6 @@ module.exports = function (app, passport) {
 
   app.delete("/collection/remove", function (req, res) {
     console.log("collection remove start");
-
-    if (!req.isAuthenticated()) {
-      console.log("not authenticated");
-      return res.send("not authenticated");
-    }
 
     console.log("searching user's compendium");
     Compendium.findOne({ _user: req.user.id }, function (err, compendium) {
@@ -358,8 +356,15 @@ module.exports = function (app, passport) {
       var success = false;
       var insectId = req.query.insectId;
 
+      console.log("insectId: ", insectId);
+      console.log("compendium.insects", compendium.insects);
+      console.log(
+        "compendium.insects[0].toString",
+        compendium.insects[0].toString()
+      );
+
       for (var i = 0; i < compendium.insects.length; i++) {
-        if (compendium.insects[i] === insectId) {
+        if (compendium.insects[i].toString() === insectId) {
           compendium.insects.splice(i, 1);
 
           success = true;
@@ -989,8 +994,8 @@ module.exports = function (app, passport) {
   app.post("/collection/insertmany", function (req, res) {
     console.log("collection/insertmany");
 
-    if (req.isAuthenticated()) {
-      return res.status(300).send("not authenticated");
+    if (!req.isAuthenticated()) {
+      return res.send("not authenticated");
     }
     //var latinNames = req.query.latinNames;
     var insectIds = req.query.insectIds;
@@ -998,64 +1003,52 @@ module.exports = function (app, passport) {
       console.log("no params were provided");
       return res.send(null);
     }
+    var tmp;
+    if (typeof insectIds === "string") {
+      console.log("one insect id was passed");
+      tmp = [];
+      tmp.push(insectIds);
+      insectIds = tmp;
+    }
+    var query = Compendium.find().where("_user").equals(req.user.id);
+    query.populate({ path: "insects", select: "_id updatedAt" });
 
-    Compendium.findOne(
-      { _user: req.user.id },
-      async function (err, compendium) {
-        if (err) {
-          throw err;
-        }
-
-        if (!compendium) {
-          console.log('couldn"t find user"s collection');
-          return res.send(null);
-        }
-        // if (latinNames) {
-        //   // lookup corresponding insect ids
-        //   var query = Insect.find();
-        //   query.where("latinName").in(latinNames);
-        //   query.populate("", { select: "_id" });
-        //   insectIds = await query.exec();
-        //   console.log(
-        //     "found corresponding insect ids: ",
-        //     insectIds,
-        //     " with length: ",
-        //     insectIds.length
-        //   );
-        //   if (insectIds.length === 0) {
-        //     console.log("no insect ids found");
-        //     res.send(null);
-        //   }
-        // }
-        // add new items to collection
-
-        insectIds.forEach(function (insectId, ind) {
-          // update the compendium, watch for duplicates
-          if (compendium.insects) {
-            if (!compendium.insects.includes(insectId)) {
-              console.log("inserting a new collection item, id:", insectId);
-              compendium.insects.push(insectId);
-            } else {
-              console.log("found duplicate in collection for id: ", insectId);
-            }
-          } else {
-            console.log("compendium is empty");
-            compendium.insects = [];
-            compendium.insects.push(insectId);
-          }
-        });
-
-        // save the collection
-        compendium.save(function (err, compendium) {
-          if (err) {
-            console.log("error occurred while saving collection");
-            throw err;
-          }
-          console.log("saved collection successfully");
-          return res.send({ msg: true, insectIds: insectIds });
-        });
+    query.exec(async function (err, compendium) {
+      if (err) {
+        throw err;
       }
-    );
+
+      if (!compendium) {
+        console.log('couldn"t find user"s collection');
+        return res.send(null);
+      }
+
+      console.log("insectIds: ", insectIds);
+      console.log("compendium: ", compendium);
+
+      insectIds.forEach(function (insectId, ind) {
+        // update the compendium, watch for duplicates
+        if (compendium.insects) {
+          if (!compendium.insects.includes(insectId)) {
+            console.log("inserting a new collection item, id:", insectId);
+            compendium.insects.push(insectId);
+          } else {
+            console.log("found duplicate in collection for id: ", insectId);
+          }
+        } else {
+          console.log("compendium is empty");
+          compendium.insects = [];
+          compendium.insects.push(insectId);
+        }
+      });
+      console.log("compendium: ", compendium);
+      var condition = { _id: compendium._id };
+      var update = { insects: insectIds };
+
+      // update the collection
+      await Compendium.updateOne(condition, update);
+      return res.send({ msg: true, compendium: compendium });
+    });
   });
 
   app.post("/collection/insert", function (req, res) {

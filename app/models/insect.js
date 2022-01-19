@@ -7,18 +7,23 @@ var TranslationSchema = new Schema({
   name: String,
 });
 
-var InsectSchema = new Schema({
-  translations: [TranslationSchema],
-  latinName: String,
-  wiki: String,
-  primaryColor: String,
-  secondaryColor: String,
-  legs: Number,
-  category: String,
-  images: [String],
-  imageLinks: [String],
-  userId: [String],
-});
+var InsectSchema = new Schema(
+  {
+    translations: [TranslationSchema],
+    latinName: String,
+    wiki: String,
+    primaryColor: String,
+    secondaryColor: String,
+    legs: Number,
+    category: String,
+    images: [String],
+    imageLinks: [String],
+    userId: [String],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose.model("Insect", InsectSchema);
 

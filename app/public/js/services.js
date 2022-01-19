@@ -138,7 +138,7 @@ insectIdentifierApp.factory("SearchService", [
             console.log(
               "search results:" + data + " with length: " + data.length
             );
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
             if (data.length == 0) {
               $scope.searchResults = "noResults";
             } else {
