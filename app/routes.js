@@ -293,6 +293,7 @@ module.exports = function (app, passport) {
   });
   // return all the items in the user's collection
   app.get("/collection/list", function (req, res) {
+    console.log("collection/list start");
     if (!req.isAuthenticated()) {
       console.log("not authenticated");
       return res.send(null);
@@ -311,7 +312,7 @@ module.exports = function (app, passport) {
 
         newCompendium.save(function (err, compendium) {
           if (err) throw err;
-          console.log("saved compendium item, ", compendium);
+          console.log("created a new compendium, ", compendium);
           return res.send(null);
         });
       } else {
@@ -995,21 +996,28 @@ module.exports = function (app, passport) {
     console.log("collection/insertmany");
 
     if (!req.isAuthenticated()) {
+      console.log("not authenticated");
       return res.send("not authenticated");
     }
     //var latinNames = req.query.latinNames;
     var insectIds = req.query.insectIds;
+    // of format {_id, updatedAt}
+    var resultInsects = [];
+
     if (!insectIds) {
       console.log("no params were provided");
       return res.send(null);
     }
     var tmp;
+    console.log("insectIds before check: " + insectIds);
+    console.log("insectIds before check to string(): " + insectIds.toString());
     if (typeof insectIds === "string") {
       console.log("one insect id was passed");
       tmp = [];
-      tmp.push(insectIds);
+      tmp.push(insectIds.toString());
       insectIds = tmp;
     }
+    console.log("insectIds after check: ", insectIds);
     var query = Compendium.find().where("_user").equals(req.user.id);
     query.populate({ path: "insects", select: "_id updatedAt" });
 
@@ -1027,27 +1035,71 @@ module.exports = function (app, passport) {
       console.log("compendium: ", compendium);
 
       insectIds.forEach(function (insectId, ind) {
-        // update the compendium, watch for duplicates
+        var updatedAt;
+        if (compendium.insects) {
+          var ind = compendium.insects.find(
+            (insect) => insect._id === insectId
+          );
+          if (ind) {
+            updatedAt = compendium.insects[ind].updatedAt;
+          }
+        }
+
+        console.log("updatedAt", updatedAt);
+
+        // update the result insects, watch for duplicates
         if (compendium.insects) {
           if (!compendium.insects.includes(insectId)) {
             console.log("inserting a new collection item, id:", insectId);
-            compendium.insects.push(insectId);
+            resultInsects.push({
+              _id: insectId,
+              updatedAt: updatedAt === undefined ? new Date() : updatedAt,
+            });
           } else {
             console.log("found duplicate in collection for id: ", insectId);
           }
         } else {
           console.log("compendium is empty");
-          compendium.insects = [];
-          compendium.insects.push(insectId);
+
+          resultInsects.push({
+            _id: insectId,
+            updatedAt: updatedAt === undefined ? new Date() : updatedAt,
+          });
         }
       });
-      console.log("compendium: ", compendium);
-      var condition = { _id: compendium._id };
-      var update = { insects: insectIds };
 
       // update the collection
-      await Compendium.updateOne(condition, update);
-      return res.send({ msg: true, compendium: compendium });
+      Compendium.findOne({ _user: req.user.id }).exec(function (err, comp) {
+        if (err) {
+          console.log("error occurred after finding the compendium,err", err);
+          throw err;
+        }
+
+        console.log("compendium after plain find", comp);
+
+        // construct result object of form insects : [{_id, updatedAt}] and update the existing compendium
+        var resultObj = [];
+        if (comp.insects === undefined) {
+          console.log("initializing compemdium insects");
+          comp.insects = [];
+        }
+        console.log("before looping");
+        resultInsects.forEach(function (insect) {
+          console.log("resultInsects.foreach, insect:", insect);
+          resultObj.push({ _id: insect._id, updatedAt: insect.updatedAt });
+
+          comp.insects.push({ _id: insect._id });
+        });
+
+        comp.save(function (err, comp) {
+          if (err) {
+            console.log("error occurred after saving the compendium,err", err);
+            throw err;
+          }
+          console.log("saved compendium, ", comp);
+          return res.send({ msg: true, compendium: resultObj });
+        });
+      });
     });
   });
 

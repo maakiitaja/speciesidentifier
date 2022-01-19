@@ -254,43 +254,46 @@ function toggleLoadingSpinner($scope) {
 function getBase64FromImage(id, name, $localStorage) {
   console.log("getbase64fromimageurl, id: " + id + " and name: " + name);
   var img = getImg(id, name);
+  if (img) {
+    img.setAttribute("crossOrigin", "anonymous");
 
-  img.setAttribute("crossOrigin", "anonymous");
+    img.onload = function () {
+      console.log("img.onload");
+      var canvas = document.createElement("canvas");
+      console.log("this.width: " + this.width + " this.height: " + this.height);
 
-  img.onload = function () {
-    console.log("img.onload");
-    var canvas = document.createElement("canvas");
-    console.log("this.width: " + this.width + " this.height: " + this.height);
+      // thumb.jpg
+      console.log(
+        "name.substring: " + name.substring(name.length - 9, name.length)
+      );
+      if (name.substring(name.length - 9, name.length) == "thumb.jpg") {
+        // resize
+        img.width = 150;
+        img.height = 150;
+        canvas.width = 150;
+        canvas.heigth = 150;
+      } else {
+        canvas.width = this.width;
+        canvas.height = this.height;
+      }
 
-    // thumb.jpg
-    console.log(
-      "name.substring: " + name.substring(name.length - 9, name.length)
-    );
-    if (name.substring(name.length - 9, name.length) == "thumb.jpg") {
-      // resize
-      img.width = 150;
-      img.height = 150;
-      canvas.width = 150;
-      canvas.heigth = 150;
-    } else {
-      canvas.width = this.width;
-      canvas.height = this.height;
-    }
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(this, 0, 0);
 
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(this, 0, 0);
+      var dataURL = canvas.toDataURL("image/png");
 
-    var dataURL = canvas.toDataURL("image/png");
+      //alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
 
-    //alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+      // set to localstorage
+      //name = name.replace(/^ ', "");
 
-    // set to localstorage
-    //name = name.replace(/^ ', "");
-
-    console.log("saving image with name: " + name + " to localstorage");
-    // TODO catch max size reached
-    $localStorage[name] = dataURL;
-  };
+      console.log("saving image with name: " + name + " to localstorage");
+      // TODO catch max size reached
+      $localStorage[name] = dataURL;
+    };
+  } else {
+    console.log('couldn"t find the image element: ', id);
+  }
 }
 
 function saveImagesToLocalStorage($scope, $localStorage) {
@@ -324,5 +327,10 @@ function saveImagesToLocalStorage($scope, $localStorage) {
 }
 
 function userAuthenticated($scope) {
+  console.log($scope.currentUser);
+  if ($scope.currentUser === '""') {
+    console.log("initializing currentuser");
+    $scope.currentUser = {};
+  }
   return !angular.equals({}, $scope.currentUser);
 }
