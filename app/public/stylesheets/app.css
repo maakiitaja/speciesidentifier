@@ -423,7 +423,8 @@ div.active {
   display: none;
 }
 
-.hideMainImage {
+.hideMainImage,
+.new-remote-images {
   display: none !important;
 }
 

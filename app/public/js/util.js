@@ -166,7 +166,7 @@ function getImgURL(url, transferContainer, ind, callback) {
           this.extraInfo.ind
       );
 
-      return callback(
+      callback(
         xhr.response,
         this.extraInfo.transferContainer,
         this.extraInfo.ind
@@ -198,6 +198,7 @@ function getImgURL(url, transferContainer, ind, callback) {
 function loadURLToContainer(url, transferContainer, ind) {
   return new Promise(function (resolve, reject) {
     console.log("loadUrlToInputFIeld, transferContainer: " + transferContainer);
+
     getImgURL(url, transferContainer, ind, (imgBlob, container, index) => {
       return new Promise(function (resolve, reject) {
         const containerObj = container;
@@ -241,6 +242,68 @@ function loadURLToContainer(url, transferContainer, ind) {
   });
 }
 
+function getBase64FromImage(id, name, $localStorage, $scope) {
+  console.log("getbase64fromimageurl, id: " + id + " and name: " + name);
+  return new Promise(function (resolve, reject) {
+    var loadImageToLocalStorage = function (id, name, $localStorage) {
+      console.log("on load image to local storage");
+      try {
+        var img = new Image();
+
+        //img.setAttribute("crossOrigin", "anonymous");
+        console.log("img.src: ", name);
+        img.src = name;
+
+        img.onload = function () {
+          console.log("img.onload");
+          var canvas = document.createElement("canvas");
+          console.log(
+            "this.width: " + this.width + " this.height: " + this.height
+          );
+
+          // thumb.jpg
+          console.log(
+            "name.substring: " + name.substring(name.length - 9, name.length)
+          );
+
+          canvas.width = this.width;
+          canvas.height = this.height;
+
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(this, 0, 0);
+
+          var dataURL = canvas.toDataURL("image/png");
+
+          //alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+
+          // set to localstorage
+          //name = name.replace(/^ ', "");
+
+          console.log("saving image with name: " + name + " to localstorage");
+          // TODO catch max size reached
+          $localStorage[name] = dataURL;
+          resolve({ msg: true });
+        };
+      } catch (e) {
+        console.log("image elememnt not found for id: ", id);
+        reject({ msg: false });
+      }
+    };
+    loadImageToLocalStorage(id, name, $localStorage);
+    // waitForElementToDisplay(
+    //   name,
+    //   function () {
+    //     loadImageToLocalStorage(id, name, $localStorage);
+    //     alert("Hi");
+    //   },
+    //   1000,
+    //   9000
+    // );
+  }).catch((err) => {
+    console.log("error occured err:", err);
+  });
+}
+
 function toggleLoadingSpinner($scope) {
   var spinnerEl = document.getElementById("spinner-search");
   $scope.displaySpinner = !$scope.displaySpinner;
@@ -251,61 +314,14 @@ function toggleLoadingSpinner($scope) {
   }
 }
 
-function getBase64FromImage(id, name, $localStorage) {
-  console.log("getbase64fromimageurl, id: " + id + " and name: " + name);
-  var img = getImg(id, name);
-  waitForElementToDisplay(
-    "#div1",
-    function () {
-      alert("Hi");
-    },
-    1000,
-    9000
-  );
-
-  if (img) {
-    img.setAttribute("crossOrigin", "anonymous");
-
-    img.onload = function () {
-      console.log("img.onload");
-      var canvas = document.createElement("canvas");
-      console.log("this.width: " + this.width + " this.height: " + this.height);
-
-      // thumb.jpg
-      console.log(
-        "name.substring: " + name.substring(name.length - 9, name.length)
-      );
-      if (name.substring(name.length - 9, name.length) == "thumb.jpg") {
-        // resize
-        img.width = 150;
-        img.height = 150;
-        canvas.width = 150;
-        canvas.heigth = 150;
-      } else {
-        canvas.width = this.width;
-        canvas.height = this.height;
-      }
-
-      var ctx = canvas.getContext("2d");
-      ctx.drawImage(this, 0, 0);
-
-      var dataURL = canvas.toDataURL("image/png");
-
-      //alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
-
-      // set to localstorage
-      //name = name.replace(/^ ', "");
-
-      console.log("saving image with name: " + name + " to localstorage");
-      // TODO catch max size reached
-      $localStorage[name] = dataURL;
-    };
-  } else {
-    console.log('couldn"t find the image element: ', id);
-  }
-}
-
-// example: waitForElementToDisplay("#div1",function(){alert("Hi");},1000,9000);
+// example: waitForElementToDisplay(
+//   "#div1",
+//   function () {
+//     alert("Hi");
+//   },
+//   1000,
+//   9000
+// );
 
 function waitForElementToDisplay(
   selector,
@@ -315,11 +331,15 @@ function waitForElementToDisplay(
 ) {
   var startTimeInMs = Date.now();
   (function loopSearch() {
-    if (document.querySelector(selector) != null) {
+    console.log("searching for ", selector, " in the document");
+    if (document.getElementById(selector) != null) {
+      console.log("found the image: ", selector);
       callback();
       return;
     } else {
+      console.log('couldn"t find the image: ', selector);
       setTimeout(function () {
+        console.log("in set timeout, checking end condition");
         if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs) return;
         loopSearch();
       }, checkFrequencyInMs);
@@ -329,39 +349,101 @@ function waitForElementToDisplay(
 
 function saveImagesToLocalStorage($scope, $localStorage) {
   /* loop through insect's images */
+  return new Promise(function (resolve, reject) {
+    console.log("saving images to local storage");
+    var imagePromises = [];
+    $scope.loadingLocalImages = true;
 
-  console.log("saving images to local storage");
+    for (var i = 0; i < $scope.insect.images.length; i++) {
+      // full pic
+      console.log("before saving main image to localstorage");
+      var mainImagePromise = new Promise(function (resolve, reject) {
+        getBase64FromImage(
+          $scope.insect.images[i],
+          $scope.insect.images[i],
+          $localStorage,
+          $scope
+        ).then(function (result) {
+          console.log(
+            "promise returnining after getBase64Fromimage, result.msg",
+            result.msg
+          );
+          //return result;
+          if (result !== undefined && result.msg) {
+            console.log("promise ok");
+            resolve({ msg: "ok" });
+          } else {
+            console.log("promise fail");
+            reject({ msg: "fail" });
+          }
+        });
+      });
 
-  for (var i = 0; i < $scope.insect.images.length; i++) {
-    // full pics
-    console.log("before saving image to localstorage");
-    getBase64FromImage("mainimage", $scope.insect.images[i], $localStorage);
-    console.log("after saving image to localstorage");
+      console.log("after saving main image to localstorage");
 
-    // thumbs
-    if ($scope.insect.images.length > 1) {
-      getBase64FromImage(
-        $scope.insect.images[i] + "_thumb.jpg",
-        $scope.insect.images[i] + "_thumb.jpg",
-        $localStorage
-      );
-      console.log("saved thumb to localstorage");
-    } else {
-      getBase64FromImage(
-        "mainimage",
-        $scope.insect.images[i] + "_thumb.jpg",
-        $localStorage
-      );
-      console.log("saved and resized thumb to localstorage");
+      // thumb
+      var thumbPromise = new Promise(function (resolve, reject) {
+        getBase64FromImage(
+          $scope.insect.images[i] + "_thumb.jpg",
+          $scope.insect.images[i] + "_thumb.jpg",
+          $localStorage,
+          $scope
+        ).then(function (result) {
+          console.log(
+            "promise returnining after getBase64Fromimage, result.msg",
+            result.msg
+          );
+          //return result;
+          if (result !== undefined && result.msg) {
+            console.log("promise ok");
+            console.log("result: ", result);
+            resolve({ msg: "ok" });
+          } else {
+            console.log("promise fail, result:", result);
+            reject({ msg: "fail" });
+          }
+        });
+      });
+      imagePromises.push(mainImagePromise);
+      imagePromises.push(thumbPromise);
     }
-  }
+
+    Promise.all(imagePromises)
+      .then(function (results) {
+        console.log("results: " + results);
+        if (results.length > 0) {
+          console.log(
+            "local images loaded for insect: " + $scope.insect.latinName
+          );
+          results.forEach((result) => {
+            console.log(JSON.stringify(result));
+          });
+          resolve({ msg: "ok" });
+        } else {
+          console.log(
+            "local image loading not successful for insect: " +
+              $scope.insect.latinName
+          );
+          reject({ msg: "fail" });
+        }
+        $scope.loadingLocalImages = false;
+      })
+      .catch((err) => {
+        console.error(err);
+        console.log(
+          "local image loading not successful for insect: " +
+            $scope.insect.latinName
+        );
+        reject({ msg: "error" });
+      });
+  });
 }
 
-function userAuthenticated($scope) {
-  console.log($scope.currentUser);
-  if ($scope.currentUser === '""') {
-    console.log("initializing currentuser");
-    $scope.currentUser = {};
-  }
-  return !angular.equals({}, $scope.currentUser);
-}
+// function userAuthenticated($scope) {
+//   console.log($scope.currentUser);
+//   if ($scope.currentUser === '""') {
+//     console.log("initializing currentuser");
+//     $scope.currentUser = {};
+//   }
+//   return !angular.equals({}, $scope.currentUser);
+// }

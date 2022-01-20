@@ -23,18 +23,20 @@
 		<tr>
 			<td>
 
-				<div ng-if="insect.images.length > 1">
-					<img ng-if="connected==1" ng-src="{{img}}" id="mainimagemultiple" ng-repeat="img in insect.images"
+				<div>
+					<img ng-if="connected==1" ng-src="{{img}}" id="{{img}}" ng-repeat="img in insect.images"
 						ng-class="{active: mainImageUrl==img}" class="insect-detail" />
-					<img ng-if="connected==0" ng-src="{{localStorage[img]}}" id="mainimagemultipledisconnected"
-						ng-repeat="img in insect.images" ng-class="{active: mainImageUrl==img}" class="insect-detail" />
+					<img ng-if="connected==0" ng-src="{{localStorage[img]}}" ng-repeat="img in insect.images"
+						ng-class="{active: mainImageUrl==img}" class="insect-detail" />
 				</div>
+
+				<!--
 				<div ng-if="insect.images.length==1">
-					<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="mainimage"
+					<img ng-if="connected==1" ng-src="{{insect.images[0]}}" id="{{insect.images[0]}}"
 						class="insect-detail active" />
 					<img ng-if="connected==0" ng-src="{{localStorage[insect.images[0]]}}" id="mainimagedisconnected"
 						class="insect-detail active" />
-				</div>
+				</div> -->
 			</td>
 		</tr>
 	</table>
@@ -61,10 +63,11 @@
 			<li ng-repeat="img in insect.images">
 				<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}"
 					ng-click="setImage(img)" alt={{insect.latinName}} />
-				<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}"
-					id="{{img+'_thumb.jpg_not_connected'}}" ng-click="setImage(img)" alt={{insect.latinName}} />
+				<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}" id="{{img+'_thumb.jpg'}}"
+					ng-click="setImage(img)" alt={{insect.latinName}} />
 			</li>
 		</ul>
+
 	</div>
 
 </div>

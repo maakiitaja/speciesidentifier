@@ -48,15 +48,20 @@
 						</div>
 						<img ng-if="!checkbox.offline" id="{{insect.images[0]+'_thumb.jpg'}}"
 							ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
-						<img ng-if="checkbox.offline" ng-if="!newIncomingRemoteItems"
-							id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
+						<img ng-if="checkbox.offline" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
 							ng-src="{{localStorage[insect.images[0]+'_thumb.jpg']}}" ng-click="viewDetail(insect)" />
+
 						<!-- new remote images -->
-						<!-- <div ng-repeat="image in insect.images" ng-if="newRemoteItems" class="new-remote-images">
-							
-							<img class="new-remote-image" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}">
-							<img />
+						<!-- <div ng-repeat="image in insect.images" ng-if="loadingLocalImages" class="new-remote-images">
+
+							<img ng-src="{{localStorage[image+'_thumb.jpg']}}"
+								id="{{localStorage[image+'_thumb.jpg']}}" />
+							<img ng-src="{{localStorage[image]}}" id="{{localStorage[image]}}" />
 						</div> -->
+						<div ng-repeat="image in insect.images">
+
+							<!-- image:{{image}} -->
+						</div>
 				</li>
 			</ul>
 		</div>
