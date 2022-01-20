@@ -254,6 +254,15 @@ function toggleLoadingSpinner($scope) {
 function getBase64FromImage(id, name, $localStorage) {
   console.log("getbase64fromimageurl, id: " + id + " and name: " + name);
   var img = getImg(id, name);
+  waitForElementToDisplay(
+    "#div1",
+    function () {
+      alert("Hi");
+    },
+    1000,
+    9000
+  );
+
   if (img) {
     img.setAttribute("crossOrigin", "anonymous");
 
@@ -294,6 +303,28 @@ function getBase64FromImage(id, name, $localStorage) {
   } else {
     console.log('couldn"t find the image element: ', id);
   }
+}
+
+// example: waitForElementToDisplay("#div1",function(){alert("Hi");},1000,9000);
+
+function waitForElementToDisplay(
+  selector,
+  callback,
+  checkFrequencyInMs,
+  timeoutInMs
+) {
+  var startTimeInMs = Date.now();
+  (function loopSearch() {
+    if (document.querySelector(selector) != null) {
+      callback();
+      return;
+    } else {
+      setTimeout(function () {
+        if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs) return;
+        loopSearch();
+      }, checkFrequencyInMs);
+    }
+  })();
 }
 
 function saveImagesToLocalStorage($scope, $localStorage) {

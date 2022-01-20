@@ -13,6 +13,7 @@ var im = require("imagemagick");
 var gm = require("gm");
 var path = require("path");
 const observation = require("./models/observation");
+const compendium = require("./models/compendium");
 
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -335,6 +336,65 @@ module.exports = function (app, passport) {
             return res.send(results);
           });
       }
+    });
+  });
+
+  app.delete("/insect/removemany", function (req, res) {
+    console.log("/insect/removemany");
+    if (!req.isAuthenticated()) {
+      console.log("not authenticated");
+      return res.send("not authenticated");
+    }
+
+    Compendium.findOne({ _user: req.user.id }, function (err, compendium) {
+      if (err) {
+        throw err;
+      }
+      if (compendium === undefined || !compendium) {
+        console.log('couldn"t find compendium');
+        return res.send(null);
+      }
+
+      console.log("compendium.insects.length: " + compendium.insects.length);
+      var insects = compendium.insects;
+      var insectsTmp = [...insects];
+      var tmp;
+      var removeInsectIds = req.query.removeInsectIds;
+      console.log(
+        "insectIds before check to string(): " + removeInsectIds.toString()
+      );
+      if (typeof removeInsectIds === "string") {
+        console.log("one insect id was passed");
+        tmp = [];
+        tmp.push(removeInsectIds.toString());
+        removeInsectIds = tmp;
+      }
+      console.log("removeInsectIds: ", removeInsectIds);
+
+      // remove insects from compendium
+      if (insects !== undefined && insects.length > 0) {
+        removeInsectIds.forEach(function (id) {
+          var removeInd = insectsTmp.indexOf(id);
+          if (removeInd >= 0) {
+            console.log("found a match between remote and local collection");
+            insectsTmp.splice(removeInd, 1);
+          }
+        });
+      }
+
+      console.log("assigning insects");
+      compendium.insects = insectsTmp;
+      console.log("compendium before removal of items: ", compendium);
+      // update
+      compendium.save(function (err, comp) {
+        if (err) {
+          throw err;
+        }
+
+        console.log("saved compendium after removing many items");
+        console.log("compendium: " + comp);
+        res.send({ msg: true });
+      });
     });
   });
 
@@ -781,7 +841,7 @@ module.exports = function (app, passport) {
   });
 
   app.delete("/insect/delete", function (req, res) {
-    console.log("compendium deletes");
+    console.log("insect/delete");
 
     console.log(req.query.insectId);
     Compendium.find()
