@@ -321,6 +321,15 @@ html {
   background-color: #49abcc;
 }
 
+.button-grey {
+  background-color: rgb(190, 182, 182);
+  color: rgba(0, 0, 0);
+}
+
+.button-grey:hover {
+  background-color: rgb(218, 206, 206);
+}
+
 .button-red {
   background-color: red;
   min-width: 200px;
@@ -944,10 +953,17 @@ h2 span {
 .button-grid {
   display: grid;
   gap: 10px;
-  grid-template-columns: 1fr 1fr;
+
   justify-content: center;
   align-items: center;
   justify-items: center;
+}
+
+.button-grid--2 {
+  grid-template-columns: 1fr 1fr;
+}
+.button-grid--3 {
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 table.button-center {
@@ -1251,3 +1267,94 @@ h4 {
   background-color: #f3f3f3;
 } /* This hover code won't work for IE */
 /* end of datepicker */
+
+.popup {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.popup__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 75%;
+  height: auto;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%) scale(0.25);
+  transition: all 0.5s;
+  overflow: hidden;
+  display: table;
+  z-index: 1000;
+}
+
+.popup__center {
+  display: table-cell;
+  padding: 10px;
+}
+
+modal {
+  /* modals are hidden by default */
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.modal-own {
+  /* modal container fixed across whole screen */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* z-index must be higher than .modal-background */
+  z-index: 1000;
+
+  /* enables scrolling for tall modals */
+  overflow: auto;
+}
+
+.modal-body-own {
+  padding: 20px;
+  background: #fff;
+
+  /* margin exposes part of the modal background */
+  margin: 40px;
+}
+
+.modal-background-own {
+  /* modal background fixed across whole screen */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* semi-transparent black  */
+  background-color: #000;
+  opacity: 0.5;
+
+  /* z-index must be below .modal and above everything else  */
+  z-index: 900;
+}
+
+body.modal-open-own {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  overflow: hidden;
+}
+
+body.modal-open-own modal {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  opacity: 1;
+  visibility: visible;
+}
+body.modal-open-own modal .popup .popup__content {
+  transform: translate(-50%, -50%) scale(1);
+}

@@ -96,7 +96,7 @@ function getInsectIdsFromLocalCollection(collection) {
 function collectionEmpty(collection) {
   var isEmpty = true;
 
-  if (collection === undefined) {
+  if (collection === undefined || collection === null) {
     return isEmpty;
   }
   console.log("collection: ", collection);
@@ -290,15 +290,6 @@ function getBase64FromImage(id, name, $localStorage, $scope) {
       }
     };
     loadImageToLocalStorage(id, name, $localStorage);
-    // waitForElementToDisplay(
-    //   name,
-    //   function () {
-    //     loadImageToLocalStorage(id, name, $localStorage);
-    //     alert("Hi");
-    //   },
-    //   1000,
-    //   9000
-    // );
   }).catch((err) => {
     console.log("error occured err:", err);
   });
@@ -338,6 +329,33 @@ function waitForElementToDisplay(
       return;
     } else {
       console.log('couldn"t find the image: ', selector);
+      setTimeout(function () {
+        console.log("in set timeout, checking end condition");
+        if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs) return;
+        loopSearch();
+      }, checkFrequencyInMs);
+    }
+  })();
+}
+
+function waitForModalToBeLoaded(
+  selector,
+  callback,
+  checkFrequencyInMs,
+  timeoutInMs,
+  ModalService
+) {
+  var startTimeInMs = Date.now();
+  (function loopSearch() {
+    var modal = ModalService.Get(selector);
+
+    console.log("searching for ", selector, " in the document");
+    if (modal != null) {
+      console.log("found the modal: ", selector);
+      callback();
+      return;
+    } else {
+      console.log('couldn"t find the modal: ', selector);
       setTimeout(function () {
         console.log("in set timeout, checking end condition");
         if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs) return;

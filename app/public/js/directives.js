@@ -168,6 +168,58 @@ myApp.directive("ngResize", function ($window) {
   };
 });
 
+myApp.directive("modal", Directive);
+
+function Directive(ModalService) {
+  return {
+    link: function (scope, element, attrs) {
+      // ensure id attribute exists
+      if (!attrs.id) {
+        console.error("modal must have an id");
+        return;
+      }
+      console.log("elemant: ", element);
+      console.log("attrs:");
+      // move element to bottom of page (just before </body>) so it can be displayed above everything else
+      element.append("body");
+
+      //close modal on background click
+      // element.on("click", function (e) {
+      //   var target = $(e.target);
+      //   if (!target.closest(".modal-body").length) {
+      //     scope.$evalAsync(Close);
+      //   }
+      // });
+
+      // add self (this modal instance) to the modal service so it's accessible from controllers
+      var modal = {
+        id: attrs.id,
+        open: Open,
+        close: Close,
+      };
+      ModalService.Add(modal);
+
+      // remove self from modal service when directive is destroyed
+      scope.$on("$destroy", function () {
+        ModalService.Remove(attrs.id);
+        element.remove();
+      });
+
+      // open modal
+      function Open() {
+        //document.getElementById(attrs.id).style.display = "block";
+        $("body").addClass("modal-open-own");
+      }
+
+      // close modal
+      function Close() {
+        //  document.getElementById(attrs.id).style.display = "none";
+        $("body").removeClass("modal-open-own");
+      }
+    },
+  };
+}
+
 myApp.directive("header", function () {
   return {
     restrict: "A", //This means that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements
@@ -183,6 +235,7 @@ myApp.directive("header", function () {
       "$location",
       "$route",
       "$localStorage",
+      "$rootScope",
       function (
         $scope,
         $filter,
@@ -192,7 +245,8 @@ myApp.directive("header", function () {
         TranslationService,
         $location,
         $route,
-        $localStorage
+        $localStorage,
+        $rootScope
       ) {
         // initialize current user for header menu item highlighing to work when reloading a page
         //$scope.currentUser = {};

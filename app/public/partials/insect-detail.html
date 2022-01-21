@@ -108,7 +108,7 @@
 <!-- buttons -->
 <div ng-switch="prevUrl" class="center">
 	<div ng-switch-when="#/list">
-		<div class="button-grid">
+		<div class="button-grid button-grid--2">
 			<button id="newSearch" type="button" class="button button-blue" value="&larr; {{translations.NEWSEARCH}}"
 				ng-click="new_search()" ng-disabled="disableAddOrRemove">&larr; {{translations.NEWSEARCH}}</button>
 
@@ -122,7 +122,7 @@
 		</div>
 	</div>
 	<div ng-switch-when="#/collection">
-		<div class="button-grid">
+		<div class="button-grid button-grid--2">
 			<button id="returnToCollection" type="button" class="button button-blue "
 				value="&larr; {{translations.RETURNTOCOLLECTION}}" ng-click="collection()"
 				ng-disabled="disableAddOrRemove">&larr;

@@ -1,74 +1,98 @@
 <h1>{{translations.COLLECTIONPAGE}}</h1>
-<div class="centered">
-	<div ng-if="!collectionEmpty">
-		<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-model="checkbox.offline"
-			ng-click="viewOffline()" class="input--sm" />
-		<strong>{{translations.OFFLINE}}</strong>
 
-	</div>
-	<div class="lds-center">
-		<div class="lds-spinner spinner-loading" id="spinner-search">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
+<section class="section-collection">
+	<modal id="new-local-items-modal">
+		<div class="popup">
+			<div class="popup__content">
+				<div class="popup__center">
+					<h1>New Item(s) in the local collection</h1>
+					<p>
+						Found
+						new item(s) in the local collection. Push changes (upload)
+						,remove the new local items or take no action (cancel)?
+					</p>
+
+					<div class="button-grid button-grid--3">
+						<button class="button button-blue" ng-click="closeModal('new-local-items-modal', 'push')">Push
+						</button>
+						<button class="button button-red"
+							ng-click="closeModal('new-local-items-modal', 'remove')">Remove </button>
+						<button class="button button-grey"
+							ng-click="closeModal('new-local-items-modal', 'cancel')">Resolve
+							later</button>
+
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-background-own"></div>
 		</div>
-	</div>
-	<div ng-repeat=" insects in localStorage.collectionObj.insectsByCategory">
+	</modal>
+	<div class="centered">
+		<div ng-if="!collectionEmpty">
+			<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-model="checkbox.offline"
+				ng-click="viewOffline()" class="input--sm" />
+			<strong>{{translations.OFFLINE}}</strong>
 
-		<div ng-if="insects.length > 0">
-			<h3 ng-if="insects[0].category == 'Ant'" id="collection-ant">{{translations.ANT}}:</h3>
-			<h3 ng-if="insects[0].category == 'Bee'" id="collection-bee">{{translations.BEE}}:</h3>
-			<h3 ng-if="insects[0].category == 'Beetle'" id="collection-beetle">{{translations.BEETLE}}:</h3>
-			<h3 ng-if="insects[0].category == 'Butterfly'" id="collecion-butterfly">{{translations.BUTTERFLY}}:</h3>
-			<h3 ng-if="insects[0].category == 'Centipede'" id="collection-centipede">{{translations.CENTIPEDE}}:</h3>
-			<h3 ng-if="insects[0].category == 'Spider'" id="collection-spider">{{translations.SPIDER}}:</h3>
-			<ul class="insect-thumbs">
-				<li ng-repeat="insect in insects">
-					<div class="thumb-card">
-						<div class="margin-top-md" ng-repeat="translation in insect.translations">
-							<p class="name-translation" ng-if="translation.language==lang">
-								{{translation.name}}
+		</div>
+		<div class="lds-center">
+			<div class="lds-spinner spinner-loading" id="spinner-search">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<div ng-repeat="insects in localStorage.collectionObj.insectsByCategory">
+
+			<div ng-if="insects.length > 0">
+				<h3 ng-if="insects[0].category == 'Ant'" id="collection-ant">{{translations.ANT}}:</h3>
+				<h3 ng-if="insects[0].category == 'Bee'" id="collection-bee">{{translations.BEE}}:</h3>
+				<h3 ng-if="insects[0].category == 'Beetle'" id="collection-beetle">{{translations.BEETLE}}:</h3>
+				<h3 ng-if="insects[0].category == 'Butterfly'" id="collecion-butterfly">{{translations.BUTTERFLY}}:</h3>
+				<h3 ng-if="insects[0].category == 'Centipede'" id="collection-centipede">{{translations.CENTIPEDE}}:
+				</h3>
+				<h3 ng-if="insects[0].category == 'Spider'" id="collection-spider">{{translations.SPIDER}}:</h3>
+				<ul class="insect-thumbs">
+					<li ng-repeat="insect in insects">
+						<div class="thumb-card">
+							<div class="margin-top-md" ng-repeat="translation in insect.translations">
+								<p class="name-translation" ng-if="translation.language==lang">
+									{{translation.name}}
+								</p>
+							</div>
+							<p class="latinname-translation">
+								{{insect.latinName}}
 							</p>
-						</div>
-						<p class="latinname-translation">
-							{{insect.latinName}}
-						</p>
-						<div style="display:none">
-							{{tmp = insect.images[0]+'_thumb.jpg'}}
+							<div style="display:none">
+								{{tmp = insect.images[0]+'_thumb.jpg'}}
 
-						</div>
-						<img ng-if="!checkbox.offline" id="{{insect.images[0]+'_thumb.jpg'}}"
-							ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
-						<img ng-if="checkbox.offline" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
-							ng-src="{{localStorage[insect.images[0]+'_thumb.jpg']}}" ng-click="viewDetail(insect)" />
+							</div>
+							<img ng-if="!checkbox.offline" id="{{insect.images[0]+'_thumb.jpg'}}"
+								ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
+							<img ng-if="checkbox.offline" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
+								ng-src="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
+								ng-click="viewDetail(insect)" />
 
-						<!-- new remote images -->
-						<!-- <div ng-repeat="image in insect.images" ng-if="loadingLocalImages" class="new-remote-images">
 
-							<img ng-src="{{localStorage[image+'_thumb.jpg']}}"
-								id="{{localStorage[image+'_thumb.jpg']}}" />
-							<img ng-src="{{localStorage[image]}}" id="{{localStorage[image]}}" />
-						</div> -->
-						<div ng-repeat="image in insect.images">
-
-							<!-- image:{{image}} -->
-						</div>
-				</li>
-			</ul>
+					</li>
+				</ul>
+			</div>
 		</div>
-	</div>
 
-	<div ng-if="collectionEmpty">
-		<p class="start-adding-collection-items">{{translations.NOCOLLECTIONITEMS}} <a
-				ng-click="startToAddCollectionItems()">{{translations.HERE}}</a></p>
+		<div ng-if="collectionEmpty">
+			<p class="start-adding-collection-items">{{translations.NOCOLLECTIONITEMS}} <a
+					ng-click="startToAddCollectionItems()">{{translations.HERE}}</a></p>
+		</div>
+
+
 	</div>
-</div>
+</section>

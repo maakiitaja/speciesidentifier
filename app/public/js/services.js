@@ -94,6 +94,89 @@ insectIdentifierApp.factory("UserRestService", [
   },
 ]);
 
+insectIdentifierApp.factory("ModalService", [
+  function () {
+    var modals = [];
+    return {
+      Add: function (modal) {
+        // add modal to array of active modals
+        modals.push(modal);
+      },
+      Open: function (id) {
+        // open modal specified by id
+        var modal = modals.find((modal) => modal.id === id);
+        console.log("modal is: ", modal);
+        modal.open();
+      },
+      Remove: function (id) {
+        // remove modal from array of active modals
+        var modalToRemoveInd = modals.findIndex((modal) => {
+          if (modal.id === id) return true;
+        });
+        console.log("modalToRemoveInd", modalToRemoveInd);
+        modals.splice(modalToRemoveInd, 1);
+      },
+
+      Close: function (id) {
+        // close modal specified by id
+        var modal = modals.find((modal) => modal.id === id);
+        console.log("modal is: ", modal);
+
+        modal.close();
+      },
+      Get: function (id) {
+        var modal = modals.find((modal) => modal.id === id);
+        console.log("modal is: ", modal);
+        return modal;
+      },
+    };
+  },
+]);
+
+// function Service() {
+//   var modals = []; // array of modals on the page
+//   var service = {};
+//   console.log("in modal service");
+//   service.Add = Add;
+//   service.Remove = Remove;
+//   service.Open = function (id) {
+//     // open modal specified by id
+//     var modal = modals.find((modal) => modal.id === id);
+//     console.log("modal is: ", modal);
+//     modal.open();
+//   };
+//   service.Close = Close;
+//   function Add(modal) {
+//     // add modal to array of active modals
+//     modals.push(modal);
+//   }
+
+//   function Remove(id) {
+//     // remove modal from array of active modals
+//     var modalToRemoveInd = modals.findIndex((modal) => {
+//       if (modal.id === id) return true;
+//     });
+//     console.log("modalToRemoveInd", modalToRemoveInd);
+//     modals.splice(modalToRemoveInd, 1);
+//   }
+
+//   var open = function (id) {
+//     // open modal specified by id
+//     var modal = modals.find((modal) => modal.id === id);
+//     console.log("modal is: ", modal);
+//     modal.open();
+//   };
+
+//   function Close(id) {
+//     // close modal specified by id
+//     var modal = modals.find((modal) => modal.id === id);
+//     console.log("modal is: ", modal);
+
+//     modal.close();
+//   }
+//   return service;
+// }
+
 insectIdentifierApp.factory("SearchService", [
   "$http",
   function ($http) {
