@@ -420,6 +420,9 @@ div.active {
 .margin-top-md {
   margin-top: 5px;
 }
+.margin-top-lg {
+  margin-top: 25px;
+}
 
 .margin-bottom-md {
   margin-bottom: 10px;
@@ -1399,6 +1402,7 @@ label {
 input + label + .content {
   opacity: 0;
   height: 0;
+  width: 0;
   font-size: 0;
   padding: 0 25px;
   transition: all 0.5s;
@@ -1411,6 +1415,7 @@ input:checked + label {
 input:checked + label + .content {
   opacity: 1;
   height: auto;
+  width: auto;
   font-size: 14px;
   padding: 10px 25px;
 }
@@ -1458,10 +1463,15 @@ input:checked + label .icon-down {
 .conflict-container {
   width: 100%;
 }
-.conflict-insects-container {
+.conflict-insects-container,
+.updated-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.updated-container {
+  margin-bottom: 30px;
 }
 
 .new-picture {
@@ -1474,4 +1484,14 @@ input:checked + label .icon-down {
   color: #b8545e;
   text-transform: uppercase;
   font-size: 18px;
+}
+
+hr.updated-insect {
+  width: 100%;
+  border: 1px solid #eee;
+  margin-bottom: 30px;
+}
+
+.conflict-insects-container + .conflict-insects-container {
+  margin-top: 50px;
 }

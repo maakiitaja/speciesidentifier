@@ -126,11 +126,7 @@
 			</div>
 		</div>
 
-		<!--messages-->
-		<div class="container-alert">
-			<div id="messageUpdate" ng-if='messageUpdate != ""' class="alert alert-success is-paused fade-out">
-				{{messageUpdate}}</div>
-		</div>
+
 
 		<!--new remote items -->
 		<div ng-if="newRemoteIds && newRemoteIds.length > 0">
@@ -147,7 +143,7 @@
 		</div>
 
 		<!-- updated insects-->
-		<div ng-if="conflictObj && conflictObj.length > 0">
+		<div class="updated-container" ng-if="conflictObj && conflictObj.length > 0">
 			<h2>Updated Insects: </h2>
 
 			<div class="conflict-insects-container" ng-repeat="conflictItem in conflictObj">
@@ -196,7 +192,7 @@
 						</div>
 					</div>
 				</div>
-				<hr>
+
 
 				<!-- updated images-->
 
@@ -252,16 +248,19 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
-
 			</div>
-			<hr>
-			<div class="centered">
 
-				<button class="button button-green" ng-class="{hideUpdateButton: hideUpdateButton}"
+			<div>
+				<button class="button button-green margin-top-lg" ng-class="{hideUpdateButton: hideUpdateButton}"
 					ng-click="updateInsects()">Update all</button>
 			</div>
+		</div>
+
+		<!--messages-->
+		<div class="container-alert">
+			<div id="messageUpdate" ng-if='messageUpdate != ""' class="alert alert-success is-paused fade-out">
+				{{messageUpdate}}</div>
 		</div>
 
 

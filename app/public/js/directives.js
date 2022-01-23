@@ -389,7 +389,7 @@ myApp.directive("header", function () {
             console.log("lang: " + lang);
             TranslationService.getTranslation($scope, $cookies.get("lang"), "");
             $scope.lang = lang;
-            //$route.reload();
+            $route.reload();
           };
           $scope.login = function () {
             $scope.disableMobileNavigation();
