@@ -968,7 +968,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
               console.log($scope.insect);
               collection.insects.push({
                 _id: $scope.insect._id,
-                updatedAt: $scope.insect.updateAt,
+                updatedAt: $scope.insect.updatedAt,
               });
             }
             console.log("not a duplicate");
@@ -985,8 +985,9 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
             console.log("$scope.insect:", $scope.insect);
             collection.insects.push({
               _id: $scope.insect._id,
-              updatedAt: $scope.insect.updateAt,
+              updatedAt: $scope.insect.updatedAt,
             });
+
             console.log(
               "found no insects in the category: " +
                 collection.insectsByCategory[$scope.insect.category]
@@ -1009,12 +1010,17 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         // add insect id to the localStorage
         $localStorage.collectionObj.insects.push({
           _id: $scope.insect._id,
-          updatedAt: $scope.insect.updateAt,
+          updatedAt: $scope.insect.updatedAt,
         });
         console.log("initialized localstorage");
 
         await saveImagesToLocalStorage($scope, $localStorage);
       }
+
+      console.log(
+        "$localStorage.collectionObj.insects",
+        $localStorage.collectionObj.insects
+      );
 
       // 2. save to the server
       if (!duplicate) {
@@ -1675,25 +1681,26 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $cookies,
     ModalService
   ) {
-    console.log("$localStorage.offline", $localStorage.offline);
-    if ($localStorage.offline === undefined) {
-      $localStorage.offline = false;
-    }
-    var vm = this;
-
-    $scope.checkbox = { offline: $localStorage.offline };
-
-    console.log("$scope.offline", $scope.checkbox.offline);
-
     // menu
     resetHeader();
     highlightElement("collection-button");
 
+    console.log("$localStorage.offline", $localStorage.offline);
+    if ($localStorage.offline === undefined) {
+      $localStorage.offline = false;
+    }
+    $scope.checkbox = { offline: $localStorage.offline };
+
+    console.log("$scope.offline", $scope.checkbox.offline);
+    $scope.initMessages = function () {
+      $scope.messageUpdate = "";
+    };
     $scope.localStorage = $localStorage;
     $scope.tmp = "";
     $scope.location = $location;
     $scope.newIncomingRemoteItems = false;
     $scope.lang = $cookies.get("lang");
+    $scope.initMessages();
 
     $scope.viewOffline = function () {
       console.log("connected : " + !$scope.checkbox.offline);
@@ -1780,7 +1787,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           // confirm if the authenticated user wants to insert
           // the existing local collection items to remote collection
           if (collection.insects.length > 0) {
-            $scope.openModal("new-local-items-modal");
+            console.log("opening modal: new-local-items-no-remote-modal");
+            $scope.openModal("new-local-items-no-remote-modal");
             while (
               $scope.modalPressed === undefined ||
               $scope.modalPressed === null
@@ -1819,9 +1827,16 @@ insectIdentifierControllers.controller("CollectionCtrl", [
             } else if ($scope.modalPressed === "remove") {
               console.log("choosing to empty the local collection");
               $localStorage.collectionObj = null;
+              // remove local imagesDownloaded
+              const localInsects = $scope.findLocalInsects();
+              localInsects.forEach(function (localInsect) {
+                localInsect.images.forEach(function (image) {
+                  $localStorage[image] = null;
+                  $localStorage[image + "_thumb.jpg"];
+                });
+              });
             } else {
               console.log("choosing to later resolve changes");
-              collection.pendingChanges = true;
             }
           } else {
             console.log("no items in the local storage");
@@ -1832,61 +1847,92 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           //  Add items from the backend to the localstorage (pull changes) if there are no duplicates
           // OR allow the user to delete the new remote items
           var newRemoteIds = $scope.findNewRemoteItems(data);
+          $scope.newRemoteIds = newRemoteIds;
           console.log("newRemoteIds", newRemoteIds);
           if (newRemoteIds.length > 0) {
             //await waitForModalToBeLoaded("new-remote-items-modal");
             console.log("showing remote item modal");
             // open the modal and wait for choice
-
-            if (
-              confirm(
-                "Found " +
-                  newRemoteIds.length +
-                  " new items from the remote collection. Pull changes (select OK)" +
-                  " OR remove the new remote items (select Cancel)"
-              )
+            $scope.openModal("new-remote-items-modal");
+            while (
+              $scope.modalPressed === undefined ||
+              $scope.modalPressed === null
             ) {
+              await $scope.wait(1);
+              console.log("waited for 1s");
+            }
+            if ($scope.modalPressed === "pull") {
               console.log("pulling new remote items");
               $scope.pullNewItemsFromRemote(data);
-            } else {
+            } else if ($scope.modalPressed === "remove") {
               console.log("deleting new remote items");
               $scope.deleteNewRemoteItems(data, newRemoteIds);
+            } else {
+              console.log("canceling new remote item syncing");
+              $scope.newRemoteItemsSyncCancelled = true;
             }
+            $scope.modalPressed = undefined;
           }
 
           //  find out which items are new in the local collection
           var newLocalIds = $scope.findNewItemsInLocalCollection(data);
-
+          $scope.newLocalIds = newLocalIds;
           console.log("about to resolve new local items");
+
           //  sync the (updated) local collection with the remote collection OR update merge request flag
           if (newLocalIds.length > 0) {
-            if (
-              confirm(
-                "Found " +
-                  newLocalIds.length +
-                  " new items in the local collection. Do you want to push these" +
-                  " new items to the remote collection (choose OK) " +
-                  "OR remove them from local collection (choose Cancel)?"
-              )
+            $scope.openModal("new-local-items-modal");
+            while (
+              $scope.modalPressed === undefined ||
+              $scope.modalPressed === null
             ) {
-              $scope.pushNewItemsFromLocalCollection(newLocalIds);
-            } else {
-              $scope.removeItemsFromLocal(newLocalIds);
+              await $scope.wait(1);
+              console.log("waited for 1s");
             }
+
+            if ($scope.modalPressed === "push") {
+              $scope.pushNewItemsFromLocalCollection(newLocalIds);
+            } else if ($scope.modalPressed === "remove") {
+              $scope.removeItemsFromLocal(newLocalIds);
+            } else {
+              console.log("canceling new local items syncing");
+              $scope.newLocalItemsSyncCancelled = true;
+            }
+            $scope.modalPressed = undefined;
           }
 
           // updates
           console.log("finding modified items");
-          var updatedIds = $scope.findUpdatedIds(data);
-          // apply changes in all modified items
-          if (updatedIds.length > 0) {
-            console.log("applying modifications");
-            $scope.applyModifiedItems(data, updatedIds);
+          var updatedInsectsObj = $scope.findUpdatedIdsWithInsects(data);
+          $scope.updatedInsectsObj = updatedInsectsObj;
+
+          if (updatedInsectsObj.updatedIds.length > 0) {
+            // conflictobj , images array is of form {image: string, added: boolean}
+            console.log(
+              "constructing conflict object between local and remote items"
+            );
+            const conflictObj = $scope.constructConflictObject(
+              updatedInsectsObj.updatedInsects
+            );
+            $scope.conflictObj = conflictObj;
+
+            $scope.openModal("updated-items-modal");
+            while (
+              $scope.modalPressed === undefined ||
+              $scope.modalPressed === null
+            ) {
+              await $scope.wait(1);
+              console.log("waited for 1s");
+            }
+            if ($scope.modalPressed === "update") {
+              console.log("applying modifications");
+              $scope.applyModifiedItems(data, updatedIds);
+            } else {
+              console.log("choosing to update items later");
+            }
           }
           console.log("sync done");
 
-          // finally, it is safe again to start adding/removing items to the remote
-          $localStorage.remoteChangesResolved = true;
           toggleLoadingSpinner($scope);
         }
         $scope.collectionEmpty = collectionEmpty(collection);
@@ -1903,9 +1949,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $scope.showModal = function (id) {
       return new Promise(function (resolve) {
         waitForModalToBeLoaded(
-          "custom-modal-1",
+          id,
           function () {
-            $scope.openModal("custom-modal-1");
+            $scope.openModal(id);
             resolve({ msg: "ok" });
           },
           500,
@@ -1921,9 +1967,115 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       });
     };
 
+    $scope.constructConflictObject = function (updatedRemoteInsects) {
+      var results = [];
+      console.log("updatedInsects:", updatedRemoteInsects);
+
+      updatedRemoteInsects.forEach(function (updatedRemoteInsect) {
+        for (var ind in $localStorage.collectionObj.insectsByCategory) {
+          var category = $localStorage.collectionObj.insectsByCategory[ind];
+          const localInd = category.findIndex((el) => {
+            if (el._id === updatedRemoteInsect._id) {
+              console.log(
+                "found the updated remote item in the local collection"
+              );
+              return true;
+            }
+          });
+
+          if (localInd > -1) {
+            const changedImages = [];
+            const outdatedLocalInsect = category[localInd];
+            if (
+              outdatedLocalInsect.images.length === 1 &&
+              updatedRemoteInsect.images.length == 1
+            ) {
+              console.log(
+                "not necessary to find the difference between the original and remote insect images"
+              );
+            } else {
+              console.log("outdatedLocalInsect: ", outdatedLocalInsect);
+              console.log("updatedRemoteInsect: ", updatedRemoteInsect);
+
+              // check deleted images in updated insect
+              $scope.findDeletedImages(
+                outdatedLocalInsect,
+                updatedRemoteInsect,
+                changedImages
+              );
+              console.log("changedImages: ", changedImages);
+
+              // check added images in updated insect
+              $scope.findNewImages(
+                outdatedLocalInsect,
+                updatedRemoteInsect,
+                changedImages
+              );
+              console.log("changedImages: ", changedImages);
+            }
+
+            results.push({
+              outdatedInsect: category[localInd],
+              changedImages: changedImages,
+              updatedInsect: updatedRemoteInsect,
+            });
+          }
+        }
+      });
+
+      console.log(
+        "local insects with changed images and updated insects: ",
+        results
+      );
+      return results;
+    };
+
+    // in updated insect
+    $scope.findNewImages = function (
+      outdatedLocalInsect,
+      updatedRemoteInsect,
+      changedImages
+    ) {
+      console.log(outdatedLocalInsect);
+      console.log(updatedRemoteInsect);
+      console.log(updatedRemoteInsect.images);
+      const addedImages = updatedRemoteInsect.images.filter(
+        (image) => !outdatedLocalInsect.images.includes(image)
+      );
+      console.log(addedImages);
+      addedImages.forEach((addedImage) => {
+        console.log(
+          "found that an image is added to updated remote insect with url: ",
+          addedImage
+        );
+        changedImages.push({ url: addedImage, added: "1" });
+      });
+
+      console.log("changedImages: ", changedImages);
+    };
+
+    // in updated insect
+    $scope.findDeletedImages = function (
+      outdatedLocalInsect,
+      updatedRemoteInsect,
+      changedImages
+    ) {
+      const removedImages = outdatedLocalInsect.images.filter(
+        (image) => !updatedRemoteInsect.images.includes(image)
+      );
+      removedImages.forEach((removedImage) => {
+        console.log(
+          "found that an image is deleted from updated remote insect with url: ",
+          removedImage
+        );
+        changedImages.push({ url: removedImage, added: "0" });
+      });
+
+      console.log("changedImages: ", changedImages);
+    };
+
     $scope.findNewRemoteItems = function (data) {
-      var newRemoteIds = [];
-      console.log("data is: ", data);
+      var resultObj = { newRemoteIds: [], newRemoteInsects: [] };
 
       // get the remote ids
       var remoteInsectIds = data.map((insect) => insect._id);
@@ -1939,11 +2091,14 @@ insectIdentifierControllers.controller("CollectionCtrl", [
             "local collection does not include item with id: ",
             remoteId
           );
-          newRemoteIds.push(remoteId);
+
+          resultObj["newRemoteIds"].push(remoteId);
+          var newRemoteInsect = data.find((insect) => insect.id === remoteId);
+          resultObj["newRemoteInsects"].push(newRemoteInsect);
         }
       });
 
-      return newRemoteIds;
+      return resultObj;
     };
 
     $scope.deleteNewRemoteItems = function (data, removeRemoteIds) {
@@ -1970,12 +2125,16 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         });
     };
 
-    $scope.findUpdatedIds = function (data) {
-      // check if data[i]._id is included in collection.insects AND updated fields match
+    // return the remote insects and remote insect ids
+    $scope.findUpdatedIdsWithInsects = function (data) {
+      // check if data[i]._id is included in collection.insects
 
-      var updatedIds = [];
+      var resultObj = { updatedIds: [], updatedInsects: [] };
       var remoteInsectIds = data.map((insect) => insect._id);
-
+      console.log(
+        "$localStorage.collectionObj.insects:",
+        $localStorage.collectionObj.insects
+      );
       console.log("remoteInsectIds", remoteInsectIds);
       $localStorage.collectionObj.insects.forEach(function (insect, ind) {
         // remote collection data
@@ -2000,23 +2159,27 @@ insectIdentifierControllers.controller("CollectionCtrl", [
             console.log(
               "remote insect and the local insect update time is different"
             );
-            updatedIds.push(insect._id);
+
+            resultObj.updatedIds.push(insect._id);
+            resultObj.updatedInsects.push(remoteInsect);
           } else {
             console.log("remote and local insect the same");
           }
         }
       });
 
-      console.log("updatedIds: ", updatedIds);
+      console.log("updatedInsectsObj: ", resultObj);
 
-      return updatedIds;
+      return resultObj;
     };
 
+    // updated ids refers to modified remote items
     $scope.applyModifiedItems = function (data, updatedIds) {
       // find updated items in collection
       var ids = updatedIds;
       var insectsByCategory = $localStorage.collectionObj.insectsByCategory;
       var remoteInsectIds = data.map((insect) => insect._id);
+      console.log("remoteInsectIds: ", remoteInsectIds);
 
       // apply changes in the local storage insectsbycategory
       if (ids.length > 0) {
@@ -2041,21 +2204,42 @@ insectIdentifierControllers.controller("CollectionCtrl", [
                 var indLocal = insectsByCategory[category].indexOf(localInsect);
                 console.log("indlocal: ", indLocal);
                 console.log("id: ", id);
-                console.log("remoteInsectIds: ", remoteInsectIds);
-                var remoteObj = remoteInsectIds.find((el) => el === id);
-                console.log("remoteObj: ", remoteObj);
+
                 var indRemote = remoteInsectIds.indexOf(id);
 
                 console.log("indRemote: ", indRemote);
 
                 // load local images again
                 $scope.insect = data[indRemote];
+                // modify the images array to include only added pictures
+                const addedImages = [];
+                $scope.findNewImages(
+                  $scope.conflictObj.outdatedInsect,
+                  $scope.conflictObj.updatedInsect,
+                  addedImages
+                );
+                $scope.insect.images = addedImages;
+                console.log(
+                  "adding new images to local storage: ",
+                  addedImages
+                );
                 $scope.saveImagesToLocalStorage($scope, $localStorage);
 
                 // remove old local images
-                for (var i = 0; i < $scope.insect.images.length; i++) {
-                  $localStorage[$scope.insect.images[i] + "_thumb.jpg"] = null;
-                  $localStorage[$scope.insect.images[i]] = null;
+                const removedImages = [];
+                $scope.findDeletedImages(
+                  $scope.conflictObj.outdatedInsect,
+                  $scope.conflictObj.updatedInsect,
+                  removedImages
+                );
+                for (var i = 0; i < removedImages.length; i++) {
+                  console.log(
+                    "removing image: ",
+                    removedImages[i],
+                    "from localStorage"
+                  );
+                  $localStorage[removedImages[i] + "_thumb.jpg"] = null;
+                  $localStorage[removedImages[i]] = null;
                 }
 
                 // update the local insect data
@@ -2161,7 +2345,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $localStorage.collectionObj.insectsByCategory
       );
 
-      // 2. remove from collectionObj.insects and images from localstorage
+      // 2. remove from collectionObj.insects
       var insects = $localStorage.collectionObj.insects;
       var insectsTmp = [...insects];
       console.log("insectsTmp: ", insectsTmp);
@@ -2177,12 +2361,16 @@ insectIdentifierControllers.controller("CollectionCtrl", [
             insectsTmp.splice(removeInd, 1);
           }
 
-          // images
+          // 3 images
           // remove the insect's images
-          localInsect.images.forEach(function (image) {
-            console.log('emptying local collection"s insect image:', image);
-            $localStorage[image] = null;
-            $localStorage[image + "_thumb.jpg"] = null;
+          console.log("removing local images for ids: ", ids);
+          const localInsects = $scope.findLocalInsects(ids);
+          localInsects.forEach(function (localInsect) {
+            localInsect.images.forEach(function (image) {
+              console.log('emptying local collection"s insect image:', image);
+              $localStorage[image] = null;
+              $localStorage[image + "_thumb.jpg"] = null;
+            });
           });
         });
       }
@@ -2275,6 +2463,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       console.log("finding out which items are new in the local collection");
 
       var syncIds = [];
+      var resultObj = { newLocalIds: [], newLocalInsects: [] };
       console.log("data is: ", data);
       if (data.length > 0) {
         console.log("data[0]._id", data[0]._id);
@@ -2295,15 +2484,71 @@ insectIdentifierControllers.controller("CollectionCtrl", [
             "remote collection does not include item with id: ",
             insect._id
           );
-          syncIds.push(insect._id);
+          resultObj["newLocalIds"].push(insect._id);
+          resultObj["newLocalInsects"].push(insect);
         }
       });
 
-      return syncIds;
+      return resultObj;
     };
 
     $scope.saveImagesToLocalStorage = async function ($scope, $localStorage) {
       const res = await saveImagesToLocalStorage($scope, $localStorage);
+    };
+
+    $scope.callb = function (el) {
+      console.log("callb insectdetail, el:", el);
+      var htmlEl = document.getElementById(el);
+      if (htmlEl && htmlEl.classList.contains("is-paused")) {
+        htmlEl.classList.remove("is-paused");
+      }
+      $scope.initMessages();
+      $scope.disableAddOrRemove = false;
+      $scope.$apply();
+    };
+
+    $scope.findLocalInsects = function (ids) {
+      const localInsects = [];
+
+      if (ids) {
+        ids.forEach(function (id) {
+          for (var ind in $localStorage.collection.insectsByCategory) {
+            var category = $localStorage.collection.insectsByCategory[ind];
+            const localInd = category.findIndex((el) => {
+              if (el._id === updatedInsect._id) {
+                console.log("found the updated item in the local collection");
+                return true;
+              }
+            });
+            if (localInd > 0) {
+              localInsects.push(
+                $localStorage.collection.insectsByCategory[ind][localInd]
+              );
+              break;
+            }
+          }
+        });
+      } else {
+        for (var ind in $localStorage.collection.insectsByCategory) {
+          $localStorage.collection.insectsByCategory[ind].forEach(function (
+            insect
+          ) {
+            localInsects.push(insect);
+          });
+        }
+      }
+      console.log("localInsects", localInsects);
+      return localInsects;
+    };
+
+    $scope.updateInsects = function () {
+      toggleLoadingSpinner($scope);
+      $scope.applyModifiedItems($scope.updatedInsectsObj.updatedIds);
+      $scope.hideUpdateButton = true;
+
+      $scope.messageUpdate = "Successfully updated the local collection.";
+      setDelay("messageUpdate", 2000, $scope.callb);
+      toggleLoadingSpinner($scope);
     };
   },
 ]);

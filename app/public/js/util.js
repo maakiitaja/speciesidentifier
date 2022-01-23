@@ -23,6 +23,11 @@ function isvisible(obj) {
 }
 
 function insectDetail($location, $scope) {
+  // decode the previously encoded imagepath
+  console.log("$scope.insect: ", $scope.insect);
+  console.log("encoded imagepath: ", $scope.insect.images[0]);
+  $scope.insect.images[0] = decodeURIComponent($scope.insect.images[0]);
+  console.log("decoded imagepath: ", $scope.insect.images[0]);
   $location.path("insect").search({ insect: $scope.insect, prevUrl: "#/list" });
 }
 

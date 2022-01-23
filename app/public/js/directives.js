@@ -178,10 +178,10 @@ function Directive(ModalService) {
         console.error("modal must have an id");
         return;
       }
-      console.log("elemant: ", element);
-      console.log("attrs:");
+      console.log("element: ", element);
+      console.log("attrs:", attrs);
       // move element to bottom of page (just before </body>) so it can be displayed above everything else
-      element.append("body");
+      //element.append("body");
 
       //close modal on background click
       // element.on("click", function (e) {
@@ -197,6 +197,7 @@ function Directive(ModalService) {
         open: Open,
         close: Close,
       };
+      console.log("modal: ", modal);
       ModalService.Add(modal);
 
       // remove self from modal service when directive is destroyed
@@ -206,14 +207,37 @@ function Directive(ModalService) {
       });
 
       // open modal
-      function Open() {
+      function Open(id) {
         //document.getElementById(attrs.id).style.display = "block";
+        console.log("id: ", id);
+        if (id === "new-local-items-no-remote-modal") {
+          console.log("setting new local-items-no-remote-modal to true");
+          scope.newLocalItemsNoRemoteModal = 1;
+        }
+        if (id === "updated-items-modal") {
+          console.log("setting updated-items-modal class to true");
+          scope.updatedItemsModal = 1;
+        }
+        if (id === "new-remote-items-modal") {
+          scope.newRemoteItemsModal = 1;
+        }
+        if (id === "new-local-items-modal") {
+          scope.newLocalItemsModal = 1;
+        }
         $("body").addClass("modal-open-own");
       }
 
       // close modal
-      function Close() {
-        //  document.getElementById(attrs.id).style.display = "none";
+      function Close(id) {
+        if (id === "new-local-items-no-remote-modal")
+          scope.newLocalItemsNoRemoteModal = 0;
+        if (id === "updated-items-modal") scope.updatedItemsModal = 0;
+        if (id === "new-remote-items-modal") {
+          scope.newRemoteItemsModal = 1;
+        }
+        if (id === "new-local-items-modal") {
+          scope.newLocalItemsModal = 1;
+        }
         $("body").removeClass("modal-open-own");
       }
     },

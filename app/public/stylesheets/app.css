@@ -93,10 +93,15 @@
 }
 
 .container-tag,
-.by-name-container {
+.by-name-container,
+.update-image-state {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.margin-sm {
+  margin: 5px 0;
 }
 
 /* .fileupload-error-container {
@@ -293,6 +298,7 @@ html {
   font-size: 16px;
   max-width: 250px;
   transition: all 0.5s;
+  border-radius: 5px;
 }
 .button-green {
   background-color: #4caf50;
@@ -412,7 +418,7 @@ div.active {
 }
 
 .margin-top-md {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .margin-bottom-md {
@@ -424,8 +430,12 @@ div.active {
 }
 
 .name-translation,
-.latinname-translation {
+.latinname-translation,
+.thumb-indicator {
   text-align: center;
+}
+.thumb-indicator {
+  margin-top: 8px;
 }
 
 .hidden-file-input {
@@ -433,7 +443,8 @@ div.active {
 }
 
 .hideMainImage,
-.new-remote-images {
+.new-remote-images,
+.hideUpdateButton {
   display: none !important;
 }
 
@@ -506,6 +517,18 @@ ul.insect-thumbs img:hover {
   flex-flow: row wrap;
   justify-content: center;
   list-style: none;
+}
+
+.flex-table-column-gap-md {
+  column-gap: 20px;
+}
+
+.update-images-state-gap-md {
+  column-gap: 8px;
+}
+
+.no-margin-right {
+  margin-right: 0 !important;
 }
 .flex-center {
   display: table;
@@ -643,7 +666,8 @@ tbody.observation-table-body tr:nth-child(even) {
   padding: 0 5px !important;
 }
 
-.container-insect-detail {
+.container-insect-detail,
+.conflict-images-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -858,6 +882,9 @@ h2 span {
   /*rgba(90, 81, 81, 0.5)*/
   color: #b0adad;
   margin-right: 12px;
+}
+h4 {
+  text-transform: uppercase;
 }
 
 /** From bootstrap */
@@ -1268,6 +1295,8 @@ h4 {
 } /* This hover code won't work for IE */
 /* end of datepicker */
 
+/** Modal **/
+
 .popup {
   height: 100vh;
   width: 100%;
@@ -1306,29 +1335,6 @@ modal {
   transition: all 0.5s;
 }
 
-.modal-own {
-  /* modal container fixed across whole screen */
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  /* z-index must be higher than .modal-background */
-  z-index: 1000;
-
-  /* enables scrolling for tall modals */
-  overflow: auto;
-}
-
-.modal-body-own {
-  padding: 20px;
-  background: #fff;
-
-  /* margin exposes part of the modal background */
-  margin: 40px;
-}
-
 .modal-background-own {
   /* modal background fixed across whole screen */
   position: fixed;
@@ -1350,11 +1356,122 @@ body.modal-open-own {
   overflow: hidden;
 }
 
-body.modal-open-own modal {
+.modal-open-own modal.modalActive {
   /* body overflow is hidden to hide main scrollbar when modal window is open */
   opacity: 1;
   visibility: visible;
 }
+
 body.modal-open-own modal .popup .popup__content {
   transform: translate(-50%, -50%) scale(1);
+}
+
+/** Accordion **/
+
+input.accordion {
+  display: none;
+}
+input + label:hover {
+  background-color: #89baad;
+}
+input:checked + label:hover {
+  background-color: #f5fbfb;
+}
+
+label {
+  display: block;
+  padding: 8px 22px;
+  margin: 0 0 1px 0;
+  cursor: pointer;
+  background: white;
+  border-radius: 3px;
+  transition: all 0.5s;
+}
+
+.content {
+  background: white;
+  padding: 10px 25px;
+
+  margin: 0 0 1px 0;
+  border-radius: 3px;
+}
+
+input + label + .content {
+  opacity: 0;
+  height: 0;
+  font-size: 0;
+  padding: 0 25px;
+  transition: all 0.5s;
+}
+
+input:checked + label {
+  color: #087f5b;
+}
+
+input:checked + label + .content {
+  opacity: 1;
+  height: auto;
+  font-size: 14px;
+  padding: 10px 25px;
+}
+
+.inner-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  column-gap: 10px;
+}
+
+.changed-images-item {
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+.icon-green {
+  stroke: #3e947a;
+}
+.icon-red,
+.icon-exclamation {
+  stroke: #b8545e;
+}
+
+.item {
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
+}
+
+.icon-up {
+  display: none;
+}
+
+input:checked + label .icon-up {
+  display: inline;
+}
+
+input:checked + label .icon-down {
+  display: none;
+}
+
+.conflict-container {
+  width: 100%;
+}
+.conflict-insects-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-picture {
+  color: #101111;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+.deleted-picture {
+  color: #b8545e;
+  text-transform: uppercase;
+  font-size: 18px;
 }

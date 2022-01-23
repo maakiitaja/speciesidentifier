@@ -106,7 +106,7 @@ insectIdentifierApp.factory("ModalService", [
         // open modal specified by id
         var modal = modals.find((modal) => modal.id === id);
         console.log("modal is: ", modal);
-        modal.open();
+        modal.open(id);
       },
       Remove: function (id) {
         // remove modal from array of active modals
@@ -122,7 +122,7 @@ insectIdentifierApp.factory("ModalService", [
         var modal = modals.find((modal) => modal.id === id);
         console.log("modal is: ", modal);
 
-        modal.close();
+        modal.close(id);
       },
       Get: function (id) {
         var modal = modals.find((modal) => modal.id === id);
@@ -132,50 +132,6 @@ insectIdentifierApp.factory("ModalService", [
     };
   },
 ]);
-
-// function Service() {
-//   var modals = []; // array of modals on the page
-//   var service = {};
-//   console.log("in modal service");
-//   service.Add = Add;
-//   service.Remove = Remove;
-//   service.Open = function (id) {
-//     // open modal specified by id
-//     var modal = modals.find((modal) => modal.id === id);
-//     console.log("modal is: ", modal);
-//     modal.open();
-//   };
-//   service.Close = Close;
-//   function Add(modal) {
-//     // add modal to array of active modals
-//     modals.push(modal);
-//   }
-
-//   function Remove(id) {
-//     // remove modal from array of active modals
-//     var modalToRemoveInd = modals.findIndex((modal) => {
-//       if (modal.id === id) return true;
-//     });
-//     console.log("modalToRemoveInd", modalToRemoveInd);
-//     modals.splice(modalToRemoveInd, 1);
-//   }
-
-//   var open = function (id) {
-//     // open modal specified by id
-//     var modal = modals.find((modal) => modal.id === id);
-//     console.log("modal is: ", modal);
-//     modal.open();
-//   };
-
-//   function Close(id) {
-//     // close modal specified by id
-//     var modal = modals.find((modal) => modal.id === id);
-//     console.log("modal is: ", modal);
-
-//     modal.close();
-//   }
-//   return service;
-// }
 
 insectIdentifierApp.factory("SearchService", [
   "$http",
