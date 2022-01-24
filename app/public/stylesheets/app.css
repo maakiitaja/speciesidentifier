@@ -448,7 +448,8 @@ div.active {
 .hideMainImage,
 .new-remote-images,
 .hideUpdateButton,
-.hideRemoteButton {
+.hideRemoteButton,
+.hideLocalButton {
   display: none !important;
 }
 

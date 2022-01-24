@@ -58,9 +58,9 @@
 				<div class="popup__center">
 					<h1>New local Item(s)</h1>
 					<p>
-						Found {{newLocalIds.length}}
-						new item(s) in the local collection. Do you want to add these" +
-						" new items to the remote collection " +
+						Found {{newLocalInsects.length}}
+						new item(s) in the local collection. Do you want to add these
+						new items to the remote collection
 						"OR remove them from local collection OR resolve changes later (cancel)?
 					</p>
 					<div class="button-grid button-grid--3">
@@ -174,10 +174,48 @@
 		</div>
 
 		<!--new local items -->
-		<div ng-if="newLocalInsectsObj.length > 0">
-			<div ng-repeat="localInsect in newLocalInsectsObj">
-				{{localId}}
+		<div ng-if="newLocalInsects.length > 0">
+			<h2>New local items:</h2>
+
+			<div class="flex-table flex-table-column-gap-md">
+				<div class="new-local-insect" ng-repeat="newLocalInsect in newLocalInsects">
+					<div class="thumb-card">
+						<div class="margin-top-md" ng-repeat="translation in newLocalInsect.translations">
+							<p class="name-translation" ng-if="translation.language==lang">
+								{{translation.name}}
+							</p>
+						</div>
+						<p class="latinname-translation">
+							{{newLocalInsect.latinName}}
+						</p>
+
+						<img id="{{newLocalInsect.images[0]+'_thumb.jpg'}}"
+							ng-src="{{newLocalInsect.images[0]+'_thumb.jpg'}}" />
+					</div>
+				</div>
+
 			</div>
+			<div class="margin-top-lg">
+				<form ng-submit="localSync(localPolicy)">
+					<div class="container-new-localinputs">
+						<input class="input--sm" type="radio" id="delete-local" name="localpolicygroup"
+							value="delete-local" ng-model="localPolicy" />
+						Delete from local collection
+						<input class="input--sm" type="radio" id="push-local" name="localpolicygroup" value="push-local"
+							ng-model="localPolicy">
+						Push from local collection
+						<button type="submit" class="button button-green"
+							ng-class="{hideLocalButton: hideLocalButton}">Synchronize
+							local</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--messages new remote items-->
+		<div class="container-alert">
+			<div id="messageNewLocalSuccess" ng-if='messageNewLocalSuccess != ""'
+				class="alert alert-success is-paused fade-out">
+				{{messageNewLocalSuccess}}</div>
 		</div>
 
 		<!-- updated insects-->
