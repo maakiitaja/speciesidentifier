@@ -222,6 +222,7 @@ function Directive(ModalService) {
           scope.newRemoteItemsModal = 1;
         }
         if (id === "new-local-items-modal") {
+          console.log("setting newLocalItemsModal to true");
           scope.newLocalItemsModal = 1;
         }
         $("body").addClass("modal-open-own");
@@ -229,14 +230,15 @@ function Directive(ModalService) {
 
       // close modal
       function Close(id) {
+        console.log("id: ", id);
         if (id === "new-local-items-no-remote-modal")
           scope.newLocalItemsNoRemoteModal = 0;
         if (id === "updated-items-modal") scope.updatedItemsModal = 0;
         if (id === "new-remote-items-modal") {
-          scope.newRemoteItemsModal = 1;
+          scope.newRemoteItemsModal = undefined;
         }
         if (id === "new-local-items-modal") {
-          scope.newLocalItemsModal = 1;
+          scope.newLocalItemsModal = 0;
         }
         $("body").removeClass("modal-open-own");
       }

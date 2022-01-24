@@ -1,5 +1,3 @@
-<h1>{{translations.COLLECTIONPAGE}}</h1>
-
 <section class="section-collection">
 	<modal id="new-local-items-no-remote-modal" ng-class="{modalActive: newLocalItemsNoRemoteModal == '1'}">
 		<div class=" popup">
@@ -7,7 +5,7 @@
 				<div class="popup__center">
 					<h1>New Item(s) in the local collection</h1>
 					<p>
-						Found
+						Found {{numberOfNewLocalItemsNoRemote}}
 						new item(s) in the local collection. Push changes (upload)
 						,remove the new local items or take no action (cancel)?
 					</p>
@@ -58,7 +56,7 @@
 				<div class="popup__center">
 					<h1>New local Item(s)</h1>
 					<p>
-						Found {{newLocalInsects.length}}
+						Found {{numberOfNewLocalItems}}
 						new item(s) in the local collection. Do you want to add these
 						new items to the remote collection
 						"OR remove them from local collection OR resolve changes later (cancel)?
@@ -85,7 +83,7 @@
 				<div class="popup__center">
 					<h1>Updated item(s) in the remote collection</h1>
 					<p>
-						Found {{conflictObj.length}}
+						Found {{numberOfUpdatedItems}}
 						updated item(s) in the remote collection. Update the local collection or resolve changes later
 						(Cancel).
 					</p>
@@ -102,13 +100,240 @@
 			<div class="modal-background-own"></div>
 		</div>
 	</modal>
-	<div class="centered">
-		<div ng-if="!collectionEmpty">
-			<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-model="checkbox.offline"
-				ng-click="viewOffline()" class="input--sm" />
-			<strong>{{translations.OFFLINE}}</strong>
 
+	<div class="centered">
+
+		<h5 class="header-sync"
+			ng-if="newRemoteInsects.length > 0 || newLocalInsects.length > 0 || conflictObj.length > 0">Changes in
+			local
+			collection:</h5>
+		<div class="sync-container">
+
+			<!--new remote items -->
+			<div ng-if="newRemoteInsects.length > 0">
+				<h3 style="text-align: center">New remote items:</h3>
+
+				<div class="flex-table flex-table-column-gap-md">
+					<div class="new-remote-insect" ng-repeat="newRemoteInsect in newRemoteInsects">
+						<div class="thumb-card no-margin-right">
+							<div class="margin-top-md" ng-repeat="translation in newRemoteInsect.translations">
+								<p class="name-translation" ng-if="translation.language==lang">
+									{{translation.name}}
+								</p>
+							</div>
+							<p class="latinname-translation">
+								{{newRemoteInsect.latinName}}
+							</p>
+
+							<img id="{{newRemoteInsect.images[0]+'_thumb.jpg'}}"
+								ng-src="{{newRemoteInsect.images[0]+'_thumb.jpg'}}" />
+						</div>
+					</div>
+
+				</div>
+				<div class="margin-top-lg">
+					<form ng-submit="remoteSync(remotePolicy)">
+						<div class="container-new-remote-inputs">
+							<div class="radio-container flex-column-gap-sm">
+								<input class="input--sm" type="radio" id="delete-remote" name="remotepolicygroup"
+									value="delete-remote" ng-model="remotePolicy" />
+								<label for="delete-remote">Delete from remote collection</label>
+							</div>
+							<div class="radio-container flex-column-gap-sm">
+								<input class="input--sm" type="radio" id="pull-remote" name="remotepolicygroup"
+									value="pull-remote" ng-model="remotePolicy" />
+								<label for="pull-remote">Pull from remote collection</label>
+							</div>
+							<button type="submit" class="button button-blue"
+								ng-class="{hideRemoteButton: hideRemoteButton}" ng-click="remoteSync()">Synchronize
+								remote</button>
+						</div>
+					</form>
+				</div>
+
+				<!--messages new remote items-->
+				<div class="container-alert margin-top-lg">
+					<div id="messageNewRemoteSuccess" ng-if='messageNewRemoteSuccess != ""'
+						class="alert alert-success is-paused fade-out">
+						{{messageNewRemoteSuccess}}</div>
+				</div>
+			</div>
+
+
+			<!--new local items -->
+			<div ng-if="newLocalInsects.length > 0">
+				<h3 style="text-align: center">New local items:</h3>
+
+				<div class="flex-table flex-table-column-gap-md">
+					<div class="new-local-insect" ng-repeat="newLocalInsect in newLocalInsects">
+						<div class="thumb-card no-margin-right">
+							<div class="margin-top-md" ng-repeat="translation in newLocalInsect.translations">
+								<p class="name-translation" ng-if="translation.language==lang">
+									{{translation.name}}
+								</p>
+							</div>
+							<p class="latinname-translation">
+								{{newLocalInsect.latinName}}
+							</p>
+
+							<img id="{{newLocalInsect.images[0]+'_thumb.jpg'}}"
+								ng-src="{{newLocalInsect.images[0]+'_thumb.jpg'}}" />
+						</div>
+					</div>
+
+				</div>
+				<div class="margin-top-lg">
+					<form ng-submit="localSync(localPolicy)">
+						<div class="container-new-local-inputs">
+							<div class="radio-container flex-column-gap-sm">
+								<input class="input--sm" type="radio" id="delete-local" name="localpolicygroup"
+									value="delete-local" ng-model="localPolicy" />
+								<label for="delete-local">Delete from local collection</label>
+							</div>
+							<div class="radio-container flex-column-gap-sm">
+
+								<input class="input--sm" type="radio" id="push-local" name="localpolicygroup"
+									value="push-local" ng-model="localPolicy" />
+								<label for="push-local">Push to remote collection</label>
+							</div>
+							<button type="submit" class="button button-blue"
+								ng-class="{hideLocalButton: hideLocalButton}">Synchronize
+								local</button>
+						</div>
+					</form>
+				</div>
+
+				<!--messages new remote items-->
+				<div class="container-alert margin-top-lg">
+					<div id="messageNewLocalSuccess" ng-if='messageNewLocalSuccess != ""'
+						class="alert alert-success is-paused fade-out">
+						{{messageNewLocalSuccess}}</div>
+				</div>
+			</div>
+
+			<!-- updated insects-->
+			<div class="updated-container" ng-if="conflictObj.length > 0">
+				<h3>Updated Insects: </h3>
+
+				<div class="conflict-insects-container" ng-repeat="conflictItem in conflictObj">
+
+					<div class="flex-table flex-table-column-gap-md">
+
+						<div class="outdated-insect">
+							<div class="thumb-card no-margin-right">
+								<div class="thumb-indicator">
+									<strong>Local:</strong>
+								</div>
+								<div class="margin-top-md"
+									ng-repeat="translation in conflictItem.outdatedInsect.translations">
+									<p class="name-translation" ng-if="translation.language==lang">
+										{{translation.name}}
+									</p>
+								</div>
+								<p class="latinname-translation">
+									{{conflictItem.outdatedInsect.latinName}}
+								</p>
+
+								<img id="{{conflictItem.outdatedInsect.images[0]+'_thumb.jpg'}}"
+									ng-src="{{conflictItem.outdatedInsect.images[0]+'_thumb.jpg'}}" />
+
+							</div>
+						</div>
+
+						<div class="updated-insect">
+							<div class="thumb-card no-margin-right">
+								<div class="thumb-indicator">
+									<strong>Remote:</strong>
+								</div>
+								<div class="margin-top-md"
+									ng-repeat="translation in conflictItem.updatedInsect.translations">
+									<p class="name-translation" ng-if="translation.language==lang">
+										{{translation.name}}
+									</p>
+								</div>
+								<p class="latinname-translation">
+									{{conflictItem.updatedInsect.latinName}}
+								</p>
+
+								<img id="{{conflictItem.updatedInsect.images[0]+'_thumb.jpg'}}"
+									ng-src="{{conflictItem.updatedInsect.images[0]+'_thumb.jpg'}}" />
+
+							</div>
+						</div>
+					</div>
+
+
+					<!-- updated images-->
+
+					<div ng-if="conflictItem.changedImages.length > 0">
+						<div class="item">
+							<input class="accordion" type="checkbox" id="{{conflictItem.updatedInsect._id}}" />
+							<label class="inner-container" for="{{conflictItem.updatedInsect._id}}">
+
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-exclamation" fill="none"
+									viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01" />
+								</svg>
+								<span class="text">Changed pictures for {{conflictItem.outdatedInsect.latinName}}</span>
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-down" fill="none"
+									viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M19 9l-7 7-7-7" />
+								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-up" fill="none"
+									viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M5 15l7-7 7 7" />
+								</svg>
+
+
+							</label>
+							<div class="content">
+								<div class="conflict-images-container" ng-repeat="image in conflictItem.changedImages">
+									<div class="thumb-card no-margin-right">
+										<div ng-if="image.added == '0'"
+											class="update-image-state update-images-state-gap-md margin-sm">
+											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-red" fill="none"
+												viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+													d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+											</svg>
+											<span class="deleted-picture">Deleted</span>
+										</div>
+
+										<div ng-if="image.added == '1'"
+											class="update-image-state update-images-state-gap-md margin-sm">
+											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-green" fill="none"
+												viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+													d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+											</svg>
+											<span class="new-picture">New</span>
+										</div>
+
+										<img id="{{image.url+'_thumb.jpg'}}" ng-src="{{image.url+'_thumb.jpg'}}" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<button class="button button-green margin-top-lg" ng-class="{hideUpdateButton: hideUpdateButton}"
+						ng-click="updateInsects()">Update all</button>
+				</div>
+
+				<!--messages updated insects-->
+				<div class="container-alert margin-top-lg">
+					<div id="messageUpdate" ng-if='messageUpdate != ""' class="alert alert-success is-paused fade-out">
+						{{messageUpdate}}</div>
+				</div>
+			</div>
 		</div>
+
+		<!-- loading spinner-->
 		<div class="lds-center">
 			<div class="lds-spinner spinner-loading" id="spinner-search">
 				<div></div>
@@ -126,219 +351,15 @@
 			</div>
 		</div>
 
+		<!-- main collection -->
+		<h1>{{translations.COLLECTIONPAGE}}</h1>
 
+		<div ng-if="!collectionEmpty">
+			<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-model="checkbox.offline"
+				ng-click="viewOffline()" class="input--sm" />
+			<label class="label-offline" for="offline"><strong>{{translations.OFFLINE}}</strong></label>
 
-		<!--new remote items -->
-		<div ng-if="newRemoteInsects.length > 0">
-			<h2>New remote items:</h2>
-
-			<div class="flex-table flex-table-column-gap-md">
-				<div class="new-remote-insect" ng-repeat="newRemoteInsect in newRemoteInsects">
-					<div class="thumb-card">
-						<div class="margin-top-md" ng-repeat="translation in newRemoteInsect.translations">
-							<p class="name-translation" ng-if="translation.language==lang">
-								{{translation.name}}
-							</p>
-						</div>
-						<p class="latinname-translation">
-							{{newRemoteInsect.latinName}}
-						</p>
-
-						<img id="{{newRemoteInsect.images[0]+'_thumb.jpg'}}"
-							ng-src="{{newRemoteInsect.images[0]+'_thumb.jpg'}}" />
-					</div>
-				</div>
-
-			</div>
-			<div margin-top-lg">
-				<form ng-submit="remoteSync(remotePolicy)">
-					<div class="container-new-remote-inputs">
-						<input class="input--sm" type="radio" id="delete-remote" name="remotepolicygroup"
-							value="delete-remote" ng-model="remotePolicy" />
-						Delete from remote collection
-						<input class="input--sm" type="radio" id="pull-remote" name="remotepolicygroup"
-							value="pull-remote" ng-model="remotePolicy">
-						Pull from remote collection
-						<button type="submit" class="button button-green"
-							ng-class="{hideRemoteButton: hideRemoteButton}" ng-click="remoteSync()">Synchronize
-							remote</button>
-					</div>
-				</form>
-			</div>
 		</div>
-		<!--messages new remote items-->
-		<div class="container-alert">
-			<div id="messageNewRemoteSuccess" ng-if='messageNewRemoteSuccess != ""'
-				class="alert alert-success is-paused fade-out">
-				{{messageNewRemoteSuccess}}</div>
-		</div>
-
-		<!--new local items -->
-		<div ng-if="newLocalInsects.length > 0">
-			<h2>New local items:</h2>
-
-			<div class="flex-table flex-table-column-gap-md">
-				<div class="new-local-insect" ng-repeat="newLocalInsect in newLocalInsects">
-					<div class="thumb-card">
-						<div class="margin-top-md" ng-repeat="translation in newLocalInsect.translations">
-							<p class="name-translation" ng-if="translation.language==lang">
-								{{translation.name}}
-							</p>
-						</div>
-						<p class="latinname-translation">
-							{{newLocalInsect.latinName}}
-						</p>
-
-						<img id="{{newLocalInsect.images[0]+'_thumb.jpg'}}"
-							ng-src="{{newLocalInsect.images[0]+'_thumb.jpg'}}" />
-					</div>
-				</div>
-
-			</div>
-			<div class="margin-top-lg">
-				<form ng-submit="localSync(localPolicy)">
-					<div class="container-new-localinputs">
-						<input class="input--sm" type="radio" id="delete-local" name="localpolicygroup"
-							value="delete-local" ng-model="localPolicy" />
-						Delete from local collection
-						<input class="input--sm" type="radio" id="push-local" name="localpolicygroup" value="push-local"
-							ng-model="localPolicy">
-						Push from local collection
-						<button type="submit" class="button button-green"
-							ng-class="{hideLocalButton: hideLocalButton}">Synchronize
-							local</button>
-					</div>
-				</form>
-			</div>
-		</div>
-		<!--messages new remote items-->
-		<div class="container-alert">
-			<div id="messageNewLocalSuccess" ng-if='messageNewLocalSuccess != ""'
-				class="alert alert-success is-paused fade-out">
-				{{messageNewLocalSuccess}}</div>
-		</div>
-
-		<!-- updated insects-->
-		<div class="updated-container" ng-if="conflictObj && conflictObj.length > 0">
-			<h2>Updated Insects: </h2>
-
-			<div class="conflict-insects-container" ng-repeat="conflictItem in conflictObj">
-
-				<div class="flex-table flex-table-column-gap-md">
-
-					<div class="outdated-insect">
-						<div class="thumb-card no-margin-right">
-							<div class="thumb-indicator">
-								<strong>Local:</strong>
-							</div>
-							<div class="margin-top-md"
-								ng-repeat="translation in conflictItem.outdatedInsect.translations">
-								<p class="name-translation" ng-if="translation.language==lang">
-									{{translation.name}}
-								</p>
-							</div>
-							<p class="latinname-translation">
-								{{conflictItem.outdatedInsect.latinName}}
-							</p>
-
-							<img id="{{conflictItem.outdatedInsect.images[0]+'_thumb.jpg'}}"
-								ng-src="{{conflictItem.outdatedInsect.images[0]+'_thumb.jpg'}}" />
-
-						</div>
-					</div>
-
-					<div class="updated-insect">
-						<div class="thumb-card no-margin-right">
-							<div class="thumb-indicator">
-								<strong>Remote:</strong>
-							</div>
-							<div class="margin-top-md"
-								ng-repeat="translation in conflictItem.updatedInsect.translations">
-								<p class="name-translation" ng-if="translation.language==lang">
-									{{translation.name}}
-								</p>
-							</div>
-							<p class="latinname-translation">
-								{{conflictItem.updatedInsect.latinName}}
-							</p>
-
-							<img id="{{conflictItem.updatedInsect.images[0]+'_thumb.jpg'}}"
-								ng-src="{{conflictItem.updatedInsect.images[0]+'_thumb.jpg'}}" />
-
-						</div>
-					</div>
-				</div>
-
-
-				<!-- updated images-->
-
-				<div ng-if="conflictItem.changedImages.length > 0">
-					<div class="item">
-						<input class="accordion" type="checkbox" id="{{conflictItem.updatedInsect._id}}" />
-						<label class="inner-container" for="{{conflictItem.updatedInsect._id}}">
-
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-exclamation" fill="none"
-								viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01" />
-							</svg>
-							<span class="text">Changed pictures for {{conflictItem.outdatedInsect.latinName}}</span>
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-down" fill="none"
-								viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M19 9l-7 7-7-7" />
-							</svg>
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-up" fill="none" viewBox="0 0 24 24"
-								stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M5 15l7-7 7 7" />
-							</svg>
-
-
-						</label>
-						<div class="content">
-							<div class="conflict-images-container" ng-repeat="image in conflictItem.changedImages">
-								<div class="thumb-card no-margin-right">
-									<div ng-if="image.added == '0'"
-										class="update-image-state update-images-state-gap-md margin-sm">
-										<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-red" fill="none"
-											viewBox="0 0 24 24" stroke="currentColor">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-												d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-										</svg>
-										<span class="deleted-picture">Deleted</span>
-									</div>
-
-									<div ng-if="image.added == '1'"
-										class="update-image-state update-images-state-gap-md margin-sm">
-										<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-green" fill="none"
-											viewBox="0 0 24 24" stroke="currentColor">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-												d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-										</svg>
-										<span class="new-picture">New</span>
-									</div>
-
-									<img id="{{image.url+'_thumb.jpg'}}" ng-src="{{image.url+'_thumb.jpg'}}" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div>
-				<button class="button button-green margin-top-lg" ng-class="{hideUpdateButton: hideUpdateButton}"
-					ng-click="updateInsects()">Update all</button>
-			</div>
-		</div>
-
-		<!--messages-->
-		<div class="container-alert">
-			<div id="messageUpdate" ng-if='messageUpdate != ""' class="alert alert-success is-paused fade-out">
-				{{messageUpdate}}</div>
-		</div>
-
 
 		<div ng-repeat="insects in localStorage.collectionObj.insectsByCategory">
 
@@ -381,7 +402,6 @@
 			<p class="start-adding-collection-items">{{translations.NOCOLLECTIONITEMS}} <a
 					ng-click="startToAddCollectionItems()">{{translations.HERE}}</a></p>
 		</div>
-
 
 	</div>
 </section>

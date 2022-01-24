@@ -94,10 +94,19 @@
 
 .container-tag,
 .by-name-container,
-.update-image-state {
+.update-image-state,
+.radio-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.radio-container label {
+  padding: 0;
+}
+
+.flex-column-gap-sm {
+  column-gap: 5px;
 }
 
 .margin-sm {
@@ -672,14 +681,21 @@ tbody.observation-table-body tr:nth-child(even) {
 }
 
 .container-insect-detail,
-.conflict-images-container,
-.container-new-remote-inputs {
+.conflict-images-container {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
   flex-wrap: wrap;
   padding: 10px;
+}
+
+.container-new-remote-inputs,
+.container-new-local-inputs {
+  display: flex;
+  align-items: center;
+  row-gap: 10px;
+  flex-direction: column;
 }
 
 .horizontal-table {
@@ -889,6 +905,10 @@ h2 span {
   color: #b0adad;
   margin-right: 12px;
 }
+
+h3 {
+  margin-bottom: 20px !important;
+}
 h4 {
   text-transform: uppercase;
 }
@@ -1022,6 +1042,13 @@ table.center td {
 
 #observationplace {
   visibility: visible;
+}
+.header-sync {
+  color: #b84db8 !important;
+  text-transform: none !important;
+  font-size: 30px;
+  text-align: center;
+  margin-top: 15px !important;
 }
 
 h1,
@@ -1384,6 +1411,14 @@ input:checked + label:hover {
   background-color: #f5fbfb;
 }
 
+input + label.offline:hover {
+  color: #333;
+}
+
+label.label-offline {
+  padding: 2px !important;
+}
+
 label {
   display: block;
   padding: 8px 22px;
@@ -1413,6 +1448,11 @@ input + label + .content {
 
 input:checked + label {
   color: #087f5b;
+}
+
+input:checked + label.label-offline {
+  background-color: #89baad; /*#19ce65;*/
+  color: #333;
 }
 
 input:checked + label + .content {
@@ -1471,6 +1511,13 @@ input:checked + label .icon-down {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.sync-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 33px;
 }
 
 .updated-container {
