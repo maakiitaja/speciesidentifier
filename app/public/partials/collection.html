@@ -33,9 +33,9 @@
 				<div class="popup__center">
 					<h1>New remote Item(s)</h1>
 					<p>
-						Found {{newRemoteIds.length}}
-						new item(s) in the remote collection. Pull changes" +
-						" OR remove the new remote items OR resolve changes later (cancel)?"
+						Found {{newRemoteInsects.length}}
+						new item(s) in the remote collection. Pull changes
+						OR remove the new remote items OR resolve changes later (cancel)?"
 					</p>
 					<div class="button-grid button-grid--3">
 						<button class="button button-green" ng-click="closeModal('new-remote-items-modal', 'pull')">Pull
@@ -129,15 +129,53 @@
 
 
 		<!--new remote items -->
-		<div ng-if="newRemoteIds && newRemoteIds.length > 0">
-			<div ng-repeat="remoteId in newRemoteIds">
-				{{remoteId}}
+		<div ng-if="newRemoteInsects.length > 0">
+			<h2>New remote items:</h2>
+
+			<div class="flex-table flex-table-column-gap-md">
+				<div class="new-remote-insect" ng-repeat="newRemoteInsect in newRemoteInsects">
+					<div class="thumb-card">
+						<div class="margin-top-md" ng-repeat="translation in newRemoteInsect.translations">
+							<p class="name-translation" ng-if="translation.language==lang">
+								{{translation.name}}
+							</p>
+						</div>
+						<p class="latinname-translation">
+							{{newRemoteInsect.latinName}}
+						</p>
+
+						<img id="{{newRemoteInsect.images[0]+'_thumb.jpg'}}"
+							ng-src="{{newRemoteInsect.images[0]+'_thumb.jpg'}}" />
+					</div>
+				</div>
+
 			</div>
+			<div margin-top-lg">
+				<form ng-submit="remoteSync(remotePolicy)">
+					<div class="container-new-remote-inputs">
+						<input class="input--sm" type="radio" id="delete-remote" name="remotepolicygroup"
+							value="delete-remote" ng-model="remotePolicy" />
+						Delete from remote collection
+						<input class="input--sm" type="radio" id="pull-remote" name="remotepolicygroup"
+							value="pull-remote" ng-model="remotePolicy">
+						Pull from remote collection
+						<button type="submit" class="button button-green"
+							ng-class="{hideRemoteButton: hideRemoteButton}" ng-click="remoteSync()">Synchronize
+							remote</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--messages new remote items-->
+		<div class="container-alert">
+			<div id="messageNewRemoteSuccess" ng-if='messageNewRemoteSuccess != ""'
+				class="alert alert-success is-paused fade-out">
+				{{messageNewRemoteSuccess}}</div>
 		</div>
 
 		<!--new local items -->
-		<div ng-if="newLocalIds && newLocalIds.length > 0">
-			<div ng-repeat="ocalId in newLocalIds">
+		<div ng-if="newLocalInsectsObj.length > 0">
+			<div ng-repeat="localInsect in newLocalInsectsObj">
 				{{localId}}
 			</div>
 		</div>

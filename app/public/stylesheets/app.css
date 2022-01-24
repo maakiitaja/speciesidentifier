@@ -447,7 +447,8 @@ div.active {
 
 .hideMainImage,
 .new-remote-images,
-.hideUpdateButton {
+.hideUpdateButton,
+.hideRemoteButton {
   display: none !important;
 }
 
@@ -670,7 +671,8 @@ tbody.observation-table-body tr:nth-child(even) {
 }
 
 .container-insect-detail,
-.conflict-images-container {
+.conflict-images-container,
+.container-new-remote-inputs {
   display: flex;
   justify-content: center;
   align-items: center;
