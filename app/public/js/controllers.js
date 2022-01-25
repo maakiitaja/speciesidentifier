@@ -1341,15 +1341,15 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     };
 
     $scope.setImage = function (insect) {
-      // check was the selected insect image clicked again
-      // if (insect._id === $scope.insectId) {
-      //   console.log("selected insect image was clicked again");
+      //check was the selected insect image clicked again
+      if (insect._id === $scope.insectId) {
+        console.log("selected insect image was clicked again");
 
-      //   $scope.mainImageUrl = null;
-      //   // reset hidden insect id
-      //   $scope.insectId = null;
-      //   return;
-      // }
+        $scope.mainImageUrl = null;
+        // reset hidden insect id
+        $scope.insectId = null;
+        return;
+      }
       $scope.mainImageUrl = insect.images[0];
 
       // update the hidden insect id

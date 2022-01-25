@@ -1,3 +1,10 @@
+/** general **/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* app css stylesheet */
 /* Javascript menu */
 #sddm {
@@ -818,7 +825,7 @@ input[type="text"]:disabled {
   cursor: not-allowed;
 }
 
-input {
+input[type="text"] {
   margin: 5px !important;
   width: 180px;
 }
@@ -1413,14 +1420,16 @@ body.modal-open-own modal .popup .popup__content {
 input.accordion {
   display: none;
 }
-input + label:hover {
+input + label:hover,
+label.main .offline-label:hover {
   background-color: #89baad;
 }
 input:checked + label:hover {
   background-color: #f5fbfb;
 }
 
-input + label.offline:hover {
+input + label.offline:hover,
+label.main {
   color: #333;
 }
 
@@ -1428,7 +1437,7 @@ label.label-offline {
   padding: 2px !important;
 }
 
-label {
+form label {
   display: block;
   padding: 8px 22px;
   margin: 0 0 1px 0;
@@ -1551,6 +1560,95 @@ hr.updated-insect {
   margin-bottom: 30px;
 }
 
+/** select last child */
 .conflict-insects-container + .conflict-insects-container {
   margin-top: 50px;
+}
+
+/** custom checkbox **/
+.main {
+  display: inline-block;
+  position: relative;
+  padding-left: 45px;
+
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Hide the default checkbox */
+input[type="checkbox"].offline {
+  visibility: hidden;
+}
+
+.tickmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border: 2px solid black;
+}
+
+/* Specify the background color to be
+      shown when hovering over checkbox */
+.main:hover input ~ .tickmark {
+  background-color: white;
+}
+
+/* Specify the background color to be
+      shown when checkbox is active */
+/* .main input:active~.geekmark {
+          background-color: green;
+      } */
+
+/* Specify the background color to be
+      shown when checkbox is checked */
+.main input:checked ~ .tickmark {
+  background-color: green;
+  border: 1px solid green;
+}
+
+/* Checkmark to be shown in checkbox */
+/* It is not be shown when not checked */
+.tickmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Display checkmark when checked */
+.main input:checked ~ .tickmark:after {
+  display: block;
+}
+
+/* Styling the checkmark using webkit */
+/* Rotated the rectangle by 45 degree and 
+      showing only two border to make it look
+      like a tickmark */
+.main .tickmark:after {
+  left: 7px !important;
+  bottom: 5px !important;
+  width: 9px !important;
+  height: 14px !important;
+  border: solid white !important;
+  border-width: 0 4px 4px 0 !important;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg) !important;
+}
+
+.offline-label-container {
+  position: relative;
+}
+
+.offline-label {
+  position: absolute;
+  left: 38px;
+  top: -2px;
+  width: max-content;
+  padding: 5px 5px;
+  transition: all 0.5s;
+  border-radius: 2px;
 }
