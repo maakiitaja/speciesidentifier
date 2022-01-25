@@ -140,19 +140,36 @@ myApp.directive("ngResize", function ($window) {
     },
     link: function ($scope, element, attrs) {
       function onResize() {
-        if ($scope.ngResize.fromAddObservationsCtrl) {
-          var vw = getVw();
-          if (vw >= 860) {
-            console.log("vw >= 860px");
-            $scope.ngResize.withoutIdentifyBtnSmCond = false;
-            $scope.ngResize.withoutIdentifyBtnMdCond = true;
-          } else {
-            console.log("vw < 860px");
-            $scope.ngResize.withoutIdentifyBtnSmCond = true;
-            $scope.ngResize.withoutIdentifyBtnMdCond = false;
-          }
-          $scope.$apply();
+        console.log(
+          "$scope.ngResize.insectsLength:",
+          $scope.ngResize.insectsLength
+        );
+        if ($scope.ngResize.insectsLength === 1) {
+          console.log("insects length is 1");
+          $scope.ngResize.largePictureOnly = true;
+          $scope.ngResize.containerInsectThumbsHigh = false;
+          return;
         }
+        var vw = getVw();
+        if (vw >= 860) {
+          console.log("vw >= 860px");
+          console.log(
+            "$scope.ngResize.hidePagination:",
+            $scope.ngResize.hidePagination
+          );
+          if ($scope.ngResize.hidePagination) {
+            console.log("container insect thumbs high: true");
+            $scope.ngResize.containerInsectThumbsHigh = true;
+            $scope.ngResize.largePictureOnly = false;
+          }
+        } else {
+          console.log("vw < 860 px");
+          if ($scope.ngResize.hidePagination) {
+            console.log("setting thumbs container to high");
+            $scope.ngResize.containerInsectThumbsHigh = false;
+          }
+        }
+        $scope.$apply();
       }
 
       function cleanUp() {
@@ -235,7 +252,7 @@ function Directive(ModalService) {
           scope.newLocalItemsNoRemoteModal = 0;
         if (id === "updated-items-modal") scope.updatedItemsModal = 0;
         if (id === "new-remote-items-modal") {
-          scope.newRemoteItemsModal = undefined;
+          scope.newRemoteItemsModal = 0;
         }
         if (id === "new-local-items-modal") {
           scope.newLocalItemsModal = 0;

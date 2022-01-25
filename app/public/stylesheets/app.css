@@ -458,10 +458,8 @@ div.active {
 .new-remote-images,
 .hideUpdateButton,
 .hideRemoteButton,
-.hideLocalButton {
-  display: none !important;
-}
-
+.hideLocalButton,
+.hidePagination,
 .hideSpinner {
   display: none !important;
 }
@@ -537,6 +535,10 @@ ul.insect-thumbs img:hover {
   column-gap: 20px;
 }
 
+.flex-table-row-gap-md {
+  row-gap: 20px;
+}
+
 .update-images-state-gap-md {
   column-gap: 8px;
 }
@@ -565,16 +567,6 @@ ul.insect-thumbs img:hover {
 }
 #flex-table-7-col li {
   flex: 1 7 10%;
-}
-
-/* responsive addobservation search */
-
-.withoutIdentifyBtnSm {
-  grid-template-rows: 0.8fr 1fr 0.2fr 1px !important;
-}
-
-.withoutIdentifyBtnMd {
-  grid-template-rows: 4fr 1fr !important;
 }
 
 /* medium browse observation table */
@@ -619,7 +611,7 @@ tbody.observation-table-body tr:nth-child(even) {
   max-width: 1300px;
   margin: 0 20px;
   grid-template-columns: 1.5fr 1fr;
-  grid-template-rows: 3fr 1fr 0.5fr;
+  grid-template-rows: auto auto auto;
 }
 
 .thumb-item {
@@ -660,6 +652,16 @@ tbody.observation-table-body tr:nth-child(even) {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+}
+.largePictureOnly {
+  grid-column: 1 / span 2;
+}
+.noInsectThumbs {
+  display: none;
+}
+
+.containerInsectThumbsHigh {
+  grid-row: 1 / span 2 !important;
 }
 
 .container-main-detail {

@@ -95,7 +95,7 @@
 					{{translations.SECONDARYCOLORREQUIRED}}</p>
 
 			</li>
-			<li> {{translations.NUMBEROFLEGS}}: (*)</li>
+			<!-- <li> {{translations.NUMBEROFLEGS}}: (*)</li>
 			<li>
 				<select class="form-control-own" id="legs" name="legs" value="{{legs}}" ng-model="legs" required>
 					<option value=""></option>
@@ -106,7 +106,7 @@
 				</select>
 				<p ng-show="myForm.legs.$touched && myForm.legs.$invalid">{{translations.LEGSREQUIRED}}</p>
 
-			</li>
+			</li> -->
 
 			<li> {{translations.WIKIENTRY}}:</li>
 			<li> <input class="form-control-own" id="wiki" type="text" name="wiki" ng-model="wiki" />
@@ -202,12 +202,15 @@
 				ng-disabled="disableUpload || myForm.$pending">{{translations.UPLOAD}}</button>
 
 		</div>
-		<div ng-if="isUpload==0" class="button-grid button-grid--2">
-			<button id="updateSubmit" ng-click="submit()" type="submit" class="button button-blue centered"
+		<div ng-if="isUpload==0" class="flex-table flex-table-column-gap-md flex-table-row-gap-md">
+			<button id="returnToUploadList" type="button" ng-click="returnToUploadList()" class="button button-green"
+				value="{{translations.UPLOADLIST}}">&larr; {{translations.RETURNTOUPLOADLIST}}</button>
+			<button id="updateSubmit" ng-click="submit()" type="submit" class="button button-blue"
 				value="{{translations.SAVE}}"
 				ng-disabled="disableUpload || myForm.$pending">{{translations.SAVE}}</button>
-			<button id="deleteInsect" type="button" ng-click="deleteInsect()" class="button button-red centered"
+			<button id="deleteInsect" type="button" ng-click="deleteInsect()" class="button button-red"
 				value="{{translations.DELETE}}">{{translations.DELETE}}</button>
+
 		</div>
 
 	</div>

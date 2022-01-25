@@ -385,6 +385,10 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     resetHeader();
     highlightElement("manage-button");
 
+    $scope.returnToUploadList = function () {
+      $location.path("insect/uploadList").search({ user: $scope.currentUser });
+    };
+
     $scope.deleteInsect = function () {
       var result = confirm("Are you sure you want to delete this insect?");
       if (!result) {
@@ -1154,7 +1158,6 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
 
     // resizing the container search
     $scope.resize = {};
-    $scope.resize.fromAddObservationsCtrl = true;
 
     // validation
     $scope.dateRequired = { date: 1 };
@@ -1398,12 +1401,13 @@ insectIdentifierControllers.controller("SearchCtrl", [
     resetHeader();
     highlightElement("search-header");
     $scope.showFileuploadSuccessMessage = "";
-
+    // resizing the container search
+    $scope.resize = {};
     console.log("ModalService: ", ModalService);
 
     // modal
     $scope.openModal = function (id) {
-      console.log("ModalService: ", ModalService);
+      //console.log("ModalService: ", ModalService);
       ModalService.Open(id);
     };
 

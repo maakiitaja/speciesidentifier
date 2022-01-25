@@ -161,12 +161,12 @@
 			<br>
 			<!-- grid -->
 
-			<div class="container-search" ng-resize="resize"
-				ng-class="{withoutIdentifyBtnSm: resize.withoutIdentifyBtnSmCond, withoutIdentifyBtnMd: resize.withoutIdentifyBtnMdCond}"
-				id="container-search">
+			<div class="container-search" ng-resize="resize" id="container-search">
 
 				<!-- thumb pictures-->
-				<ul class="insect-thumbs container-insect-thumbs" id="insect-thumbs">
+				<ul class="insect-thumbs container-insect-thumbs"
+					ng-class="{noInsectThumbs: noInsectThumbs, containerInsectThumbsHigh: resize.containerInsectThumbsHigh}"
+					id="insect-thumbs">
 					<li ng-repeat="_insect in pagedInsects[currentPage]" class="thumb-item">
 						<img name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"
 							ng-class="{activeThumb: mainImageUrl == _insect.images[0]}" ng-click="setImage(_insect)"
@@ -175,7 +175,7 @@
 				</ul>
 
 				<!-- pagination-->
-				<table class="pagination-center" id="pagination">
+				<table class="pagination-center" id="pagination" ng-class="{hidePagination: hidePagination}">
 					<td>
 						<div class="pagination">
 							<ul>
@@ -195,7 +195,8 @@
 				</table>
 
 				<!-- large picture-->
-				<div class="large-picture-search" id="large-picture-search">
+				<div class="large-picture-search" id="large-picture-search"
+					ng-class="{largePictureOnly: resize.largePictureOnly}">
 					<div ng-repeat="img in imgs" ng-class="{active: mainImageUrl==img}" class="insect"
 						ng-style="{backgroundImage: 'url({{img}})'}"></div>
 				</div>

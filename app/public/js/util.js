@@ -39,6 +39,18 @@ function updateRequired() {
 }
 
 function setPagedInsects(insects, $scope) {
+  // hide pagination if necessary
+  if (insects.length === 1) {
+    $scope.hidePagination = true;
+    $scope.noInsectThumbs = true;
+  } else if (insects.length <= $scope.itemsPerPage) {
+    $scope.hidePagination = true;
+    $scope.noInsectThumbs = false;
+  } else {
+    $scope.hidePagination = false;
+    $scope.noInsectThumbs = false;
+  }
+
   $scope.nroOfPages = insects.length / $scope.itemsPerPage;
   if (!isInt($scope.nroOfPages)) {
     $scope.nroOfPages = Math.floor($scope.nroOfPages);

@@ -217,6 +217,7 @@
   "REMOVEFROMCOLLECTION": "Remove from collection",
   "REFRESHINGCOLLECTION": "Refreshing insect collection failed.",
   "ITEMALREADYINCOLLECTION": "item already in collection",
+  "RETURNTOUPLOADLIST": "Upload list",
   "ITEMSAVED": "Item saved to the collection",
   "SAVE": "Save",
   "MODIFYPAGE": "Modify insect",

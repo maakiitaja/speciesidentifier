@@ -205,6 +205,29 @@ insectIdentifierApp.factory("SearchService", [
               $scope.insect = data[0];
               $scope.insects = data;
 
+              // resize style classes
+              $scope.resize.insectsLength = data.length;
+              if (data.length === 1) {
+                console.log("insects length is 1");
+                $scope.resize.largePictureOnly = true;
+                $scope.resize.containerInsectThumbsHigh = false;
+                $scope.resize.hidePagination = true;
+              } else {
+                $scope.resize.largePictureOnly = false;
+                if (data.length <= $scope.itemsPerPage) {
+                  $scope.resize.hidePagination = true;
+                } else {
+                  $scope.resize.hidePagination = false;
+                }
+                if (getVw() >= 860) {
+                  console.log("container insect thumbs high: true");
+                  if ($scope.resize.hidePagination) {
+                    $scope.resize.containerInsectThumbsHigh = true;
+                  }
+                  $scope.resize.largePictureOnly = false;
+                }
+              }
+
               $localStorage.searchResults = data;
 
               $scope.setPagedInsects(data);
