@@ -1711,7 +1711,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       $scope.messageUpdate = "";
       $scope.messageNewRemoteSuccess = "";
       $scope.messageNewLocalSuccess = "";
+      $scope.skippingCollectionSynchronization = "";
     };
+
     $scope.localStorage = $localStorage;
     $scope.tmp = "";
     $scope.location = $location;
@@ -1750,6 +1752,17 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       ModalService.Open(id);
     };
 
+    $scope.callb = function (el) {
+      console.log("callb collection, el:", el);
+      var htmlEl = document.getElementById(el);
+      if (htmlEl && htmlEl.classList.contains("is-paused")) {
+        htmlEl.classList.remove("is-paused");
+      }
+      $scope.initMessages();
+
+      $scope.$apply();
+    };
+
     var insectsByCategory = {
       Ant: [],
       Bee: [],
@@ -1780,6 +1793,19 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       return;
     } else {
       console.log("$scope.currentUser: ", $scope.currentUser);
+    }
+
+    // skip synchronization if the user is in offline mode and signed in
+
+    if ($localStorage.offline === true) {
+      if (isUserAuthenticated) {
+        $scope.skippingCollectionSynchronization =
+          "Skipping collection synchronization because of offline mode.";
+        setDelay("skippingCollectionSynchronization", 3000, $scope);
+      }
+      console.log("skipping collection synchronization");
+
+      return;
     }
     toggleLoadingSpinner($scope);
     var params = { user: $scope.currentUser };
@@ -2556,17 +2582,6 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
     $scope.saveImagesToLocalStorage = async function ($scope, $localStorage) {
       const res = await saveImagesToLocalStorage($scope, $localStorage);
-    };
-
-    $scope.callb = function (el) {
-      console.log("callb insectdetail, el:", el);
-      var htmlEl = document.getElementById(el);
-      if (htmlEl && htmlEl.classList.contains("is-paused")) {
-        htmlEl.classList.remove("is-paused");
-      }
-      $scope.initMessages();
-      $scope.disableAddOrRemove = false;
-      $scope.$apply();
     };
 
     $scope.findLocalInsects = function (remoteIds) {

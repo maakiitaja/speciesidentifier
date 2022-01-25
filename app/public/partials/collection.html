@@ -3,14 +3,14 @@
 		<div class=" popup">
 			<div class="popup__content">
 				<div class="popup__center">
-					<h1>New Item(s) in the local collection</h1>
+					<p class="popup-heading">New Item(s) in the local collection</p>
 					<p>
-						Found {{numberOfNewLocalItemsNoRemote}}
-						new item(s) in the local collection. Push changes (upload)
-						,remove the new local items or take no action (cancel)?
+						Found <strong>{{numberOfNewLocalItemsNoRemote}}</strong>
+						new item(s) in the local collection. Push changes (upload),
+						remove the new local items OR take no action (cancel)?
 					</p>
 
-					<div class="button-grid button-grid--3">
+					<div class="button-grid button-grid--3 margin-top-lg">
 						<button class="button button-blue"
 							ng-click="closeModal('new-local-items-no-remote-modal', 'push')">Push
 						</button>
@@ -29,13 +29,13 @@
 		<div class="popup">
 			<div class="popup__content">
 				<div class="popup__center">
-					<h1>New remote Item(s)</h1>
+					<p class="popup-heading">New remote Item(s)</p>
 					<p>
-						Found {{newRemoteInsects.length}}
+						Found <strong>{{newRemoteInsects.length}}</strong>
 						new item(s) in the remote collection. Pull changes
 						OR remove the new remote items OR resolve changes later (cancel)?"
 					</p>
-					<div class="button-grid button-grid--3">
+					<div class="button-grid button-grid--3 margin-top-lg">
 						<button class="button button-green" ng-click="closeModal('new-remote-items-modal', 'pull')">Pull
 						</button>
 						<button class="button button-red"
@@ -54,14 +54,14 @@
 		<div class="popup">
 			<div class="popup__content">
 				<div class="popup__center">
-					<h1>New local Item(s)</h1>
+					<p class="popup-heading">New local Item(s)</p>
 					<p>
-						Found {{numberOfNewLocalItems}}
+						Found <strong>{{numberOfNewLocalItems}}</strong>
 						new item(s) in the local collection. Do you want to add these
 						new items to the remote collection
 						"OR remove them from local collection OR resolve changes later (cancel)?
 					</p>
-					<div class="button-grid button-grid--3">
+					<div class="button-grid button-grid--3 margin-top-lg">
 						<button class="button button-green" ng-click="closeModal('new-local-items-modal', 'push')">Add
 						</button>
 						<button class="button button-red"
@@ -81,13 +81,13 @@
 		<div class="popup">
 			<div class="popup__content">
 				<div class="popup__center">
-					<h1>Updated item(s) in the remote collection</h1>
+					<p class="popup-heading">Updated item(s) in the remote collection</p>
 					<p>
-						Found {{numberOfUpdatedItems}}
+						Found <strong>{{numberOfUpdatedItems}}</strong>
 						updated item(s) in the remote collection. Update the local collection or resolve changes later
 						(Cancel).
 					</p>
-					<div class="button-grid button-grid--2">
+					<div class="button-grid button-grid--2 margin-top-lg">
 						<button class="button button-green"
 							ng-click="closeModal('updated-items-modal', 'update')">Update
 						</button>
@@ -355,11 +355,20 @@
 		<!-- main collection -->
 		<h1>{{translations.COLLECTIONPAGE}}</h1>
 
+
+
 		<div ng-if="!collectionEmpty">
 			<input type="checkbox" id="offline" value="{{translations.OFFLINE}}" ng-model="checkbox.offline"
 				ng-click="viewOffline()" class="input--sm" />
 			<label class="label-offline" for="offline"><strong>{{translations.OFFLINE}}</strong></label>
 
+		</div>
+
+		<!--messages updated insects-->
+		<div class="container-alert margin-top-lg">
+			<div id="skippingCollectionSynchronization" ng-if='skippingCollectionSynchronization != ""'
+				class="alert alert-success is-paused fade-out">
+				{{skippingCollectionSynchronization}}</div>
 		</div>
 
 		<div ng-repeat="insects in localStorage.collectionObj.insectsByCategory">
