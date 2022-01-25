@@ -26,7 +26,7 @@ function insectDetail($location, $scope) {
   // decode the previously encoded imagepath
   console.log("$scope.insect: ", $scope.insect);
   console.log("encoded imagepath: ", $scope.insect.images[0]);
-  $scope.insect.images[0] = decodeURIComponent($scope.insect.images[0]);
+  //$scope.insect.images[0] = decodeURIComponent($scope.insect.images[0]);
   console.log("decoded imagepath: ", $scope.insect.images[0]);
   $location.path("insect").search({ insect: $scope.insect, prevUrl: "#/list" });
 }
@@ -39,18 +39,6 @@ function updateRequired() {
 }
 
 function setPagedInsects(insects, $scope) {
-  // hide pagination if necessary
-  if (insects.length === 1) {
-    $scope.hidePagination = true;
-    $scope.noInsectThumbs = true;
-  } else if (insects.length <= $scope.itemsPerPage) {
-    $scope.hidePagination = true;
-    $scope.noInsectThumbs = false;
-  } else {
-    $scope.hidePagination = false;
-    $scope.noInsectThumbs = false;
-  }
-
   $scope.nroOfPages = insects.length / $scope.itemsPerPage;
   if (!isInt($scope.nroOfPages)) {
     $scope.nroOfPages = Math.floor($scope.nroOfPages);
@@ -81,6 +69,7 @@ function setPagedInsects(insects, $scope) {
         $scope.currentPage = i;
       }
     }
+    console.log("util $scope.pagedInsects: ", $scope.pagedInsects);
   }
 }
 
@@ -482,3 +471,30 @@ function saveImagesToLocalStorage($scope, $localStorage) {
 //   }
 //   return !angular.equals({}, $scope.currentUser);
 // }
+
+responsiveSearch = function ($scope) {
+  // resize style classes
+  $scope.resize.insectsLength = $scope.insects.length;
+  if ($scope.insects.length === 1) {
+    console.log("insects length is 1");
+    $scope.resize.largePictureOnly = true;
+    $scope.resize.containerInsectThumbsHigh = false;
+    $scope.resize.hidePagination = true;
+  } else {
+    $scope.resize.largePictureOnly = false;
+    if ($scope.insects.length <= $scope.itemsPerPage) {
+      $scope.resize.hidePagination = true;
+    } else {
+      $scope.resize.hidePagination = false;
+    }
+    if (getVw() >= 860) {
+      if ($scope.resize.hidePagination) {
+        console.log("container insect thumbs high: true");
+
+        $scope.resize.containerInsectThumbsHigh = true;
+      }
+    } else {
+      $scope.resize.containerInsectThumbsHigh = false;
+    }
+  }
+};

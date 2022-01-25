@@ -1319,8 +1319,17 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       setDelay("messageAddFailure", 1500, $scope);
     };
 
-    $scope.search = function (query) {
-      SearchService.search($scope, $localStorage, query);
+    $scope.search = async function (query) {
+      await SearchService.search($scope, $localStorage, query);
+      $scope.$apply();
+      // select the active insect thumb
+      if ($scope.insect) {
+        var thumbImg = document.getElementById(
+          $scope.insect.images[0] + "_thumb.jpg"
+        );
+        console.log(thumbImg);
+        thumbImg.classList.toggle("activeThumb");
+      }
     };
     $scope.checkLatinname = function (name) {
       console.log("checking latinname, ", name);
@@ -1341,23 +1350,51 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     };
 
     $scope.setImage = function (insect) {
-      //check was the selected insect image clicked again
       if (insect._id === $scope.insectId) {
         console.log("selected insect image was clicked again");
+        // toggle the active class of the same clicked insect
+        var currentThumbImg = document.getElementById(
+          insect.images[0] + "_thumb.jpg"
+        );
+        if (currentThumbImg.classList.contains("activeThumb")) {
+          // reset hidden insect id
+          $scope.insectId = null;
+        } else {
+          $scope.insectId = insect._id;
+        }
 
-        $scope.mainImageUrl = null;
-        // reset hidden insect id
-        $scope.insectId = null;
+        currentThumbImg.classList.toggle("activeThumb");
+
         return;
-      }
-      $scope.mainImageUrl = insect.images[0];
+      } else {
+        // toggle the active status of the previously activated insect
 
-      // update the hidden insect id
-      $scope.insectId = insect._id;
+        var previousThumbImg = document.getElementById(
+          $scope.insect.images[0] + "_thumb.jpg"
+        );
+        if (
+          previousThumbImg &&
+          previousThumbImg.classList.contains("activeThumb")
+        ) {
+          previousThumbImg.classList.toggle("activeThumb");
+        }
 
-      // update the latinname input
-      if (insect.latinName !== undefined) {
-        $scope.params.observationLatinName = insect.latinName;
+        var currentThumbImg = document.getElementById(
+          insect.images[0] + "_thumb.jpg"
+        );
+        currentThumbImg.classList.toggle("activeThumb");
+
+        $scope.mainImageUrl = insect.images[0];
+
+        // update the hidden insect id
+        $scope.insectId = insect._id;
+        // update the pointer to the currently active insect
+        $scope.insect = insect;
+
+        // update the latinname input
+        if (insect.latinName !== undefined) {
+          $scope.params.observationLatinName = insect.latinName;
+        }
       }
     };
 
@@ -1409,21 +1446,31 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $scope.resize = {};
     console.log("ModalService: ", ModalService);
 
-    // modal
-    $scope.openModal = function (id) {
-      //console.log("ModalService: ", ModalService);
-      ModalService.Open(id);
+    /** Pagination functions **/
+
+    $scope.range = function (start) {
+      console.log("range called with start: " + start);
+      return range(start);
     };
 
-    $scope.closeModal = function (id, buttonId) {
-      console.log("buttonId:", buttonId);
-      //console.log("$scope before: " + JSON.stringify($scope));
-
-      $scope.modalPressed = buttonId;
-      //console.log("$scope after: " + JSON.stringify($scope));
-      ModalService.Close(id);
+    $scope.prevPage = function () {
+      prevPage($scope);
     };
 
+    $scope.nextPage = function () {
+      nextPage($scope);
+    };
+
+    $scope.setPage = function () {
+      setPage($scope, this.n);
+    };
+
+    $scope.wait = function (seconds) {
+      return new Promise(function (resolve) {
+        console.log("in wait");
+        setTimeout(resolve, 1000 * seconds);
+      });
+    };
     $scope.setPagedInsects = function (insects) {
       // call util function
       setPagedInsects(insects, $scope);
@@ -1468,31 +1515,53 @@ insectIdentifierControllers.controller("SearchCtrl", [
         return;
       }
       $scope.insect = $location.search().insect;
-
-      // replace any backslashes with forward slashes
-      $location.search().insect.images[0] = $location
-        .search()
-        .insect.images[0].replace("\\", "/");
+      console.log("$scope.insect.images[0]", $scope.insect.images[0]);
 
       // for proper pagination to work
       $scope.selectedInsect = $location.search().insect;
+
       $scope.searchResults = "showResults";
 
       // use localstorage to obtain the previous search results
       var insects = $localStorage.searchResults;
+      console.log("insects: ", insects);
+      $scope.insects = insects;
       $scope.setPagedInsects(insects);
+      console.log("$scope.pagedInsects: ", $scope.pagedInsects);
 
+      // responsiveness
+      responsiveSearch($scope);
       // main image
       var imgs = [];
       for (var i = 0; i < insects.length; i++) {
+        console.log("pushing image: ", insects[i].images[0]);
         imgs.push(insects[i].images[0]);
 
         if (insects[i].images[0] == $scope.insect.images[0]) {
-          console.log("setting mainimage url");
+          console.log("setting mainimage url:", insects[i].images[0]);
           $scope.mainImageUrl = insects[i].images[0];
         }
       }
       $scope.imgs = imgs;
+
+      if ($scope.insect) {
+        var thumbImg = document.getElementById(
+          $scope.insect.images[0] + "_thumb.jpg"
+        );
+        while (thumbImg === undefined || thumbImg === null) {
+          await $scope.wait(0.2);
+          thumbImg = document.getElementById(
+            $scope.insect.images[0] + "_thumb.jpg"
+          );
+          $scope.$apply();
+        }
+
+        console.log(thumbImg);
+        // set the active thumb
+        thumbImg.classList.toggle("activeThumb");
+
+        $scope.$apply();
+      }
     }
 
     $scope.callb = function (el) {
@@ -1504,40 +1573,56 @@ insectIdentifierControllers.controller("SearchCtrl", [
       $scope.showFileuploadSuccessMessage = "";
     };
 
-    $scope.search = function (query) {
-      SearchService.search($scope, $localStorage, query);
+    $scope.search = async function (query) {
+      await SearchService.search($scope, $localStorage, query);
+      $scope.$apply();
+      // select the active insect thumb
+      if ($scope.insect) {
+        var thumbImg = document.getElementById(
+          $scope.insect.images[0] + "_thumb.jpg"
+        );
+        console.log(thumbImg);
+        thumbImg.classList.toggle("activeThumb");
+      }
     };
 
     $scope.setImage = function (insect) {
       console.log("setting image");
 
       console.log("controller: setimage: " + insect.images[0]);
-      $scope.mainImageUrl = insect.images[0];
+      console.log(
+        "insect._id: ",
+        insect._id,
+        " $scope.insect._id:",
+        $scope.insect._id
+      );
+      if (insect._id === $scope.insect._id) {
+        console.log("selected insect image was clicked again");
+        return;
+      } else {
+        // toggle the active status of the previously activated insect
+        console.log("toggling the previous image");
 
-      $scope.insect = insect;
+        var previousThumbImg = document.getElementById(
+          $scope.insect.images[0] + "_thumb.jpg"
+        );
+        if (previousThumbImg) {
+          previousThumbImg.classList.toggle("activeThumb");
+        }
+
+        var currentThumbImg = document.getElementById(
+          insect.images[0] + "_thumb.jpg"
+        );
+        currentThumbImg.classList.toggle("activeThumb");
+
+        $scope.mainImageUrl = insect.images[0];
+
+        $scope.insect = insect;
+      }
     };
 
     $scope.insectDetail = function () {
       insectDetail($location, $scope);
-    };
-
-    /** Pagination functions **/
-
-    $scope.range = function (start) {
-      console.log("range called with start: " + start);
-      return range(start);
-    };
-
-    $scope.prevPage = function () {
-      prevPage($scope);
-    };
-
-    $scope.nextPage = function () {
-      nextPage($scope);
-    };
-
-    $scope.setPage = function () {
-      setPage($scope, this.n);
     };
 
     // $scope.showModal = function (id) {

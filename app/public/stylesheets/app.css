@@ -633,14 +633,14 @@ tbody.observation-table-body tr:nth-child(even) {
 }
 
 .button-identify {
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   grid-column: 1 / span 2;
 }
 
 .pagination-center {
   margin-left: auto;
   margin-right: auto;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
 }
 
 .large-picture-search {
@@ -825,7 +825,7 @@ input[type="text"]:disabled {
   cursor: not-allowed;
 }
 
-input[type="text"] {
+li input[type="text"] {
   margin: 5px !important;
   width: 180px;
 }
@@ -1651,4 +1651,9 @@ input[type="checkbox"].offline {
   padding: 5px 5px;
   transition: all 0.5s;
   border-radius: 2px;
+}
+
+/* vertically aligning radio buttons */
+input[type="radio"].input--sm {
+  vertical-align: middle;
 }

@@ -138,126 +138,115 @@ insectIdentifierApp.factory("SearchService", [
   function ($http) {
     return {
       search: function ($scope, $localStorage, query) {
-        console.log("query: " + query);
-        // reset the pagination page
-        $scope.currentPage = 0;
+        return new Promise((resolve, reject) => {
+          console.log("query: " + query);
+          // reset the pagination page
+          $scope.currentPage = 0;
 
-        if (query == "" || typeof query == "undefined") {
-          $scope.searchResults = "Please, provide search parameters";
-          console.log("query is empty");
-        } else {
-          // show loading spinner
-          toggleLoadingSpinner($scope);
-
-          // disable search button
-          $scope.disableSearch = true;
-
-          $http({
-            url: "/insect/search",
-            method: "GET",
-            params: {
-              primaryColor: query.primaryColor,
-              secondaryColor: query.secondaryColor,
-              category: query.category,
-              legs: query.legs,
-              name: query.name,
-              //language: query.language,
-            },
-          }).success(function (data) {
-            console.log("receiving search results.");
-
-            // for updating the enabled property of latinname in add observation page
-            $scope.mainImageUrl = null;
-
-            // in case coming from observation page, reset the hidden insect id just in case
-            if ($scope.fromObservationPage) {
-              $scope.insectId = null;
-            }
-
-            console.log(
-              "search results:" + data + " with length: " + data.length
-            );
-            //console.log(JSON.stringify(data));
-            if (data.length == 0) {
-              $scope.searchResults = "noResults";
-            } else {
-              // in case coming from observation page, validate the latinname input
-              if ($scope.fromObservationPage) {
-                console.log(
-                  "searchservice setting $scope.observationLatinNameRequired to nonrequired"
-                );
-                $scope.observationLatinNameRequired = 0;
-              }
-
-              var imgs = [];
-              // make a list of image urls and replace any backslashes with forward slashes
-              var len = data.length;
-              for (var i = 0; i < len; i++) {
-                console.log("data[i].images[0]", data[i].images[0]);
-                var replacedImagePath = data[i].images[0].replace("\\", "/");
-                replacedImagePath = encodeURIComponent(replacedImagePath);
-                console.log("replaced image value: ", replacedImagePath);
-
-                data[i].images[0] = replacedImagePath;
-                imgs.push(replacedImagePath);
-              }
-
-              $scope.insect = data[0];
-              $scope.insects = data;
-
-              // resize style classes
-              $scope.resize.insectsLength = data.length;
-              if (data.length === 1) {
-                console.log("insects length is 1");
-                $scope.resize.largePictureOnly = true;
-                $scope.resize.containerInsectThumbsHigh = false;
-                $scope.resize.hidePagination = true;
-              } else {
-                $scope.resize.largePictureOnly = false;
-                if (data.length <= $scope.itemsPerPage) {
-                  $scope.resize.hidePagination = true;
-                } else {
-                  $scope.resize.hidePagination = false;
-                }
-                if (getVw() >= 860) {
-                  console.log("container insect thumbs high: true");
-                  if ($scope.resize.hidePagination) {
-                    $scope.resize.containerInsectThumbsHigh = true;
-                  }
-                  $scope.resize.largePictureOnly = false;
-                }
-              }
-
-              $localStorage.searchResults = data;
-
-              $scope.setPagedInsects(data);
-
-              $scope.imgs = imgs;
-              console.log(
-                "search service, setting mainimage: " + data[0].images[0]
-              );
-              $scope.mainImageUrl = data[0].images[0].replace("\\", "/");
-
-              // in case coming from observation page
-              if ($scope.fromObservationPage == "1") {
-                console.log(
-                  "coming from observation page: setting hidden insectId and latinname"
-                );
-
-                $scope.insectId = data[0]._id;
-                $scope.params.observationLatinName = data[0].latinName;
-              }
-
-              console.log("showing search results");
-              $scope.searchResults = "showResults";
-            }
-            // Hide spinner element
+          if (query == "" || typeof query == "undefined") {
+            $scope.searchResults = "Please, provide search parameters";
+            console.log("query is empty");
+          } else {
+            // show loading spinner
             toggleLoadingSpinner($scope);
 
-            // Enable search button
-            $scope.disableSearch = false;
-          });
-        } /* end of search*/
+            // disable search button
+            $scope.disableSearch = true;
+
+            $http({
+              url: "/insect/search",
+              method: "GET",
+              params: {
+                primaryColor: query.primaryColor,
+                secondaryColor: query.secondaryColor,
+                category: query.category,
+                legs: query.legs,
+                name: query.name,
+                //language: query.language,
+              },
+            }).success(function (data) {
+              console.log("receiving search results.");
+
+              // for updating the enabled property of latinname in add observation page
+              $scope.mainImageUrl = null;
+
+              // in case coming from observation page, reset the hidden insect id just in case
+              if ($scope.fromObservationPage) {
+                $scope.insectId = null;
+              }
+
+              console.log(
+                "search results:" + data + " with length: " + data.length
+              );
+              //console.log(JSON.stringify(data));
+              if (data.length == 0) {
+                $scope.searchResults = "noResults";
+                $scope.insect = null;
+              } else {
+                // in case coming from observation page, validate the latinname input
+                if ($scope.fromObservationPage) {
+                  console.log(
+                    "searchservice setting $scope.observationLatinNameRequired to nonrequired"
+                  );
+                  $scope.observationLatinNameRequired = 0;
+                }
+
+                var imgs = [];
+                // make a list of image urls
+                var len = data.length;
+                for (var i = 0; i < len; i++) {
+                  console.log("data[i].images[0]", data[i].images[0]);
+
+                  var replacedImagePath = encodeURIComponent(data[i].images[0]);
+                  console.log("replaced image value: ", replacedImagePath);
+
+                  data[i].images[0] = replacedImagePath;
+                  imgs.push(replacedImagePath);
+                }
+
+                $scope.insect = data[0];
+                $scope.insects = data;
+
+                // determine necessary style classes for taking care of hiding pagination etc.
+                responsiveSearch($scope);
+
+                $localStorage.searchResults = data;
+                console.log(
+                  "JSON.stringify($localStorage.searchResults",
+                  JSON.stringify($localStorage.searchResults)
+                );
+
+                $scope.setPagedInsects(data);
+                console.log("imgs:", imgs);
+                $scope.imgs = imgs;
+                console.log(
+                  "search service, setting mainimage: " + data[0].images[0]
+                );
+                $scope.mainImageUrl = data[0].images[0].replace("\\", "/");
+
+                // in case coming from observation page
+                if ($scope.fromObservationPage == "1") {
+                  console.log(
+                    "coming from observation page: setting hidden insectId and latinname"
+                  );
+
+                  $scope.insectId = data[0]._id;
+                  $scope.params.observationLatinName = data[0].latinName;
+                }
+
+                console.log("showing search results");
+                $scope.searchResults = "showResults";
+              }
+
+              // Hide spinner element
+              toggleLoadingSpinner($scope);
+
+              // Enable search button
+              $scope.disableSearch = false;
+              resolve({ msg: "ok" });
+            });
+          } /* end of search*/
+        });
       },
     };
   },

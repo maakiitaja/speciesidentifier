@@ -169,13 +169,13 @@
 					id="insect-thumbs">
 					<li ng-repeat="_insect in pagedInsects[currentPage]" class="thumb-item">
 						<img name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"
-							ng-class="{activeThumb: mainImageUrl == _insect.images[0]}" ng-click="setImage(_insect)"
+							ng-click="setImage(_insect)" id="{{_insect.images[0]+'_thumb.jpg'}}"
 							alt={{_insect.latinName}} />
 					</li>
 				</ul>
 
 				<!-- pagination-->
-				<table class="pagination-center" id="pagination" ng-class="{hidePagination: hidePagination}">
+				<table class="pagination-center" id="pagination" ng-class="{hidePagination: resize.hidePagination}">
 					<td>
 						<div class="pagination">
 							<ul>
@@ -236,7 +236,7 @@
 					<li>
 						<input class="form-control-own" type="text" id="observationLatinName"
 							name="observationLatinName" ng-model="params.observationLatinName" latin-name
-							ng-disabled="mainImageUrl"
+							ng-disabled="insectId"
 							ng-model-options="{ updateOn: 'default blur', debounce: {'default': 300, 'blur': 0} }"
 							required />
 						<p ng-if="latinNameReserved">Please, check the latin name again.</p>
@@ -448,14 +448,23 @@
 						</li>
 						<li>
 							<div class="centered">
-								<input type="radio" class="input--sm" id="other" name="farmtypegroup"
-									ng-model="params.farmType" value="other">{{translations.OTHER}}
+								<div class="radio-container flex-column-gap-sm">
+									<input type="radio" class="input--sm" id="other" name="farmtypegroup"
+										ng-model="params.farmType" value="other">
+									<label for="other">{{translations.OTHER}}</label>
+								</div>
 								<br>
-								<input type="radio" class="input--sm" id="organicFarm" name="farmtypegroup"
-									ng-model="params.farmType" value="organicFarm" />{{translations.ORGANICFARM}}
+								<div class="radio-container flex-column-gap-sm">
+									<input type="radio" class="input--sm" id="organicFarm" name="farmtypegroup"
+										ng-model="params.farmType" value="organicFarm" />
+									<label for="organicFarm">{{translations.ORGANICFARM}}</label>
+								</div>
 								<br>
-								<input type="radio" class="input--sm" id="nonOrganicFarm" name="farmtypegroup"
-									ng-model="params.farmType" value="nonorganicFarm" />{{translations.NONORGANICFARM}}
+								<div class="radio-container flex-column-gap-sm">
+									<input type="radio" class="input--sm" id="nonOrganicFarm" name="farmtypegroup"
+										ng-model="params.farmType" value="nonorganicFarm" />
+									<label for="nonOrganicFarm">{{translations.NONORGANICFARM}}</label>
+								</div>
 							</div>
 
 						</li>
