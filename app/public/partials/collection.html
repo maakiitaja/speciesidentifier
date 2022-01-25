@@ -145,7 +145,8 @@
 								<label for="pull-remote">Pull from remote collection</label>
 							</div>
 							<button type="submit" class="button button-blue"
-								ng-class="{hideRemoteButton: hideRemoteButton}" ng-click="remoteSync()">Synchronize
+								ng-class="{hideRemoteButton: hideRemoteButton}" ng-disabled="newRemoteDisabled"
+								ng-click="remoteSync()">Synchronize
 								remote</button>
 						</div>
 					</form>
@@ -197,7 +198,7 @@
 								<label for="push-local">Push to remote collection</label>
 							</div>
 							<button type="submit" class="button button-blue"
-								ng-class="{hideLocalButton: hideLocalButton}">Synchronize
+								ng-class="{hideLocalButton: hideLocalButton}" ng-disabled="newLocalDisabled">Synchronize
 								local</button>
 						</div>
 					</form>
@@ -322,7 +323,7 @@
 
 				<div>
 					<button class="button button-green margin-top-lg" ng-class="{hideUpdateButton: hideUpdateButton}"
-						ng-click="updateInsects()">Update all</button>
+						ng-click="updateInsects()" ng-disabled="updateDisabled">Update all</button>
 				</div>
 
 				<!--messages updated insects-->

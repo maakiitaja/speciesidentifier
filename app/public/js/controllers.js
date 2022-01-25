@@ -843,6 +843,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         toggleLoadingSpinner($scope);
         $scope.removeInsectFromLocalCollection($scope, $localStorage);
         toggleLoadingSpinner($scope);
+        $scope.disableAddOrRemove = false;
         return;
       }
       $scope.disableAddOrRemove = true;
@@ -869,6 +870,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
             $scope.removeInsectFromLocalCollection($scope, $localStorage);
           }
           toggleLoadingSpinner($scope);
+          $scope.disableAddOrRemove = false;
         })
         .error(function (err) {
           console.log(
@@ -877,6 +879,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
           );
           alert("got error while removing item from collection, err:", err);
           toggleLoadingSpinner($scope);
+          $scope.disableAddOrRemove = false;
         });
     };
 
@@ -1036,6 +1039,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         if (currentUser === "") {
           $scope.addItemToCollection();
           toggleLoadingSpinner($scope);
+          $scope.disableAddOrRemove = false;
           return;
         }
         console.log("performing insert item to remote collection");
@@ -1089,6 +1093,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         setDelay("messageAddFailure", $scope.messageDelayTime, $scope);
       }
       toggleLoadingSpinner($scope);
+      $scope.disableAddOrRemove = false;
     };
 
     $scope.addItemToCollection = function () {
@@ -1110,7 +1115,6 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         htmlEl.classList.remove("is-paused");
       }
       $scope.initMessages();
-      $scope.disableAddOrRemove = false;
       $scope.$apply();
     };
 
@@ -1698,6 +1702,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $scope.checkbox = { offline: $localStorage.offline };
     $scope.remotePolicy = "pull-remote";
     $scope.localPolicy = "push-local";
+    $scope.newRemoteDisabled = true;
+    $scope.newLocalDisabled = true;
+    $scope.updateDisabled = true;
 
     console.log("$scope.offline", $scope.checkbox.offline);
     $scope.initMessages = function () {
@@ -1977,8 +1984,12 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
           toggleLoadingSpinner($scope);
         }
+        $scope.newRemoteDisabled = false;
+        $scope.newLocalDisabled = false;
+        $scope.updateDisabled = false;
         $scope.collectionEmpty = collectionEmpty(collection);
         console.log("collection empty: ", $scope.collectionEmpty);
+        $scope.$apply();
       })
       .error(function () {
         console.log("failed to refresh collection");
