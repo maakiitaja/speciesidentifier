@@ -242,12 +242,14 @@
     border: none;
     cursor: pointer;
     background-color: #232323;
+    color: white;
     /*display: none;*/
   }
 
   .icon-mobile-nav[name="menu-outline"] {
     height: 39px;
     width: 39px;
+    color: white;
   }
 
   .icon-mobile-nav[name="close-outline"] {

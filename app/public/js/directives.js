@@ -165,7 +165,7 @@ myApp.directive("ngResize", function ($window) {
         } else {
           console.log("vw < 860 px");
           if ($scope.ngResize.hidePagination) {
-            console.log("setting thumbs container to high");
+            console.log("setting thumbs container to high: false");
             $scope.ngResize.containerInsectThumbsHigh = false;
           }
         }

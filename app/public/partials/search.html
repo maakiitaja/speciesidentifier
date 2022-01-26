@@ -447,23 +447,49 @@
 							{{translations.PLACETYPE}}:
 						</li>
 						<li>
-							<div class="centered">
-								<div class="radio-container flex-column-gap-sm">
+							<div class="container-place-type row-gap-sm">
+								<!-- <div class="radio-container flex-column-gap-sm">
 									<input type="radio" class="input--sm" id="other" name="farmtypegroup"
 										ng-model="params.farmType" value="other">
 									<label for="other">{{translations.OTHER}}</label>
+								</div> -->
+								<div class="form__radio-group">
+									<input type="radio" class="form__radio-input" id="other" name="farmtypegroup"
+										value="other" ng-model="params.farmType">
+									<label for="other" class="form__radio-label">
+										<span class="form__radio-button"></span>
+										<span class="radio-content">{{translations.OTHER}}</span>
+									</label>
 								</div>
-								<br>
-								<div class="radio-container flex-column-gap-sm">
+
+
+								<!-- <div class="radio-container flex-column-gap-sm">
 									<input type="radio" class="input--sm" id="organicFarm" name="farmtypegroup"
 										ng-model="params.farmType" value="organicFarm" />
 									<label for="organicFarm">{{translations.ORGANICFARM}}</label>
+								</div> -->
+								<div class="form__radio-group">
+									<input type="radio" class="form__radio-input" id="organicFarm" name="farmtypegroup"
+										value="organicFarm" ng-model="params.farmType">
+									<label for="organicFarm" class="form__radio-label">
+										<span class="form__radio-button"></span>
+										<span class="radio-content">{{translations.ORGANICFARM}}</span>
+									</label>
 								</div>
-								<br>
-								<div class="radio-container flex-column-gap-sm">
+
+
+								<!-- <div class="radio-container flex-column-gap-sm">
 									<input type="radio" class="input--sm" id="nonOrganicFarm" name="farmtypegroup"
 										ng-model="params.farmType" value="nonorganicFarm" />
 									<label for="nonOrganicFarm">{{translations.NONORGANICFARM}}</label>
+								</div> -->
+								<div class="form__radio-group">
+									<input type="radio" class="form__radio-input" id="nonOrganicFarm"
+										name="farmtypegroup" value="nonOrganicFarm" ng-model="params.farmType">
+									<label for="nonOrganicFarm" class="form__radio-label">
+										<span class="form__radio-button"></span>
+										<span class="radio-content">{{translations.NONORGANICFARM}}</span>
+									</label>
 								</div>
 							</div>
 

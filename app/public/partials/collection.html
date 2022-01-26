@@ -134,15 +134,23 @@
 				<div class="margin-top-lg">
 					<form ng-submit="remoteSync(remotePolicy)">
 						<div class="container-new-remote-inputs">
-							<div class="radio-container flex-column-gap-sm">
-								<input class="input--sm" type="radio" id="delete-remote" name="remotepolicygroup"
-									value="delete-remote" ng-model="remotePolicy" />
-								<label for="delete-remote">Delete from remote collection</label>
+
+							<div class="form__radio-group">
+								<input type="radio" class="form__radio-input" id="delete-remote"
+									name="remotepolicygroup" value="delete-remote" ng-model="remotePolicy">
+								<label for="delete-remote" class="form__radio-label">
+									<span class="form__radio-button"></span>
+									<span class="radio-content">Delete from remote collection</span>
+								</label>
 							</div>
-							<div class="radio-container flex-column-gap-sm">
-								<input class="input--sm" type="radio" id="pull-remote" name="remotepolicygroup"
-									value="pull-remote" ng-model="remotePolicy" />
-								<label for="pull-remote">Pull from remote collection</label>
+
+							<div class="form__radio-group">
+								<input type="radio" class="form__radio-input" id="pull-remote" name="localpolicygroup"
+									value="pull-remote" ng-model="remotePolicy">
+								<label for="pull-remote" class="form__radio-label">
+									<span class="form__radio-button"></span>
+									<span class="radio-content">Pull from remote collection</span>
+								</label>
 							</div>
 							<button type="submit" class="button button-blue"
 								ng-class="{hideRemoteButton: hideRemoteButton}" ng-disabled="newRemoteDisabled"
@@ -186,16 +194,23 @@
 				<div class="margin-top-lg">
 					<form ng-submit="localSync(localPolicy)">
 						<div class="container-new-local-inputs">
-							<div class="radio-container flex-column-gap-sm">
-								<input class="input--sm" type="radio" id="delete-local" name="localpolicygroup"
-									value="delete-local" ng-model="localPolicy" />
-								<label for="delete-local">Delete from local collection</label>
-							</div>
-							<div class="radio-container flex-column-gap-sm">
 
-								<input class="input--sm" type="radio" id="push-local" name="localpolicygroup"
-									value="push-local" ng-model="localPolicy" />
-								<label for="push-local">Push to remote collection</label>
+							<div class="form__radio-group">
+								<input type="radio" class="form__radio-input" id="delete-local" name="localpolicygroup"
+									value="delete-local" ng-model="localPolicy">
+								<label for="delete-local" class="form__radio-label">
+									<span class="form__radio-button"></span>
+									<span class="radio-content">Delete from local collection</span>
+								</label>
+							</div>
+
+							<div class="form__radio-group">
+								<input type="radio" class="form__radio-input" id="push-local" name="localpolicygroup"
+									value="push-local" ng-model="localPolicy">
+								<label for="push-local" class="form__radio-label">
+									<span class="form__radio-button"></span>
+									<span class="radio-content">Push to remote collection</span>
+								</label>
 							</div>
 							<button type="submit" class="button button-blue"
 								ng-class="{hideLocalButton: hideLocalButton}" ng-disabled="newLocalDisabled">Synchronize
