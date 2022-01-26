@@ -440,6 +440,10 @@ div.active {
   margin-top: 25px;
 }
 
+.margin-top-place-type {
+  margin-top: 15px;
+}
+
 .margin-bottom-md {
   margin-bottom: 10px;
 }
@@ -540,6 +544,10 @@ ul.insect-thumbs img:hover {
 
 .flex-table-column-gap-md {
   column-gap: 20px;
+}
+
+.flex-table-column-gap-sm {
+  column-gap: 10px;
 }
 
 .flex-table-row-gap-md {

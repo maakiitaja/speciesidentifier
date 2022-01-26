@@ -895,7 +895,6 @@ module.exports = function (app, passport) {
     var countryPart = req.query.countryPart;
 
     var place = req.query.place;
-    var nofarm = req.query.nofarm;
     var organicFarm = req.query.organicFarm;
     var nonOrganicFarm = req.query.nonOrganicFarm;
     console.log(
@@ -928,24 +927,15 @@ module.exports = function (app, passport) {
       console.log("by place: " + place);
       query.where("place").equals(place);
     }
-    console.log("nofarm: " + nofarm);
 
     console.log("by farmtype");
-    farm = true;
-    if (req.query.byType == "true") {
-      console.log("search is type specific");
 
-      if (organicFarm == "true") {
-        console.log("organicfarm");
-        query.where("organicFarm").equals(true);
-      } else if (nonOrganicFarm == "true") {
-        console.log("nonorganicfarm");
-        query.where("organicFarm").equals(false);
-      } else if (req.query.nofarm == "true") {
-        console.log("nofarm");
-
-        query.where("organicFarm").equals(undefined);
-      }
+    if (organicFarm == "true") {
+      console.log("organicfarm");
+      query.where("organicFarm").equals(true);
+    } else if (nonOrganicFarm == "true") {
+      console.log("nonorganicfarm");
+      query.where("organicFarm").equals(false);
     }
 
     //time specific search

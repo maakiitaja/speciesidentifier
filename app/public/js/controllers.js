@@ -61,6 +61,8 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     $scope.dateRequired.startDate = 1;
     $scope.dateRequired.endDate = 1;
     $scope.disableSearch = false;
+    $scope.query = {};
+    $scope.query.placeType = "anyType";
     //$scope.startDateRequired = 1;
     //$scope.endDateRequired = 1;
 
@@ -137,6 +139,9 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         "starting to loop through observations with lenght: ",
         observations.length
       );
+      if (observations.length === 0) {
+        return;
+      }
       observations.forEach(function (observation, data_index) {
         // filter
         console.log("observation: ", observation);
@@ -188,13 +193,9 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         console.log("enddate: " + endDate);
       }
 
-      var byType = false;
-      if ($scope.typeSelection == "byType") {
-        byType = true;
-        var nofarm = document.getElementById("nofarm").checked;
-        var organicFarm = document.getElementById("organicFarm").checked;
-        var nonOrganicFarm = document.getElementById("nonOrganicFarm").checked;
-      }
+      var anyType = query.placeType === "anyType";
+      var organicFarm = query.placeType === "organicFarm";
+      var nonOrganicFarm = query.placeType === "nonOrganicFarm";
 
       var name = "";
 
@@ -210,7 +211,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         category = "";
       }
 
-      console.log("nofarm: " + nofarm);
+      console.log("anyTYpe: " + anyType);
       console.log("farmtype organicFarm: " + organicFarm);
       console.log("farmtype nonOrganicFarm: " + nonOrganicFarm);
 
@@ -225,10 +226,8 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
           endDate: endDate,
           name: name,
           category: category,
-          nofarm: nofarm,
           organicFarm: organicFarm,
           nonOrganicFarm: nonOrganicFarm,
-          byType: byType,
         },
       }).success(function (data) {
         $scope.observations = data;

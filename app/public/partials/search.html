@@ -239,7 +239,7 @@
 							ng-disabled="insectId"
 							ng-model-options="{ updateOn: 'default blur', debounce: {'default': 300, 'blur': 0} }"
 							required />
-						<p ng-if="latinNameReserved">Please, check the latin name again.</p>
+						<p ng-if="latinNameNotReserved">Please, check the latin name again.</p>
 					</li>
 					<li>
 						{{translations.DATE}}(*):
@@ -447,7 +447,7 @@
 							{{translations.PLACETYPE}}:
 						</li>
 						<li>
-							<div class="container-place-type row-gap-sm">
+							<div class="container-place-type row-gap-sm margin-top-place-type">
 								<!-- <div class="radio-container flex-column-gap-sm">
 									<input type="radio" class="input--sm" id="other" name="farmtypegroup"
 										ng-model="params.farmType" value="other">
