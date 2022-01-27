@@ -1445,6 +1445,67 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $scope.resize = {};
     console.log("ModalService: ", ModalService);
 
+    $scope.callb = function (el) {
+      console.log("callb addobservation, el: ", el);
+      var htmlEl = document.getElementById(el);
+      if (htmlEl.classList.contains("is-paused")) {
+        htmlEl.classList.remove("is-paused");
+      }
+      $scope.showFileuploadSuccessMessage = "";
+    };
+
+    $scope.search = async function (query) {
+      await SearchService.search($scope, $localStorage, query);
+      $scope.$apply();
+      // select the active insect thumb
+      if ($scope.insect) {
+        var thumbImg = document.getElementById(
+          $scope.insect.images[0] + "_thumb.jpg"
+        );
+        console.log(thumbImg);
+        thumbImg.classList.toggle("activeThumb");
+      }
+    };
+
+    $scope.setImage = function (insect) {
+      console.log("setting image");
+
+      console.log("controller: setimage: " + insect.images[0]);
+      console.log(
+        "insect._id: ",
+        insect._id,
+        " $scope.insect._id:",
+        $scope.insect._id
+      );
+      if (insect._id === $scope.insect._id) {
+        console.log("selected insect image was clicked again");
+        return;
+      } else {
+        // toggle the active status of the previously activated insect
+        console.log("toggling the previous image");
+
+        var previousThumbImg = document.getElementById(
+          $scope.insect.images[0] + "_thumb.jpg"
+        );
+        if (previousThumbImg) {
+          previousThumbImg.classList.toggle("activeThumb");
+        }
+
+        var currentThumbImg = document.getElementById(
+          insect.images[0] + "_thumb.jpg"
+        );
+        currentThumbImg.classList.toggle("activeThumb");
+
+        $scope.mainImageUrl = insect.images[0];
+
+        $scope.insect = insect;
+      }
+    };
+
+    $scope.insectDetail = function () {
+      insectDetail($location, $scope);
+    };
+
     /** Pagination functions **/
 
     $scope.range = function (start) {
@@ -1508,12 +1569,16 @@ insectIdentifierControllers.controller("SearchCtrl", [
       // guard for page reloads
       console.log(
         "location.search().insect.images: ",
-        $location.search().insect.images
+        $location.search().insect
       );
-      if ($location.search().insect.images === undefined) {
+      if ($location.search().insect === undefined) {
         return;
       }
+
       $scope.insect = $location.search().insect;
+      if ($scope.insect.images === undefined || $scope.insect.images === null) {
+        return;
+      }
       console.log("$scope.insect.images[0]", $scope.insect.images[0]);
 
       // for proper pagination to work
@@ -1562,98 +1627,6 @@ insectIdentifierControllers.controller("SearchCtrl", [
         $scope.$apply();
       }
     }
-
-    $scope.callb = function (el) {
-      console.log("callb addobservation, el: ", el);
-      var htmlEl = document.getElementById(el);
-      if (htmlEl.classList.contains("is-paused")) {
-        htmlEl.classList.remove("is-paused");
-      }
-      $scope.showFileuploadSuccessMessage = "";
-    };
-
-    $scope.search = async function (query) {
-      await SearchService.search($scope, $localStorage, query);
-      $scope.$apply();
-      // select the active insect thumb
-      if ($scope.insect) {
-        var thumbImg = document.getElementById(
-          $scope.insect.images[0] + "_thumb.jpg"
-        );
-        console.log(thumbImg);
-        thumbImg.classList.toggle("activeThumb");
-      }
-    };
-
-    $scope.setImage = function (insect) {
-      console.log("setting image");
-
-      console.log("controller: setimage: " + insect.images[0]);
-      console.log(
-        "insect._id: ",
-        insect._id,
-        " $scope.insect._id:",
-        $scope.insect._id
-      );
-      if (insect._id === $scope.insect._id) {
-        console.log("selected insect image was clicked again");
-        return;
-      } else {
-        // toggle the active status of the previously activated insect
-        console.log("toggling the previous image");
-
-        var previousThumbImg = document.getElementById(
-          $scope.insect.images[0] + "_thumb.jpg"
-        );
-        if (previousThumbImg) {
-          previousThumbImg.classList.toggle("activeThumb");
-        }
-
-        var currentThumbImg = document.getElementById(
-          insect.images[0] + "_thumb.jpg"
-        );
-        currentThumbImg.classList.toggle("activeThumb");
-
-        $scope.mainImageUrl = insect.images[0];
-
-        $scope.insect = insect;
-      }
-    };
-
-    $scope.insectDetail = function () {
-      insectDetail($location, $scope);
-    };
-
-    // $scope.showModal = function (id) {
-    //   return new Promise(function (resolve) {
-    //     waitForModalToBeLoaded(
-    //       "custom-modal-1",
-    //       function () {
-    //         $scope.openModal("custom-modal-1");
-    //         resolve({ msg: "ok" });
-    //       },
-    //       500,
-    //       9000,
-    //       ModalService
-    //     );
-    //   });
-    // };
-
-    // $scope.wait = function (seconds) {
-    //   return new Promise(function (resolve) {
-    //     console.log("in wait");
-    //     setTimeout(resolve, 1000 * seconds);
-    //   });
-    // };
-
-    // await $scope.showModal("custom-modal-1");
-    // console.log("$scope.modalPressed:", $scope.modalPressed);
-    // while ($scope.modalPressed === undefined || $scope.modalPressed === null) {
-    //   await $scope.wait(1);
-    //   console.log("waited for 1s");
-    // }
-
-    // console.log("$scope.modalPressed:", $scope.modalPressed);
   },
 ]);
 
