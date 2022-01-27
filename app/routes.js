@@ -4,7 +4,6 @@ var Insect = require("./models/insect");
 var Compendium = require("./models/compendium");
 
 var Observation = require("./models/observation");
-var ObservationDetail = require("./models/observationDetail");
 var fs = require("fs");
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
@@ -12,8 +11,6 @@ var multer = require("multer");
 var im = require("imagemagick");
 var gm = require("gm");
 var path = require("path");
-const observation = require("./models/observation");
-const compendium = require("./models/compendium");
 
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -26,7 +23,7 @@ var storage = multer.diskStorage({
     console.log("file name: " + file.originalname);
     const now = new Date();
     console.log("current time: ", now.getTime());
-    const renamedFilename = file.originalname + now.getTime();
+    const renamedFilename = now.getTime() + file.originalname;
 
     callback(null, renamedFilename);
   },
@@ -147,6 +144,7 @@ module.exports = function (app, passport) {
             newInsect.secondaryColor = insect["secondaryColor"];
             newInsect.wiki = insect["wiki"];
             newInsect.images = [];
+            newInsect.category = insect["category"];
 
             console.log(
               "insect[images]:",
@@ -167,33 +165,30 @@ module.exports = function (app, passport) {
             }
             console.log("newInsect.images: " + newInsect.images);
 
-            newInsect.category = insect["category"];
-
             //thumb picture
-            // for (var ind in imagesTmp) {
-            //   console.log("ind: " + ind);
-            //   console.log("image name: " + newInsect.images[ind]);
-            //   //console.log("dirname: " + __dirname);
-            //   var srcPath =
-            //     __dirname +
-            //     path.sep +
-            //     "public" +
-            //     path.sep +
-            //     newInsect.images[ind];
-            //   console.log("srcpath: " + srcPath);
-            //   gm(srcPath)
-            //     .resize(150, 150)
-            //     .write(srcPath + "_thumb.jpg", function (err) {
-            //       if (err) console.log(err);
-            //       else
-            //         console.log(
-            //           "resized file: " +
-            //             __dirname +
-            //             "/public/" +
-            //             insect["Images"][ind]
-            //         );
-            //     });
-            /*im.resize(
+            for (var j = 0; j < newInsect.images.length; j++) {
+              console.log("image name: " + newInsect.images[j]);
+              //console.log("dirname: " + __dirname);
+              var srcPath =
+                __dirname +
+                path.sep +
+                "public" +
+                path.sep +
+                newInsect.images[j];
+              console.log("srcpath: " + srcPath);
+              // gm(srcPath)
+              //   .resize(150, 150)
+              //   .write(srcPath + "_thumb.jpg", function (err) {
+              //     if (err) console.log(err);
+              //     else
+              //       console.log(
+              //         "resized file: " +
+              //           __dirname +
+              //           "/public/" +
+              //           newInsect["images"][j]
+              //       );
+              //   });
+              /*im.resize(
               {
                 srcPath:
                   srcPath,
@@ -210,13 +205,13 @@ module.exports = function (app, passport) {
                 );
               }
             );*/
-            //}
-
-            //console.log("newInsect: " + newInsect);
+              //}
+            }
+            console.log("newInsect: " + newInsect);
             newInsect.save(function (err) {
               if (err) throw err;
               console.log("Insect saved");
-              console.log(JSON.parse(JSON.stringify(newInsect)));
+              console.log(newInsect);
             });
           }
         });
@@ -928,7 +923,7 @@ module.exports = function (app, passport) {
       query.where("place").equals(place);
     }
 
-    console.log("by farmtype");
+    console.log("by placetype");
 
     if (organicFarm == "true") {
       console.log("organicfarm");

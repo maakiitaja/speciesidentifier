@@ -1147,7 +1147,7 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       countrypart: null,
       place: "",
       count: "",
-      farmType: "other",
+      placeType: "anytype",
       observationLatinName: "",
     };
     // disable fileupload success message
@@ -1260,12 +1260,12 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       console.log("query object: ", query);
 
       console.log(
-        "query.farmType === 'organicFarm'",
-        query.farmType === "organicFarm"
+        "query.placeType === 'organicFarm'",
+        query.placeType === "organicFarm"
       );
       console.log(
-        "query.farmType === 'nonorganicFarm'",
-        query.farmType === "nonorganicFarm"
+        "query.placeType === 'nonorganicFarm'",
+        query.placeType === "nonorganicFarm"
       );
 
       console.log("formattedDate: ", formattedDate instanceof Date);
@@ -1284,8 +1284,8 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
         count: query.count,
         date: date,
         place: query.place,
-        organicFarm: query.farmType === "organicFarm",
-        nonOrganicFarm: query.farmType === "nonorganicFarm",
+        organicFarm: query.placeType === "organicFarm",
+        nonOrganicFarm: query.placeType === "nonorganicFarm",
         user: $scope.currentUser,
         latinName: query.observationLatinName,
         insectId: $scope.insectId,

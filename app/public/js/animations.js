@@ -1,56 +1,63 @@
-var insectIdentifierAnimations = angular.module('insectIdentifierAnimations', ['ngAnimate']);
+var insectIdentifierAnimations = angular.module("insectIdentifierAnimations", [
+  "ngAnimate",
+]);
 
-insectIdentifierAnimations.animation('.phone', function() {
-
-  var animateUp = function(element, className, done) {
-	console.log("animate up,element: "+element);
-    if(className != 'active') {
-	console.log("animate up: classname not active");
+insectIdentifierAnimations.animation(".phone", function () {
+  var animateUp = function (element, className, done) {
+    console.log("animate up,element: " + element);
+    if (className != "active") {
+      console.log("animate up: classname not active");
       return;
     }
     element.css({
-      position: 'relative',
+      position: "relative",
       top: 500,
       left: 0,
       //display: 'block'
     });
 
-    jQuery(element).animate({
-      top: 0
-    }, done);
+    jQuery(element).animate(
+      {
+        top: 0,
+      },
+      done
+    );
 
-    return function(cancel) {
-      if(cancel) {
+    return function (cancel) {
+      if (cancel) {
         element.stop();
       }
     };
-  }
+  };
 
-  var animateDown = function(element, className, done) {
-	console.log('animate down, element: '+element);
-    if(className != 'active') {
-	console.log('animate down: classname != active');
+  var animateDown = function (element, className, done) {
+    console.log("animate down, element: " + element);
+    if (className != "active") {
+      console.log("animate down: classname != active");
       return;
     }
     element.css({
-      position: 'relative',
+      position: "relative",
       left: 0,
-      top: 0
+      top: 0,
     });
-	
-    jQuery(element).animate({
-      top: -500
-    }, done);
 
-    return function(cancel) {
-      if(cancel) {
+    jQuery(element).animate(
+      {
+        top: -500,
+      },
+      done
+    );
+
+    return function (cancel) {
+      if (cancel) {
         element.stop();
       }
     };
-  }
+  };
 
   return {
     addClass: animateUp,
-    removeClass: animateDown
+    removeClass: animateDown,
   };
 });

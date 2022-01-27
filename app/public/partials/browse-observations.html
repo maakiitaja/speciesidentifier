@@ -191,23 +191,7 @@
 			</li>
 			<li>
 				<div class="container-place-type row-gap-sm margin-top-place-type">
-					<!-- <input class="input--sm" type="radio" id="noFarmType" value="{{translations.NO}}" name="typeselection"
-					ng-click="showByType('0')" checked=true /> {{translations.NO}}
-				<input class="input--sm" type="radio" id="byFarmType" value="{{translations.YES}}" name="typeselection"
-					ng-click="showByType('1')" /> {{translations.YES}}
 
-				<div ng-switch="typeSelection">
-					<div ng-switch-when="byType"> -->
-
-					<!-- <input class="input--sm" type="radio" id="nofarm" name="farmtype" value="{{translations.NOFARM}}"
-					ng-model="query.nofarm" checked=true />
-				{{translations.NOFARM}}
-				<input class="input--sm" type="radio" id="organicFarm" name="farmtype"
-					value="{{translations.ORGANICFARM}}" ng-model="query.organicFarm">
-				{{translations.ORGANICFARM}}
-				<input class="input--sm" type="radio" id="nonOrganicFarm" name="farmtype"
-					value="{{translations.NONORGANICFARM}}" ng-model="query.nonOrganicFarm" />
-				{{translations.NONORGANICFARM}} -->
 					<div class="form__radio-group">
 						<input type="radio" class="form__radio-input" id="anyType" name="placetype" value="anyType"
 							ng-model="query.placeType">
@@ -300,7 +284,7 @@
 					</div>
 
 					<div class="by-name-container" ng-switch-when="byName">
-						<span>(*)</span> <input class="form-control-own" type="text" ng-model="query.name" required />
+						<input class="form-control-own" type="text" ng-model="query.name" />
 						<br>
 					</div>
 				</div>
