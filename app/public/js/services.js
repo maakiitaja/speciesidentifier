@@ -206,7 +206,7 @@ insectIdentifierApp.factory("SearchService", [
 
                 $scope.insect = data[0];
                 $scope.insects = data;
-
+                console.log("determining style classes for search results");
                 // determine necessary style classes for taking care of hiding pagination etc.
                 responsiveSearch($scope);
 

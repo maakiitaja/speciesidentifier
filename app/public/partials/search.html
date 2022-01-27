@@ -165,7 +165,7 @@
 
 				<!-- thumb pictures-->
 				<ul class="insect-thumbs container-insect-thumbs"
-					ng-class="{noInsectThumbs: noInsectThumbs, containerInsectThumbsHigh: resize.containerInsectThumbsHigh}"
+					ng-class="{noInsectThumbs: resize.noInsectThumbs, containerInsectThumbsHigh: resize.containerInsectThumbsHigh}"
 					id="insect-thumbs">
 					<li ng-repeat="_insect in pagedInsects[currentPage]" class="thumb-item">
 						<img name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"

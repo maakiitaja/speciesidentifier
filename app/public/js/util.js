@@ -474,14 +474,17 @@ function saveImagesToLocalStorage($scope, $localStorage) {
 
 responsiveSearch = function ($scope) {
   // resize style classes
+  console.log("util: responsive search start");
   $scope.resize.insectsLength = $scope.insects.length;
   if ($scope.insects.length === 1) {
     console.log("insects length is 1");
     $scope.resize.largePictureOnly = true;
     $scope.resize.containerInsectThumbsHigh = false;
     $scope.resize.hidePagination = true;
+    $scope.resize.noInsectThumbs = true;
   } else {
     $scope.resize.largePictureOnly = false;
+    $scope.resize.noInsectThumbs = false;
     if ($scope.insects.length <= $scope.itemsPerPage) {
       $scope.resize.hidePagination = true;
     } else {
