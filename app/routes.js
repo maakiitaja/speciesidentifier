@@ -1306,6 +1306,10 @@ module.exports = function (app, passport) {
     });*/
 
   // process the login form
+  // // // process the signup form
+
+  // process the login form
+  // app.post('/login', do all our passport stuff here);
   app.post(
     "/login",
     passport.authenticate("login", {
@@ -1313,11 +1317,7 @@ module.exports = function (app, passport) {
       failureRedirect: "/#/login-failure", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash messages
     })
-  ); // // // process the signup form
-
-  // process the login form
-  // app.post('/login', do all our passport stuff here);
-
+  );
   // =====================================
   // SIGNUP ==============================
   // =====================================

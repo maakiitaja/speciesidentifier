@@ -6,7 +6,7 @@
 
 var insectIdentifierControllers = angular.module(
   "insectIdentifierControllers",
-  []
+  ["ngCookies"]
 );
 insectIdentifierControllers.controller("FileUploadErrorCtrl", [
   "$scope",
@@ -23,11 +23,15 @@ insectIdentifierControllers.controller("LoggingCtrl", [
   "Search",
   "$location",
   "$http",
-  function ($scope, Search, $location, $http) {
+  "$cookies",
+  function ($scope, Search, $location, $http, $cookies) {
     $scope.message = "";
     console.log("logging controller");
     resetHeader();
     highlightElement("login");
+
+    console.log("cookies.XSRF-TOKEN:", $cookies.get("XSRF-TOKEN"));
+    $scope.csrftoken = $cookies.get("XSRF-TOKEN");
   },
 ]);
 
@@ -36,12 +40,14 @@ insectIdentifierControllers.controller("LoggingFailureCtrl", [
   "Search",
   "$location",
   "$http",
-  function ($scope, Search, $location, $http) {
+  "$cookies",
+  function ($scope, Search, $location, $http, $cookies) {
     $scope.$watch("translations", function (val) {
       $scope.message = $scope.translations.INCORRECTCREDENTIALS;
     });
     resetHeader();
     highlightElement("login");
+    $scope.csrftoken = $cookies.get("XSRF-TOKEN");
 
     console.log("logging failure controller, message: " + $scope.message);
   },
@@ -379,10 +385,12 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
   "$location",
   "$http",
   "$localStorage",
-  function ($scope, Search, $location, $http, $localStorage) {
+  "$cookies",
+  function ($scope, Search, $location, $http, $localStorage, $cookies) {
     // header
     resetHeader();
     highlightElement("manage-button");
+    $scope.csrftoken = $cookies.get("XSRF-TOKEN");
 
     $scope.returnToUploadList = function () {
       $location.path("insect/uploadList").search({ user: $scope.currentUser });
