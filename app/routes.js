@@ -11,6 +11,7 @@ var multer = require("multer");
 //var gm = require("gm");
 var sharp = require("sharp");
 var path = require("path");
+const AppError = require("./utils/appError");
 
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -29,12 +30,22 @@ var storage = multer.diskStorage({
     callback(null, renamedFilename);
   },
 });
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image! Please upload only images.", 400), false);
+  }
+};
+
 var upload = multer({
   limits: {
     fieldNameSize: 500,
     fileSize: 1048576, //  1048576
   },
   storage: storage,
+  fileFilter: multerFilter,
 }).fields([
   {
     name: "userPhotos",

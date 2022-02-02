@@ -463,6 +463,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
           console.log("setting file input populated to true");
           $scope.fileInputPopulated = true;
           $scope.noPhotosSelected = false;
+          $scope.nroOfUserPhotos = files.length;
           $scope.$apply();
           // show the files in form
           // document.getElementById("showFiles").innerHTML =

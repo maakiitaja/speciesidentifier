@@ -119,9 +119,11 @@
 				<!--<span ng-if="isRequired">(*)</span>-->
 			</li>
 			<li>
-				<input type="file" id="userPhotos" name="userPhotos" ng-required="isRequired"
-					custom-on-change="fileChange" multiple />
-
+				<input type="file" id="userPhotos" class="user-photos" accept="image/*" name="userPhotos"
+					ng-required="isRequired" custom-on-change="fileChange" multiple />
+				<label for="userPhotos">{{translations.BROWSE}}... </label><span
+					ng-if="fileInputPopulated">{{nroOfUserPhotos}}
+					file(s) selected</span>
 				<div id="showFiles">
 
 				</div>
@@ -169,7 +171,6 @@
 	</div>
 	<br>
 	<!-- buttons-->
-	csrftoken: {{csrftoken}}
 	<div>
 		<div ng-if="isUpload==1">
 			<button id="uploadSubmit" type="submit" ng-click="submit()" class="button button-blue centered"
