@@ -1148,7 +1148,9 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     // Header
     resetHeader();
     highlightElement("observation-button");
-
+    // util
+    sortColors($scope);
+    sortCategories($scope);
     // initialize form
     $scope.params = {
       country: null,
@@ -1451,7 +1453,9 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $scope.showFileuploadSuccessMessage = "";
     // resizing the container search
     $scope.resize = {};
-    console.log("ModalService: ", ModalService);
+    //util
+    sortColors($scope);
+    sortCategories($scope);
 
     $scope.callb = function (el) {
       console.log("callb addobservation, el: ", el);

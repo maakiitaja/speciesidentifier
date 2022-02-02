@@ -501,3 +501,44 @@ responsiveSearch = function ($scope) {
     }
   }
 };
+
+sortColors = function ($scope) {
+  $scope.$watch("translations", function () {
+    const colorArr = [];
+    const translations = $scope.translations;
+    colorArr.push(
+      ["", ""],
+      [translations.BLACK, "Black"],
+      [translations.WHITE, "White"],
+      [translations.RED, "Red"],
+      [translations.GREEN, "Green"],
+      [translations.BLUE, "Blue"],
+      [translations.YELLOW, "Yellow"],
+      [translations.GOLDEN, "Golden"],
+      [translations.SILVER, "Silver"],
+      [translations.ORANGE, "Orange"],
+      [translations.GREY, "Grey"],
+      [translations.VIOLET, "Violet"],
+      [translations.TURQUOISE, "Turquoise"],
+      [translations.BROWN, "Brown"]
+    );
+    $scope.colors = colorArr.sort();
+  });
+};
+
+sortCategories = function ($scope) {
+  $scope.$watch("translations", function () {
+    const categoryArr = [];
+    const translations = $scope.translations;
+    categoryArr.push(
+      ["", ""],
+      [translations.ANT, "Ant"],
+      [translations.BEETLE, "Beetle"],
+      [translations.BEE, "Bee"],
+      [translations.BUTTERFLY, "Butterfly"],
+      [translations.SPIDER, "Spider"],
+      [translations.CENTIPEDE, "Centipede"]
+    );
+    $scope.categories = categoryArr.sort();
+  });
+};

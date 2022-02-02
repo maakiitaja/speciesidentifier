@@ -20,56 +20,27 @@
 				</li>
 				<li>
 
-					<select class="form-control-own" name="category" ng-model="query.category"
-						ng-change="filterChange()" required>
-						<option value=""></option>
-						<option value="Ant">{{translations.ANT}}</option>
-						<option value="Bee">{{translations.BEE}}</option>
-						<option value="Beetle">{{translations.BEETLE}}</option>
-						<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-						<option value="Centipede">{{translations.CENTIPEDE}}</option>
-						<option value="Spider">{{translations.SPIDER}}</option>
-
+					<select class="form-control-own" name="category" ng-model="query.category" required>
+						<option ng-repeat="category in categories" value="{{category[1]}}">
+							{{category[0]}}
+						</option>
 					</select>
 				</li>
 
 				<li> {{translations.PRIMARYCOLOR}}:</li>
 				<li>
-					<select class="form-control-own" name="primaryColor" ng-model="query.primaryColor"
-						ng-change="filterChange()">
-						<option value=""></option>
-						<option value="Black">{{translations.BLACK}}</option>
-						<option value="Blue">{{translations.BLUE}}</option>
-						<option value="Brown">{{translations.BROWN}}</option>
-						<option value="Golden">{{translations.GOLDEN}}</option>
-						<option value="Green">{{translations.GREEN}}</option>
-						<option value="Grey">{{translations.GREY}}</option>
-						<option value="Orange">{{translations.ORANGE}}</option>
-						<option value="Red">{{translations.RED}}</option>
-						<option value="Silver">{{translations.SILVER}}</option>
-						<option value="Turquoise">{{translations.TURQUOISE}}</option>
-						<option value="White">{{translations.WHITE}}</option>
-						<option value="Violet">{{translations.VIOLET}}</option>
-						<option value="Yellow">{{translations.YELLOW}}</option>
+					<select class="form-control-own" name="primaryColor" ng-model="query.primaryColor">
+						<option ng-repeat="color in colors" value="{{color[1]}}">
+							{{color[0]}}
+						</option>
 					</select>
 				</li>
 				<li>{{translations.SECONDARYCOLOR}}:</li>
 				<li>
 					<select class="form-control-own" name="secondaryColor" ng-model="query.secondaryColor">
-						<option value=""></option>
-						<option value="Black">{{translations.BLACK}}</option>
-						<option value="Blue">{{translations.BLUE}}</option>
-						<option value="Brown">{{translations.BROWN}}</option>
-						<option value="Golden">{{translations.GOLDEN}}</option>
-						<option value="Green">{{translations.GREEN}}</option>
-						<option value="Grey">{{translations.GREY}}</option>
-						<option value="Orange">{{translations.ORANGE}}</option>
-						<option value="Red">{{translations.RED}}</option>
-						<option value="Silver">{{translations.SILVER}}</option>
-						<option value="Turquoise">{{translations.TURQUOISE}}</option>
-						<option value="Violet">{{translations.VIOLET}}</option>
-						<option value="White">{{translations.WHITE}}</option>
-						<option value="Yellow">{{translations.YELLOW}}</option>
+						<option ng-repeat="color in colors" value="{{color[1]}}">
+							{{color[0]}}
+						</option>
 					</select>
 				</li>
 				<!-- <li> {{translations.NUMBEROFLEGS}}:</li>
@@ -448,11 +419,6 @@
 						</li>
 						<li>
 							<div class="container-place-type row-gap-sm margin-top-place-type">
-								<!-- <div class="radio-container flex-column-gap-sm">
-									<input type="radio" class="input--sm" id="other" name="farmtypegroup"
-										ng-model="params.farmType" value="other">
-									<label for="other">{{translations.OTHER}}</label>
-								</div> -->
 								<div class="form__radio-group">
 									<input type="radio" class="form__radio-input" id="anytype" name="placetypegroup"
 										value="anytype" ng-model="params.placeType">
@@ -462,12 +428,6 @@
 									</label>
 								</div>
 
-
-								<!-- <div class="radio-container flex-column-gap-sm">
-									<input type="radio" class="input--sm" id="organicFarm" name="farmtypegroup"
-										ng-model="params.farmType" value="organicFarm" />
-									<label for="organicFarm">{{translations.ORGANICFARM}}</label>
-								</div> -->
 								<div class="form__radio-group">
 									<input type="radio" class="form__radio-input" id="organicFarm" name="placetypegroup"
 										value="organicFarm" ng-model="params.placeType">
@@ -477,12 +437,6 @@
 									</label>
 								</div>
 
-
-								<!-- <div class="radio-container flex-column-gap-sm">
-									<input type="radio" class="input--sm" id="nonOrganicFarm" name="farmtypegroup"
-										ng-model="params.farmType" value="nonorganicFarm" />
-									<label for="nonOrganicFarm">{{translations.NONORGANICFARM}}</label>
-								</div> -->
 								<div class="form__radio-group">
 									<input type="radio" class="form__radio-input" id="nonOrganicFarm"
 										name="placetypegroup" value="nonOrganicFarm" ng-model="params.placeType">
