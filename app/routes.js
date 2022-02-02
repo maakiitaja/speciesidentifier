@@ -8,8 +8,8 @@ var fs = require("fs");
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var multer = require("multer");
-var im = require("imagemagick");
-var gm = require("gm");
+//var gm = require("gm");
+var sharp = require("sharp");
 var path = require("path");
 
 var storage = multer.diskStorage({
@@ -23,7 +23,8 @@ var storage = multer.diskStorage({
     console.log("file name: " + file.originalname);
     const now = new Date();
     console.log("current time: ", now.getTime());
-    const renamedFilename = now.getTime() + file.originalname;
+    const renamedFilename =
+      req.user.id + "-" + now.getTime() + "-" + file.originalname;
 
     callback(null, renamedFilename);
   },
@@ -106,8 +107,8 @@ module.exports = function (app, passport) {
         var insectLength = insects.length;
         console.log(insects[0]);
 
-        // empty the collection
-        Insect.remove(function (err) {
+        // empty the insects
+        Insect.remove(async function (err) {
           if (err) {
             console.log("got error while removing insects, err:", err);
             throw err;
@@ -166,29 +167,36 @@ module.exports = function (app, passport) {
             console.log("newInsect.images: " + newInsect.images);
 
             //thumb picture
-            for (var j = 0; j < newInsect.images.length; j++) {
-              console.log("image name: " + newInsect.images[j]);
-              //console.log("dirname: " + __dirname);
-              var srcPath =
-                __dirname +
-                path.sep +
-                "public" +
-                path.sep +
-                newInsect.images[j];
-              console.log("srcpath: " + srcPath);
-              // gm(srcPath)
-              //   .resize(150, 150)
-              //   .write(srcPath + "_thumb.jpg", function (err) {
-              //     if (err) console.log(err);
-              //     else
-              //       console.log(
-              //         "resized file: " +
-              //           __dirname +
-              //           "/public/" +
-              //           newInsect["images"][j]
-              //       );
-              //   });
-              /*im.resize(
+
+            // await Promise.all(
+            //   newInsect.images.map(async (image, i) => {
+            //     const srcPath =
+            //       __dirname + path.sep + "public" + path.sep + image;
+            //     const filename = srcPath + "_thumb.jpg";
+            //     console.log("file (resizing): ", image);
+            //     await sharp(srcPath)
+            //       .resize(150, 150, { fit: "inside" })
+            //       .toFormat("jpeg")
+            //       .jpeg({ quality: 90 })
+            //       .toFile(filename);
+            //     console.log("resizing done", image);
+            //   })
+            // );
+
+            // legacy thumb picture
+            // gm(srcPath)
+            //   .resize(150, 150)
+            //   .write(srcPath + "_thumb.jpg", function (err) {
+            //     if (err) console.log(err);
+            //     else
+            //       console.log(
+            //         "resized file: " +
+            //           __dirname +
+            //           "/public/" +
+            //           newInsect["images"][j]
+            //       );
+            //   });
+            /*im.resize(
               {
                 srcPath:
                   srcPath,
@@ -205,9 +213,8 @@ module.exports = function (app, passport) {
                 );
               }
             );*/
-              //}
-            }
-            console.log("newInsect: " + newInsect);
+            //}
+
             newInsect.save(function (err) {
               if (err) throw err;
               console.log("Insect saved");
@@ -535,22 +542,39 @@ module.exports = function (app, passport) {
         // thumb picture
         for (var filesInput in req.files) {
           var files = req.files[filesInput];
-          for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            console.log("destination: " + file.destination + file.filename);
-            gm(file.destination + file.filename)
-              .resize(150, 150)
-              .write(
-                file.destination + file.filename + "_thumb.jpg",
-                function (err) {
-                  if (err) console.log(err);
-                  else
-                    console.log(
-                      "resized file: " + file.destination + file.filename
-                    );
-                }
-              );
-            /*im.resize(
+          console.log("files: ", files);
+          await Promise.all(
+            files.map(async (file, i) => {
+              const filename = file.filename + "_thumb.jpg";
+              console.log("file (resizing): ", file);
+              await sharp(file.destination + file.filename)
+                .resize(150, 150, { fit: "inside" })
+                .toFormat("jpeg")
+                .jpeg({ quality: 90 })
+                .toFile(file.destination + filename);
+              console.log("resizing done");
+            })
+          );
+        }
+        // for (var filesInput in req.files) {
+        //   var files = req.files[filesInput];
+        //   for (var i = 0; i < files.length; i++) {
+        //     var file = files[i];
+        //     console.log("destination: " + file.destination + file.filename);
+
+        // gm(file.destination + file.filename)
+        //   .resize(150, 150)
+        //   .write(
+        //     file.destination + file.filename + "_thumb.jpg",
+        //     function (err) {
+        //       if (err) console.log(err);
+        //       else
+        //         console.log(
+        //           "resized file: " + file.destination + file.filename
+        //         );
+        //     }
+        //   );
+        /*im.resize(
             {
               srcPath: file.destination + file.filename,
               dstPath: file.destination + file.filename + "_thumb.jpg",
@@ -562,8 +586,8 @@ module.exports = function (app, passport) {
               console.log("resized file: " + file.filename);
             }
           );*/
-          }
-        }
+        //   }
+        // }
 
         if (isUpload == "1") {
           console.log("saving insect");
@@ -683,10 +707,10 @@ module.exports = function (app, passport) {
     });
   });
 
-  app.post("/latinNameExists", function (req, res) {
-    console.log("latinNameExist function req.body: ", req.body);
+  app.get("/latinNameExists", function (req, res) {
+    console.log("latinNameExist function req.query: ", req.query);
     // case insensitive
-    var latinName = req.body.latinName;
+    var latinName = req.query.latinName;
     latinName = latinName.charAt(0).toUpperCase() + latinName.substring(1);
 
     Insect.findOne({ latinName: latinName }).exec(function (err, insect) {
@@ -696,7 +720,7 @@ module.exports = function (app, passport) {
         return res.send({ msg: true });
       } else {
         console.log('didn"t find latinname');
-        return res.send(null);
+        return res.send({ msg: false });
       }
     });
   });

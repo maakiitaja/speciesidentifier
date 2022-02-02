@@ -76,7 +76,6 @@ myApp.directive("latinName", function ($http, $q) {
         viewValue
       ) {
         console.log("viewvalue: ", viewValue);
-        console.log("scope.latinName: ", scope.latinName);
         //console.log("scope.insect.latinName: ", scope.insect.latinName);
         // check whether the new value is the same as the scope valueProperties
 
@@ -96,35 +95,37 @@ myApp.directive("latinName", function ($http, $q) {
           return $q.reject();
         }
 
-        return $http
-          .post("/latinNameExists", { latinName: viewValue })
-          .then(function (response) {
-            console.log("response latinname exist: ", response);
+        $http({
+          method: "GET",
+          url: "/latinNameExists",
+          params: { latinName: viewValue },
+        }).success(function (response) {
+          console.log("response latinname exist: ", response);
 
-            if (response.data.msg) {
-              // latin-name-exists
-              if (!scope.fromObservationPage) {
-                console.log("rejecting");
-                scope.latinNameReserved = true;
-                return $q.reject();
-                // latin name does not exist
-              } else {
-                console.log("resolving");
-                scope.latinNameNotReserved = false;
-                return $q.resolve();
-              }
-            }
-            // message was null, given latin name does not exist
-            if (!scope.fromObservationPage === true) {
-              console.log("response ok");
-              scope.latinNameReserved = false;
-              return true;
-            } else {
-              console.log("response not ok");
-              scope.latinNameNotReserved = true;
+          if (response.msg) {
+            // latin-name-exists
+            if (!scope.fromObservationPage) {
+              console.log("rejecting");
+              scope.latinNameReserved = true;
               return $q.reject();
+              // latin name does not exist
+            } else {
+              console.log("resolving");
+              scope.latinNameNotReserved = false;
+              return $q.resolve();
             }
-          });
+          }
+          // message was null, given latin name does not exist
+          if (!scope.fromObservationPage === true) {
+            console.log("response ok");
+            scope.latinNameReserved = false;
+            return true;
+          } else {
+            console.log("response not ok");
+            scope.latinNameNotReserved = true;
+            return $q.reject();
+          }
+        });
       };
       var firstLetterToUppercase = function (str) {
         return str.charAt(0).toUpperCase() + str.slice(1);

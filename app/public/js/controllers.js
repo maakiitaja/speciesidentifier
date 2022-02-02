@@ -391,6 +391,9 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     resetHeader();
     highlightElement("manage-button");
     $scope.csrftoken = $cookies.get("XSRF-TOKEN");
+    // util
+    sortColors($scope);
+    sortCategories($scope);
 
     $scope.returnToUploadList = function () {
       $location.path("insect/uploadList").search({ user: $scope.currentUser });

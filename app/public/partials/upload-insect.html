@@ -5,8 +5,10 @@
 <div ng-if="isUpload==0">
 	<h1>{{translations.MODIFYPAGE}}</h1>
 </div>
-<form action="/insect/insert" name="myForm" id="myForm" enctype="multipart/form-data" method="post">
+<form action="{{'/insect/insert?_csrf='+csrftoken}}" name="myForm" id="myForm" enctype="multipart/form-data"
+	method="post">
 	<div class="flex-center">
+
 		<ul id="flex-table" class="flex-table">
 
 			<li>{{translations.ENGLISHNAME}}: </li>
@@ -35,13 +37,9 @@
 			<li>
 				<select class="form-control-own" id="category" value="{{category}}" name="category" ng-model="category"
 					required>
-					<option value=""></option>
-					<option value="Ant">{{translations.ANT}}</option>
-					<option value="Bee">{{translations.BEE}}</option>
-					<option value="Beetle">{{translations.BEETLE}}</option>
-					<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-					<option value="Centipede">{{translations.CENTIPEDE}}</option>
-					<option value="Spider">{{translations.SPIDER}}</option>
+					<option ng-repeat="category in categories" value="{{category[1]}}">
+						{{category[0]}}
+					</option>
 				</select>
 				<p ng-show="myForm.category.$touched && myForm.category.$invalid">{{translations.CATEGORYREQUIRED}}</p>
 
@@ -52,20 +50,9 @@
 			<li>
 				<select class="form-control-own" id="primaryColor" name="primaryColor" value="{{primaryColor}}"
 					ng-model="primaryColor" required>
-					<option value=""></option>
-					<option value="Black">{{translations.BLACK}}</option>
-					<option value="Blue">{{translations.BLUE}}</option>
-					<option value="Brown">{{translations.BROWN}}</option>
-					<option value="Golden">{{translations.GOLDEN}}</option>
-					<option value="Green">{{translations.GREEN}}</option>
-					<option value="Grey">{{translations.GREY}}</option>
-					<option value="Orange">{{translations.ORANGE}}</option>
-					<option value="Red">{{translations.RED}}</option>
-					<option value="Silver">{{translations.SILVER}}</option>
-					<option value="Turquoise">{{translations.TURQUOISE}}</option>
-					<option value="Violet">{{translations.VIOLET}}</option>
-					<option value="White">{{translations.WHITE}}</option>
-					<option value="Yellow">{{translations.YELLOW}}</option>
+					<option ng-repeat="color in colors" value="{{color[1]}}">
+						{{color[0]}}
+					</option>
 				</select>
 				<p ng-show="myForm.primaryColor.$touched && myForm.primaryColor.$invalid">
 					{{translations.PRIMARYCOLORREQUIRED}}</p>
@@ -76,20 +63,9 @@
 			<li>
 				<select class="form-control-own" id="secondaryColor" name="secondaryColor" value="{{secondaryColor}}"
 					ng-model="secondaryColor" required>
-					<option value=""></option>
-					<option value="Black">{{translations.BLACK}}</option>
-					<option value="Blue">{{translations.BLUE}}</option>
-					<option value="Brown">{{translations.BROWN}}</option>
-					<option value="Golden">{{translations.GOLDEN}}</option>
-					<option value="Green">{{translations.GREEN}}</option>
-					<option value="Grey">{{translations.GREY}}</option>
-					<option value="Orange">{{translations.ORANGE}}</option>
-					<option value="Red">{{translations.RED}}</option>
-					<option value="Silver">{{translations.SILVER}}</option>
-					<option value="Turquoise">{{translations.TURQUOISE}}</option>
-					<option value="Violet">{{translations.VIOLET}}</option>
-					<option value="White">{{translations.WHITE}}</option>
-					<option value="Yellow">{{translations.YELLOW}}</option>
+					<option ng-repeat="color in colors" value="{{color[1]}}">
+						{{color[0]}}
+					</option>
 				</select>
 				<p ng-show="myForm.secondaryColor.$touched && myForm.secondaryColor.$invalid">
 					{{translations.SECONDARYCOLORREQUIRED}}</p>
@@ -172,7 +148,6 @@
 
 			<input type="hidden" id="isUpload" name="isUpload" value="{{isUpload}}" ng-model="isUpload" />
 			<input type="hidden" id="insectId" name="insectId" value="{{insectId}}" ng-model="insectId" />
-
 			<br>
 			<br>
 			<br>
@@ -194,7 +169,7 @@
 	</div>
 	<br>
 	<!-- buttons-->
-
+	csrftoken: {{csrftoken}}
 	<div>
 		<div ng-if="isUpload==1">
 			<button id="uploadSubmit" type="submit" ng-click="submit()" class="button button-blue centered"

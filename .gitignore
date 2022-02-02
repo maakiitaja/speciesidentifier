@@ -7,3 +7,4 @@ tmp
 angular-phonecat-snapshots
 bower_components/
 db-server
+app/public/insects/insect-single.json
