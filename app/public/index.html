@@ -36,7 +36,26 @@
 			$.getScript(url, function () {
 				console.log('loaded datepicker.js');
 			});
-		});
+
+			document.addEventListener("click", (evt) => {
+
+				const searchEl = document.getElementById("myInput")
+				if (!searchEl) return;
+				const isInput = searchEl.contains(evt.target);
+
+				const isDropdownContent = document
+					.getElementById("dropdown-content-select")
+					.contains(evt.target);
+
+				const isDropbtn = document
+					.getElementById("dropbtn-select")
+					.contains(evt.target);
+
+				if (!isDropdownContent && !isInput && !isDropbtn) {
+					document.getElementById("myDropdown").classList.remove("show-select");
+				}
+			});
+		})
 	</script>
 
 	<script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -52,7 +71,7 @@
 	<script src="js/ngStorage.min.js"></script>
 	<script src="js/directives.js"></script>
 
-
+	<script src="js/custom-select.js" type="text/javascript"></script>
 </head>
 
 <body ng-app="insectIdentifierApp">
@@ -74,5 +93,6 @@
 	<div footer> </div>
 
 </body>
+
 
 </html>

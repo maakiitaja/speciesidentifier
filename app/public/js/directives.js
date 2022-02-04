@@ -71,7 +71,7 @@ myApp.directive("latinName", function ($http, $q) {
   return {
     require: "ngModel",
     link: function (scope, element, attrs, ngModel) {
-      ngModel.$asyncValidators.latinNameExists = function (
+      ngModel.$asyncValidators.latinNameExists = async function (
         modelValue,
         viewValue
       ) {
@@ -84,6 +84,7 @@ myApp.directive("latinName", function ($http, $q) {
           firstLetterToUppercase(viewValue) === scope.insect.latinName
         ) {
           scope.latinNameReserved = false;
+          scope.latinNameExists = true;
           console.log("viewvalue equals scope value");
           return $q.resolve();
         }
@@ -92,40 +93,41 @@ myApp.directive("latinName", function ($http, $q) {
         if (viewValue === "") {
           console.log("viewvalue is empty");
           scope.latinNameReserved = false;
+          //scope.latinNameExists = false;
           return $q.reject();
         }
 
-        $http({
+        const response = await $http({
           method: "GET",
           url: "/latinNameExists",
           params: { latinName: viewValue },
-        }).success(function (response) {
-          console.log("response latinname exist: ", response);
-
-          if (response.msg) {
-            // latin-name-exists
-            if (!scope.fromObservationPage) {
-              console.log("rejecting");
-              scope.latinNameReserved = true;
-              return $q.reject();
-              // latin name does not exist
-            } else {
-              console.log("resolving");
-              scope.latinNameNotReserved = false;
-              return $q.resolve();
-            }
-          }
-          // message was null, given latin name does not exist
-          if (!scope.fromObservationPage === true) {
-            console.log("response ok");
-            scope.latinNameReserved = false;
-            return true;
-          } else {
-            console.log("response not ok");
-            scope.latinNameNotReserved = true;
-            return $q.reject();
-          }
         });
+
+        console.log("response latinname exist: ", response.data.msg);
+
+        if (response.data.msg === true) {
+          // latin-name-exists
+          if (!scope.fromObservationPage) {
+            console.log("rejecting");
+            scope.latinNameReserved = true;
+            return $q.reject();
+            // latin name does not exist
+          } else {
+            console.log("resolving");
+            scope.latinNameExists = true;
+            return $q.resolve();
+          }
+        }
+        // message was null, given latin name does not exist
+        if (!scope.fromObservationPage === true) {
+          console.log("response ok");
+          scope.latinNameReserved = false;
+          return $q.resolve();
+        } else {
+          console.log("response not ok");
+          scope.latinNameExists = false;
+          return $q.reject();
+        }
       };
       var firstLetterToUppercase = function (str) {
         return str.charAt(0).toUpperCase() + str.slice(1);

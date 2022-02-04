@@ -942,7 +942,7 @@ module.exports = function (app, passport) {
     console.log("organicFarm == 'true'");
     console.log(organicFarm == "true");
 
-    if (country) {
+    if (country && country !== "All") {
       console.log("by country: " + country);
 
       query.where("country").equals(country);

@@ -69,6 +69,9 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     $scope.disableSearch = false;
     $scope.query = {};
     $scope.query.placeType = "anyType";
+    $scope.dropdownCountry = "All";
+    const displayAllOption = true;
+    sortCountries($scope, displayAllOption);
     //$scope.startDateRequired = 1;
     //$scope.endDateRequired = 1;
 
@@ -105,6 +108,13 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         init_close($scope.translations.CLOSE);
       }
     });
+
+    $scope.updateDropbtnContent = function (content, value) {
+      const dropBtnContent = document.getElementById("dropbtn-content-select");
+      dropBtnContent.innerText = content;
+      toggleDropdownContent();
+      $scope.query.dropdownCountry = value;
+    };
 
     $scope.ds_sh_search = function (el) {
       ds_sh(el, $scope);
@@ -170,6 +180,8 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
       // show loading spinner
       var spinnerEl = document.getElementById("spinner-search");
       spinnerEl.classList.toggle("spinner-loading");
+      console.log("country: ", query.dropdownCountry);
+
       // disable search button
       $scope.disableSearch = true;
 
@@ -226,7 +238,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         method: "GET",
         params: {
           countryPart: query.countryPart,
-          country: query.country,
+          country: query.dropdownCountry,
           place: query.place,
           startDate: startDate,
           endDate: endDate,
@@ -1148,7 +1160,16 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
   "$http",
   "$localStorage",
   "SearchService",
-  function ($scope, Search, $location, $http, $localStorage, SearchService) {
+  "$cookies",
+  function (
+    $scope,
+    Search,
+    $location,
+    $http,
+    $localStorage,
+    SearchService,
+    $cookies
+  ) {
     // Header
     resetHeader();
     highlightElement("observation-button");
@@ -1157,7 +1178,7 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     sortCategories($scope);
     // initialize form
     $scope.params = {
-      country: null,
+      country: "All",
       countrypart: null,
       place: "",
       count: "",
@@ -1166,6 +1187,8 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     };
     // disable fileupload success message
     $scope.showFileuploadSuccessMessage = "";
+    $scope.addObservationFailure = "";
+    $scope.addObservationSuccess = "";
 
     // toggle selected insect image flag
     $scope.toggleSelectedInsectImage = true;
@@ -1175,13 +1198,13 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
 
     // resizing the container search
     $scope.resize = {};
+    $scope.latinNameExists = undefined;
+
+    sortCountries($scope, false, $cookies);
 
     // validation
     $scope.dateRequired = { date: 1 };
     $scope.observationLatinNameRequired = 1;
-
-    $scope.addObservationFailure = "";
-    $scope.addObservationSuccess = "";
 
     // add the without identify button row -class to the search-container
     if (getVw() < 860) {
@@ -1234,6 +1257,13 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       init_times(monthtime, weekday);
       init_close($scope.translations.CLOSE);
     });
+
+    $scope.updateDropbtnContent = function (content, value) {
+      const dropBtnContent = document.getElementById("dropbtn-content-select");
+      dropBtnContent.innerText = content;
+      toggleDropdownContent();
+      $scope.params.dropdownCountry = value;
+    };
 
     $scope.ds_sh_search = function (el) {
       ds_sh(el, $scope);
@@ -1291,9 +1321,9 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       console.log("new Date(date)", new Date(date) instanceof Date);
       console.log("new Date()", new Date() instanceof Date);
 
-      console.log("query.country: " + query.country);
+      console.log("query.country: " + query.dropdownCountry);
       params = {
-        country: query.country,
+        country: query.dropdownCountry,
         countryPart: query.countrypart,
         count: query.count,
         date: date,

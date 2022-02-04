@@ -542,3 +542,169 @@ sortCategories = function ($scope) {
     $scope.categories = categoryArr.sort();
   });
 };
+
+sortCountries = function ($scope, displayAllOption, $cookies) {
+  $scope.$watch("translations", async function () {
+    const countryArr = [];
+    const translations = $scope.translations;
+
+    countryArr.push(
+      [translations.FINLAND, "FINLAND"],
+      [translations.SWEDEN, "SWEDEN"],
+      [translations.NORWAY, "NORWAY"],
+      [translations.DENMARK, "DENMARK"],
+      [translations.GERMANY, "GERMANY"],
+      [translations.FRANCE, "FRANCE"],
+      [translations.RUSSIA, "RUSSIA"],
+      [translations.ITALY, "ITALY"],
+      [translations.SPAIN, "SPAIN"],
+      [translations.GREECE, "GREECE"],
+      [translations.CYPRYS, "CYPRYS"],
+      [translations.BELGIUM, "BELGIUM"],
+      [translations.UNITEDKINGDOM, "UNITEDKINGDOM"],
+      [translations.SCOTLAND, "SCOTLAND"],
+      [translations.IRELAND, "IRELAND"],
+      [translations.ICELAND, "ICELAND"],
+      [translations.NETHERLAND, "NETHERLAND"],
+      [translations.UKRAINE, "UKRAINE"],
+      [translations.HUNGARY, "HUNGARY"],
+      [translations.SERBIA, "SERBIA"],
+      [translations.ROMANIA, "ROMANIA"],
+      [translations.PORTUGAL, "PORTUGAL"],
+      [translations.POLAND, "POLAND"],
+      [translations.LIETHUA, "LIETHUA"],
+      [translations.LATVIA, "LATVIA"],
+      [translations.BELARUS, "BELARUS"],
+      [translations.CHINA, "CHINA"],
+      [translations.INDIA, "INDIA"],
+      [translations.PAKISTAN, "PAKISTAN"],
+      [translations.KAZAKSTAN, "KAZAKSTAN"],
+      [translations.THAILAND, "THAILAND"],
+      [translations.SOUTHKOREA, "SOUTHKOREA"],
+      [translations.NORTHKOREA, "NORTHKOREA"],
+      [translations.PAPUAGUINEA, "PAPUAGUINEA"],
+      [translations.NEWZEALAND, "NEWZEALAND"],
+      [translations.INDONESIA, "INDONESIA"],
+      [translations.LAOS, "LAOS"],
+      [translations.VIETNAM, "VIETNAM"],
+      [translations.BRUNEI, "BRUNEI"],
+      [translations.MALESIA, "MALESIA"],
+      [translations.MYANMAR, "MYANMAR"],
+      [translations.SINGAPORE, "SINGAPORE"],
+      [translations.AFGANISTAN, "AFGANISTAN"],
+      [translations.BANGLADESH, "BANGLADESH"],
+      [translations.BHUTAN, "BHUTAN"],
+      [translations.MALEDIVE, "MALEDIVE"],
+      [translations.NEPAL, "NEPAL"],
+      [translations.SRILANKA, "SRILANKA"],
+      [translations.AZERBAIDZAN, "AZERBAIDZAN"],
+      [translations.YEMEN, "YEMEN"],
+      [translations.LIBANON, "LIBANON"],
+      [translations.OMAN, "OMAN"],
+      [translations.QATAR, "QATAR"],
+      [translations.TURKEY, "TURKEY"],
+      [translations.JORDANIA, "JORDANIA"],
+      [translations.GEORGIA, "GEORGIA"],
+      [translations.UZBEKISTAN, "UZBEKISTAN"],
+      [translations.TURKEMISTAN, "TURKEMISTAN"],
+      [translations.TADZIKISTAN, "TADZIKISTAN"],
+      [translations.CANADA, "CANADA"],
+      [translations.USA, "USA"],
+      [translations.MEXICO, "MEXICO"],
+      [translations.JAMAICA, "JAMAICA"],
+      [translations.CUBA, "CUBA"],
+      [translations.PANAMA, "PANAMA"],
+      [translations.COSTARICA, "COSTARICA"],
+      [translations.ECUADOR, "ECUADOR"],
+      [translations.BRAZIL, "BRAZIL"],
+      [translations.PERU, "PERU"],
+      [translations.CHILE, "CHILE"],
+      [translations.BOLIVIA, "BOLIVIA"],
+      [translations.COLUMBIA, "COLUMBIA"],
+
+      [translations.ISRAEL, "ISRAEL"],
+      [translations.SYRIA, "SYRIA"],
+      [translations.SAUDIARABIA, "SAUDIARABIA"],
+      [translations.EGYPT, "EGYPT"],
+      [translations.TUNISIA, "TUNISIA"],
+      [translations.SUDAN, "SUDAN"],
+      [translations.GHANA, "GHANA"],
+      [translations.DEMOCRATICREPUPUBLICOFCONGO, "DEMOCRATICREPUPUBLICOFCONGO"],
+      [translations.REPUBLICOFCONGO, "REPUBLICOFCONGO"],
+      [translations.ALGERIA, "ALGERIA"],
+      [translations.ZIMBABWE, "ZIMBABWE"],
+      [translations.SOUTHAFRICA, "SOUTHAFRICA"],
+      [translations.MAURITANIA, "MAURITANIA"],
+      [translations.ANGOLA, "ANGOLA"],
+      [translations.ETHIOPIA, "ETHIOPIA"],
+      [translations.TANZANIA, "TANZANIA"],
+      [translations.RWANDA, "RWANDA"],
+      [translations.ERITREA, "ERITREA"],
+
+      [translations.ZAMBIA, "ZAMBIA"],
+      [translations.LIBYA, "LIBYA"],
+      [translations.DIJIBOUTI, "DIJIBOUTI"],
+      [translations.COMOROS, "COMOROS"],
+      [translations.MALAWI, "MALAWI"],
+      [translations.SEYCHELLES, "SEYCHELLES"],
+      [translations.CHAD, "CHAD"],
+      [translations.LESOTHO, "LESOTHO"],
+      [translations.BENIN, "BENIN"],
+      [translations.IVORYCOAST, "IVORYCOAST"],
+      [translations.LIBERIA, "LIBERIA"],
+      [translations.MALI, "MALI"],
+      [translations.SENEGAL, "SENEGAL"],
+      [translations.TOGO, "TOGO"],
+      [translations.GUINEABISSEAU, "GUINEABISSEAU"],
+      [translations.SIERRALEONE, "SIERRALEONE"],
+      [translations.NIGER, "NIGER"],
+      [translations.PHILIPPINES, "PHILIPPINES"],
+      [translations.MONGOLIA, "MONGOLIA"],
+      [translations.TAIWAN, "TAIWAN"],
+      [translations.JAPAN, "JAPAN"],
+      [translations.CAMBODIA, "CAMBODIA"],
+      [translations.MACEDONIA, "MACEDONIA"],
+      [translations.ARMENIA, "ARMENIA"],
+      [translations.SWITZERLAND, "SWITZERLAND"],
+      [translations.SOMALIA, "SOMALIA"],
+      [translations.UGANDA, "UGANDA"],
+      [translations.MOROCCO, "MOROCCO"],
+      [translations.MADAGASCAR, "MADAGASCAR"],
+      [translations.CAMEROON, "CAMEROON"],
+      [translations.BOSTWANA, "BOSTWANA"],
+      [translations.SWAZILAND, "SWAZILAND"]
+    );
+    if (displayAllOption) {
+      countryArr.unshift(["", ""]);
+    }
+    countryArr.sort();
+    if (displayAllOption) {
+      countryArr[0] = [translations.ALL, "All"];
+    } else {
+      // search country by language
+      let dropbtnContent = document.getElementById("dropbtn-content-select");
+      while (dropbtnContent === undefined || dropbtnContent === null) {
+        await wait(0.2);
+        dropbtnContent = document.getElementById("dropbtn-content-select");
+      }
+      if ($cookies.get("lang") === "en") {
+        dropbtnContent.innerHTML = "United Kingdom";
+        $scope.params.dropdownCountry = "UNITEDKINGDOM";
+      } else if ($cookies.get("lang") === "fi") {
+        dropbtnContent.innerHTML = "Suomi";
+        $scope.params.dropdownCountry = "FINLAND";
+      } else {
+        dropbtnContent.innerHTML = "Afganistan";
+        $scope.params.dropdownCountry = "AFGANISTAN";
+      }
+    }
+    $scope.countries = countryArr;
+  });
+};
+
+wait = function (seconds) {
+  return new Promise(function (resolve) {
+    console.log("in wait");
+    setTimeout(resolve, 1000 * seconds);
+  });
+};

@@ -1793,3 +1793,119 @@ input[type="radio"] + label span.radio-content:hover {
   -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
+
+/** custom select with search **/
+
+.dropbtn-content-select {
+  margin-left: 7px;
+  font-size: 15px;
+}
+
+.dropbtn-select {
+  background-color: #e9e9ed;
+  color: #131212;
+  padding: 4px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+}
+
+.dropbtn-select:hover {
+  background-color: #ccc;
+}
+
+.dropbtn-select img {
+  height: 24px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #fff;
+}
+
+.input-container .icon {
+  height: 34px;
+  padding-left: 10px;
+  width: 34px;
+}
+
+#myInput {
+  font-size: 16px;
+  padding: 14px 20px 12px 5px;
+  width: 100%;
+  border: none;
+}
+
+#myInput:focus {
+  outline: none;
+}
+
+.dropdown-select {
+  position: relative;
+  display: inline-block;
+  width: min-content;
+  z-index: 9999;
+}
+
+.dropdown-select a:hover {
+  background-color: #ddd;
+}
+
+.dropdown-content-select {
+  background-color: #fff;
+  width: 100%;
+  overflow: auto;
+  height: 200px;
+  border: 1px solid #ddd;
+}
+
+.dropdown-content-select a {
+  background-color: inherit;
+  color: black;
+  padding: 6px 8px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content-select a:active,
+.dropdown-content-select a:hover {
+  text-decoration: none;
+  color: #1f7f5c;
+}
+
+.dropdown-container {
+  width: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+  transform: scale(0.9);
+  position: absolute;
+  top: 130%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.show-select {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.select-box__icon {
+  width: 20px;
+  opacity: 0.5;
+}
+
+.icon-arrow-down {
+  height: 18px;
+}

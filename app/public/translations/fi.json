@@ -79,7 +79,7 @@
   "ISRAEL": "Israel",
   "PAKISTAN": "Pakistan",
   "CAMBODIA": "Kambotza",
-  "UNITEDKINGDOM": "UK",
+  "UNITEDKINGDOM": "Iso Britannia",
   "IRAK": "Irak",
   "IRAN": "Iran",
   "TUNISIA": "Tunisia",
@@ -294,5 +294,6 @@
   "FILEUPLOADERROR": "Pahoittelut, tapahtui kuvan lataamisvirhe, sillä kuvan maksimi koko ylitettiin. Mene takaisin hakusivulle ",
   "FILEUPLOADSUCCESS": "Hyönteinen on lisätty tai muokattu onnistuneesti",
   "ANYTYPE": "Kaikki",
-  "BROWSE": "Selaa"
+  "BROWSE": "Selaa",
+  "ALL": "Kaikki"
 }

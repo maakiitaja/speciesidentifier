@@ -208,9 +208,9 @@
 						<input class="form-control-own" type="text" id="observationLatinName"
 							name="observationLatinName" ng-model="params.observationLatinName" latin-name
 							ng-disabled="insectId"
-							ng-model-options="{ updateOn: 'default blur', debounce: {'default': 300, 'blur': 0} }"
-							required />
-						<p ng-if="latinNameNotReserved">Please, check the latin name again.</p>
+							ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" />
+						<p ng-if="!latinNameExists && latinNameExists != undefined">Please, check the latin name again.
+						</p>
 					</li>
 					<li>
 						{{translations.DATE}}(*):
@@ -239,162 +239,47 @@
 							{{translations.COUNTRY}}(*):
 						</li>
 						<li>
-							<select name="country" ng-model="params.country" required>
-								<option value=""></option>
-								<option value="FINLAND">{{translations.FINLAND}} </option>
-								<option value="SWEDEN">{{translations.SWEDEN}} </option>
-								<option value="NORWAY">{{translations.NORWAY}} </option>
-								<option value="DENMARK">{{translations.DENMARK}} </option>
-								<option value="GERMANY">{{translations.GERMANY}} </option>
-								<option value="FRANCE">{{translations.FRANCE}} </option>
-								<option value="RUSSIA">{{translations.RUSSIA}} </option>
-								<option value="ITALY">{{translations.ITALY}} </option>
-								<option value="SPAIN">{{translations.SPAIN}} </option>
-								<option value="GREECE">{{translations.GREECE}} </option>
-								<option value="CYPRYS">{{translations.CYPRYS}} </option>
-								<option value="BELGIUM">{{translations.BELGIUM}} </option>
-								<option value="UNITEDKINGDOM">{{translations.UNITEDKINGDOM}}
-								</option>
-								<option value="SCOTLAND">{{translations.SCOTLAND}} </option>
-								<option value="IRELAND">{{translations.IRELAND}} </option>
-								<option value="ICELAND">{{translations.ICELAND}} </option>
-								<option value="NETHERLAND">{{translations.NETHERLAND}}
-								</option>
-								<option value="UKRAINE">{{translations.UKRAINE}} </option>
-								<option value="HUNGARY">{{translations.HUNGARY}} </option>
-								<option value="SERBIA">{{translations.SERBIA}} </option>
-								<option value="ROMANIA">{{translations.ROMANIA}} </option>
-								<option value="PORTUGAL">{{translations.PORTUGAL}} </option>
-								<option value="POLAND">{{translations.POLAND}} </option>
-								<option value="LIETHUA">{{translations.LIETHUA}} </option>
-								<option value="LATVIA">{{translations.LATVIA}} </option>
-								<option value="BELARUS">{{translations.BELARUS}} </option>
-								<option value="CHINA">{{translations.CHINA}} </option>
-								<option value="INDIA">{{translations.INDIA}} </option>
-								<option value="PAKISTAN">{{translations.PAKISTAN}} </option>
-								<option value="KAZAKSTAN">{{translations.KAZAKSTAN}} </option>
-								<option value="THAILAND">{{translations.THAILAND}} </option>
-								<option value="SOUTHKOREA">{{translations.SOUTHKOREA}}
-								</option>
-								<option value="NORTHKOREA">{{translations.NORTHKOREA}}
-								</option>
-								<option value="PAPUAGUINEA">{{translations.PAPUAGUINEA}}
-								</option>
-								<option value="NEWZEALAND">{{translations.NEWZEALAND}}
-								</option>
-								<option value="INDONESIA">{{translations.INDONESIA}} </option>
+							<div class="dropdown-select">
+								<div id="dropbtn-select" onclick="toggleDropdownContent()" class="dropbtn-select"
+									tabindex="1">
+									<div class="dropbtn-content-select" id="dropbtn-content-select"
+										ng-model="params.dropdownCountry">
 
-								<option value="LAOS">{{translations.LAOS}} </option>
-								<option value="VIETNAM">{{translations.VIETNAM}} </option>
-								<option value="BRUNEI">{{translations.BRUNEI}} </option>
-								<option value="MALESIA">{{translations.MALESIA}} </option>
-								<option value="MYANMAR">{{translations.MYANMAR}} </option>
-								<option value="SINGAPORE">{{translations.SINGAPORE}} </option>
-								<option value="AFGANISTAN">{{translations.AFGANISTAN}}
-								</option>
-								<option value="BANGLADESH">{{translations.BANGLADESH}}
-								</option>
-								<option value="BHUTAN">{{translations.BHUTAN}} </option>
-								<option value="MALEDIVE">{{translations.MALEDIVE}} </option>
-								<option value="NEPAL">{{translations.NEPAL}} </option>
-								<option value="INDONESIA">{{translations.INDONESIA}} </option>
-								<option value="SRILANKA">{{translations.SRILANKA}} </option>
-								<option value="AZERBAIDZAN">{{translations.AZERBAIDZAN}}
-								</option>
-								<option value="BAHRAIN">{{translations.BAHRAIN}} </option>
-								<option value="YEMEN">{{translations.YEMEN}} </option>
-								<option value="LIBANON">{{translations.LIBANON}} </option>
-								<option value="OMAN">{{translations.OMAN}} </option>
-								<option value="QATAR">{{translations.QATAR}} </option>
-								<option value="TURKEY">{{translations.TURKEY}} </option>
-								<option value="INDONESIA">{{translations.INDONESIA}} </option>
-								<option value="JORDANIA">{{translations.JORDANIA}} </option>
-								<option value="GEORGIA">{{translations.GEORGIA}} </option>
-								<option value="UZBEKISTAN">{{translations.UZBEKISTAN}}
-								</option>
-								<option value="TURKEMISTAN">{{translations.TURKEMISTAN}}
-								</option>
-								<option value="TADZIKISTAN">{{translations.TADZIKISTAN}}
-								</option>
+									</div>
+									<svg xmlns="http://www.w3.org/2000/svg" class="icon-arrow-down" fill="none"
+										viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M19 9l-7 7-7-7" />
+									</svg>
 
-								<option value="CANADA">{{translations.CANADA}} </option>
-								<option value="USA">{{translations.USA}} </option>
-								<option value="MEXICO">{{translations.MEXICO}} </option>
-								<option value="JAMAICA">{{translations.JAMAICA}} </option>
-								<option value="CUBA">{{translations.CUBA}} </option>
-								<option value="PANAMA">{{translations.PANAMA}} </option>
-								<option value="COSTARICA">{{translations.COSTARICA}} </option>
-								<option value="ECUADOR">{{translations.ECUADOR}} </option>
-								<option value="BRAZIL">{{translations.BRAZIL}} </option>
-								<option value="PERU">{{translations.PERU}} </option>
-								<option value="CHILE">{{translations.CHILE}} </option>
-								<option value="BOLIVIA">{{translations.BOLIVIA}} </option>
-								<option value="COLUMBIA">{{translations.COLUMBIA}} </option>
-								<option value="ISRAEL">{{translations.ISRAEL}} </option>
-								<option value="SYRIA">{{translations.SYRIA}} </option>
-								<option value="SAUDIARABIA">{{translations.SAUDIARABIA}}
-								</option>
-								<option value="BELARUS">{{translations.BELARUS}} </option>
-								<option value="EGYPT">{{translations.EGYPT}} </option>
-								<option value="TUNISIA">{{translations.TUNISIA}} </option>
-								<option value="SUDAN">{{translations.SUDAN}} </option>
-								<option value="SWITERLAND">{{translations.SWITZERLAND}}
-								</option>
-								<option value="IRAN">{{translations.IRAN}} </option>
-								<option value="VENEZUALA">{{translations.VENEZUALA}} </option>
+								</div>
+								<div id="myDropdown" class="dropdown-container">
+									<div class="input-container">
+										<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none"
+											viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+												d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+										</svg>
+										<input type=" text" placeholder="Search..." id="myInput"
+											onkeyup="filterFunction()">
+									</div>
 
-								<option value="ARGENTIINA">{{translations.ARGENTIINA}}
-								</option>
-								<option value="MEXICO">{{translations.MACEDONIA}} </option>
-								<option value="ARMENIA">{{translations.ARMENIA}} </option>
-								<option value="SUDAN">{{translations.SUDAN}} </option>
-								<option value="GHANA">{{translations.GHANA}} </option>
-								<option value="DEMOCRATICREPUPUBLICOFCONGO">
-									{{translations.DEMOCRATICREPUPUBLICOFCONGO}} </option>
-								<option value="REPUBLICOFCONGO">
-									{{translations.REPUBLICOFCONGO}}
-								</option>
-								<option value="ALGERIA">{{translations.ALGERIA}} </option>
-								<option value="ZIMBABWE">{{translations.ZIMBABWE}} </option>
-								<option value="SOUTHAFRICA">{{translations.SOUTHAFRICA}}
-								</option>
-								<option value="MAURITANIA">{{translations.MAURITANIA}}
-								</option>
-								<option value="ANGOLA">{{translations.ANGOLA}} </option>
-								<option value="ETHIOPIA">{{translations.ETHIOPIA}} </option>
-								<option value="TANZANIA">{{translations.TANZANIA}} </option>
-								<option value="RWANDA">{{translations.RWANDA}} </option>
-								<option value="ERITREA">{{translations.ERITREA}} </option>
-								<option value="ZAMBIA">{{translations.ZAMBIA}} </option>
-								<option value="LIBYA">{{translations.LIBYA}} </option>
-								<option value="DIJIBOUTI">{{translations.DIJIBOUTI}} </option>
+									<div class="dropdown-content-select" id="dropdown-content-select">
+										<a href="" ng-repeat="country in countries"
+											ng-click="updateDropbtnContent(country[0], country[1])">
+											{{country[0]}}
+										</a>
+									</div>
 
-								<option value="COMOROS">{{translations.COMOROS}} </option>
-								<option value="MALAWI">{{translations.MALAWI}} </option>
-								<option value="SEYCHELLES">{{translations.SEYCHELLES}}
-								</option>
-								<option value="CHAD">{{translations.CHAD}} </option>
-								<option value="LESOTHO">{{translations.LESOTHO}} </option>
-								<option value="BENIN">{{translations.BENIN}} </option>
-								<option value="IVORYCOAST">{{translations.IVORYCOAST}}
-								</option>
-								<option value="LIBERIA">{{translations.LIBERIA}} </option>
-								<option value="MALI">{{translations.MALI}} </option>
-								<option value="SENEGAL">{{translations.SENEGAL}} </option>
-								<option value="TOG">{{translations.TOGO}} </option>
-								<option value="GUINEABISSEAU">{{translations.GUINEABISSEAU}}
-								</option>
-								<option value="SIERRALEONE">{{translations.SIERRALEONE}}
-								</option>
-								<option value="NIGER">{{translations.NIGER}} </option>
-							</select>
+								</div>
+							</div>
 						</li>
 
 						<li>
 							{{translations.LOCATION}}(*):
 						</li>
 						<li>
-							<select name="countrypart" ng-model="params.countrypart" required>
+							<select class="form-control-own" name="countrypart" ng-model="params.countrypart" required>
 								<option value=""></option>
 								<option value="NORTH">{{translations.NORTH}}</option>
 								<option value="NORTHEAST">{{translations.NORTHEAST}}</option>
