@@ -21,6 +21,12 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
 
+const userRouter = require("./app/routes/userRoutes");
+const viewRouter = require("./app/routes/viewRoutes");
+const insectRouter = require("./app/routes/insectRoutes");
+const collectionRouter = require("./app/routes/collectionRoutes");
+const observationRouter = require("./app/routes/observationRoutes");
+
 var configDB = require("./app/config/dbConfig.js");
 
 //+++++
@@ -75,6 +81,13 @@ app.use(function (req, res, next) {
   res.cookie("XSRF-TOKEN", req.csrfToken());
   next();
 });
+
+// routes
+userRouter(app, passport);
+app.use("/", viewRouter);
+// app.use("/insects", insectRouter);
+// app.use("/collections", collectionRouter);
+// app.use("/observations", observationRouter);
 
 // routes ======================================================================
 require("./app/routes.js")(app, passport); // load our routes and pass in our app and fully configured passport
