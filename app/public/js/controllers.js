@@ -72,6 +72,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     $scope.dropdownCountry = "All";
     const displayAllOption = true;
     sortCountries($scope, displayAllOption);
+    sortCategories($scope);
     //$scope.startDateRequired = 1;
     //$scope.endDateRequired = 1;
 
@@ -1914,7 +1915,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     var params = { user: $scope.currentUser };
 
     // search for remote collection items
-    $http({ url: "/collections/list", params: params })
+    $http({ url: "/collections/list", method: "GET", params: params })
       .success(async function (data) {
         console.log("data: ", data);
         if (data === "not authenticated") {
@@ -1999,6 +2000,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
           toggleLoadingSpinner($scope);
         } else {
+          if (typeof data === "string") {
+            data = [];
+          }
           //  Add items from the backend to the localstorage (pull changes) if there are no duplicates
           // OR allow the user to delete the new remote items
 

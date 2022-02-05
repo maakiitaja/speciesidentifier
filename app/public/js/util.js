@@ -503,9 +503,9 @@ responsiveSearch = function ($scope) {
 };
 
 sortColors = function ($scope) {
-  $scope.$watch("translations", function () {
+  $scope.$watch("translations", function (translations) {
     const colorArr = [];
-    const translations = $scope.translations;
+
     colorArr.push(
       ["", ""],
       [translations.BLACK, "Black"],
@@ -527,9 +527,9 @@ sortColors = function ($scope) {
 };
 
 sortCategories = function ($scope) {
-  $scope.$watch("translations", function () {
+  $scope.$watch("translations", function (translations) {
     const categoryArr = [];
-    const translations = $scope.translations;
+
     categoryArr.push(
       ["", ""],
       [translations.ANT, "Ant"],
@@ -544,9 +544,9 @@ sortCategories = function ($scope) {
 };
 
 sortCountries = function ($scope, displayAllOption, $cookies) {
-  $scope.$watch("translations", async function () {
+  $scope.$watch("translations", async function (translations) {
     const countryArr = [];
-    const translations = $scope.translations;
+    console.log("translations: ", translations);
 
     countryArr.push(
       [translations.FINLAND, "FINLAND"],
@@ -699,6 +699,10 @@ sortCountries = function ($scope, displayAllOption, $cookies) {
       }
     }
     $scope.countries = countryArr;
+    if (!displayAllOption) {
+      // use because of await
+      $scope.$digest();
+    }
   });
 };
 

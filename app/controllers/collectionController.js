@@ -144,7 +144,7 @@ exports.list = function (req, res) {
           if (err) throw err;
           console.log("results: " + results);
           if (results.length === 0) {
-            results = null;
+            results = "insect(s) were removed from database";
           }
           return res.send(results);
         });

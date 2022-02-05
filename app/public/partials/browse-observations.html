@@ -158,13 +158,9 @@
 
 					<div ng-switch-when="byCategory">
 						<select name="category" ng-model="query.category">
-							<option value=""></option>
-							<option value="Ant">{{translations.ANT}}</option>
-							<option value="Bee">{{translations.BEE}}</option>
-							<option value="Beetle">{{translations.BEETLE}}</option>
-							<option value="Butterfly">{{translations.BUTTERFLY}}</option>
-							<option value="Centipede">{{translations.CENTIPEDE}}</option>
-							<option value="Spider">{{translations.SPIDER}}</option>
+							<option ng-repeat="category in categories" value="{{category[1]}}">
+								{{category[0]}}
+							</option>
 						</select>
 					</div>
 
