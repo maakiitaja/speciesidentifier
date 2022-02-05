@@ -26,6 +26,7 @@ const viewRouter = require("./app/routes/viewRoutes");
 const insectRouter = require("./app/routes/insectRoutes");
 const collectionRouter = require("./app/routes/collectionRoutes");
 const observationRouter = require("./app/routes/observationRoutes");
+const dbRouter = require("./app/routes/dbRoutes");
 
 var configDB = require("./app/config/dbConfig.js");
 
@@ -75,9 +76,9 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // Initialize Passport
 var initPassport = require("./passport/init");
 initPassport(passport);
+
 app.use(csrfProtection);
 app.use(function (req, res, next) {
-  //console.log("req.csrftoken:", req.csrfToken());
   res.cookie("XSRF-TOKEN", req.csrfToken());
   next();
 });
@@ -85,18 +86,10 @@ app.use(function (req, res, next) {
 // routes
 userRouter(app, passport);
 app.use("/", viewRouter);
-// app.use("/insects", insectRouter);
-// app.use("/collections", collectionRouter);
-// app.use("/observations", observationRouter);
-
-// routes ======================================================================
-require("./app/routes.js")(app, passport); // load our routes and pass in our app and fully configured passport
-
-// launch ======================================================================
-//---
-//app.listen(port);
-//console.log('The magic happens on port ' + port);
-//----
+app.use("/insects", insectRouter);
+app.use("/collections", collectionRouter);
+app.use("/observations", observationRouter);
+app.use("/db", dbRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

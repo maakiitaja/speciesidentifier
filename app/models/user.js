@@ -42,8 +42,6 @@ UserSchema.methods.createHash = async function () {
 
 // // checking if password is valid
 UserSchema.methods.isValidPassword = async function (password) {
-  console.log("password", password);
-  console.log("this.password", this.password);
   return await bcrypt.compare(password, this.password);
 };
 

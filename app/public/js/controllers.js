@@ -234,7 +234,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
       console.log("farmtype nonOrganicFarm: " + nonOrganicFarm);
 
       $http({
-        url: "/observation/browse",
+        url: "/observations/browse",
         method: "GET",
         params: {
           countryPart: query.countryPart,
@@ -329,7 +329,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     highlightElement("manage-button");
     console.log("$scope.currentUser: ", $scope.currentUser);
     $http({
-      url: "/uploadList",
+      url: "/insects/upload-list",
       method: "GET",
       params: { userId: $scope.currentUser._id },
     }).success(function (data) {
@@ -423,7 +423,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
         user: $scope.currentUser,
       };
       $http({
-        url: "/insect/delete",
+        url: "/insects/delete",
         method: "DELETE",
         params: params,
       }).success(function (data) {
@@ -874,7 +874,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
 
       // remove the insect from the remote collection
       $http({
-        url: "/collection/remove",
+        url: "/collections/remove",
         method: "DELETE",
         params: { insectId: insect._id, user: $location.search().currentUser },
       })
@@ -1069,7 +1069,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         // insert the item to the remote collection
 
         $http({
-          url: "/collection/insert",
+          url: "/collections/insert",
           method: "POST",
           params: {
             insectId: $scope.insect._id,
@@ -1335,10 +1335,10 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
         insectId: $scope.insectId,
       };
 
-      $http({ url: "/observation/add", method: "POST", params: params })
+      $http({ url: "/observations/add", method: "POST", params: params })
         .success(function (data) {
           console.log("add observation returned data: ", data);
-          if (!data) {
+          if (!data || data === "not authenticated") {
             console.log("no data after add observation");
             $scope.reportError();
             return;
@@ -1688,7 +1688,7 @@ insectIdentifierControllers.controller("ListCtrl", [
     $scope.location = $location;
 
     $http({
-      url: "/insect/search",
+      url: "/insects/search",
       method: "GET",
       params: {
         primaryColor: query.primaryColor,
@@ -1914,9 +1914,15 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     var params = { user: $scope.currentUser };
 
     // search for remote collection items
-    $http({ url: "/collection/list", params: params })
+    $http({ url: "/collections/list", params: params })
       .success(async function (data) {
         console.log("data: ", data);
+        if (data === "not authenticated") {
+          $scope.collectionEmpty = collectionEmpty(collection);
+          toggleLoadingSpinner($scope);
+          return;
+        }
+
         if (!data) {
           console.log("user has no items in remote collection");
           // no existing remote collection
@@ -1949,7 +1955,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
               console.log("pushing local changes");
               // synchronize all items in local storage with the remote (push local changes)
               $http({
-                url: "/collection/insertmany",
+                url: "/collections/insertmany",
                 method: "POST",
                 params: params,
               })
@@ -2288,7 +2294,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       console.log("removed local ids: ", removeRemoteIds);
 
       $http({
-        url: "/collection/removemany",
+        url: "/collections/removemany",
         method: "DELETE",
         params: { user: $scope.currentUser, removeInsectIds: removeRemoteIds },
       })
@@ -2576,7 +2582,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         "choosing to push new items from local to the remote collection"
       );
       $http({
-        url: "/collection/insertmany",
+        url: "/collections/insertmany",
         params: { insectIds: syncIds },
         user: $location.search().currentUser,
         method: "POST",

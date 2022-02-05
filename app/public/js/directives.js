@@ -99,7 +99,7 @@ myApp.directive("latinName", function ($http, $q) {
 
         const response = await $http({
           method: "GET",
-          url: "/latinNameExists",
+          url: "/insects/latin-name-exists",
           params: { latinName: viewValue },
         });
 
@@ -313,11 +313,8 @@ myApp.directive("header", function () {
           $scope.currentUser = JSON.parse(JSON.stringify(data));
           var tmp = JSON.parse(JSON.stringify(data));
           console.log("tmp: " + tmp);
-          console.log("tmp.username: " + tmp.username);
+
           console.log("header currentuser: " + $scope.currentUser);
-          console.log(
-            "header currentuser.username: " + $scope.currentUser.username
-          );
 
           $scope.openMobileNav = function () {
             var header = document.getElementById("header");

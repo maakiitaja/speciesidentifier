@@ -154,7 +154,7 @@ insectIdentifierApp.factory("SearchService", [
             $scope.disableSearch = true;
 
             $http({
-              url: "/insect/search",
+              url: "/insects/search",
               method: "GET",
               params: {
                 primaryColor: query.primaryColor,
@@ -266,8 +266,6 @@ insectIdentifierApp.factory("Auth", [
         if (Array.isArray(existing_cookie_user))
           console.log("existing_user is an array");
         console.log("Auth set user parameter: " + JSON.stringify(user));
-        console.log("Auth set user parameter: " + user.username);
-        //_user =  user || existing_cookie_user;
 
         $cookies.put("current.user", user);
       },

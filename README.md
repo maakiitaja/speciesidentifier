@@ -22,7 +22,7 @@ npm start
 
 http://localhost:3000/#/login
 
-To reset a test database (doesn't create thumb picture by default): http://localhost:3000/populate_db
+To reset a test database (doesn't create thumb picture by default): http://localhost:3000/db/populate
 
 ## Suggestions
 
