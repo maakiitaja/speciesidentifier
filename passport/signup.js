@@ -11,17 +11,13 @@ module.exports = function (passport) {
         passwordField: "password",
         passReqToCallback: true,
       },
-      function (req, username, password, done) {
+      function (req, email, password, done) {
         findOrCreateUser = function () {
           console.log("req.body.username:" + req.body.username);
-          console.log("username:" + username);
-          //console.log('password:'+password);
-          // var tmp = username;
-          // username = password;
-          // password = tmp;
+          const username = req.body.username;
 
           // find a user in Mongo with provided username
-          User.findOne({ email: username }, async function (err, user) {
+          User.findOne({ email: email }, async function (err, user) {
             // In case of any error return
             if (err) {
               console.log("Error in SignUp: " + err);
@@ -37,7 +33,7 @@ module.exports = function (passport) {
               // create the user
               var newUser = new User();
               // set the user's local credentials
-              newUser.username = req.body.username;
+              newUser.username = username;
               newUser.password = password;
               newUser.password = await newUser.createHash();
               newUser.email = username;
@@ -49,7 +45,7 @@ module.exports = function (passport) {
                   throw err;
                 }
                 console.log("User Registration succesful");
-                newUser.password = undefined;
+                console.log("user: ", newUser);
                 // render the page and pass in any flash data if it exists
                 //res.render('profile.ejs', { message: req.flash('loginMessage') });
                 return done(null, newUser);

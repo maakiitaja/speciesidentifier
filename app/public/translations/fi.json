@@ -295,5 +295,6 @@
   "FILEUPLOADSUCCESS": "Hyönteinen on lisätty tai muokattu onnistuneesti",
   "ANYTYPE": "Kaikki",
   "BROWSE": "Selaa",
-  "ALL": "Kaikki"
+  "ALL": "Kaikki",
+  "PASSWORDCONFIRM": "Salasana uudelleen"
 }

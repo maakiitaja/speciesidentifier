@@ -315,110 +315,109 @@ myApp.directive("header", function () {
           console.log("tmp: " + tmp);
 
           console.log("header currentuser: " + $scope.currentUser);
-
-          $scope.openMobileNav = function () {
-            var header = document.getElementById("header");
-            header.classList.toggle("nav-open");
-          };
-
-          $scope.closeMobileNav = function () {
-            var header = document.getElementById("header");
-            header.classList.toggle("nav-open");
-          };
-
-          $scope.resetHeader = function () {
-            resetHeader();
-          };
-
-          $scope.highlightElement = function (el) {
-            highlightElement(el);
-          };
-
-          $scope.disableMobileNavigation = function () {
-            var header = document.getElementById("header");
-            header.classList.remove("nav-open");
-          };
-
-          $scope.collection = function () {
-            $scope.disableMobileNavigation();
-
-            $scope.resetHeader();
-            $scope.highlightElement("collection-button");
-
-            $scope.location.path("collection");
-          };
-          $scope.search = function () {
-            $scope.disableMobileNavigation();
-
-            $scope.resetHeader();
-            $scope.highlightElement("search-header");
-
-            $scope.location.path("search");
-          };
-          $scope.upload = function () {
-            $scope.disableMobileNavigation();
-
-            $scope.resetHeader();
-            $scope.highlightElement("manage-button");
-
-            $scope.location.path("insect/upload");
-          };
-
-          $scope.modify = function (currentUser) {
-            $scope.disableMobileNavigation();
-
-            $scope.resetHeader();
-            $scope.highlightElement("manage-button");
-
-            $scope.location
-              .path("insect/uploadList")
-              .search({ currentUser: currentUser });
-          };
-          $scope.addObservation = function (currentUser) {
-            $scope.disableMobileNavigation();
-
-            $scope.resetHeader();
-            if (currentUser) {
-              $scope.highlightElement("observation-button");
-            }
-
-            $scope.location
-              .path("addObservations")
-              .search({ currentUser: currentUser });
-          };
-          $scope.browseObservation = function (currentUser) {
-            $scope.disableMobileNavigation();
-
-            $scope.resetHeader();
-            if (currentUser) {
-              $scope.highlightElement("observation-button");
-            } else {
-              $scope.highlightElement("observation-button-browse");
-            }
-
-            $scope.location
-              .path("browseObservations")
-              .search({ currentUser: currentUser });
-          };
-
-          $scope.setLanguage = function (lang) {
-            $scope.disableMobileNavigation();
-
-            $cookies.put("lang", lang);
-            console.log("lang: " + lang);
-            TranslationService.getTranslation($scope, $cookies.get("lang"), "");
-            $scope.lang = lang;
-            $route.reload();
-          };
-          $scope.login = function () {
-            $scope.disableMobileNavigation();
-
-            $scope.resetHeader();
-            $scope.highlightElement("login");
-
-            $scope.location.path("login");
-          };
         });
+        $scope.openMobileNav = function () {
+          var header = document.getElementById("header");
+          header.classList.toggle("nav-open");
+        };
+
+        $scope.closeMobileNav = function () {
+          var header = document.getElementById("header");
+          header.classList.toggle("nav-open");
+        };
+
+        $scope.resetHeader = function () {
+          resetHeader();
+        };
+
+        $scope.highlightElement = function (el) {
+          highlightElement(el);
+        };
+
+        $scope.disableMobileNavigation = function () {
+          var header = document.getElementById("header");
+          header.classList.remove("nav-open");
+        };
+
+        $scope.collection = function () {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+          $scope.highlightElement("collection-button");
+
+          $scope.location.path("collection");
+        };
+        $scope.search = function () {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+          $scope.highlightElement("search-header");
+
+          $scope.location.path("search");
+        };
+        $scope.upload = function () {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+          $scope.highlightElement("manage-button");
+
+          $scope.location.path("insect/upload");
+        };
+
+        $scope.modify = function (currentUser) {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+          $scope.highlightElement("manage-button");
+
+          $scope.location
+            .path("insect/uploadList")
+            .search({ currentUser: currentUser });
+        };
+        $scope.addObservation = function (currentUser) {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+          if (currentUser) {
+            $scope.highlightElement("observation-button");
+          }
+
+          $scope.location
+            .path("addObservations")
+            .search({ currentUser: currentUser });
+        };
+        $scope.browseObservation = function (currentUser) {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+          if (currentUser) {
+            $scope.highlightElement("observation-button");
+          } else {
+            $scope.highlightElement("observation-button-browse");
+          }
+
+          $scope.location
+            .path("browseObservations")
+            .search({ currentUser: currentUser });
+        };
+
+        $scope.setLanguage = function (lang) {
+          $scope.disableMobileNavigation();
+
+          $cookies.put("lang", lang);
+          console.log("lang: " + lang);
+          TranslationService.getTranslation($scope, $cookies.get("lang"), "");
+          $scope.lang = lang;
+          $route.reload();
+        };
+        $scope.login = function () {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+          $scope.highlightElement("login");
+
+          $scope.location.path("login");
+        };
       },
     ],
   };

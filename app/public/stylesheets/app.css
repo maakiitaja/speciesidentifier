@@ -206,7 +206,7 @@ html {
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-  background-color: #2e2e2e;
+  background-color: #413f3f;
   color: white;
 }
 
@@ -217,7 +217,7 @@ html {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-  background-color: #2e2e2e;
+  background-color: #413f3f;
   cursor: pointer;
 }
 

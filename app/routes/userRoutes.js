@@ -1,5 +1,7 @@
 const authController = require("./../controllers/authController");
+const express = require("express");
 
+const router = express.Router();
 module.exports = function (app, passport) {
   app.post(
     "/login",
@@ -9,14 +11,8 @@ module.exports = function (app, passport) {
       failureFlash: true, // allow flash messages
     })
   );
-  app.post(
-    "/signup",
-    passport.authenticate("signup", {
-      successRedirect: "/#/main", // redirect to the secure profile section
-      failureRedirect: "/#/signup-failure", // redirect back to the signup page if there is an error
-      failureFlash: true, // allow flash messages
-    })
-  );
+
+  app.post("/signup", authController.signup);
 
   app.get("/profile", authController.isLoggedIn, function (req, res) {
     res.render("profile.ejs", {

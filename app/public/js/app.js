@@ -106,7 +106,7 @@ insectIdentifierApp.config([
       })
       .when("/signup", {
         templateUrl: "partials/signup.html",
-        controller: "LoggingCtrl",
+        controller: "SignupCtrl",
       })
       .when("/login-failure", {
         templateUrl: "partials/login.html",
@@ -114,7 +114,7 @@ insectIdentifierApp.config([
       })
       .when("/signup-failure", {
         templateUrl: "partials/signup.html",
-        controller: "LoggingFailureCtrl",
+        controller: "SignupCtrl",
       })
       .when("/fileuploaderror", {
         templateUrl: "partials/fileuploaderror.html",

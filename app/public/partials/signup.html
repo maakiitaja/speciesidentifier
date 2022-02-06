@@ -9,24 +9,35 @@
         <div id="message" ng-if='message != ""' class="alert alert-danger">{{message}}</div>
 
         <!-- LOGIN FORM -->
-        <form action="/signup" method="post">
+        <form ng-submit="signup()">
             <div class="form-group">
                 <label>{{translations.USERNAME}}</label>
-                <input type="text" class="form-control" id="username" name="username">
+                <input type="text" class="form-control" id="username" name="username" ng-model="username" required
+                    minlength='4'>
             </div>
             <div class="form-group">
                 <label>{{translations.EMAIL}}</label>
-                <input id="email" type="text" class="form-control" name="email">
+                <input id="email" class="form-control" ng-model="email" type="email" name="email" required>
             </div>
             <div class="form-group">
                 <label>{{translations.PASSWORD}}</label>
-                <input id="password" type="password" class="form-control" id="password" name="password">
+                <input id="password" type="password" ng-model="password" class="form-control" name="password" required
+                    minlength='4' placeholder="••••" ng-change="passwordConfirmField()">
+            </div>
+            <div class="form-group">
+                <label>{{translations.PASSWORDCONFIRM}}</label>
+                <input id="passwordConfirm" type="password" class="form-control" name="passwordConfirm"
+                    ng-change="passwordConfirmField()" ng-model="passwordConfirm" required placeholder="••••"
+                    minlength='1'>
+                passwordConfirmOk: {{passwordConfirmOk}}
             </div>
             <input type="hidden" name="_csrf" value="{{csrftoken}}">
             <button type="submit" id="signup" class="btn btn-warning btn-lg">{{translations.SIGNUP}}</button>
         </form>
 
         <hr>
+
+        <div id="messageInfo" ng-if='messageInfo != ""' class="alert alert-success">{{messageInfo}}</div>
 
         <p>{{translations.ALREADYACCOUNT}} <a href="#/login">{{translations.LOGIN}}</a></p>
         <p>{{translations.ORGO}} <a href="#/main">{{translations.HOME}}</a>.</p>

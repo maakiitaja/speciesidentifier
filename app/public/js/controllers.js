@@ -53,6 +53,112 @@ insectIdentifierControllers.controller("LoggingFailureCtrl", [
   },
 ]);
 
+insectIdentifierControllers.controller("SignupCtrl", [
+  "$scope",
+  "Search",
+  "$location",
+  "$http",
+  "$cookies",
+  "$window",
+  function ($scope, Search, $location, $http, $cookies, $window) {
+    $scope.message = "";
+    $scope.messageInfo = "";
+    console.log("logging controller");
+    resetHeader();
+
+    console.log("cookies.XSRF-TOKEN:", $cookies.get("XSRF-TOKEN"));
+    $scope.csrftoken = $cookies.get("XSRF-TOKEN");
+    $scope.passwordConfirmField = function () {
+      console.log("password confirmation");
+      const passwordConfirmEl = document.getElementById("passwordConfirm");
+
+      if ($scope.password === $scope.passwordConfirm) {
+        console.log("passwords match");
+        passwordConfirmEl.classList.add("ng-valid");
+        passwordConfirmEl.classList.remove("ng-invalid");
+        $scope.passwordConfirmOk = true;
+      } else {
+        passwordConfirmEl.classList.remove("ng-valid");
+        passwordConfirmEl.classList.add("ng-invalid");
+        $scope.passwordConfirmOk = false;
+        console.log('passwords don"t match');
+      }
+    };
+
+    $scope.signup = function () {
+      console.log("$scope.password:", $scope.password);
+      console.log("$scope.username:", $scope.username);
+      console.log("$scope.email:", $scope.email);
+      console.log("$scope.confirmPassword: ", $scope.passwordConfirm);
+      if ($scope.password !== $scope.passwordConfirm) {
+        $scope.message = "Passwords do not match";
+        setTimeout(
+          function ($scope) {
+            $scope.message = "";
+            $scope.$apply();
+          },
+          2000,
+          $scope
+        );
+        return;
+      }
+
+      $http({
+        url: "/signup",
+        method: "POST",
+        params: {
+          password: $scope.password,
+          passwordConfirm: $scope.passwordConfirm,
+          email: $scope.email,
+          username: $scope.username,
+        },
+      })
+        .success(function (response) {
+          console.log("response:", response);
+          if (response.message === "User already exists") {
+            console.log("user already exists");
+            $scope.message = "User already exists";
+            setTimeout(
+              function ($scope) {
+                console.log("clearing message");
+                $scope.message = "";
+                $scope.$apply();
+              },
+              2000,
+              $scope
+            );
+            return;
+          }
+
+          if (response.message === "Passwords do not match") {
+            $scope.message = "Passwords do not match";
+            setTimeout(
+              function ($scope) {
+                $scope.message = "";
+                $scope.$apply();
+              },
+              2000,
+              $scope
+            );
+            return;
+          }
+          $scope.messageInfo = "Successfully signed up. Redirecting...";
+          setTimeout(
+            function ($window) {
+              console.log("changing to login page");
+              $window.location.href = "#/login";
+            },
+            3000,
+            $window
+          );
+        })
+        .catch(function (error) {
+          console.log("error", error);
+        });
+    };
+  },
+]);
+
 insectIdentifierControllers.controller("BrowseObservationsCtrl", [
   "$scope",
   "Search",
