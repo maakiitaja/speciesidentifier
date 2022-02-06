@@ -344,31 +344,6 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       // order by category
       var uploadList = constructUploadListByCategory(data);
 
-      // for (var i = 0; i < data.length; i++) {
-      //   // check if the category exists
-      //   var categoryExists = false;
-      //   for (var j = 0; j < listLength; j++) {
-      //     console.log("list[data[i].category]: " + list[data[i].category]);
-      //     if (list[data[i].category]) {
-      //       console.log("category: " + data[i].category + " exists.");
-      //       categoryExists = true;
-      //       break;
-      //     }
-      //   }
-
-      //   if (!categoryExists) {
-      //     console.log("adding a category: " + data[i].category);
-      //     list[data[i].category] = [];
-      //   }
-      //   console.log("adding an item: " + data[i]);
-      //   listLength++;
-      //   list[data[i].category].push(data[i]);
-
-      //   console.log(list[data[i].category]);
-      // }
-
-      //console.log(JSON.stringify(list));
-
       $scope.uploadList = uploadList;
       $scope.dataLength = data.length;
     });
@@ -923,30 +898,6 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
         });
       }
 
-      // for (var i = 0; i < collection.insectsByCategory[category].length; i++) {
-      //   if (
-      //     collection.insectsByCategory[category][i]._id == $scope.insect._id
-      //   ) {
-      //     console.log("found insect from local storage at position: " + i);
-
-      //     collection.insectsByCategory[category].splice(i, 1);
-      //     // remove the insect id from local collection
-      //     collection.insects = collection.insects.filter(
-      //       (insect) => insect._id !== $scope.insect._id
-      //     );
-
-      //     // remove the insect's images
-      //     $scope.insect.images.forEach(function (image) {
-      //       console.log('emptying local collection"s insect image:', image);
-      //       $localStorage[image] = null;
-      //       $localStorage[image + "_thumb.jpg"] = null;
-      //     });
-
-      //     success = true;
-      //     break;
-      //   }
-      // }
-
       if (success) {
         $scope.messageRemovedSuccess =
           $scope.translations.REMOVEDINSECTFROMLOCALCOLLECTION;
@@ -984,68 +935,6 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
           console.log("found duplicate");
           duplicate = true;
         }
-
-        //if (collection.insectsByCategory[$scope.insect.category].length > 0) {
-        // var category = collection.insectsByCategory[$scope.insect.category];
-
-        // console.log(category);
-
-        // for (var i = 0; i < category.length; i++) {
-        //   var tmpInsect = category[i];
-        //   console.log(tmpInsect._id);
-
-        //   if (tmpInsect._id == $scope.insect._id) {
-        //     console.log(
-        //       "found duplicate between localstorage and server data"
-        //     );
-        //     // found duplicate
-        //     duplicate = true;
-        //     break;
-        //   }
-        // }
-        // if (!duplicate) {
-        //   collection.insectsByCategory[$scope.insect.category].push(
-        //     $scope.insect
-        //   );
-        //   // add insect object to the localStorage for quick rererence
-        //   if (collection.insects) {
-        //     console.log(
-        //       "saving reference information about insect to localStorage"
-        //     );
-        //     console.log($scope.insect);
-        //     collection.insects.push({
-        //       _id: $scope.insect._id,
-        //       updatedAt: $scope.insect.updatedAt,
-        //     });
-        //   }
-        //   console.log("not a duplicate");
-        //   await saveImagesToLocalStorage($scope, $localStorage);
-
-        //   //alert("Saved insect to collection");
-        // }
-        // } else {
-        //   if (collection.insects) {
-        //     collection.insectsByCategory[$scope.insect.category].push(
-        //       $scope.insect
-        //     );
-        //     // add insect id to the localStorage
-        //     console.log("$scope.insect:", $scope.insect);
-        //     collection.insects.push({
-        //       _id: $scope.insect._id,
-        //       updatedAt: $scope.insect.updatedAt,
-        //     });
-
-        //     console.log(
-        //       "found no insects in the category: " +
-        //         collection.insectsByCategory[$scope.insect.category]
-        //     );
-        //     await saveImagesToLocalStorage($scope, $localStorage);
-        //   } else {
-        //     alert(
-        //       "no collection exists in localstorage or it doesn't reflect the new structure, has it been removed?"
-        //     );
-        //   }
-        // }
       } else {
         $localStorage.collection = [];
 
@@ -2138,16 +2027,6 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         const localInd = $localStorage.collection.findIndex((insect) => {
           if (insect._id === updatedRemoteInsect._id) return true;
         });
-        // for (var ind in $localStorage.collectionObj.insectsByCategory) {
-        //   var category = $localStorage.collectionObj.insectsByCategory[ind];
-        //   const localInd = category.findIndex((el) => {
-        //     if (el._id === updatedRemoteInsect._id) {
-        //       console.log(
-        //         "found the updated remote item in the local collection"
-        //       );
-        //       return true;
-        //     }
-        //   });
 
         if (localInd > -1) {
           const changedImages = [];
@@ -2390,111 +2269,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           $localStorage[removedImages[i].url + "_thumb.jpg"] = null;
           $localStorage[removedImages[i].url] = null;
         }
-
-        // for (var category in insectsByCategory) {
-        //   console.log("category ", category);
-        //   if (found) break;
-        //   var insects = insectsByCategory[category];
-
-        //   for (var i = 0; i < insects.length; i++) {
-        //     if (insects[i]._id === updatedId) {
-        //       console.log(
-        //         "found insect with id: ",
-        //         updatedId,
-        //         " in the local collection"
-        //       );
-        //       // search for the indexes
-        //       var localInsect = insectsByCategory[category].find(
-        //         (el) => updatedId === el._id
-        //       );
-        //       var indLocal = insectsByCategory[category].indexOf(localInsect);
-        //       console.log("indlocal: ", indLocal);
-        //       console.log("id: ", updatedId);
-
-        //       var indUpdated = updatedIds.indexOf(updatedId);
-
-        //       console.log("indUpdated: ", indUpdated);
-
-        //       // update the local insect data
-        //       console.log(
-        //         "insectsByCategory[category][indLocal] before: ",
-        //         insectsByCategory[category][indLocal]
-        //       );
-        //       insectsByCategory[category][indLocal] =
-        //         updatedInsects[indUpdated];
-        //       console.log(
-        //         "insectsByCategory[category][indLocal] after: ",
-        //         insectsByCategory[category][indLocal]
-        //       );
-
-        //       // load local images again
-        //       $scope.insect = JSON.parse(
-        //         JSON.stringify(updatedInsects[indUpdated])
-        //       );
-        //       // modify the images array to include only added pictures
-        //       const addedImages = [];
-        //       $scope.findNewImages(
-        //         $scope.conflictObj[updatedIdInd].outdatedInsect,
-        //         $scope.conflictObj[updatedIdInd].updatedInsect,
-        //         addedImages
-        //       );
-        //       const addedImagesUrls = addedImages.map(
-        //         (addedImage) => addedImage.url
-        //       );
-        //       $scope.insect.images = addedImagesUrls;
-        //       console.log("adding new images to local storage: ", addedImages);
-        //       $scope.saveImagesToLocalStorage($scope, $localStorage);
-
-        //       // remove old local images
-        //       const removedImages = [];
-        //       // in local insect, note the order of variables is changed
-        //       $scope.findDeletedImages(
-        //         $scope.conflictObj[updatedIdInd].outdatedInsect,
-        //         $scope.conflictObj[updatedIdInd].updatedInsect,
-        //         removedImages
-        //       );
-        //       for (var i = 0; i < removedImages.length; i++) {
-        //         console.log(
-        //           "removing image: ",
-        //           removedImages[i].url,
-        //           "from localStorage"
-        //         );
-        //         $localStorage[removedImages[i].url + "_thumb.jpg"] = null;
-        //         $localStorage[removedImages[i].url] = null;
-        //       }
-
-        //       // update the shortcut array
-        //       var insectLocal = $localStorage.collectionObj.insects.find(
-        //         (el) => el._id === updatedId
-        //       );
-        //       console.log("insectLocal:", insectLocal);
-        //       var insectLocalInd =
-        //         $localStorage.collectionObj.insects.indexOf(insectLocal);
-        //       console.log("insectLocalInd: ", insectLocalInd);
-        //       $localStorage.collectionObj.insects[insectLocalInd].updatedAt =
-        //         updatedInsects[indRemote].updatedAt;
-        //       console.log(
-        //         "$localStorage.collectionObj.insects:",
-        //         $localStorage.collectionObj.insects
-        //       );
-
-        //       found = true;
-        //       break;
-        //     }
-        //   }
-        // }
       });
-
-      // console.log(
-      //   "$localStorage.collectionObj.insectsByCategory before: ",
-      //   $localStorage.collectionObj.insectsByCategory
-      // );
-      // $localStorage.collectionObj.insectsByCategory = insectsByCategory;
-
-      // console.log(
-      //   "$localStorage.collectionObj.insectsByCategory after: ",
-      //   $localStorage.collectionObj.insectsByCategory
-      // );
     };
 
     $scope.removeItemsFromLocal = function (localIds) {
@@ -2508,61 +2283,10 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         insectsByCategoryTmp = insectsByCategoryTmp.filter(
           (insect) => insect._id !== localId
         );
-
-        // for (var category in insectsByCategory) {
-        //   console.log("category ", category);
-        //   if (found) break;
-        //   var insects = insectsByCategory[category];
-
-        //   for (var i = 0; i < insects.length; i++) {
-        //     if (insects[i]._id === id) {
-        //       console.log(
-        //         "found insect with id: ",
-        //         id,
-        //         " in the local collection"
-        //       );
-        //       // search for the index
-        //       var insect = insectsByCategoryTmp[category].find(
-        //         (el) => id === el._id
-        //       );
-        //       var ind = insectsByCategoryTmp[category].indexOf(insect);
-        //       console.log("ind is : ", ind);
-        //       console.log(
-        //         "insectsByCategoryTmp before: ",
-        //         insectsByCategoryTmp
-        //       );
-        //       if (ind >= 0) {
-        //         console.log("removing insect from local collection");
-        //         insectsByCategoryTmp[category].splice(ind, 1);
-        //       }
-        //       console.log("insectsByCategoryTmp after: ", insectsByCategoryTmp);
-        //       found = true;
-        //       break;
-        //     }
-        //   }
-        // }
       });
 
       // update the collection
       $localStorage.collection = insectsByCategoryTmp;
-
-      // 2. remove from collectionObj.insects
-      // var insects = $localStorage.collection;
-      // var insectsTmp = [...insects];
-      // console.log("insectsTmp: ", insectsTmp);
-      // // remove insects from compendium
-      // if (insects !== undefined && insects.length > 0) {
-      //   localIds.forEach(function (id) {
-      //     console.log("id: ", id);
-      //     var localInsect = insectsTmp.find((insect) => insect._id === id);
-      //     var removeInd = insectsTmp.indexOf(localInsect);
-      //     console.log("removeInd: ", removeInd);
-      //     if (removeInd >= 0) {
-      //       console.log("found a match between remote and local collection");
-      //       insectsTmp.splice(removeInd, 1);
-      //     }
-      //   });
-      // }
 
       // 2 images
       // remove the insect's images
@@ -2634,39 +2358,6 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         } else {
           console.log("found a duplicate remote item in local collection");
         }
-        // var insectData = data[i];
-        // var duplicate = 0;
-
-        // var category = insectsByCategory[insectData.category];
-        // console.log("category: ", category);
-        // // go through all the items in the locally stored category list
-        // category.forEach(function (localInsect, ind) {
-        //   if (localInsect._id === insectData._id) {
-        //     console.log(
-        //       "found duplicate between localstorage and server data for insect: ",
-        //       localInsect.latinName
-        //     );
-        //     // found duplicate
-        //     duplicate = true;
-        //   }
-        // });
-
-        // if (!duplicate) {
-        //   console.log(
-        //     "adding to local collection item from remote collection with insect id: ",
-        //     insectData._id
-        //   );
-        //   // update the local storage
-        //   insectsByCategory[insectData.category].push(insectData);
-        //   $localStorage.collectionObj.insects.push({
-        //     _id: insectData._id,
-        //     updatedAt: insectData.updatedAt,
-        //   });
-        //   // add the image of the item to the local collection
-        //   $scope.insect = insectData;
-
-        //   $scope.saveImagesToLocalStorage($scope, $localStorage);
-        // }
       });
     };
 
@@ -2720,31 +2411,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           if (localInd !== -1)
             localInsects.push($localStorage.collection[localInd]);
         });
-        // remoteIds.forEach(function (remoteId) {
-        //   for (var ind in $localStorage.collectionObj.insectsByCategory) {
-        //     var category = $localStorage.collectionObj.insectsByCategory[ind];
-        //     const localInd = category.findIndex((el) => {
-        //       if (el._id === remoteId) {
-        //         console.log("found the updated item in the local collection");
-        //         return true;
-        //       }
-        //     });
-        //     if (localInd > 0) {
-        //       localInsects.push(
-        //         $localStorage.collectionObj.insectsByCategory[ind][localInd]
-        //       );
-        //       break;
-        //     }
-        //   }
-        // });
       } else {
         localInsects = $localStorage.collection;
-        // for (var ind in $localStorage.collectionObj.insectsByCategory) {
-        //   $localStorage.collectionObj.insectsByCategory[ind].forEach(function (
-        //     insect
-        //   ) {
-        //     localInsects.push(insect);
-        //   });
       }
       console.log("localInsects", localInsects);
       return localInsects;
