@@ -107,10 +107,19 @@ const insectsByCategory = {
   Spider: [],
 };
 
-constructCollectionByCategory = function ($localStorage) {
+const insectsByCategoryFi = {
+  Spider: [],
+  Beetle: [],
+  Bee: [],
+  Ant: [],
+  Butterfly: [],
+  Centipede: [],
+};
+
+constructCollectionByCategory = function ($localStorage, $cookies) {
   console.log("construct local collection by category");
   // without taking into account language
-  const dst = JSON.parse(JSON.stringify(insectsByCategory));
+  const dst = insectsByCategoryByLang($cookies);
 
   $localStorage.collection.forEach(function (item) {
     const category = item.category;
@@ -122,16 +131,30 @@ constructCollectionByCategory = function ($localStorage) {
   $localStorage.collectionByCategory = dst;
 };
 
-constructUploadListByCategory = function (remoteItems) {
+constructUploadListByCategory = function (remoteItems, $cookies) {
   console.log("construct upload list by category");
   // without taking into account language
-  const dst = JSON.parse(JSON.stringify(insectsByCategory));
+  const dst = insectsByCategoryByLang($cookies);
 
   remoteItems.forEach(function (item) {
     const category = item.category;
     dst[category].push(item);
   });
   console.log("dst: ", dst);
+  return dst;
+};
+
+insectsByCategoryByLang = function ($cookies) {
+  let dst;
+  if (
+    $cookies === undefined ||
+    $cookies === null ||
+    $cookies.get("lang") === "en"
+  )
+    dst = JSON.parse(JSON.stringify(insectsByCategory));
+  else if ($cookies.get("lang") === "fi")
+    dst = JSON.parse(JSON.stringify(insectsByCategoryFi));
+  else dst = JSON.parse(JSON.stringify(insectsByCategory));
   return dst;
 };
 

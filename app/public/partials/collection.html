@@ -396,14 +396,8 @@
 		<div ng-repeat="insects in localStorage.collectionByCategory">
 
 			<div ng-if="insects.length > 0">
-				<h3 ng-if="insects[0].category == 'Ant'" id="collection-ant">{{translations.ANT}}:</h3>
-				<h3 ng-if="insects[0].category == 'Bee'" id="collection-bee">{{translations.BEE}}:</h3>
-				<h3 ng-if="insects[0].category == 'Beetle'" id="collection-beetle">{{translations.BEETLE}}:</h3>
-				<h3 ng-if="insects[0].category == 'Butterfly'" id="collecion-butterfly">{{translations.BUTTERFLY}}:
-				</h3>
-				<h3 ng-if="insects[0].category == 'Centipede'" id="collection-centipede">{{translations.CENTIPEDE}}:
-				</h3>
-				<h3 ng-if="insects[0].category == 'Spider'" id="collection-spider">{{translations.SPIDER}}:</h3>
+				<h3>{{translations[insects[0].category.toUpperCase()]}}</h3>
+
 				<ul class="insect-thumbs">
 					<li ng-repeat="insect in insects">
 						<div class="thumb-card">

@@ -342,7 +342,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       console.log("data: " + data);
 
       // order by category
-      var uploadList = constructUploadListByCategory(data);
+      var uploadList = constructUploadListByCategory(data, $cookies);
 
       $scope.uploadList = uploadList;
       $scope.dataLength = data.length;
@@ -1761,7 +1761,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       // check whether collection is empty
       $scope.collectionEmpty = collection.length === 0;
       console.log("collection empty: ", $scope.collectionEmpty);
-      constructCollectionByCategory($localStorage);
+      constructCollectionByCategory($localStorage, $cookies);
       return;
     } else {
       console.log("$scope.currentUser: ", $scope.currentUser);
@@ -1985,7 +1985,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $scope.newLocalDisabled = false;
         $scope.updateDisabled = false;
         $scope.collectionEmpty = collection.length === 0;
-        constructCollectionByCategory($localStorage);
+        constructCollectionByCategory($localStorage, $cookies);
         console.log("collection empty: ", $scope.collectionEmpty);
         $scope.$apply();
       })
@@ -1993,7 +1993,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         console.log("failed to refresh collection");
         $scope.collectionEmpty = collection.length === 0;
         console.log("collection empty: ", $scope.collectionEmpty);
-        constructCollectionByCategory($localStorage);
+        constructCollectionByCategory($localStorage, $cookies);
         toggleLoadingSpinner($scope);
         alert($scope.translations.REFRESHINGCOLLECTION);
       });
@@ -2428,7 +2428,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $scope.updatedInsectsObj.updatedInsects,
         $scope.updatedInsectsObj.updatedIds
       );
-      constructCollectionByCategory($localStorage);
+      constructCollectionByCategory($localStorage, $cookies);
       $scope.hideUpdateButton = true;
 
       $scope.messageUpdate = "Successfully updated the local collection.";
@@ -2451,7 +2451,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         console.log("pulling new remote items");
         $scope.pullNewItemsFromRemote($scope.newRemoteInsects);
         $scope.collectionEmpty = $localStorage.collection.length === 0;
-        constructCollectionByCategory($localStorage);
+        constructCollectionByCategory($localStorage, $cookies);
       } else {
         console.log("check selection value");
       }
@@ -2473,7 +2473,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         console.log("newinsectids: ", newLocalIds);
         $scope.removeItemsFromLocal(newLocalIds);
         $scope.collectionEmpty = $localStorage.collection.length === 0;
-        constructCollectionByCategory($localStorage);
+        constructCollectionByCategory($localStorage, $cookies);
       } else if (localPolicy === "push-local") {
         console.log("pushing new local items");
         $scope.pushNewItemsFromLocalCollection(newLocalIds);
