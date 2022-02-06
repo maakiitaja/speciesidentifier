@@ -136,6 +136,10 @@ exports.list = function (req, res) {
       var ids = compendium.insects;
       console.log("ids: " + ids);
 
+      if (ids.length === 0) {
+        return res.send([]);
+      }
+
       Insect.find()
         .where("_id")
         .in(ids)

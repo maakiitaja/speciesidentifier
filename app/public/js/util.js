@@ -98,25 +98,42 @@ function getInsectIdsFromLocalCollection(collection) {
   }
   return ids;
 }
+const insectsByCategory = {
+  Ant: [],
+  Bee: [],
+  Beetle: [],
+  Butterfly: [],
+  Centipede: [],
+  Spider: [],
+};
 
-function collectionEmpty(collection) {
-  var isEmpty = true;
+constructCollectionByCategory = function ($localStorage) {
+  console.log("construct local collection by category");
+  // without taking into account language
+  const dst = JSON.parse(JSON.stringify(insectsByCategory));
 
-  if (collection === undefined || collection === null) {
-    return isEmpty;
-  }
-  console.log("collection: ", collection);
+  $localStorage.collection.forEach(function (item) {
+    const category = item.category;
+    dst[category].push(item);
+  });
 
-  for (var ind in collection.insectsByCategory) {
-    console.log("category ", ind);
-    console.log("category.length ", collection.insectsByCategory[ind].length);
-    if (collection.insectsByCategory[ind].length > 0) {
-      isEmpty = false;
-      break;
-    }
-  }
-  return isEmpty;
-}
+  console.log("insectsByCategory:", insectsByCategory);
+  console.log("dst:", dst);
+  $localStorage.collectionByCategory = dst;
+};
+
+constructUploadListByCategory = function (remoteItems) {
+  console.log("construct upload list by category");
+  // without taking into account language
+  const dst = JSON.parse(JSON.stringify(insectsByCategory));
+
+  remoteItems.forEach(function (item) {
+    const category = item.category;
+    dst[category].push(item);
+  });
+  console.log("dst: ", dst);
+  return dst;
+};
 
 setDelay = function (el, ms, $scope) {
   console.log("in set delay, el:", el);
