@@ -121,7 +121,7 @@ insectIdentifierApp.config([
         controller: "FileUploadErrorCtrl",
       })
       .otherwise({
-        redirectTo: "/phones",
+        redirectTo: "/login",
       });
   },
 ]);

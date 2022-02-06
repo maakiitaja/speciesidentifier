@@ -49,6 +49,7 @@ module.exports = function (passport) {
                   throw err;
                 }
                 console.log("User Registration succesful");
+                newUser.password = undefined;
                 // render the page and pass in any flash data if it exists
                 //res.render('profile.ejs', { message: req.flash('loginMessage') });
                 return done(null, newUser);

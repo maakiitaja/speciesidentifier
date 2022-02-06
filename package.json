@@ -1,9 +1,9 @@
 {
-  "version": "0.0.0",
+  "version": "0.2.0",
   "private": true,
   "name": "insect-identifier",
-  "description": "application for searching insects",
-  "repository": "https://github.com/angular/angular-phonecat",
+  "description": "Application for identifying insects",
+  "repository": "https://github.com/maakiitaja/speciesidentifier",
   "license": "MIT",
   "devDependencies": {
     "body-parser": "~1.13.2",
@@ -24,7 +24,7 @@
     "mongoose": "^6.1.6",
     "morgan": "~1.6.1",
     "multer": "^1.1.0",
-    "passport": "^0.3.2",
+    "passport": "^0.5.2",
     "passport-google-auth": "^1.0.1",
     "passport-local": "^1.0.0",
     "protractor": "^5.1.2",

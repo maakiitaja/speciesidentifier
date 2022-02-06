@@ -30,18 +30,13 @@ const dbRouter = require("./app/routes/dbRoutes");
 
 var configDB = require("./app/config/dbConfig.js");
 
-//+++++
-var routes = require("./app/routes");
-//var users = require('./app/users');
-//+++++
-
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 
 require("./app/config/passport")(passport); // pass passport for configuration
 
 // set up our express application
-app.use(cookieParser("ilovescotchscotchyscotchscotch")); // read cookies (needed for auth)
+app.use(cookieParser()); // read cookies (needed for auth)
 
 //++++
 //app.use(bodyParser.json()); // to support JSON-encoded bodies
@@ -60,15 +55,15 @@ app.set("view engine", "jade"); // set up jade/pug for templating
 app.set("json spaces", 40);
 // +++++
 
-//-----
-//app.use('/', routes);
-//-----
-//+++++
-//app.use('/users', users);
-//+++++
-
 // required for passport
-app.use(session({ secret: "ilovescotchscotchyscotchscotch" })); // session secret
+app.use(
+  session({
+    secret: "ilovescotchscotchyscotchscotch",
+    cookie: { secure: false },
+    resave: false,
+    saveUninitialized: false,
+  })
+); // session secret
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
