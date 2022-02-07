@@ -18,8 +18,14 @@ exports.signup = function (req, res, next) {
   const username = req.query.username;
   console.log("passwordConfirm:", passwordConfirm, "password:", password);
 
+  if (password.length < 4) {
+    return res
+      .status(400)
+      .send({ message: "password length must be at least 4 characters" });
+  }
+
   if (password !== passwordConfirm) {
-    return res.send({ message: "Passwords do not match" });
+    return res.status(400).send({ message: "Passwords do not match" });
   }
 
   // find a user in Mongo with provided username

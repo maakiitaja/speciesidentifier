@@ -32,7 +32,6 @@ var UserSchema = new Schema({
   password: {
     type: String,
     required: [true, "Please provide a password"],
-    minlength: 4,
   },
   email: {
     type: String,
@@ -41,6 +40,10 @@ var UserSchema = new Schema({
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
   },
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+
   phone: Number,
   _enabled: Boolean,
   compendium: { type: mongoose.Schema.Types.ObjectId, ref: "Compendium" },
