@@ -2,12 +2,10 @@ var mongoose = require("mongoose");
 var ObjectId = require("mongodb").ObjectID;
 var Schema = mongoose.Schema;
 var bcrypt = require("bcryptjs");
+const validator = require("validator");
+var uniqueValidator = require("mongoose-unique-validator");
 
 var UserSchema = new Schema({
-  local: {
-    email: String,
-    password: String,
-  },
   facebook: {
     id: String,
     token: String,
@@ -26,9 +24,23 @@ var UserSchema = new Schema({
     email: String,
     name: String,
   },
-  username: String,
-  password: String,
-  email: String,
+  username: {
+    type: String,
+    unique: true,
+    required: [true, "Please provide a username"],
+  },
+  password: {
+    type: String,
+    required: [true, "Please provide a password"],
+    minlength: 4,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: [true, "Please provide an email"],
+    lowercase: true,
+    validate: [validator.isEmail, "Please provide a valid email"],
+  },
   phone: Number,
   _enabled: Boolean,
   compendium: { type: mongoose.Schema.Types.ObjectId, ref: "Compendium" },
@@ -44,6 +56,8 @@ UserSchema.methods.createHash = async function () {
 UserSchema.methods.isValidPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
+
+UserSchema.plugin(uniqueValidator);
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model("User", UserSchema);

@@ -112,10 +112,6 @@ insectIdentifierApp.config([
         templateUrl: "partials/login.html",
         controller: "LoggingFailureCtrl",
       })
-      .when("/signup-failure", {
-        templateUrl: "partials/signup.html",
-        controller: "SignupCtrl",
-      })
       .when("/fileuploaderror", {
         templateUrl: "partials/fileuploaderror.html",
         controller: "FileUploadErrorCtrl",

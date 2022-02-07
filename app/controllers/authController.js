@@ -48,7 +48,16 @@ exports.signup = function (req, res, next) {
       newUser.save(function (err) {
         if (err) {
           console.log("Error in Saving user: " + err);
-          throw err;
+          if (
+            typeof err === "string" &&
+            (err.contains("Please provide a valid email") ||
+              err.contains("password"))
+          )
+            return res.status(400).send({ message: err });
+          else {
+            // unique constraint failed for username
+            return res.status(422).send({ message: err });
+          }
         }
         console.log("User Registration succesful");
         console.log("user: ", newUser);

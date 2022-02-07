@@ -114,7 +114,12 @@ insectIdentifierControllers.controller("SignupCtrl", [
         },
       })
         .success(function (response) {
-          console.log("response:", response);
+          console.log(
+            "response:",
+            response,
+            "response.status:",
+            response.status
+          );
           if (response.message === "User already exists") {
             console.log("user already exists");
             $scope.message = "User already exists";
@@ -124,7 +129,7 @@ insectIdentifierControllers.controller("SignupCtrl", [
                 $scope.message = "";
                 $scope.$apply();
               },
-              2000,
+              5000,
               $scope
             );
             return;
@@ -137,7 +142,7 @@ insectIdentifierControllers.controller("SignupCtrl", [
                 $scope.message = "";
                 $scope.$apply();
               },
-              2000,
+              5000,
               $scope
             );
             return;
@@ -148,12 +153,38 @@ insectIdentifierControllers.controller("SignupCtrl", [
               console.log("changing to login page");
               $window.location.href = "#/login";
             },
-            3000,
+            2000,
             $window
           );
         })
         .catch(function (error) {
-          console.log("error", error);
+          // validation error
+          if (error.status === 400) {
+            $scope.message = "Email is not valid";
+            setTimeout(
+              function ($scope) {
+                console.log("clearing message");
+                $scope.message = "";
+                $scope.$apply();
+              },
+              5000,
+              $scope
+            );
+            return;
+          }
+          if (error.status === 422) {
+            $scope.message = "Username already exists";
+            setTimeout(
+              function ($scope) {
+                console.log("clearing message");
+                $scope.message = "";
+                $scope.$apply();
+              },
+              5000,
+              $scope
+            );
+            return;
+          }
         });
     };
   },
