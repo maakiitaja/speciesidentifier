@@ -2,9 +2,11 @@
 
 /// get all the tools we need
 var express = require("express");
+const helmet = require("helmet");
 var app = express();
 var AppError = require("./app/utils/appError");
-
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimit = require("express-rate-limit");
 //++++
 var path = require("path");
 var favicon = require("serve-favicon");
@@ -34,6 +36,20 @@ var configDB = require("./app/config/dbConfig.js");
 mongoose.connect(configDB.url); // connect to our database
 
 require("./app/config/passport")(passport); // pass passport for configuration
+
+// Set security HTTP headers
+app.use(helmet());
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+app.use("/", limiter);
 
 // set up our express application
 app.use(cookieParser()); // read cookies (needed for auth)
