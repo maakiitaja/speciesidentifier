@@ -21,14 +21,23 @@
                     placeholder="••••" ng-model="password" required>
             </div>
 
+            <p><a href="#/forgot-password">{{translations.FORGOTPASSWORD}}?</a></p>
+
             <button type="submit" id="submit" name="submit"
                 class="btn btn-warning btn-lg">{{translations.SUBMIT}}</button>
             <input type="hidden" name="_csrf" value="{{csrftoken}}">
 
         </form>
+        <br>
+        <p class="or">
+            &nbsp;&nbsp;OR&nbsp;&nbsp;
+        </p>
+
+        <p class="container-github"><a class="btn-link-own btn-link-own--full" href="/auth/github"><img
+                    class="github-logo" src="/images/github-logo3.png"> Login with <strong>Github</strong></a></p>
 
         <hr>
-        <p><a href="#/forgot-password">{{translations.FORGOTPASSWORD}}?</a></p>
+
         <br>
         <p>{{translations.NEEDACCOUNT}} <a href="#/signup">{{translations.SIGNUP}}</a></p>
         <p>{{translations.ORGO}} <a href="#/main">{{translations.HOME}}</a>.</p>

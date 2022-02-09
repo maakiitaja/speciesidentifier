@@ -7,6 +7,7 @@ const crypto = require("crypto");
 var uniqueValidator = require("mongoose-unique-validator");
 
 var UserSchema = new Schema({
+  githubId: String,
   facebook: {
     id: String,
     token: String,
@@ -55,6 +56,7 @@ var UserSchema = new Schema({
 });
 
 // methods ======================
+
 // generating a hash
 UserSchema.methods.createHash = async function () {
   return await bcrypt.hash(this.password, 10);

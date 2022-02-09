@@ -634,7 +634,8 @@ tbody.observation-table-body tr:nth-child(even) {
 }
 
 .photo-checkbox-container,
-.language-container {
+.language-container,
+.container-github {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1908,4 +1909,80 @@ input[type="radio"] + label span.radio-content:hover {
 
 .icon-arrow-down {
   height: 18px;
+}
+
+/* social login */
+.btn-link-own,
+.btn-link-own:link,
+.btn-link-own:visited {
+  display: inline-block;
+
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 9px;
+
+  /* Only necessary for .btn */
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+
+  /* Put transition on original "state" */
+  /* transition: background-color 0.3s; */
+  transition: all 0.3s;
+}
+
+.btn-link-own--full:link,
+.btn-link-own--full:visited {
+  background-color: #000;
+  color: #fff;
+}
+
+.btn-link-own--full:hover,
+.btn-link-own--full:active {
+  background-color: #232323;
+}
+
+.btn-link-own--outline:link,
+.btn-link-own--outline:visited {
+  background-color: #fff;
+  color: #555;
+}
+
+.btn-link-own--outline:hover,
+.btn-link-own--outline:active {
+  background-color: #fdf2e9;
+
+  /* border: 3px solid #fff; */
+
+  /* Trick to add border inside */
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.github-logo {
+  width: 35px;
+  height: 35px;
+}
+
+.or {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+.or::before {
+  content: "";
+  padding-right: 10px;
+
+  display: inline-block;
+  width: 45%;
+  border: 1px solid #eee;
+}
+
+.or::after {
+  content: "";
+  padding-left: 10px;
+  display: inline-block;
+  width: 45%;
+  border: 1px solid #eee;
 }

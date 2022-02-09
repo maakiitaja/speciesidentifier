@@ -37,4 +37,15 @@ module.exports = function (app, passport) {
       res.send(_user);
     } else res.send(null);
   });
+
+  app.get("/auth/github", passport.authenticate("github"));
+
+  app.get(
+    "/auth/github/callback",
+    passport.authenticate("github", { failureRedirect: "/#/login-failure" }),
+    function (req, res) {
+      // Successful authentication, redirect home.
+      res.redirect("/#/main");
+    }
+  );
 };
