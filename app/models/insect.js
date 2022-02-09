@@ -10,21 +10,24 @@ var TranslationSchema = new Schema({
 var InsectSchema = new Schema(
   {
     translations: [TranslationSchema],
-    latinName: String,
+    latinName: { type: String, required: true },
     wiki: String,
-    primaryColor: String,
-    secondaryColor: String,
+    primaryColor: { type: String, required: true },
+    secondaryColor: { type: String, required: true },
     legs: Number,
-    category: String,
+    category: { type: String, required: true },
     images: [String],
     imageLinks: [String],
-    userId: [String],
+    userId: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,
   }
 );
 
+InsectSchema.index({ primaryColor: 1 });
+InsectSchema.index({ category: 1 });
+InsectSchema.index({ secondaryColor: 1 });
 module.exports = mongoose.model("Insect", InsectSchema);
 
 //module.exports = mongoose.model("insects", InsectSchema);

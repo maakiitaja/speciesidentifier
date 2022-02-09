@@ -13,4 +13,6 @@ var ObservationSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
+ObservationSchema.index({ country: 1 });
+
 module.exports = mongoose.model("Observation", ObservationSchema);
