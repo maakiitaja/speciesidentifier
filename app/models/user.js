@@ -3,6 +3,7 @@ var ObjectId = require("mongodb").ObjectID;
 var Schema = mongoose.Schema;
 var bcrypt = require("bcryptjs");
 const validator = require("validator");
+const crypto = require("crypto");
 var uniqueValidator = require("mongoose-unique-validator");
 
 var UserSchema = new Schema({
@@ -43,7 +44,11 @@ var UserSchema = new Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
-
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
   phone: Number,
   _enabled: Boolean,
   compendium: { type: mongoose.Schema.Types.ObjectId, ref: "Compendium" },
@@ -58,6 +63,21 @@ UserSchema.methods.createHash = async function () {
 // // checking if password is valid
 UserSchema.methods.isValidPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
+};
+
+UserSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  // console.log({ resetToken }, this.passwordResetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
 };
 
 UserSchema.plugin(uniqueValidator);

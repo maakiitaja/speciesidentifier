@@ -14,6 +14,10 @@ module.exports = function (app, passport) {
 
   app.post("/signup", authController.signup);
 
+  app.post("/forgot-password", authController.forgotPassword);
+  app.get("/reset-password/:token", authController.resetPasswordGet);
+  app.post("/reset-password/:token", authController.resetPasswordPost);
+
   app.get("/profile", authController.isLoggedIn, function (req, res) {
     res.render("profile.ejs", {
       user: req.user, // get the user out of session and pass to template

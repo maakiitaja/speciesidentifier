@@ -292,5 +292,9 @@
   "FILEUPLOADSUCCESS": "Insect was created or modified successfully.",
   "BROWSE": "Browse",
   "ALL": "All",
-  "PASSWORDCONFIRM": "Password confirm"
+  "PASSWORDCONFIRM": "Password confirm",
+  "FORGOTPASSWORD": "Forgot password",
+  "SEND": "Send",
+  "EMAILORUSERNAME": "Email or username",
+  "RESETPASSWORD": "Reset password"
 }

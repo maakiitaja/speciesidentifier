@@ -116,6 +116,14 @@ insectIdentifierApp.config([
         templateUrl: "partials/fileuploaderror.html",
         controller: "FileUploadErrorCtrl",
       })
+      .when("/forgot-password", {
+        templateUrl: "partials/forgotpassword.html",
+        controller: "ForgotPasswordCtrl",
+      })
+      .when("/reset-password", {
+        templateUrl: "partials/reset-password.html",
+        controller: "ResetPasswordCtrl",
+      })
       .otherwise({
         redirectTo: "/login",
       });

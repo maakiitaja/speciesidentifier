@@ -296,5 +296,9 @@
   "ANYTYPE": "Kaikki",
   "BROWSE": "Selaa",
   "ALL": "Kaikki",
-  "PASSWORDCONFIRM": "Salasana uudelleen"
+  "PASSWORDCONFIRM": "Salasana uudelleen",
+  "FORGOTPASSWORD": "Salasana unohtunut",
+  "SEND": "Lähetä",
+  "EMAILORUSERNAME": "Sähköposti tai käyttäjänimi",
+  "RESETPASSWORD": "Vaihda salasana"
 }

@@ -18,6 +18,119 @@ insectIdentifierControllers.controller("FileUploadErrorCtrl", [
   },
 ]);
 
+insectIdentifierControllers.controller("ResetPasswordCtrl", [
+  "$scope",
+  "$location",
+  "$http",
+  "$cookies",
+  function ($scope, $location, $http, $cookies) {
+    $scope.message = "";
+    $scope.messageInfo = "";
+    const resetToken = $cookies.get("reset-token");
+    console.log("resetToken: ", resetToken);
+
+    $scope.passwordConfirmField = function () {
+      console.log("password confirmation");
+      const passwordConfirmEl = document.getElementById("passwordConfirm");
+
+      if ($scope.password === $scope.passwordConfirm) {
+        console.log("passwords match");
+        passwordConfirmEl.classList.add("ng-valid");
+        passwordConfirmEl.classList.remove("ng-invalid");
+        $scope.passwordConfirmOk = true;
+      } else {
+        passwordConfirmEl.classList.remove("ng-valid");
+        passwordConfirmEl.classList.add("ng-invalid");
+        $scope.passwordConfirmOk = false;
+        console.log('passwords don"t match');
+      }
+    };
+
+    $scope.resetPassword = function () {
+      const resetToken = $cookies.get("reset-token");
+      console.log(resetToken);
+      $http({
+        method: "POST",
+        url: "/reset-password/" + resetToken,
+        params: {
+          password: $scope.password,
+          passwordConfirm: $scope.passwordConfirm,
+        },
+      })
+        .success(function (response) {
+          console.log(response);
+          $scope.messageInfo = response.message;
+          setTimeout(
+            function ($scope, $location) {
+              $scope.messageInfo = "";
+              $scope.$apply();
+              $location.path("#/login");
+            },
+            3000,
+            $scope,
+            $location
+          );
+        })
+        .catch(function (err) {
+          console.log(err);
+          $scope.message = err.data.message;
+          setTimeout(
+            function ($scope) {
+              $scope.messageInfo = "";
+              $scope.$apply();
+            },
+            3000,
+            $scope
+          );
+        });
+    };
+  },
+]);
+
+insectIdentifierControllers.controller("ForgotPasswordCtrl", [
+  "$scope",
+  "$location",
+  "$http",
+  function ($scope, $location, $http) {
+    $scope.message = "";
+    $scope.messageInfo = "";
+
+    $scope.sendEmail = function () {
+      $http({
+        url: "/forgot-password",
+        method: "POST",
+        params: { emailOrUsername: $scope.emailOrUsername },
+      })
+        .success(function (response) {
+          console.log(response);
+          $scope.messageInfo = response.message;
+          setTimeout(
+            function ($scope) {
+              $scope.messageInfo = "";
+              $scope.$apply();
+            },
+            20000,
+            $scope
+          );
+          return;
+        })
+        .catch(function (error) {
+          console.log(error);
+          $scope.message = error.data;
+          setTimeout(
+            function ($scope) {
+              $scope.message = "";
+              $scope.$apply();
+            },
+            10000,
+            $scope
+          );
+          return;
+        });
+    };
+  },
+]);
+
 insectIdentifierControllers.controller("LoggingCtrl", [
   "$scope",
   "Search",

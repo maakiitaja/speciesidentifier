@@ -1,9 +1,9 @@
 // app.js
 
-// scotch.io ======================================================================
-// get all the tools we need
+/// get all the tools we need
 var express = require("express");
 var app = express();
+var AppError = require("./app/utils/appError");
 
 //++++
 var path = require("path");
@@ -88,9 +88,7 @@ app.use("/db", dbRouter);
 
 // catch 404 and forward to error handler
 app.all("*", function (req, res, next) {
-  var err = new Error("Not Found");
-  err.status = 404;
-  next(err);
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 // error handlers
