@@ -189,10 +189,11 @@
   "DATE": "Päivämäärä",
   "COUNTRY": "Maa",
   "COUNT": "Lukumäärä",
-  "LOCATION": "Maanosa",
+  "COUNTRYPART": "Maanosa",
   "ORGANICFARM": "Orgaaninen maatila",
   "NONORGANICFARM": "Epäorgaaninen maatila",
   "FARMCERTIFICATION": "Maatila sertifikaatio",
+  "GETCURRENTLOCATION": "Hae nykyinen sijainti",
   "NORTH": "Pohjoinen",
   "NORTHEAST": "Koillinen",
   "EAST": "Itä",
@@ -300,5 +301,9 @@
   "FORGOTPASSWORD": "Salasana unohtunut",
   "SEND": "Lähetä",
   "EMAILORUSERNAME": "Sähköposti tai käyttäjänimi",
-  "RESETPASSWORD": "Vaihda salasana"
+  "RESETPASSWORD": "Vaihda salasana",
+  "LONGITUDE": "Pitkittäispiiri",
+  "LATITUDE": "Poikittaispiiri",
+  "LOCATION": "Sijainti",
+  "RADIUS": "Säde"
 }

@@ -66,6 +66,12 @@
 
 /* End of javascript menu */
 
+.lonlan-inputs {
+  width: 60px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
 /* Header images */
 .header-img {
   border-radius: 5px;
@@ -1439,6 +1445,15 @@ input[type="checkbox"] + label:hover,
 label.main .offline-label:hover {
   background-color: #89baad;
 }
+
+.lonlatlabel {
+  margin-bottom: 0;
+}
+
+.get-current-position-btn {
+  margin-bottom: 5px;
+}
+
 input[type="checkbox"]:checked + label:hover {
   background-color: #f5fbfb;
 }

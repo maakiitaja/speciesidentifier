@@ -497,6 +497,9 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
           category: category,
           organicFarm: organicFarm,
           nonOrganicFarm: nonOrganicFarm,
+          latitude: query.latitude,
+          longitude: query.longitude,
+          radius: query.radius,
         },
       }).success(function (data) {
         $scope.observations = data;
@@ -1386,6 +1389,23 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       init_close($scope.translations.CLOSE);
     });
 
+    $scope.getCurrentLocation = function () {
+      const getPos = function (position) {
+        $scope.params.latitude = position.coords.latitude;
+        $scope.params.longitude = position.coords.longitude;
+        console.log("latitude: ", $scope.params.latitude);
+        console.log("longitude: ", $scope.params.longitude);
+        toggleLoadingSpinner($scope, "spinner-search-location");
+        $scope.$apply();
+      };
+
+      if (navigator.geolocation) {
+        toggleLoadingSpinner($scope, "spinner-search-location");
+        console.log("getting position");
+        navigator.geolocation.getCurrentPosition(getPos);
+      }
+    };
+
     $scope.updateDropbtnContent = function (content, value) {
       const dropBtnContent = document.getElementById("dropbtn-content-select");
       dropBtnContent.innerText = content;
@@ -1461,6 +1481,8 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
         user: $scope.currentUser,
         latinName: query.observationLatinName,
         insectId: $scope.insectId,
+        latitude: query.latitude,
+        longitude: query.longitude,
       };
 
       $http({ url: "/observations/add", method: "POST", params: params })

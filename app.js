@@ -38,14 +38,14 @@ mongoose.connect(configDB.url); // connect to our database
 require("./app/config/passport")(passport); // pass passport for configuration
 
 // Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
 // Limit requests from same API
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: "Too many requests from this IP, please try again in an hour!",
 });

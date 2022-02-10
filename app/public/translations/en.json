@@ -193,10 +193,12 @@
   "DATE": "Date",
   "COUNTRY": "Country",
   "COUNT": "Count",
-  "LOCATION": "Country part",
+  "COUNTRYPART": "Country part",
   "COMPASSDIRECTION": "Compass direction",
   "ORGANICFARM": "Organic farm",
   "NONORGANICFARM": "Conventional farm",
+  "GETCURRENTLOCATION": "Get current location",
+  "LOCATION": "Location",
   "FARMCERTIFICATION": "Farm certification",
   "NORTH": "North",
   "NORTHEAST": "North east",
@@ -296,5 +298,8 @@
   "FORGOTPASSWORD": "Forgot password",
   "SEND": "Send",
   "EMAILORUSERNAME": "Email or username",
-  "RESETPASSWORD": "Reset password"
+  "RESETPASSWORD": "Reset password",
+  "LONGITUDE": "Longitude",
+  "LATITUDE": "Latitude",
+  "RADIUS": "Radius"
 }

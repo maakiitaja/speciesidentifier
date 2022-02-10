@@ -1,7 +1,7 @@
 var Insect = require("./../models/insect");
 var User = require("./../models/user");
 var Observation = require("./../models/observation");
-
+const catchAsync = require("./../utils/catchAsync");
 exports.browse = function (req, res) {
   console.log("observation browse");
   var query = Observation.find();
@@ -83,6 +83,25 @@ exports.browse = function (req, res) {
     "querying within a time range of: " + startDate + " - " + endDate
   );
   query.where({ date: { $gte: startDate, $lte: endDate } });
+  console.log(
+    "req.query.latitude: ",
+    req.query.latitude,
+    "req.query.longitude: ",
+    req.query.longitude
+  );
+  // by location
+  if (req.query.latitude && req.query.longitude && req.query.radius) {
+    const unit = "km";
+    const radius =
+      unit === "mi" ? req.query.radius / 3963.2 : req.query.radius / 6378.1;
+    query.where({
+      location: {
+        $geoWithin: {
+          $centerSphere: [[req.query.longitude, req.query.latitude], radius],
+        },
+      },
+    });
+  }
 
   // name and language
 
@@ -203,6 +222,11 @@ exports.add = function (req, res) {
       observation.organicFarm = undefined;
     }
 
+    console.log("latitude: ", req.query.latitude);
+    console.log("longitude: ", req.query.longitude);
+    observation.location.coordinates.push(req.query.longitude);
+    observation.location.coordinates.push(req.query.latitude);
+
     // insect specific
     observation.count = req.query.count;
     if (!req.query.insectId) {
@@ -295,3 +319,31 @@ exports.getAll = function (req, res) {
     return res.json(observations);
   });
 };
+
+exports.getObservationsWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(",");
+
+  const radius = unit === "mi" ? distance / 3963.2 : distance / 6378.1;
+
+  if (!lat || !lng) {
+    next(
+      new AppError(
+        "Please provide latitude and longitude in the format lat,lng.",
+        400
+      )
+    );
+  }
+
+  const observations = await Observation.find({
+    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+  });
+
+  res.status(200).json({
+    status: "success",
+    results: observations.length,
+    data: {
+      data: observations,
+    },
+  });
+});

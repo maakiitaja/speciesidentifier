@@ -341,8 +341,11 @@ function getBase64FromImage(id, name, $localStorage, $scope) {
   });
 }
 
-function toggleLoadingSpinner($scope) {
-  var spinnerEl = document.getElementById("spinner-search");
+function toggleLoadingSpinner($scope, id) {
+  if (id === undefined || id === null) {
+    id = "spinner-search";
+  }
+  var spinnerEl = document.getElementById(id);
   $scope.displaySpinner = !$scope.displaySpinner;
   if (spinnerEl) {
     spinnerEl.classList.toggle("spinner-loading");

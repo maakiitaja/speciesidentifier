@@ -225,6 +225,38 @@
 					<li></li>
 
 					<div id="flex-table" class="flex-table">
+						<li>{{translations.LOCATION}}:</li>
+						<li><button ng-click="getCurrentLocation()" type="button"
+								class="get-current-position-btn">{{translations.GETCURRENTLOCATION}}</button>
+							<br>
+							<label class="lonlatlabel" for="latitude">{{translations.LATITUDE}}:
+							</label>
+							<input class="form-control-own form-control-own--sm" type="number" step="0.0000001"
+								id="latitude" name="latitude" ng-model="params.latitude">
+							<br>
+							<label class="lonlatlabel" for="latitude">{{translations.LONGITUDE}}:
+							</label>
+							<input class="form-control-own form-control-own--sm" type="number" step="0.0000001"
+								id="longitude" name="longitude" ng-model="params.longitude">
+							<div class="lds-center">
+								<div class="lds-spinner spinner-loading" id="spinner-search-location">
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+								</div>
+							</div>
+							<br><br>
+
+						</li>
 						<li>
 							{{translations.COUNTRY}}(*):
 						</li>
@@ -263,11 +295,10 @@
 
 								</div>
 							</div>
-							countries: {{countries.length}}
 						</li>
 
 						<li>
-							{{translations.LOCATION}}(*):
+							{{translations.COUNTRYPART}}(*):
 						</li>
 						<li>
 							<select class="form-control-own" name="countrypart" ng-model="params.countrypart" required>

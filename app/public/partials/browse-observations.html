@@ -6,6 +6,25 @@
 				<h3>{{translations.PLACESPECIFIC}}:</h3>
 			</li>
 			<li></li>
+			<li>{{translations.LOCATION}}:</li>
+			<li>
+				<label class="lonlatlabel" for="latitude">{{translations.LATITUDE}}:
+				</label>
+				<input class="form-control-own form-control-own--sm" type="number" step="0.0000001" id="latitude"
+					name="latitude" ng-model="query.latitude">
+				<br>
+				<label class="lonlatlabel" for="latitude">{{translations.LONGITUDE}}:
+				</label>
+				<input class="form-control-own form-control-own--sm" type="number" step="0.0000001" id="longitude"
+					name="longitude" ng-model="query.longitude">
+				<br>
+				<label for="distance">{{translations.RADIUS}}:</label>
+				<br>
+				<input class="form-control-own form-control-own--sm" type="number" id="radius" name="radius"
+					ng-model="query.radius">
+				<br><br>
+
+			</li>
 			<li>
 				{{translations.COUNTRY}}:
 
@@ -46,7 +65,7 @@
 			</li>
 
 			<li>
-				{{translations.LOCATION}}:
+				{{translations.COUNTRYPART}}:
 			</li>
 			<li>
 				<select class="form-control-own" name="countryPart" ng-model="query.countryPart">
