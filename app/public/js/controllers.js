@@ -320,6 +320,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     $scope.query = {};
     $scope.query.placeType = "anyType";
     $scope.dropdownCountry = "All";
+    $scope.hideMap = true;
     const displayAllOption = true;
     sortCountries($scope, displayAllOption);
     sortCategories($scope);
@@ -501,8 +502,12 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
           longitude: query.longitude,
           radius: query.radius,
         },
-      }).success(function (data) {
+      }).success(async function (data) {
+        if (data.length === 0) $scope.hideMap = true;
+        else $scope.hideMap = false;
+
         $scope.observations = data;
+        console.log("hidemap: ", $scope.hideMap);
         for (var i = 0; i < data.length; i++) {
           // date
           var formattedDate = new Date();
@@ -549,10 +554,15 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         if (data && data.length > 0) $scope.searchResults = "showResults";
         else $scope.searchResults = "noResults";
 
+        // map locations
+        await wait(0.2);
+        displayMap(data);
+
         // Hide spinner element
         spinnerEl.classList.toggle("spinner-loading");
         // Enable search button
         $scope.disableSearch = false;
+        $scope.$apply();
       });
     };
 

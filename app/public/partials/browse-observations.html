@@ -18,7 +18,7 @@
 				<input class="form-control-own form-control-own--sm" type="number" step="0.0000001" id="longitude"
 					name="longitude" ng-model="query.longitude">
 				<br>
-				<label for="distance">{{translations.RADIUS}}:</label>
+				<label for="distance">{{translations.RADIUS}} (km):</label>
 				<br>
 				<input class="form-control-own form-control-own--sm" type="number" id="radius" name="radius"
 					ng-model="query.radius">
@@ -236,6 +236,10 @@ history:
 
 date | insectname | category
 -->
+
+<section class="section-map" ng-class="{hideMap: hideMap}">
+	<div id="map" data-locations="locations"></div>
+</section>
 
 <p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
 <div ng-switch="searchResults">

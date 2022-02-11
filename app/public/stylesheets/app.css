@@ -2001,3 +2001,21 @@ input[type="radio"] + label span.radio-content:hover {
   width: 45%;
   border: 1px solid #eee;
 }
+
+/* map */
+.section-map {
+  position: relative;
+  height: 650px;
+  top: 50px;
+}
+
+.hideMap {
+  height: 0;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
