@@ -124,6 +124,18 @@ insectIdentifierApp.config([
         templateUrl: "partials/reset-password.html",
         controller: "ResetPasswordCtrl",
       })
+      .when("/create-album", {
+        templateUrl: "partials/album.html",
+        controller: "CreateAlbumCtrl",
+      })
+      .when("/album-list", {
+        templateUrl: "partials/album-list.html",
+        controller: "AlbumListCtrl",
+      })
+      .when("/view-album", {
+        templateUrl: "partials/view-album.html",
+        controller: "ViewAlbumCtrl",
+      })
       .otherwise({
         redirectTo: "/login",
       });

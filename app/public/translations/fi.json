@@ -305,5 +305,8 @@
   "LONGITUDE": "Pitkittäispiiri",
   "LATITUDE": "Poikittaispiiri",
   "LOCATION": "Sijainti",
-  "RADIUS": "Säde"
+  "RADIUS": "Säde",
+  "CREATEALBUM": "Uusi albumi",
+  "VIEWALBUMS": "Selaa albumeja",
+  "SEARCHFROMCOLLECTION": "Hae kokoelmasta"
 }

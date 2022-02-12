@@ -1,0 +1,115 @@
+<h1>{{translations.CREATEALBUM}}</h1>
+
+<div class="container">
+
+    <div class="flex-center">
+        <form ng-submit='search(query)'>
+            <ul id="flex-table" class="flex-table">
+                <li>
+                    {{translations.CATEGORY}}:*
+                </li>
+                <li>
+
+                    <select class="form-control-own" name="category" ng-model="query.category" required>
+                        <option ng-repeat="category in categories" value="{{category[1]}}">
+                            {{category[0]}}
+                        </option>
+                    </select>
+                </li>
+                <li> {{translations.PRIMARYCOLOR}}:</li>
+                <li>
+                    <select class="form-control-own" name="primaryColor" ng-model="query.primaryColor">
+                        <option ng-repeat="color in colors" value="{{color[1]}}">
+                            {{color[0]}}
+                        </option>
+                    </select>
+                </li>
+                <li>{{translations.SECONDARYCOLOR}}:</li>
+                <li>
+                    <select class="form-control-own" name="secondaryColor" ng-model="query.secondaryColor">
+                        <option ng-repeat="color in colors" value="{{color[1]}}">
+                            {{color[0]}}
+                        </option>
+                    </select>
+                </li>
+            </ul>
+            <table class="button-center">
+                <tr>
+                    <td>
+                        <button type="submit" id="search_button" name="search" class="button button-green">
+                            {{translations.SEARCHFROMCOLLECTION}}
+
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+
+    </div>
+
+    <section class="section-search-results">
+        <p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
+
+        <div ng-switch="searchResults">
+
+            <div ng-switch-when="noResults" id="noResults">
+                <br>
+                <br>
+                <h2>{{translations.NORESULTS}} </h2>
+
+            </div>
+            <div ng-switch-when="showResults" id="showResults">
+                <br>
+                <br>
+                <h2>{{translations.RESULTS}}</h2>
+
+                <div class="container-thumbs-album">
+
+                    <div>
+                        <ul class="insect-thumbs">
+                            <li ng-repeat="insect in pagedInsects[currentPage]">
+                                <div class="thumb-card">
+                                    <div class="margin-top-md" ng-repeat="translation in insect.translations">
+                                        <p class="name-translation" ng-if="translation.language==lang">
+                                            {{translation.name}}
+                                        </p>
+                                    </div>
+                                    <p class="latinname-translation">
+                                        {{insect.latinName}}
+                                    </p>
+                                    <div style="display:none">
+                                        {{tmp = insect.images[0]+'_thumb.jpg'}}
+
+                                    </div>
+
+                                    <img id="{{insect.images[0]+'_thumb.jpg'}}"
+                                        ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="selectImage(insect)" />
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="container-album-pagination">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination" id="pagination"></ul>
+                    </nav>
+                </div>
+            </div>
+    </section>
+
+    <!--
+        <li>{{translations.ALBUMNAME}}*:</li>
+
+              
+                <li><input type="text" ng-model="albumName" required></li>
+              
+    -->
+
+    <div ng-if="emptyCollection">
+        <p class="start-adding-collection-items">{{translations.NOCOLLECTIONITEMS}} <a
+                ng-click="startToAddCollectionItems()">{{translations.HERE}}</a></p>
+    </div>
+</div>

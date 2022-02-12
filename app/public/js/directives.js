@@ -316,6 +316,7 @@ myApp.directive("header", function () {
 
           console.log("header currentuser: " + $scope.currentUser);
         });
+
         $scope.openMobileNav = function () {
           var header = document.getElementById("header");
           header.classList.toggle("nav-open");
@@ -337,6 +338,20 @@ myApp.directive("header", function () {
         $scope.disableMobileNavigation = function () {
           var header = document.getElementById("header");
           header.classList.remove("nav-open");
+        };
+
+        $scope.createAlbum = function () {
+          $scope.disableMobileNavigation();
+          $scope.resetHeader();
+
+          $scope.location.path("create-album");
+        };
+
+        $scope.viewAlbums = function () {
+          $scope.disableMobileNavigation();
+          $scope.resetHeader();
+
+          $scope.location.path("album-list");
         };
 
         $scope.collection = function () {
