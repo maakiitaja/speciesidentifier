@@ -150,6 +150,18 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
           name: $scope.albumName,
           insects: $scope.selectedInsects,
         });
+
+        $http({
+          url: "/albums/add",
+          method: "POST",
+          params: { name: $scope.albumName, insects: $scope.selectedInsects },
+        })
+          .success(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       };
 
       $scope.$apply();

@@ -202,6 +202,20 @@
   }
 }
 
+@media only screen and (max-width: 430px) {
+  .album-cover-image {
+    min-width: 300px;
+    min-height: 300px;
+  }
+}
+
+@media only screen and (max-width: 330px) {
+  .album-cover-image {
+    min-width: 200px;
+    min-height: 200px;
+  }
+}
+
 @media only screen and (max-width: 376px) {
   .container-search {
     grid-template-rows: auto auto auto auto;

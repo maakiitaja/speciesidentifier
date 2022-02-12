@@ -9,12 +9,19 @@ function drag(e) {
   console.log("target.id: " + e.target.id);
 }
 
+function dragLeave(e) {
+  console.log("hi from dragleave");
+  var imageParent = document.getElementById("album-cover");
+  imageParent.classList.remove("dragover");
+}
+
 function drop(e) {
   e.preventDefault();
   console.log("hi from drop");
+  var imageParent = document.getElementById("album-cover");
+  imageParent.classList.remove("dragover");
 
   // remove earlier image
-  var imageParent = document.getElementById("album-cover");
   console.log("imageparent.firstchild:", imageParent.firstChild);
   if (imageParent.firstChild) {
     console.log("removing child");
@@ -35,11 +42,15 @@ function drop(e) {
 
   // add class to parent element
   imageParent.classList.add("albumCoverWithImage");
+  imageParent.classList.remove("album-cover");
 }
 
 function dragOver(e) {
   console.log("hi from dragOver");
+
   e.preventDefault();
+  var imageParent = document.getElementById("album-cover");
+  imageParent.classList.add("dragover");
 }
 
 //Where el is the DOM element you'd like to test for visibility

@@ -63,7 +63,7 @@
             <div ng-switch-when="showResults" id="showResults">
                 <br>
                 <br>
-                <h2>{{translations.RESULTS}}</h2>
+                <h2>{{translations.SELECTINSECTS}}</h2>
 
                 <div class="container-thumbs-album">
 
@@ -107,7 +107,7 @@
         <h3>{{translations.COVER}}</h3>
         <div class="cover-container">
             <figure class="album-cover" id="album-cover" ng-class="{albumCoverWithImage: albumCoverWithImage}"
-                ondrop="drop(event)" ondragover="dragOver(event)"></figure>
+                ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"></figure>
 
             <div class="album-info-centered">
 
@@ -128,14 +128,6 @@
 
 
     </section>
-
-    <!--
-        <li>{{translations.ALBUMNAME}}*:</li>
-
-              
-                <li><input type="text" ng-model="albumName" required></li>
-              
-    -->
 
     <div ng-if="emptyCollection">
         <p class="start-adding-collection-items">{{translations.NOCOLLECTIONITEMS}} <a

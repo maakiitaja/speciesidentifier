@@ -2035,16 +2035,32 @@ input[type="radio"] + label span.radio-content:hover {
 
 .album-cover {
   width: 100%;
-  min-height: 500px;
-  min-width: 500px;
-  max-height: 700px;
-  max-width: 700px;
+  /* height: 100px; */
+  background-color: #1caff6;
+  margin-top: 30px;
+  border-radius: 10px;
+  border: dashed 2px white;
+  color: white;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  font-size: 14pt;
+  transition: 0.5s background-color, 0.5s color;
+  height: 100px;
+  font-family: inherit;
+}
+
+.album-cover.dragover {
+  background-color: #0e384c;
+  color: white;
 }
 
 .album-cover-image {
   width: 100%;
   max-height: 700px;
   max-width: 700px;
+  min-height: 400px;
+  min-width: 400px;
 }
 
 .albumCoverWithImage {
