@@ -1,6 +1,6 @@
 <h1>{{translations.CREATEALBUM}}</h1>
 
-<div class="container">
+<div class="container" ng-if="!emptyCollection">
 
     <div class="flex-center">
         <form ng-submit='search(query)'>
@@ -48,8 +48,9 @@
 
     </div>
 
-    <section class="section-search-results">
-        <p id="searchResults" ng-model="searchResults" value={{searchResults}}></p>
+    <section class="section-search-results" ng-if="!emptyCollection">
+        <p id=" searchResults" ng-model="searchResults" value={{searchResults}}>
+        </p>
 
         <div ng-switch="searchResults">
 
@@ -83,8 +84,10 @@
 
                                     </div>
 
-                                    <img id="{{insect.images[0]+'_thumb.jpg'}}"
+                                    <img draggable="true" ondragstart="drag(event)" class="scale-sm"
+                                        id="{{insect.images[0]+'_thumb.jpg'}}"
                                         ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="selectImage(insect)" />
+
                                 </div>
                             </li>
                         </ul>
@@ -92,12 +95,38 @@
                     </div>
                 </div>
 
-                <div class="container-album-pagination">
+                <div class="container-album-pagination" ng-if="!hidePagination">
                     <nav aria-label="Page navigation">
                         <ul class="pagination" id="pagination"></ul>
                     </nav>
                 </div>
             </div>
+    </section>
+
+    <section class="section-cover" ng-if="selectedInsects.length > 0">
+        <h3>{{translations.COVER}}</h3>
+        <div class="cover-container">
+            <figure class="album-cover" id="album-cover" ng-class="{albumCoverWithImage: albumCoverWithImage}"
+                ondrop="drop(event)" ondragover="dragOver(event)"></figure>
+
+            <div class="album-info-centered">
+
+                <form ng-submit="saveAlbum()">
+                    <p>{{selectedInsects.length}} items in album</p>
+                    <div class="form-group">
+                        <label>{{translations.ALBUMNAME}}</label>
+                        <input type="text" class="form-control" id="albumName" name="albumName" ng-model="albumName"
+                            required>
+                    </div>
+
+                    <br>
+                    <button id="save" type="submit" class="button button-blue centered">{{translations.SAVE}}</button>
+                </form>
+
+            </div>
+        </div>
+
+
     </section>
 
     <!--

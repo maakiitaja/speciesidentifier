@@ -308,5 +308,7 @@
   "RADIUS": "Säde",
   "CREATEALBUM": "Uusi albumi",
   "VIEWALBUMS": "Selaa albumeja",
-  "SEARCHFROMCOLLECTION": "Hae kokoelmasta"
+  "SEARCHFROMCOLLECTION": "Hae kokoelmasta",
+  "COVER": "Kansikuva",
+  "ALBUMNAME": "Albumin nimi"
 }

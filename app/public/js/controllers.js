@@ -75,7 +75,9 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
       $scope.itemsPerPage = 2;
       const visiblePages = 2;
       const totalPages = Math.floor(($scope.insects.length + 1) / visiblePages);
-
+      if ($scope.insects.length > $scope.itemsPerPage) {
+        $scope.hidePagination = false;
+      } else $scope.hidePagination = true;
       setPagedInsects($scope.insects, $scope);
       $scope.currentPage = 0;
 
@@ -138,6 +140,16 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
           }
         }
         console.log("selectedInsects:", $scope.selectedInsects);
+      };
+
+      $scope.saveAlbum = function () {
+        if ($localStorage.albums === undefined) {
+          $localStorage.albums = [];
+        }
+        $localStorage.albums.push({
+          name: $scope.albumName,
+          insects: $scope.selectedInsects,
+        });
       };
 
       $scope.$apply();

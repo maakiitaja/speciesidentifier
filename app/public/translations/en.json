@@ -304,5 +304,7 @@
   "RADIUS": "Radius",
   "CREATEALBUM": "Create album",
   "VIEWALBUMS": "View albums",
-  "SEARCHFROMCOLLECTION": "Search from collection"
+  "SEARCHFROMCOLLECTION": "Search from collection",
+  "COVER": "Cover",
+  "ALBUMNAME": "Album name"
 }

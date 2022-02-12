@@ -3,6 +3,45 @@ function toggleElements(hideElem, showElem) {
   document.getElementById(showElem).visibility = "visible";
 }
 
+function drag(e) {
+  console.log("hi from drag");
+  e.dataTransfer.setData("image", e.target.id);
+  console.log("target.id: " + e.target.id);
+}
+
+function drop(e) {
+  e.preventDefault();
+  console.log("hi from drop");
+
+  // remove earlier image
+  var imageParent = document.getElementById("album-cover");
+  console.log("imageparent.firstchild:", imageParent.firstChild);
+  if (imageParent.firstChild) {
+    console.log("removing child");
+    imageParent.removeChild(imageParent.firstChild);
+  }
+
+  // add dragged image
+  var image = document.createElement("img");
+  var imageName = e.dataTransfer.getData("image");
+  imageName = imageName.slice(0, imageName.length - 10);
+  image.src = imageName;
+  image.id = imageName;
+  image.classList.add("album-cover-image");
+
+  console.log("image", image);
+  console.log("e.target:", e.target);
+  imageParent.appendChild(image);
+
+  // add class to parent element
+  imageParent.classList.add("albumCoverWithImage");
+}
+
+function dragOver(e) {
+  console.log("hi from dragOver");
+  e.preventDefault();
+}
+
 //Where el is the DOM element you'd like to test for visibility
 function isHidden(el) {
   return el.offsetParent === null;

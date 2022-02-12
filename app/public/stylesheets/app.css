@@ -539,6 +539,10 @@ ul.insect-thumbs img:hover {
   cursor: pointer;
   transform: scale(1.25);
 }
+ul.insect-thumbs img.scale-sm:hover {
+  cursor: pointer;
+  transform: scale(1.07);
+}
 
 .flex-table {
   display: flex;
@@ -2018,4 +2022,37 @@ input[type="radio"] + label span.radio-content:hover {
   top: 0;
   bottom: 0;
   width: 100%;
+}
+
+/* Album */
+.cover-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.album-cover {
+  width: 100%;
+  min-height: 500px;
+  min-width: 500px;
+  max-height: 700px;
+  max-width: 700px;
+}
+
+.album-cover-image {
+  width: 100%;
+  max-height: 700px;
+  max-width: 700px;
+}
+
+.albumCoverWithImage {
+  min-height: 0;
+  min-width: 0;
+}
+
+.album-info-centered {
+  margin: 0 auto;
+  display: block;
 }
