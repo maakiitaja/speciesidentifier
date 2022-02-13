@@ -2212,3 +2212,8 @@ input[type="radio"] + label span.radio-content:hover {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+/** detail page **/
+.max-80-chars {
+  max-width: 550px;
+}

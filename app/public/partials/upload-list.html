@@ -6,7 +6,7 @@
 
 		<ul class="insect-thumbs">
 			<li ng-repeat="insect in insects">
-				<div class="thumb-card">
+				<div class="thumb-card" ng-click="upload(insect)">
 					<div class="margin-top-md" ng-repeat="translation in insect.translations">
 						<p class="name-translation" ng-if="translation.language==lang">
 							{{translation.name}}
@@ -14,10 +14,9 @@
 
 					</div>
 					<p class="latinname-translation">
-						{{insect.latinName}}
+						<i>{{insect.latinName}}</i>
 					</p>
-					<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" id="{{insect.latinName}}"
-						ng-click="upload(insect)" />
+					<img ng-src="{{insect.images[0]+'_thumb.jpg'}}" id="{{insect.latinName}}" />
 				</div>
 			</li>
 		</ul>

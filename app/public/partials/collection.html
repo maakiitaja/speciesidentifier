@@ -400,24 +400,23 @@
 
 				<ul class="insect-thumbs">
 					<li ng-repeat="insect in insects">
-						<div class="thumb-card">
+						<div class="thumb-card" ng-click="viewDetail(insect)">
 							<div class="margin-top-md" ng-repeat="translation in insect.translations">
 								<p class="name-translation" ng-if="translation.language==lang">
 									{{translation.name}}
 								</p>
 							</div>
 							<p class="latinname-translation">
-								{{insect.latinName}}
+								<i>{{insect.latinName}}</i>
 							</p>
 							<div style="display:none">
 								{{tmp = insect.images[0]+'_thumb.jpg'}}
 
 							</div>
 							<img ng-if="!checkbox.offline" id="{{insect.images[0]+'_thumb.jpg'}}"
-								ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="viewDetail(insect)" />
+								ng-src="{{insect.images[0]+'_thumb.jpg'}}" />
 							<img ng-if="checkbox.offline" id="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
-								ng-src="{{localStorage[insect.images[0]+'_thumb.jpg']}}"
-								ng-click="viewDetail(insect)" />
+								ng-src="{{localStorage[insect.images[0]+'_thumb.jpg']}}" />
 						</div>
 					</li>
 				</ul>
