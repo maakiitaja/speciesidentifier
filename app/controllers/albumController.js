@@ -1,5 +1,6 @@
 const Album = require("./../models/album");
 const catchAsync = require("./../utils/catchAsync");
+const AppError = require("./../utils/appError");
 
 exports.add = catchAsync(async (req, res, next) => {
   console.log("creating a new album");
@@ -29,4 +30,18 @@ exports.view = catchAsync(async (req, res, next) => {
   const album = await Album.findOne({ _id: req.query.id }).populate("insects");
   console.log("album: ", album);
   res.send({ message: true, album: album });
+});
+
+exports.delete = catchAsync(async (req, res, next) => {
+  console.log("album delete");
+  const album = await Album.findByIdAndDelete(req.query.id);
+  console.log("album: ", album);
+  if (!album) {
+    return next(new AppError("No document found with that ID", 404));
+  }
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
 });

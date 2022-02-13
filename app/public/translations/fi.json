@@ -314,5 +314,7 @@
   "SELECTINSECTS": "Valitse hyönteiset",
   "ALBUMLIST": "Albumit",
   "NOALBUMFOUND": "Sinulla ei ole albumeja",
-  "ALBUM": "Albumi"
+  "ALBUM": "Albumi",
+  "VIEWALBUM": "Katsele",
+  "DELETEALBUM": "Poista"
 }

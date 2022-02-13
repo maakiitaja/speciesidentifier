@@ -2,17 +2,41 @@
 
 <div class="centered">
     <ul class="album-thumbs">
-        <li ng-repeat="album in albumList">
-            <div class="album-card">
-                <div class="margin-top-md text-centered">
-                    <p>
-                        {{album.name}}
-                    </p>
-                    <p>{{album.insects.length}} insects</p>
+        <li ng-repeat="album in albumList" class="card">
+            <div class="card__side card__side--front">
+                <figure>
+                    <div class="album-image-container">
+                        <div class="album-overlay">&nbsp;</div>
+                        <img ng-src="{{album.coverImage}}" id="{{album._id}}" ng-click="viewAlbum(album)" />
+                    </div>
+                    <div class="album-card-heading">
+                        <span class="album-heading-span">{{album.name}}</span>
+                    </div>
+
+                </figure>
+
+                <div class="margin-top-md text-centered card__bottom">
+                    <p><strong>{{album.insects.length}}</strong> insect(s)</p>
 
                 </div>
 
-                <img ng-src="{{album.coverImage}}" id="{{album._id}}" ng-click="viewAlbum(album)" />
+            </div>
+            <div class="card__side card__side--back">
+                <div class="card__cta">
+                    <div class="card__name">
+                        {{album.name}}
+                    </div>
+
+                    <button type="button" ng-click="viewAlbum(album)" class="button button-blue centered">
+                        {{translations.VIEWALBUM}}
+                    </button>
+                    <br>
+                    <button type="button" ng-click="deleteAlbum(album)" class="button button-red centered">
+                        {{translations.DELETEALBUM}}
+                    </button>
+                </div>
+
+
             </div>
         </li>
     </ul>

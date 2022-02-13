@@ -63,6 +63,27 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
     $scope.viewAlbum = function (album) {
       $location.path("view-album").search({ album: album });
     };
+
+    $scope.deleteAlbum = function (album) {
+      if (confirm("Are you sure you want to delete this album?")) {
+        console.log("deleting...", album);
+
+        $http({
+          url: "/albums/delete",
+          method: "DELETE",
+          params: { id: album._id },
+        })
+          .success(function (response) {
+            console.log("response", response);
+            $scope.albumList = $scope.albumList.filter(
+              (el) => el._id !== album._id
+            );
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    };
   },
 ]);
 
@@ -72,7 +93,8 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
   "$http",
   "$cookies",
   "$localStorage",
-  function ($scope, $location, $http, $cookies, $localStorage) {
+  "$window",
+  function ($scope, $location, $http, $cookies, $localStorage, $window) {
     $scope.emptyCollection = false;
     $scope.messageError = "";
     $scope.messageInfo = "";
@@ -236,6 +258,13 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
           $localStorage.albums = [];
         }
 
+        if ($scope.coverImage === undefined) {
+          const insect = $localStorage.collection.find(
+            (insect) => insect._id === $scope.selectedInsects[0]
+          );
+          $scope.coverImage = insect.images[0];
+        }
+
         $localStorage.albums.push({
           name: query.albumName,
           insects: $scope.selectedInsects,
@@ -255,14 +284,14 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
             console.log(response);
             $scope.messageInfo = response.message;
             setTimeout(
-              function ($scope, $location) {
+              function ($scope, $window) {
                 $scope.messageInfo = "";
                 $scope.$apply();
-                $location.path("/#/album-list");
+                $window.location.href = "#/album-list";
               },
               3000,
               $scope,
-              $location
+              $window
             );
           })
           .catch(function (error) {

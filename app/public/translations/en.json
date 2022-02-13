@@ -310,5 +310,7 @@
   "SELECTINSECTS": "Select insects",
   "ALBUMLIST": "Albums",
   "NOALBUMFOUND": "No albums found",
-  "ALBUM": "Album"
+  "ALBUM": "Album",
+  "VIEWALBUM": "View",
+  "DELETEALBUM": "Delete"
 }
