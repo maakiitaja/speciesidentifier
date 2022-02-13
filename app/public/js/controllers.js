@@ -18,6 +18,54 @@ insectIdentifierControllers.controller("FileUploadErrorCtrl", [
   },
 ]);
 
+insectIdentifierControllers.controller("ViewAlbumCtrl", [
+  "$scope",
+  "$location",
+  "$http",
+  "$cookies",
+  function ($scope, $location, $http, $cookies) {
+    console.log("album view ctrl");
+    if ($location.search()) {
+      const album = $location.search().album;
+      $http({
+        method: "GET",
+        url: "/albums/view",
+        params: { id: album._id },
+      })
+        .success(function (response) {
+          console.log("response:", response);
+          $scope.album = response.album;
+        })
+        .catch(function (error) {
+          console.log("error:", error);
+        });
+    }
+  },
+]);
+
+insectIdentifierControllers.controller("AlbumListCtrl", [
+  "$scope",
+  "$location",
+  "$http",
+  "$cookies",
+  "$localStorage",
+  function ($scope, $location, $http, $cookies, $localStorage) {
+    console.log("album list ctrl");
+    $scope.albumList = [];
+    $http({ method: "GET", url: "/albums/list" })
+      .success(function (response) {
+        console.log(response);
+        $scope.albumList = response.albumList;
+      })
+      .catch(function (error) {
+        console.log("error");
+      });
+    $scope.viewAlbum = function (album) {
+      $location.path("view-album").search({ album: album });
+    };
+  },
+]);
+
 insectIdentifierControllers.controller("CreateAlbumCtrl", [
   "$scope",
   "$location",
@@ -26,6 +74,9 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
   "$localStorage",
   function ($scope, $location, $http, $cookies, $localStorage) {
     $scope.emptyCollection = false;
+    $scope.messageError = "";
+    $scope.messageInfo = "";
+    console.log("in create album ctrl");
     sortCategories($scope);
     sortColors($scope);
     if (
@@ -112,7 +163,7 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
           console.info(page + " (from event listening)");
         });
 
-      $scope.selectImage = function (insect) {
+      $scope.selectImage = async function (insect) {
         console.log("setting image");
 
         console.log("controller: setimage: " + insect.images[0]);
@@ -129,8 +180,8 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
             previousThumbImg.classList.toggle("activeThumb");
           }
         } else {
-          // toggle the active status of the previously activated insect
-          console.log("toggling the previous image");
+          // toggle the active status
+          console.log("toggling the active status");
           $scope.selectedInsects.push(insect._id);
           var thumbImg = document.getElementById(
             insect.images[0] + "_thumb.jpg"
@@ -138,51 +189,129 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
           if (thumbImg) {
             thumbImg.classList.toggle("activeThumb");
           }
+
+          // drop event listener
+          await wait(0.5);
+          const albumCover = document.getElementById("album-cover");
+          albumCover.addEventListener("drop", (e) => {
+            e.preventDefault();
+            console.log("hi from drop");
+            var imageParent = document.getElementById("album-cover");
+            imageParent.classList.remove("dragover");
+
+            // remove earlier image
+            console.log("imageparent.firstchild:", imageParent.firstChild);
+            if (imageParent.firstChild) {
+              console.log("removing child");
+              imageParent.removeChild(imageParent.firstChild);
+            }
+
+            // add dragged image
+            var image = document.createElement("img");
+            var imageName = e.dataTransfer.getData("image");
+            imageName = imageName.slice(0, imageName.length - 10);
+            image.src = imageName;
+            image.id = imageName;
+            image.classList.add("album-cover-image");
+
+            console.log("image", image);
+            console.log("e.target:", e.target);
+            imageParent.appendChild(image);
+
+            // add class to parent element
+            imageParent.classList.add("albumCoverWithImage");
+            imageParent.classList.remove("album-cover");
+
+            $scope.coverImage = imageName;
+          });
         }
         console.log("selectedInsects:", $scope.selectedInsects);
       };
 
-      $scope.saveAlbum = function () {
+      $scope.saveAlbum = function (query) {
+        console.log("cover:", $scope.coverImage);
+        console.log("album name:", query.albumName);
+
         if ($localStorage.albums === undefined) {
           $localStorage.albums = [];
         }
+
         $localStorage.albums.push({
-          name: $scope.albumName,
+          name: query.albumName,
           insects: $scope.selectedInsects,
+          cover: $scope.coverImage,
         });
 
         $http({
           url: "/albums/add",
           method: "POST",
-          params: { name: $scope.albumName, insects: $scope.selectedInsects },
+          params: {
+            name: query.albumName,
+            insects: $scope.selectedInsects,
+            coverImage: $scope.coverImage,
+          },
         })
           .success(function (response) {
             console.log(response);
+            $scope.messageInfo = response.message;
+            setTimeout(
+              function ($scope, $location) {
+                $scope.messageInfo = "";
+                $scope.$apply();
+                $location.path("/#/album-list");
+              },
+              3000,
+              $scope,
+              $location
+            );
           })
           .catch(function (error) {
             console.log(error);
+            $scope.messageError = response.message;
+            setTimeout(
+              function ($scope, $location) {
+                $scope.messageError = "";
+                $scope.$apply();
+              },
+              3000,
+              $scope
+            );
           });
+      };
+
+      $scope.dropCtrl = function (e) {
+        e.preventDefault();
+        console.log("hi from drop");
+        var imageParent = document.getElementById("album-cover");
+        imageParent.classList.remove("dragover");
+
+        // remove earlier image
+        console.log("imageparent.firstchild:", imageParent.firstChild);
+        if (imageParent.firstChild) {
+          console.log("removing child");
+          imageParent.removeChild(imageParent.firstChild);
+        }
+
+        // add dragged image
+        var image = document.createElement("img");
+        var imageName = e.dataTransfer.getData("image");
+        imageName = imageName.slice(0, imageName.length - 10);
+        image.src = imageName;
+        image.id = imageName;
+        image.classList.add("album-cover-image");
+
+        console.log("image", image);
+        console.log("e.target:", e.target);
+        imageParent.appendChild(image);
+
+        // add class to parent element
+        imageParent.classList.add("albumCoverWithImage");
+        imageParent.classList.remove("album-cover");
       };
 
       $scope.$apply();
     };
   },
-]);
-
-insectIdentifierControllers.controller("AlbumListCtrl", [
-  "$scope",
-  "$location",
-  "$http",
-  "$cookies",
-  function ($scope, $location, $http, $cookies) {},
-]);
-
-insectIdentifierControllers.controller("ViewAlbumCtrl", [
-  "$scope",
-  "$location",
-  "$http",
-  "$cookies",
-  function ($scope, $location, $http, $cookies) {},
 ]);
 
 insectIdentifierControllers.controller("ResetPasswordCtrl", [

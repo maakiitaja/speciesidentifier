@@ -1,0 +1,24 @@
+<h1 id="albumList">{{translations.ALBUMLIST}}</h1>
+
+<div class="centered">
+    <ul class="album-thumbs">
+        <li ng-repeat="album in albumList">
+            <div class="album-card">
+                <div class="margin-top-md text-centered">
+                    <p>
+                        {{album.name}}
+                    </p>
+                    <p>{{album.insects.length}} insects</p>
+
+                </div>
+
+                <img ng-src="{{album.coverImage}}" id="{{album._id}}" ng-click="viewAlbum(album)" />
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="container-empty-upload-list" ng-if="albumList.length === 0">
+    <p class="start-adding-album">{{translations.NOALBUMFOUND}} <a
+            ng-click="startAddingAlbum()">{{translations.HERE}}</a></p>
+</div>

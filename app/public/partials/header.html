@@ -105,6 +105,8 @@
 					<a ng-if="currentUser" ng-click="upload()">{{translations.UPLOAD}}</a>
 					<a ng-if="currentUser" ng-click="addObservation(currentUser)">{{translations.ADDOBSERVATION}}</a>
 					<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
+					<a ng-if="currentUser" ng-click="createAlbum()">{{translations.CREATEALBUM}}</a>
+					<a ng-if="currentUser" ng-click="viewAlbums()">{{translations.VIEWALBUMS}}</a>
 					<a ng-if="lang=='en'" ng-click="setLanguage('fi')">FI - Suomi</a>
 					<a ng-if="lang=='fi'" ng-click="setLanguage('en')">EN - English</a>
 				</div>

@@ -15,35 +15,7 @@ function dragLeave(e) {
   imageParent.classList.remove("dragover");
 }
 
-function drop(e) {
-  e.preventDefault();
-  console.log("hi from drop");
-  var imageParent = document.getElementById("album-cover");
-  imageParent.classList.remove("dragover");
-
-  // remove earlier image
-  console.log("imageparent.firstchild:", imageParent.firstChild);
-  if (imageParent.firstChild) {
-    console.log("removing child");
-    imageParent.removeChild(imageParent.firstChild);
-  }
-
-  // add dragged image
-  var image = document.createElement("img");
-  var imageName = e.dataTransfer.getData("image");
-  imageName = imageName.slice(0, imageName.length - 10);
-  image.src = imageName;
-  image.id = imageName;
-  image.classList.add("album-cover-image");
-
-  console.log("image", image);
-  console.log("e.target:", e.target);
-  imageParent.appendChild(image);
-
-  // add class to parent element
-  imageParent.classList.add("albumCoverWithImage");
-  imageParent.classList.remove("album-cover");
-}
+function drop(e) {}
 
 function dragOver(e) {
   console.log("hi from dragOver");

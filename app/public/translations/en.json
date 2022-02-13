@@ -305,7 +305,10 @@
   "CREATEALBUM": "Create album",
   "VIEWALBUMS": "View albums",
   "SEARCHFROMCOLLECTION": "Search from collection",
-  "COVER": "Cover",
+  "COVER": "Cover image",
   "ALBUMNAME": "Album name",
-  "SELECTINSECTS": "Select insects"
+  "SELECTINSECTS": "Select insects",
+  "ALBUMLIST": "Albums",
+  "NOALBUMFOUND": "No albums found",
+  "ALBUM": "Album"
 }

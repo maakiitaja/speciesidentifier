@@ -28,6 +28,7 @@ const viewRouter = require("./app/routes/viewRoutes");
 const insectRouter = require("./app/routes/insectRoutes");
 const collectionRouter = require("./app/routes/collectionRoutes");
 const observationRouter = require("./app/routes/observationRoutes");
+const albumRouter = require("./app/routes/albumRoutes");
 const dbRouter = require("./app/routes/dbRoutes");
 
 var configDB = require("./app/config/dbConfig.js");
@@ -100,6 +101,7 @@ app.use("/", viewRouter);
 app.use("/insects", insectRouter);
 app.use("/collections", collectionRouter);
 app.use("/observations", observationRouter);
+app.use("/albums", albumRouter);
 app.use("/db", dbRouter);
 
 // catch 404 and forward to error handler

@@ -83,10 +83,20 @@
                                         {{tmp = insect.images[0]+'_thumb.jpg'}}
 
                                     </div>
+                                    <!-- <div class="album-image-container" ng-click="selectImage(insect)">
+                                        <div ng-if="selectedInsects.includes(insect._id)" class="album-thumb-overlay">
+                                            &nbsp;
+                                        </div>
+                                        <img draggable="true" ondragstart="drag(event)" class="scale-sm"
+                                            id="{{insect.images[0]+'_thumb.jpg'}}"
+                                            ng-src="{{insect.images[0]+'_thumb.jpg'}}" />
 
-                                    <img draggable="true" ondragstart="drag(event)" class="scale-sm"
-                                        id="{{insect.images[0]+'_thumb.jpg'}}"
-                                        ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="selectImage(insect)" />
+                                    </div> -->
+                                    <div class="album-image-container">
+                                        <img draggable="true" ondragstart="drag(event)" class="scale-sm"
+                                            id="{{insect.images[0]+'_thumb.jpg'}}"
+                                            ng-src="{{insect.images[0]+'_thumb.jpg'}}" ng-click="selectImage(insect)" />
+                                    </div>
 
                                 </div>
                             </li>
@@ -104,19 +114,22 @@
     </section>
 
     <section class="section-cover" ng-if="selectedInsects.length > 0">
-        <h3>{{translations.COVER}}</h3>
+
         <div class="cover-container">
-            <figure class="album-cover" id="album-cover" ng-class="{albumCoverWithImage: albumCoverWithImage}"
-                ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"></figure>
+            <div class="cover">
+                <h3 class="text-centered">{{translations.COVER}}</h3>
+                <figure class="album-cover" id="album-cover" ng-class="{albumCoverWithImage: albumCoverWithImage}"
+                    ondragover="dragOver(event)" ondragleave="dragLeave(event)"></figure>
+            </div>
 
             <div class="album-info-centered">
 
-                <form ng-submit="saveAlbum()">
+                <form ng-submit="saveAlbum(query)">
                     <p>{{selectedInsects.length}} items in album</p>
                     <div class="form-group">
                         <label>{{translations.ALBUMNAME}}</label>
-                        <input type="text" class="form-control" id="albumName" name="albumName" ng-model="albumName"
-                            required>
+                        <input type="text" class="form-control" id="albumName" name="albumName"
+                            ng-model="query.albumName" required>
                     </div>
 
                     <br>
@@ -126,6 +139,8 @@
             </div>
         </div>
 
+        <div id="message" ng-if='messageError != ""' class="alert alert-danger">{{messageError}}</div>
+        <div id="message" ng-if='messageInfo != ""' class="alert alert-success">{{messageInfo}}</div>
 
     </section>
 

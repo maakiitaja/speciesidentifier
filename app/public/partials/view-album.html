@@ -1,0 +1,26 @@
+<h1 id="albumList">{{translations.ALBUM}} - {{album.name}}</h1>
+
+<div class="centered">
+
+    <ul class="album-items">
+        <li ng-repeat="insect in album.insects">
+            <div class="album-item-card">
+                <div class="margin-top-md text-centered">
+                    <div class="margin-top-md" ng-repeat="translation in insect.translations">
+                        <p class="name-translation" ng-if="translation.language==lang">
+                            {{translation.name}}
+                        </p>
+                    </div>
+                    <p class="latinname-translation">
+                        {{insect.latinName}}
+                    </p>
+
+                </div>
+
+                <img ng-src="{{insect.images[0]}}" />
+            </div>
+        </li>
+    </ul>
+
+
+</div>

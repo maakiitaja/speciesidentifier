@@ -311,5 +311,8 @@
   "SEARCHFROMCOLLECTION": "Hae kokoelmasta",
   "COVER": "Kansikuva",
   "ALBUMNAME": "Albumin nimi",
-  "SELECTINSECTS": "Valitse hyönteiset"
+  "SELECTINSECTS": "Valitse hyönteiset",
+  "ALBUMLIST": "Albumit",
+  "NOALBUMFOUND": "Sinulla ei ole albumeja",
+  "ALBUM": "Albumi"
 }
