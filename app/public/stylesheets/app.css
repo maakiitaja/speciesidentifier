@@ -502,8 +502,7 @@ ul.album-items {
   list-style: none;
 }
 
-ul.insect-thumbs li,
-ul.album-items li {
+ul.insect-thumbs li {
   display: inline-block;
   margin: 5px;
   background-color: white;
@@ -539,8 +538,8 @@ ul.album-thumbs img {
 }
 
 ul.album-items img {
-  min-width: 300px;
-  min-height: 300px;
+  min-width: 200px;
+  min-height: 200px;
   max-height: 400px;
   max-width: 400px;
 }
@@ -2048,7 +2047,8 @@ input[type="radio"] + label span.radio-content:hover {
 /* Album */
 
 .cover-container,
-.album-thumbs {
+.album-thumbs,
+.album-items {
   display: flex;
   justify-content: center;
   align-items: center;
