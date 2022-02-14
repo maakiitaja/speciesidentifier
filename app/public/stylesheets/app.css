@@ -562,7 +562,7 @@ ul.insect-thumbs img:hover {
 }
 ul.insect-thumbs img.scale-sm:hover {
   cursor: pointer;
-  transform: scale(1.07);
+  transform: scale(1.01) !important;
 }
 
 .flex-table {

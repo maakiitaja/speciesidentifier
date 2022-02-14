@@ -28,4 +28,7 @@ router
   .route("/insert")
   .post(authController.isLoggedIn, collectionController.insert);
 
+router
+  .route("/search")
+  .get(authController.isLoggedIn, collectionController.search);
 module.exports = router;

@@ -1,5 +1,6 @@
 var Insect = require("./../models/insect");
 var Compendium = require("./../models/compendium");
+const catchAsync = require("./../utils/catchAsync");
 
 exports.searchItem = function (req, res) {};
 
@@ -291,3 +292,34 @@ exports.insertMany = function (req, res) {
     });
   });
 };
+
+exports.search = catchAsync(async (req, res, next) => {
+  console.log("collection search");
+  const collection = await Compendium.findOne({ _user: req.user.id }).populate(
+    "insects"
+  );
+
+  if (!collection || collection?.insects?.length === 0) {
+    console.log("collection empty or no insects found");
+    return res.status(404).send({ msg: "Collection empty" });
+  }
+  const resInsects = [];
+  collection.insects.forEach(function (insect) {
+    let result;
+    if (insect.category === req.query.category) {
+      result = insect;
+      if (req.query.primaryColor) {
+        if (insect.primaryColor === req.query.primaryColor) {
+          result = insect;
+        } else result = null;
+      }
+      if (req.query.secondaryColor && result) {
+        if (insect.secondaryColor === req.query.secondaryColor) result = insect;
+        else result = null;
+      }
+    }
+    if (result) resInsects.push(result);
+  });
+  console.log("succesfully filtered");
+  return res.status(200).send({ insects: resInsects });
+});

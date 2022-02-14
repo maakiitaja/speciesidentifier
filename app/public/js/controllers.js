@@ -117,28 +117,255 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
       $location.path("search");
     };
 
+    $scope.selectImage = async function (insect) {
+      console.log("setting image");
+
+      console.log("controller: setimage: " + insect.images[0]);
+
+      if ($scope.selectedInsects.includes(insect._id)) {
+        console.log("selected insect image was clicked again");
+        $scope.selectedInsects = $scope.selectedInsects.filter(
+          (selectedInsectId) => selectedInsectId !== insect._id
+        );
+        var previousThumbImg = document.getElementById(
+          insect.images[0] + "_thumb.jpg"
+        );
+        if (previousThumbImg) {
+          previousThumbImg.classList.toggle("activeThumb");
+        }
+      } else {
+        // toggle the active status
+        console.log("toggling the active status");
+        $scope.selectedInsects.push(insect._id);
+        var thumbImg = document.getElementById(insect.images[0] + "_thumb.jpg");
+        if (thumbImg) {
+          thumbImg.classList.toggle("activeThumb");
+        }
+
+        // drop event listener
+        await wait(0.5);
+        const albumCover = document.getElementById("album-cover");
+        albumCover.addEventListener("drop", (e) => {
+          e.preventDefault();
+          console.log("hi from drop");
+          var imageParent = document.getElementById("album-cover");
+          imageParent.classList.remove("dragover");
+
+          // remove earlier image
+          console.log("imageparent.firstchild:", imageParent.firstChild);
+          if (imageParent.firstChild) {
+            console.log("removing child");
+            imageParent.removeChild(imageParent.firstChild);
+          }
+
+          // add dragged image
+          var image = document.createElement("img");
+          var imageName = e.dataTransfer.getData("image");
+          imageName = imageName.slice(0, imageName.length - 10);
+          image.src = imageName;
+          image.id = imageName;
+          image.classList.add("album-cover-image");
+
+          console.log("image", image);
+          console.log("e.target:", e.target);
+          imageParent.appendChild(image);
+
+          // add class to parent element
+          imageParent.classList.add("albumCoverWithImage");
+          imageParent.classList.remove("album-cover");
+
+          $scope.coverImage = imageName;
+        });
+      }
+      console.log("selectedInsects:", $scope.selectedInsects);
+    };
+
+    $scope.saveAlbum = function (query) {
+      console.log("cover:", $scope.coverImage);
+      console.log("album name:", query.albumName);
+
+      if ($localStorage.albums === undefined) {
+        $localStorage.albums = [];
+      }
+
+      if ($scope.coverImage === undefined) {
+        const insect = $localStorage.collection.find(
+          (insect) => insect._id === $scope.selectedInsects[0]
+        );
+        $scope.coverImage = insect.images[0];
+      }
+
+      $localStorage.albums.push({
+        name: query.albumName,
+        insects: $scope.selectedInsects,
+        cover: $scope.coverImage,
+      });
+
+      $http({
+        url: "/albums/add",
+        method: "POST",
+        params: {
+          name: query.albumName,
+          insects: $scope.selectedInsects,
+          coverImage: $scope.coverImage,
+        },
+      })
+        .success(function (response) {
+          console.log(response);
+          $scope.messageInfo = response.message;
+          setTimeout(
+            function ($scope, $window) {
+              $scope.messageInfo = "";
+              $scope.$apply();
+              $window.location.href = "#/album-list";
+            },
+            3000,
+            $scope,
+            $window
+          );
+        })
+        .catch(function (error) {
+          console.log(error);
+          $scope.messageError = response.message;
+          setTimeout(
+            function ($scope, $location) {
+              $scope.messageError = "";
+              $scope.$apply();
+            },
+            3000,
+            $scope
+          );
+        });
+    };
+
+    $scope.dropCtrl = function (e) {
+      e.preventDefault();
+      console.log("hi from drop");
+      var imageParent = document.getElementById("album-cover");
+      imageParent.classList.remove("dragover");
+
+      // remove earlier image
+      console.log("imageparent.firstchild:", imageParent.firstChild);
+      if (imageParent.firstChild) {
+        console.log("removing child");
+        imageParent.removeChild(imageParent.firstChild);
+      }
+
+      // add dragged image
+      var image = document.createElement("img");
+      var imageName = e.dataTransfer.getData("image");
+      imageName = imageName.slice(0, imageName.length - 10);
+      image.src = imageName;
+      image.id = imageName;
+      image.classList.add("album-cover-image");
+
+      console.log("image", image);
+      console.log("e.target:", e.target);
+      imageParent.appendChild(image);
+
+      // add class to parent element
+      imageParent.classList.add("albumCoverWithImage");
+      imageParent.classList.remove("album-cover");
+    };
+
     $scope.search = async function (query) {
+      // $scope.insects = [];
+      // const category = query.category;
+      // const primaryColor = query.primaryColor;
+      // const secondaryColor = query.secondaryColor;
+      // $scope.selectedInsects = [];
+      // $localStorage.collection.forEach(function (insect) {
+      //   let result;
+      //   if (insect.category === category) {
+      //     result = insect;
+      //     if (primaryColor) {
+      //       if (insect.primaryColor === primaryColor) {
+      //         result = insect;
+      //       } else result = null;
+      //     }
+      //     if (secondaryColor && result) {
+      //       if (insect.secondaryColor === secondaryColor) result = insect;
+      //       else result = null;
+      //     }
+      //   }
+      //   if (result) $scope.insects.push(insect);
+      // });
+      // console.log("category: ", category);
+      // console.log("$scope.insects: ", $scope.insects);
+
+      // if ($scope.insects.length > 0) {
+      //   $scope.searchResults = "showResults";
+      // } else {
+      //   $scope.searchResults = "noResults";
+      // }
+
+      // await wait(0.5);
+
+      // $scope.itemsPerPage = 2;
+      // const visiblePages = 2;
+      // const totalPages = Math.floor(($scope.insects.length + 1) / visiblePages);
+      // if ($scope.insects.length > $scope.itemsPerPage) {
+      //   $scope.hidePagination = false;
+      // } else $scope.hidePagination = true;
+      // setPagedInsects($scope.insects, $scope);
+      // $scope.currentPage = 0;
+
+      // window.pagObj = $("#pagination")
+      //   .twbsPagination({
+      //     totalPages: totalPages,
+      //     visiblePages: visiblePages,
+      //     onPageClick: function (event, page) {
+      //       console.info(page + " (from options)");
+      //       console.log("scope:", $scope);
+      //       $scope.currentPage = page - 1;
+      //       $scope.$apply();
+      //       // update selected insects
+      //       $scope.pagedInsects[$scope.currentPage].forEach(function (insect) {
+      //         console.log("insect: ", insect);
+      //         console.log("selected insects: ", $scope.selectedInsects);
+      //         const insectFound = $scope.selectedInsects.includes(insect._id);
+      //         if (insectFound) {
+      //           console.log("insect found");
+      //           var thumbImg = document.getElementById(
+      //             insect.images[0] + "_thumb.jpg"
+      //           );
+      //           console.log("thumbimg:", thumbImg);
+      //           if (thumbImg) {
+      //             thumbImg.classList.toggle("activeThumb");
+      //           }
+      //         }
+      //       });
+      //     },
+      //   })
+      //   .on("page", function (event, page) {
+      //     console.info(page + " (from event listening)");
+      //   });
       $scope.insects = [];
       const category = query.category;
       const primaryColor = query.primaryColor;
       const secondaryColor = query.secondaryColor;
       $scope.selectedInsects = [];
-      $localStorage.collection.forEach(function (insect) {
-        let result;
-        if (insect.category === category) {
-          result = insect;
-          if (primaryColor) {
-            if (insect.primaryColor === primaryColor) {
-              result = insect;
-            } else result = null;
-          }
-          if (secondaryColor && result) {
-            if (insect.secondaryColor === secondaryColor) result = insect;
-            else result = null;
-          }
-        }
-        if (result) $scope.insects.push(insect);
+      const response = await $http({
+        url: "/collections/search",
+        method: "GET",
+        params: {
+          category: category,
+          primaryColor: primaryColor,
+          secondaryColor: secondaryColor,
+        },
       });
+
+      console.log("response: ", response);
+
+      console.log(response.data.insects);
+      if (response.data.insects === undefined) {
+        console.log("error");
+        $scope.searchResults = "noResults";
+        return;
+      }
+
+      $scope.insects = response.data.insects;
+
       console.log("category: ", category);
       console.log("$scope.insects: ", $scope.insects);
 
@@ -146,18 +373,31 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
         $scope.searchResults = "showResults";
       } else {
         $scope.searchResults = "noResults";
+        return;
       }
-
       await wait(0.5);
-
-      $scope.itemsPerPage = 2;
+      $scope.itemsPerPage = 6;
       const visiblePages = 2;
-      const totalPages = Math.floor(($scope.insects.length + 1) / visiblePages);
+      const totalPages = Math.ceil(
+        ($scope.insects.length + 1) / $scope.itemsPerPage
+      );
+
       if ($scope.insects.length > $scope.itemsPerPage) {
         $scope.hidePagination = false;
       } else $scope.hidePagination = true;
+
+      console.log("$scope.hidePagination:", $scope.hidePagination);
       setPagedInsects($scope.insects, $scope);
       $scope.currentPage = 0;
+      console.log("totalPages:", totalPages);
+      console.log(
+        "$scope.insects.length",
+        $scope.insects.length,
+        "$scope.itemsPerPage",
+        $scope.itemsPerPage
+      );
+      // apply needs to be here in order for pagination to show
+      $scope.$apply();
 
       window.pagObj = $("#pagination")
         .twbsPagination({
@@ -189,161 +429,6 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
         .on("page", function (event, page) {
           console.info(page + " (from event listening)");
         });
-
-      $scope.selectImage = async function (insect) {
-        console.log("setting image");
-
-        console.log("controller: setimage: " + insect.images[0]);
-
-        if ($scope.selectedInsects.includes(insect._id)) {
-          console.log("selected insect image was clicked again");
-          $scope.selectedInsects = $scope.selectedInsects.filter(
-            (selectedInsectId) => selectedInsectId !== insect._id
-          );
-          var previousThumbImg = document.getElementById(
-            insect.images[0] + "_thumb.jpg"
-          );
-          if (previousThumbImg) {
-            previousThumbImg.classList.toggle("activeThumb");
-          }
-        } else {
-          // toggle the active status
-          console.log("toggling the active status");
-          $scope.selectedInsects.push(insect._id);
-          var thumbImg = document.getElementById(
-            insect.images[0] + "_thumb.jpg"
-          );
-          if (thumbImg) {
-            thumbImg.classList.toggle("activeThumb");
-          }
-
-          // drop event listener
-          await wait(0.5);
-          const albumCover = document.getElementById("album-cover");
-          albumCover.addEventListener("drop", (e) => {
-            e.preventDefault();
-            console.log("hi from drop");
-            var imageParent = document.getElementById("album-cover");
-            imageParent.classList.remove("dragover");
-
-            // remove earlier image
-            console.log("imageparent.firstchild:", imageParent.firstChild);
-            if (imageParent.firstChild) {
-              console.log("removing child");
-              imageParent.removeChild(imageParent.firstChild);
-            }
-
-            // add dragged image
-            var image = document.createElement("img");
-            var imageName = e.dataTransfer.getData("image");
-            imageName = imageName.slice(0, imageName.length - 10);
-            image.src = imageName;
-            image.id = imageName;
-            image.classList.add("album-cover-image");
-
-            console.log("image", image);
-            console.log("e.target:", e.target);
-            imageParent.appendChild(image);
-
-            // add class to parent element
-            imageParent.classList.add("albumCoverWithImage");
-            imageParent.classList.remove("album-cover");
-
-            $scope.coverImage = imageName;
-          });
-        }
-        console.log("selectedInsects:", $scope.selectedInsects);
-      };
-
-      $scope.saveAlbum = function (query) {
-        console.log("cover:", $scope.coverImage);
-        console.log("album name:", query.albumName);
-
-        if ($localStorage.albums === undefined) {
-          $localStorage.albums = [];
-        }
-
-        if ($scope.coverImage === undefined) {
-          const insect = $localStorage.collection.find(
-            (insect) => insect._id === $scope.selectedInsects[0]
-          );
-          $scope.coverImage = insect.images[0];
-        }
-
-        $localStorage.albums.push({
-          name: query.albumName,
-          insects: $scope.selectedInsects,
-          cover: $scope.coverImage,
-        });
-
-        $http({
-          url: "/albums/add",
-          method: "POST",
-          params: {
-            name: query.albumName,
-            insects: $scope.selectedInsects,
-            coverImage: $scope.coverImage,
-          },
-        })
-          .success(function (response) {
-            console.log(response);
-            $scope.messageInfo = response.message;
-            setTimeout(
-              function ($scope, $window) {
-                $scope.messageInfo = "";
-                $scope.$apply();
-                $window.location.href = "#/album-list";
-              },
-              3000,
-              $scope,
-              $window
-            );
-          })
-          .catch(function (error) {
-            console.log(error);
-            $scope.messageError = response.message;
-            setTimeout(
-              function ($scope, $location) {
-                $scope.messageError = "";
-                $scope.$apply();
-              },
-              3000,
-              $scope
-            );
-          });
-      };
-
-      $scope.dropCtrl = function (e) {
-        e.preventDefault();
-        console.log("hi from drop");
-        var imageParent = document.getElementById("album-cover");
-        imageParent.classList.remove("dragover");
-
-        // remove earlier image
-        console.log("imageparent.firstchild:", imageParent.firstChild);
-        if (imageParent.firstChild) {
-          console.log("removing child");
-          imageParent.removeChild(imageParent.firstChild);
-        }
-
-        // add dragged image
-        var image = document.createElement("img");
-        var imageName = e.dataTransfer.getData("image");
-        imageName = imageName.slice(0, imageName.length - 10);
-        image.src = imageName;
-        image.id = imageName;
-        image.classList.add("album-cover-image");
-
-        console.log("image", image);
-        console.log("e.target:", e.target);
-        imageParent.appendChild(image);
-
-        // add class to parent element
-        imageParent.classList.add("albumCoverWithImage");
-        imageParent.classList.remove("album-cover");
-      };
-
-      $scope.$apply();
     };
   },
 ]);

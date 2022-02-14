@@ -1,4 +1,3 @@
-var signup = require("./signup");
 var login = require("./login");
 var User = require("../app/models/user");
 var GitHubStrategy = require("passport-github").Strategy;

@@ -116,11 +116,15 @@ app.all("*", function (req, res, next) {
 if (app.get("env") === "development") {
   app.use(function (err, req, res, next) {
     console.log("in dev error handler, err", err);
-    res.status(err.status || 500);
-    res.render("error", {
-      message: err.message,
-      error: err,
-    });
+    res.status(err.statusCode || err.status || 500);
+    if (err.isOperational) {
+      return res.send({ error: err });
+    } else {
+      res.render("error", {
+        message: err.message,
+        error: err,
+      });
+    }
   });
 }
 
