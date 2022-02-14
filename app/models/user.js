@@ -8,24 +8,8 @@ var uniqueValidator = require("mongoose-unique-validator");
 
 var UserSchema = new Schema({
   githubId: String,
-  facebook: {
-    id: String,
-    token: String,
-    email: String,
-    name: String,
-  },
-  twitter: {
-    id: String,
-    token: String,
-    displayName: String,
-    username: String,
-  },
-  google: {
-    id: String,
-    token: String,
-    email: String,
-    name: String,
-  },
+  googleId: String,
+  facebookId: String,
   username: {
     type: String,
     unique: true,
