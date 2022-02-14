@@ -309,7 +309,7 @@
   "ALBUMNAME": "Album name",
   "SELECTINSECTS": "Select insects",
   "ALBUMLIST": "Albums",
-  "NOALBUMFOUND": "No albums found",
+  "NOALBUMFOUND": "No albums found. Start creating them from ",
   "ALBUM": "Album",
   "VIEWALBUM": "View",
   "DELETEALBUM": "Delete"

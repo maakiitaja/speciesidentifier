@@ -105,8 +105,9 @@
 					<a ng-if="currentUser" ng-click="upload()">{{translations.UPLOAD}}</a>
 					<a ng-if="currentUser" ng-click="addObservation(currentUser)">{{translations.ADDOBSERVATION}}</a>
 					<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
-					<a ng-if="currentUser" ng-click="createAlbum()">{{translations.CREATEALBUM}}</a>
 					<a ng-if="currentUser" ng-click="viewAlbums()">{{translations.VIEWALBUMS}}</a>
+					<a ng-if="currentUser" ng-click="createAlbum()">{{translations.CREATEALBUM}}</a>
+
 					<a ng-if="lang=='en'" ng-click="setLanguage('fi')">FI - Suomi</a>
 					<a ng-if="lang=='fi'" ng-click="setLanguage('en')">EN - English</a>
 				</div>
@@ -125,7 +126,7 @@
 			</button>
 
 			<ul class="main-nav-list">
-				<li><a class="main-nav-link" ng-click="search()">{{translations.SEARCH}}</a></li>
+				<li class="margin-top-lg"><a class="main-nav-link" ng-click="search()">{{translations.SEARCH}}</a></li>
 				<li><a class="main-nav-link" ng-click="collection()">{{translations.COLLECTION}}</a></li>
 				<li class="main-nav-link" ng-if="currentUser"><a
 						ng-click="modify(currentUser)">{{translations.MODIFY}}</a></li>
@@ -135,6 +136,10 @@
 				</li>
 				<li><a class="main-nav-link"
 						ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
+				</li>
+				<li><a class="main-nav-link" ng-click="viewAlbums()">{{translations.VIEWALBUMS}}</a>
+				</li>
+				<li><a class="main-nav-link" ng-click="createAlbum()">{{translations.CREATEALBUM}}</a>
 				</li>
 				<li class="main-nav-link" ng-if="lang=='en'"><a ng-click="setLanguage('fi')">FI - Suomi</a></li>
 				<li class="main-nav-link" ng-if="lang=='fi'"><a ng-click="setLanguage('en')">EN - English</a></li>

@@ -49,7 +49,8 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
   "$http",
   "$cookies",
   "$localStorage",
-  function ($scope, $location, $http, $cookies, $localStorage) {
+  "$window",
+  function ($scope, $location, $http, $cookies, $localStorage, $window) {
     console.log("album list ctrl");
     $scope.albumList = [];
     $http({ method: "GET", url: "/albums/list" })
@@ -83,6 +84,10 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
             console.log(error);
           });
       }
+    };
+
+    $scope.startAddingAlbum = function () {
+      $window.location.href = "#/create-album";
     };
   },
 ]);

@@ -313,7 +313,7 @@
   "ALBUMNAME": "Albumin nimi",
   "SELECTINSECTS": "Valitse hyönteiset",
   "ALBUMLIST": "Albumit",
-  "NOALBUMFOUND": "Sinulla ei ole albumeja",
+  "NOALBUMFOUND": "Sinulla ei ole albumeja. Aloita luomaan albumeja ",
   "ALBUM": "Albumi",
   "VIEWALBUM": "Katsele",
   "DELETEALBUM": "Poista"
