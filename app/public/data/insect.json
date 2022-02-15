@@ -1,0 +1,17 @@
+[
+  {
+    "translations": [{ "language": "fi", "name": "Neitoperhonen" }],
+    "latinName": "Aglais io",
+    "category": "Butterfly",
+    "legs": "4",
+    "primaryColor": "Red",
+    "secondaryColor": "Black",
+    "territory": "",
+    "images": [
+      "images/Aglais io.jpeg",
+      "images/aglais_io_wiki.jpg",
+      "images/aglais_io_black.jpg"
+    ],
+    "wiki": "Aglais_io"
+  }
+]

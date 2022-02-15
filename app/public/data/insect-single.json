@@ -1,0 +1,16 @@
+[
+  {
+    "translations": [{ "language": "Latin", "name": "Acalyptus carpini" }],
+    "latinName": "Acalyptus carpini",
+    "category": "Beetle",
+    "legs": "4",
+    "primaryColor": "Green",
+    "secondaryColor": "Green",
+    "territory": "",
+    "images": [
+      "images/Acalyptus carpini tv20060723_086.jpg",
+      "images/acalaptys-carpiniäö.jpg"
+    ],
+    "wiki": "Acalyptus carpini"
+  }
+]

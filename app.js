@@ -2,6 +2,7 @@
 
 /// get all the tools we need
 var express = require("express");
+const dotenv = require("dotenv");
 const helmet = require("helmet");
 var app = express();
 var AppError = require("./app/utils/appError");
@@ -34,7 +35,19 @@ const dbRouter = require("./app/routes/dbRoutes");
 var configDB = require("./app/config/dbConfig.js");
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+dotenv.config({ path: "./bin/.env" });
+//mongoose.connect(configDB.url); // connect to our DATABASE
+console.log(process.env.DATABASE);
+const DB = process.env.DATABASE.replace(
+  "<PASSWORD>",
+  process.env.DATABASE_PASSWORD
+);
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("DB connection successful!"));
 
 require("./app/config/passport")(passport); // pass passport for configuration
 

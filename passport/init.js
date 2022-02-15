@@ -14,7 +14,7 @@ module.exports = function (passport) {
       {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: "http://127.0.0.1:8000/auth/github/callback",
+        callbackURL: `${process.env.HOST}/auth/github/callback`,
       },
       async function (accessToken, refreshToken, profile, cb) {
         let user;
@@ -44,7 +44,7 @@ module.exports = function (passport) {
       {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-        callbackURL: "http://127.0.0.1:8000/auth/facebook/callback",
+        callbackURL: `${process.env.HOST}/auth/facebook/callback`,
         profileFields: ["email", "name"],
       },
       async function (accessToken, refreshToken, profile, done) {
@@ -77,7 +77,7 @@ module.exports = function (passport) {
   //     {
   //       consumerKey: process.env.GOOGLE_CONSUMER_KEY,
   //       consumerSecret: process.env.GOOGLE_CONSUMER_SECRET,
-  //       returnURL: "http://127.0.0.1:8000/auth/github/callback",
+  //       returnURL: `${process.env.HOST}/auth/google/callback",
   //     },
   //     async function (accessToken, refreshToken, profile, cb) {
   //       let user;

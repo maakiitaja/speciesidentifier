@@ -269,77 +269,6 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
     };
 
     $scope.search = async function (query) {
-      // $scope.insects = [];
-      // const category = query.category;
-      // const primaryColor = query.primaryColor;
-      // const secondaryColor = query.secondaryColor;
-      // $scope.selectedInsects = [];
-      // $localStorage.collection.forEach(function (insect) {
-      //   let result;
-      //   if (insect.category === category) {
-      //     result = insect;
-      //     if (primaryColor) {
-      //       if (insect.primaryColor === primaryColor) {
-      //         result = insect;
-      //       } else result = null;
-      //     }
-      //     if (secondaryColor && result) {
-      //       if (insect.secondaryColor === secondaryColor) result = insect;
-      //       else result = null;
-      //     }
-      //   }
-      //   if (result) $scope.insects.push(insect);
-      // });
-      // console.log("category: ", category);
-      // console.log("$scope.insects: ", $scope.insects);
-
-      // if ($scope.insects.length > 0) {
-      //   $scope.searchResults = "showResults";
-      // } else {
-      //   $scope.searchResults = "noResults";
-      // }
-
-      // await wait(0.5);
-
-      // $scope.itemsPerPage = 2;
-      // const visiblePages = 2;
-      // const totalPages = Math.floor(($scope.insects.length + 1) / visiblePages);
-      // if ($scope.insects.length > $scope.itemsPerPage) {
-      //   $scope.hidePagination = false;
-      // } else $scope.hidePagination = true;
-      // setPagedInsects($scope.insects, $scope);
-      // $scope.currentPage = 0;
-
-      // window.pagObj = $("#pagination")
-      //   .twbsPagination({
-      //     totalPages: totalPages,
-      //     visiblePages: visiblePages,
-      //     onPageClick: function (event, page) {
-      //       console.info(page + " (from options)");
-      //       console.log("scope:", $scope);
-      //       $scope.currentPage = page - 1;
-      //       $scope.$apply();
-      //       // update selected insects
-      //       $scope.pagedInsects[$scope.currentPage].forEach(function (insect) {
-      //         console.log("insect: ", insect);
-      //         console.log("selected insects: ", $scope.selectedInsects);
-      //         const insectFound = $scope.selectedInsects.includes(insect._id);
-      //         if (insectFound) {
-      //           console.log("insect found");
-      //           var thumbImg = document.getElementById(
-      //             insect.images[0] + "_thumb.jpg"
-      //           );
-      //           console.log("thumbimg:", thumbImg);
-      //           if (thumbImg) {
-      //             thumbImg.classList.toggle("activeThumb");
-      //           }
-      //         }
-      //       });
-      //     },
-      //   })
-      //   .on("page", function (event, page) {
-      //     console.info(page + " (from event listening)");
-      //   });
       $scope.insects = [];
       const category = query.category;
       const primaryColor = query.primaryColor;
@@ -372,10 +301,12 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
       if ($scope.insects.length > 0) {
         $scope.searchResults = "showResults";
       } else {
+        console.log("No results found");
         $scope.searchResults = "noResults";
+        $scope.$apply();
         return;
       }
-      await wait(0.5);
+      await wait(0.2);
       $scope.itemsPerPage = 6;
       const visiblePages = 2;
       const totalPages = Math.ceil(

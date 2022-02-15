@@ -1,6 +1,9 @@
 var mongoose = require("mongoose");
 var ObjectId = require("mongodb").ObjectID;
 var Schema = mongoose.Schema;
+var sharp = require("sharp");
+var path = require("path");
+var fs = require("fs");
 
 var TranslationSchema = new Schema({
   language: String,

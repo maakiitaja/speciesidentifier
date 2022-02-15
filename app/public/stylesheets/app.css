@@ -1963,7 +1963,7 @@ input[type="radio"] + label span.radio-content:hover {
   font-weight: 600;
   padding: 6px 10px;
   border-radius: 9px;
-
+  width: 230px;
   /* Only necessary for .btn */
   border: none;
   cursor: pointer;
@@ -1987,7 +1987,7 @@ input[type="radio"] + label span.radio-content:hover {
 
 .btn-link-own--outline:link,
 .btn-link-own--outline:visited {
-  background-color: #fff;
+  background-color: #fdf2e9;
   color: #555;
   box-shadow: inset 0 0 0 3px #fdf2e9;
 }
