@@ -21,7 +21,7 @@ var InsectSchema = new Schema(
     category: { type: String, required: true },
     images: [String],
     imageLinks: [String],
-    userId: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   {
     timestamps: true,

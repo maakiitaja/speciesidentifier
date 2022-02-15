@@ -313,5 +313,6 @@
   "ALBUM": "Album",
   "VIEWALBUM": "View",
   "DELETEALBUM": "Delete",
-  "BACK": "Back"
+  "BACK": "Back",
+  "GENERAL": "General"
 }

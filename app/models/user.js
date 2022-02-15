@@ -43,7 +43,7 @@ var UserSchema = new Schema({
 
 // generating a hash
 UserSchema.methods.createHash = async function () {
-  return await bcrypt.hash(this.password, 10);
+  return await bcrypt.hash(this.password, 12);
 };
 
 // // checking if password is valid

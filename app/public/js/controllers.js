@@ -950,7 +950,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       params: { userId: $scope.currentUser._id },
     }).success(function (data) {
       if (data[0]) {
-        console.log("1st insect: " + data[0].latinName);
+        console.log("1st insect: " + JSON.stringify(data[0]));
       }
 
       console.log("data.length: " + data.length);

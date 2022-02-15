@@ -131,7 +131,7 @@ if (app.get("env") === "development") {
     console.log("in dev error handler, err", err);
     res.status(err.statusCode || err.status || 500);
     if (err.isOperational) {
-      return res.send({ error: err });
+      return res.send({ error: err, message: err.message });
     } else {
       res.render("error", {
         message: err.message,

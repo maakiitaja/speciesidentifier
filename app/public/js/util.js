@@ -126,6 +126,7 @@ const insectsByCategory = {
   Beetle: [],
   Butterfly: [],
   Centipede: [],
+  General: [],
   Spider: [],
 };
 
@@ -136,11 +137,12 @@ const insectsByCategoryFi = {
   Ant: [],
   Butterfly: [],
   Centipede: [],
+  General: [],
 };
 
 constructCollectionByCategory = function ($localStorage, $cookies) {
   console.log("construct local collection by category");
-  // without taking into account language
+
   const dst = insectsByCategoryByLang($cookies);
 
   $localStorage.collection.forEach(function (item) {
@@ -155,11 +157,12 @@ constructCollectionByCategory = function ($localStorage, $cookies) {
 
 constructUploadListByCategory = function (remoteItems, $cookies) {
   console.log("construct upload list by category");
-  // without taking into account language
+
   const dst = insectsByCategoryByLang($cookies);
 
   remoteItems.forEach(function (item) {
     const category = item.category;
+    console.log("cat:", category);
     dst[category].push(item);
   });
   console.log("dst: ", dst);
@@ -602,7 +605,8 @@ sortCategories = function ($scope) {
       [translations.BEE, "Bee"],
       [translations.BUTTERFLY, "Butterfly"],
       [translations.SPIDER, "Spider"],
-      [translations.CENTIPEDE, "Centipede"]
+      [translations.CENTIPEDE, "Centipede"],
+      [translations.GENERAL, "General"]
     );
     $scope.categories = categoryArr.sort();
   });
