@@ -316,5 +316,6 @@
   "NOALBUMFOUND": "Sinulla ei ole albumeja. Aloita luomaan albumeja ",
   "ALBUM": "Albumi",
   "VIEWALBUM": "Katsele",
-  "DELETEALBUM": "Poista"
+  "DELETEALBUM": "Poista",
+  "BACK": "Takaisin"
 }

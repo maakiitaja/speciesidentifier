@@ -372,8 +372,8 @@ insectIdentifierControllers.controller("ResetPasswordCtrl", [
   function ($scope, $location, $http, $cookies) {
     $scope.message = "";
     $scope.messageInfo = "";
-    const resetToken = $cookies.get("reset-token");
-    console.log("resetToken: ", resetToken);
+    $scope.resetToken = $cookies.get("reset-token");
+    console.log("resetToken: ", $scope.resetToken);
 
     $scope.passwordConfirmField = function () {
       console.log("password confirmation");
@@ -393,7 +393,7 @@ insectIdentifierControllers.controller("ResetPasswordCtrl", [
     };
 
     $scope.resetPassword = function () {
-      const resetToken = $cookies.get("reset-token");
+      const resetToken = $scope.resetToken;
       console.log(resetToken);
       $http({
         method: "POST",
@@ -401,6 +401,7 @@ insectIdentifierControllers.controller("ResetPasswordCtrl", [
         params: {
           password: $scope.password,
           passwordConfirm: $scope.passwordConfirm,
+          resetToken: resetToken,
         },
       })
         .success(function (response) {
@@ -437,9 +438,14 @@ insectIdentifierControllers.controller("ForgotPasswordCtrl", [
   "$scope",
   "$location",
   "$http",
-  function ($scope, $location, $http) {
+  "$window",
+  function ($scope, $location, $http, $window) {
     $scope.message = "";
     $scope.messageInfo = "";
+
+    $scope.back = function () {
+      $window.location.href = "#/login";
+    };
 
     $scope.sendEmail = function () {
       $http({

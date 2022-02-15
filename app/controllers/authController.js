@@ -70,10 +70,11 @@ exports.resetPasswordGet = catchAsync(async (req, res, next) => {
       .status(400)
       .send({ message: "Token is invalid or has expired." });
   }
+  console.log("req.params.token", req.params.token);
   res.cookie("reset-token", req.params.token, {
     maxAge: user.passwordResetExpires,
   });
-  return res.redirect("http://localhost:8000/#/reset-password");
+  return res.redirect(`${req.protocol}://${req.get("host")}/#/reset-password`);
 });
 
 // credits: https://github.com/jonasschmedtmann/complete-node-bootcamp

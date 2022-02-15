@@ -312,5 +312,6 @@
   "NOALBUMFOUND": "No albums found. Start creating them from ",
   "ALBUM": "Album",
   "VIEWALBUM": "View",
-  "DELETEALBUM": "Delete"
+  "DELETEALBUM": "Delete",
+  "BACK": "Back"
 }

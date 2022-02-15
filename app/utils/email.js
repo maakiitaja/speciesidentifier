@@ -1,14 +1,16 @@
 const nodemailer = require("nodemailer");
+const nodemailerSendgrid = require("nodemailer-sendgrid");
 const pug = require("pug");
 const htmlToText = require("html-to-text");
 
 module.exports = class Email {
   constructor(user, url) {
     console.log("in email constructor");
+    console.log("url: ", url);
     this.to = user.email;
     this.firstName = user.username.split(" ")[0];
     this.url = url;
-    this.from = `Mauri Flinckman <${process.env.EMAIL_FROM}>`;
+    this.from = process.env.EMAIL_FROM;
   }
 
   newTransport() {
@@ -16,17 +18,23 @@ module.exports = class Email {
       "logging env vars: ",
       process.env.EMAIL_HOST,
       process.env.EMAIL_PORT,
-      process.env.EMAIL_USERNAME,
-      process.env.EMAIL_PASSWORD
+      process.env.SENDGRID_USERNAME,
+      process.env.SENDGRID_PASSWORD
     );
-    return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
+    return nodemailer.createTransport(
+      {
+        service: "SendGrid",
+        // host: process.env.EMAIL_HOST,
+        // port: process.env.EMAIL_PORT,
+        auth: {
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD,
+        },
+      }
+      // nodemailerSendgrid({
+      //   apiKey: process.env.SENDGRID_PASSWORD,
+      // })
+    );
   }
 
   // Send the actual email
@@ -47,9 +55,10 @@ module.exports = class Email {
       html,
       text: htmlToText.fromString(html),
     };
-    console.log("sending email to mailtrap.");
+    console.log("sending email to sendgrid.");
     // 3) Create a transport and send email
-    await this.newTransport().sendMail(mailOptions);
+    const resp = await this.newTransport().sendMail(mailOptions);
+    console.log("resp after sending mail: ", resp);
   }
 
   async sendWelcome() {
