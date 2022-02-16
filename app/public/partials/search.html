@@ -6,12 +6,6 @@
 	</div>
 	<h1 ng-if="fromObservationPage != 1">{{translations.SEARCHPAGE}}</h1>
 
-	<div class="container-alert">
-		<div id="showFileuploadSuccessMessage" ng-if='showFileuploadSuccessMessage != ""'
-			class="alert alert-success is-paused fade-out">
-			{{showFileuploadSuccessMessage}}</div>
-	</div>
-
 	<form ng-submit='search(query)'>
 		<div class="flex-center">
 			<ul id="flex-table" class="flex-table">

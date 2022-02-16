@@ -147,7 +147,7 @@ exports.insert = function (req, res) {
           if (err) throw err;
           console.log("Insect saved");
           console.log("insect: " + insect);
-          return res.redirect("/#/main?fileuploadsuccess=1");
+          return res.redirect("/#/insect/uploadList?fileuploadsuccess=1");
         });
       } else {
         console.log("updating insect");
@@ -167,7 +167,9 @@ exports.insert = function (req, res) {
         await Insect.updateOne(conditions, update);
         console.log("insect updated");
         try {
-          return res.redirect("/#/main?fileuploadsuccess=1");
+          return res.redirect(
+            "/#/insect/uploadList?fileuploadsuccess=1&page=" + req.body.page
+          );
         } catch (err) {
           console.log("error in redirect");
           return res.send(null);

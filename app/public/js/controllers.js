@@ -939,6 +939,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
   "$cookies",
   async function ($scope, Search, $location, $http, $localStorage, $cookies) {
     console.log("uploadlist ctrl current User:" + $scope.currentUser);
+    $scope.fileuploadMessage = "";
 
     // menu
     resetHeader();
@@ -949,15 +950,32 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     let page = 0;
     if ($location?.search()?.page) {
       console.log("page: ", $location.search().page);
-      page = $location.search().page;
+      page = +$location.search().page;
     }
+
+    if ($location?.search()?.fileuploadsuccess === "1") {
+      $scope.$watch("translations", function (val) {
+        $scope.fileuploadMessage = $scope.translations.FILEUPLOADSUCCESS;
+        console.log("inside scope.watch for translations");
+        setDelay("fileuploadMessage", 5000, $scope);
+      });
+    }
+
+    $scope.callb = function (el) {
+      console.log("callb addobservation, el: ", el);
+      var htmlEl = document.getElementById(el);
+      if (htmlEl.classList.contains("is-paused")) {
+        htmlEl.classList.remove("is-paused");
+      }
+      $scope.fileuploadMessage = "";
+      $scope.$apply();
+    };
 
     $scope.getUploadList = async function (page, itemsPerPage, visiblePages) {
       const response = await $http({
         url: "/insects/upload-list",
         method: "GET",
         params: {
-          userId: $scope.currentUser._id,
           page: page,
           itemsPerPage: itemsPerPage,
         },
@@ -1059,9 +1077,11 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     resetHeader();
     highlightElement("manage-button");
     $scope.csrftoken = $cookies.get("XSRF-TOKEN");
+
     // util
     sortColors($scope);
     sortCategories($scope);
+
     if ($location?.search()?.page) {
       console.log("setting page var to:", $location.search().page);
       $scope.page = $location.search().page;
@@ -1069,9 +1089,7 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
 
     $scope.returnToUploadList = function () {
       console.log("page: ", $scope.page);
-      $location
-        .path("insect/uploadList")
-        .search({ user: $scope.currentUser, page: $scope.page });
+      $location.path("insect/uploadList").search({ page: $scope.page });
     };
 
     $scope.deleteInsect = function () {

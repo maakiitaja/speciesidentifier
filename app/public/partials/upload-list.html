@@ -1,5 +1,10 @@
 <h1 id="uploadList">{{translations.UPLOADLIST}}</h1>
 
+<div class="container-alert">
+	<div id="fileuploadMessage" ng-if='fileuploadMessage != ""' class="alert alert-success is-paused fade-out">
+		{{fileuploadMessage}}</div>
+</div>
+
 <div ng-repeat="insects in uploadList" class="centered">
 	<div ng-if="insects.length > 0">
 		<h3>{{translations[insects[0].category.toUpperCase()]}}</h3>
