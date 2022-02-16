@@ -4,6 +4,7 @@ const AppError = require("./../utils/appError");
 var User = require("./../models/user");
 var Insect = require("./../models/insect");
 var Compendium = require("./../models/compendium");
+const catchAsync = require("./../utils/catchAsync");
 
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -46,17 +47,21 @@ var upload = multer({
   { name: "userPhotos2", maxCount: 5 },
 ]);
 
-exports.uploadList = function (req, res) {
-  console.log("userId: " + req.query.userId);
-  Insect.find({ userId: req.query.userId }).exec(function (err, insects) {
-    if (err) {
-      console.log(err);
-    }
+exports.uploadList = catchAsync(async (req, res, next) => {
+  console.log("userId: " + req.user.id);
+  const totalCount = await Insect.find({ userId: req.user.id }).count();
+  console.log("totalCount: " + totalCount);
+  if (totalCount === 0) {
+    return res.send({ data: undefined, totalCount: 0 });
+  }
+  const insects = await Insect.find({ userId: req.user.id })
+    .sort("category")
+    .skip(req.query.page * req.query.itemsPerPage)
+    .limit(req.query.itemsPerPage);
 
-    console.log("found insects: " + insects);
-    return res.send(insects);
-  });
-};
+  console.log("found nro of insects: " + insects.length);
+  return res.send({ data: insects, totalCount: totalCount });
+});
 
 exports.insert = function (req, res) {
   upload(req, res, function (err) {

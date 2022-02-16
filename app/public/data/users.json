@@ -3,7 +3,6 @@
     "_id": { "$oid": "620bfcc0e9f5a7300b9d6a02" },
     "role": "user",
     "username": "maurif",
-    "password": "$2a$12$J6AQ2Jl9U2B0hjinAw5Eou81id8mawoQeCUbe2HLuyNgZgS.9DQA6",
     "email": "mauri.flinckman@saunalahti.fi",
     "__v": { "$numberInt": "0" }
   }

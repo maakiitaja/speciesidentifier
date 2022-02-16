@@ -136,10 +136,10 @@
 				</ul>
 
 				<!-- pagination-->
-				<table class="pagination-center" id="pagination" ng-class="{hidePagination: resize.hidePagination}">
+				<table class="pagination-center" ng-class="{hidePagination: resize.hidePagination}">
 					<td>
-						<div class="pagination">
-							<ul>
+						<div>
+							<ul class="pagination" id="pagination">
 								<li ng-class="{disabled: currentPage == 0}">
 									<a href ng-click="prevPage()">« {{translations.PREVIOUS}}</a>
 								</li>

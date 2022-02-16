@@ -162,7 +162,6 @@ constructUploadListByCategory = function (remoteItems, $cookies) {
 
   remoteItems.forEach(function (item) {
     const category = item.category;
-    console.log("cat:", category);
     dst[category].push(item);
   });
   console.log("dst: ", dst);

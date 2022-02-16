@@ -937,41 +937,113 @@ insectIdentifierControllers.controller("UploadListCtrl", [
   "$http",
   "$localStorage",
   "$cookies",
-  function ($scope, Search, $location, $http, $localStorage, $cookies) {
+  async function ($scope, Search, $location, $http, $localStorage, $cookies) {
     console.log("uploadlist ctrl current User:" + $scope.currentUser);
 
     // menu
     resetHeader();
     highlightElement("manage-button");
-    console.log("$scope.currentUser: ", $scope.currentUser);
-    $http({
-      url: "/insects/upload-list",
-      method: "GET",
-      params: { userId: $scope.currentUser._id },
-    }).success(function (data) {
-      if (data[0]) {
-        console.log("1st insect: " + JSON.stringify(data[0]));
+
+    const itemsPerPage = 5;
+    const visiblePages = 5;
+    let page = 0;
+    if ($location?.search()?.page) {
+      console.log("page: ", $location.search().page);
+      page = $location.search().page;
+    }
+
+    $scope.getUploadList = async function (page, itemsPerPage, visiblePages) {
+      const response = await $http({
+        url: "/insects/upload-list",
+        method: "GET",
+        params: {
+          userId: $scope.currentUser._id,
+          page: page,
+          itemsPerPage: itemsPerPage,
+        },
+      });
+      console.log("response:", response);
+      if (response?.data?.totalCount > 0) {
+        console.log("1st insect: " + JSON.stringify(response.data.data[0]));
+      } else {
+        console.log("no insects created by current user");
+        $scope.dataLength = 0;
+        $scope.hidePagination = true;
+        return {};
       }
 
-      console.log("data.length: " + data.length);
-      console.log("data: " + data);
+      $scope.page = page;
+      console.log("page: " + page);
+      console.log("data.length: " + response.data.data.length);
+      console.log("data: " + response.data);
+
+      const totalPages = Math.ceil(response.data.totalCount / itemsPerPage);
+      if (totalPages <= visiblePages) visiblePages = totalPages;
 
       // order by category
-      var uploadList = constructUploadListByCategory(data, $cookies);
+      var uploadList = constructUploadListByCategory(
+        response.data.data,
+        $cookies
+      );
 
       $scope.uploadList = uploadList;
-      $scope.dataLength = data.length;
-    });
+      $scope.dataLength = response.totalCount;
+
+      // hide/show pagination
+      if (response.data.totalCount > itemsPerPage) {
+        $scope.hidePagination = false;
+      } else $scope.hidePagination = true;
+
+      return {
+        totalPages: totalPages,
+        visPages: visiblePages,
+        totalCount: response.data.totalCount,
+      };
+    };
 
     $scope.upload = function (insect) {
       if (insect === undefined) {
         $scope.location.path("insect/upload");
       } else {
-        $scope.location
-          .path("insect/upload")
-          .search({ insect: insect, fromUploadListPage: "1" });
+        console.log("page: ", $scope.page);
+        $scope.location.path("insect/upload").search({
+          insect: insect,
+          fromUploadListPage: "1",
+          page: $scope.page,
+        });
       }
     };
+
+    const { totalPages, visPages, totalCount } = await $scope.getUploadList(
+      page,
+      itemsPerPage,
+      visiblePages
+    );
+    $scope.firstPaginationLoad = true;
+    // apply needs to be here in order for pagination to show
+    $scope.$apply();
+
+    console.log("totalPages: " + totalPages, "visiblePages:", visPages);
+    if (totalCount > itemsPerPage) {
+      window.pagObj = $("#pagination")
+        .twbsPagination({
+          totalPages: totalPages,
+          visiblePages: visPages,
+          startPage: page + 1,
+          onPageClick: async function (event, page) {
+            console.log("on page click:", page, " event: ", event);
+            if (!$scope.firstPaginationLoad) {
+              await $scope.getUploadList(page - 1, itemsPerPage, visPages);
+              $scope.$apply();
+            } else {
+              $scope.firstPaginationLoad = false;
+            }
+          },
+        })
+        .on("page", function (event, page) {
+          console.info(page + " (from event listening)");
+        });
+    }
   },
 ]);
 
@@ -990,9 +1062,16 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
     // util
     sortColors($scope);
     sortCategories($scope);
+    if ($location?.search()?.page) {
+      console.log("setting page var to:", $location.search().page);
+      $scope.page = $location.search().page;
+    }
 
     $scope.returnToUploadList = function () {
-      $location.path("insect/uploadList").search({ user: $scope.currentUser });
+      console.log("page: ", $scope.page);
+      $location
+        .path("insect/uploadList")
+        .search({ user: $scope.currentUser, page: $scope.page });
     };
 
     $scope.deleteInsect = function () {

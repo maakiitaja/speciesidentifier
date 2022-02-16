@@ -22,11 +22,13 @@ mongoose
 const insects = JSON.parse(
   fs.readFileSync(`${__dirname}/insects.json`, "utf-8")
 );
+const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, "utf-8"));
 
 // IMPORT DATA INTO DB
 const importData = async () => {
   try {
     await Insect.create(insects);
+    await User.create(users, { validateBeforeSave: false });
     console.log("Data successfully loaded!");
   } catch (err) {
     console.log(err);
