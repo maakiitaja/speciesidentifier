@@ -158,19 +158,87 @@ const insectsByCategoryFi = {
   General: [],
 };
 
-constructCollectionByCategory = function ($localStorage, $cookies) {
+constructCollectionByCategory = async function (
+  $localStorage,
+  $cookies,
+  $scope,
+  page,
+  itemsPerPage,
+  visiblePages
+) {
   console.log("construct local collection by category");
 
   const dst = insectsByCategoryByLang($cookies);
+  const totalCount = $localStorage.collection.length;
+  console.log("total count: " + totalCount);
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  if (totalPages < visiblePages) {
+    visiblePages = totalPages;
+  }
 
-  $localStorage.collection.forEach(function (item) {
-    const category = item.category;
-    dst[category].push(item);
+  // sort collection by category
+  $localStorage.collection = $localStorage.collection.sort(function (a, b) {
+    return a.category < b.category ? -1 : 1;
   });
 
-  console.log("insectsByCategory:", insectsByCategory);
+  // take a slice of the collection
+  const displayedItems = $localStorage.collection.slice(
+    page * itemsPerPage,
+    page * itemsPerPage + itemsPerPage
+  );
+
+  console.log("displayed items:", displayedItems);
+
+  // construct final displayed items by category
+  if (displayedItems?.length > 0) {
+    displayedItems.forEach(function (item) {
+      const category = item.category;
+      dst[category].push(item);
+    });
+  }
+
+  // assign dst
   console.log("dst:", dst);
   $localStorage.collectionByCategory = dst;
+
+  // pagination
+  if (totalCount > itemsPerPage) {
+    $scope.hidePagination = false;
+    if (!$scope.firstPaginationLoad) return;
+    await wait(0.2);
+    $scope.$apply();
+
+    window.pagObj = $("#pagination")
+      .twbsPagination({
+        totalPages: totalPages,
+        visiblePages: visiblePages,
+        startPage: page + 1,
+        onPageClick: async function (event, page) {
+          console.log("on page click:", page, " event: ", event);
+          if (!$scope.firstPaginationLoad) {
+            console.log("reconstructing collection by category");
+            constructCollectionByCategory(
+              $localStorage,
+              $cookies,
+              $scope,
+              page - 1,
+              itemsPerPage,
+              visiblePages
+            );
+            await wait(0.2);
+            $scope.$apply();
+          } else {
+            console.log("changing first pagination load to false");
+            $scope.firstPaginationLoad = false;
+          }
+        },
+      })
+      .on("page", function (event, page) {
+        console.info(page + " (from event listening)");
+      });
+  } else {
+    $scope.hidePagination = true;
+  }
 };
 
 constructUploadListByCategory = function (remoteItems, $cookies) {

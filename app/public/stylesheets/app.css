@@ -133,6 +133,7 @@
 
 .container-empty-upload-list,
 .container-uploadlist-pagination,
+.container-collection-pagination,
 .fileupload-error-container {
   display: flex;
   justify-content: center;

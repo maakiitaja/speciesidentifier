@@ -2510,6 +2510,14 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $scope.currentTotal = 0;
     $scope.temp = 0;
 
+    const itemsPerPage = 2;
+    const visiblePages = 5;
+    let page = 0;
+    if ($location?.search()?.page) {
+      console.log("page: ", $location.search().page);
+      page = +$location.search().page;
+    }
+
     console.log("$scope.offline", $scope.checkbox.offline);
     $scope.initMessages = function () {
       $scope.messageUpdate = "";
@@ -3019,7 +3027,14 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       // check whether collection is empty
       $scope.collectionEmpty = collection.length === 0;
       console.log("collection empty: ", $scope.collectionEmpty);
-      constructCollectionByCategory($localStorage, $cookies);
+      constructCollectionByCategory(
+        $localStorage,
+        $cookies,
+        $scope,
+        page,
+        itemsPerPage,
+        visiblePages
+      );
       return;
     } else {
       console.log("$scope.currentUser: ", $scope.currentUser);
@@ -3199,17 +3214,23 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       $scope.newRemoteDisabled = false;
       $scope.newLocalDisabled = false;
       $scope.updateDisabled = false;
-      $scope.collectionEmpty = collection.length === 0;
-      constructCollectionByCategory($localStorage, $cookies, $scope);
-      console.log("collection empty: ", $scope.collectionEmpty);
-      toggleLoadingSpinner($scope);
-      $scope.$apply();
     } else {
-      $scope.collectionEmpty = collection.length === 0;
-      constructCollectionByCategory($localStorage, $cookies, $scope);
-      toggleLoadingSpinner($scope);
-      $scope.$apply();
+      console.log("nothing to synchronize");
     }
+
+    $scope.collectionEmpty = collection.length === 0;
+    $scope.firstPaginationLoad = true;
+    constructCollectionByCategory(
+      $localStorage,
+      $cookies,
+      $scope,
+      page,
+      itemsPerPage,
+      visiblePages
+    );
+    toggleLoadingSpinner($scope);
+    console.log("checking hide pagination");
+    if ($scope.hidePagination) $scope.$apply();
 
     $scope.updateInsects = function () {
       console.log(
@@ -3221,7 +3242,14 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $scope.updatedInsectsObj.updatedInsects,
         $scope.updatedInsectsObj.updatedIds
       );
-      constructCollectionByCategory($localStorage, $cookies);
+      constructCollectionByCategory(
+        $localStorage,
+        $cookies,
+        $scope,
+        page,
+        itemsPerPage,
+        visiblePages
+      );
       $scope.hideUpdateButton = true;
 
       $scope.messageUpdate = "Successfully updated the local collection.";
@@ -3244,7 +3272,14 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         console.log("pulling new remote items");
         $scope.pullNewItemsFromRemote($scope.newRemoteInsects);
         $scope.collectionEmpty = $localStorage.collection.length === 0;
-        constructCollectionByCategory($localStorage, $cookies);
+        constructCollectionByCategory(
+          $localStorage,
+          $cookies,
+          $scope,
+          page,
+          itemsPerPage,
+          visiblePages
+        );
       } else {
         console.log("check selection value");
       }
@@ -3266,7 +3301,14 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         console.log("newinsectids: ", newLocalIds);
         $scope.removeItemsFromLocal(newLocalIds);
         $scope.collectionEmpty = $localStorage.collection.length === 0;
-        constructCollectionByCategory($localStorage, $cookies);
+        constructCollectionByCategory(
+          $localStorage,
+          $cookies,
+          $scope,
+          page,
+          itemsPerPage,
+          visiblePages
+        );
       } else if (localPolicy === "push-local") {
         console.log("pushing new local items");
         $scope.pushNewItemsFromLocalCollection(newLocalIds);

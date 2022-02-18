@@ -168,12 +168,14 @@ exports.syncInfo = catchAsync(async (req, res, next) => {
   const remoteInsects = remoteCollection.insects;
   console.log("remoteCollection:", remoteCollection);
 
-  const remoteInsectsIds = remoteInsects.map((el) => el._id.toString());
+  let remoteInsectsIds = remoteInsects.map((el) => el._id.toString());
   console.log("remoteInsectsIds:", remoteInsectsIds);
   console.log("remoteInsects.length: ", remoteInsects.length);
 
   if (!remoteInsects || remoteInsects.length === 0) {
-    return res.status(404).send({ msg: "no remote insects found" });
+    console.log("no remote insects found");
+    remoteInsectsIds = [];
+    //return res.status(404).send({ msg: "no remote insects found" });
   }
   console.log("localInsectIds:", localInsectsIds);
   const newLocalInsectsIds = localInsectsIds.filter(
