@@ -1461,6 +1461,8 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     // save the insect to the scope
     $scope.prevUrl = $location.search().prevUrl;
     $scope.insect = $location.search().insect;
+    $scope.collectionPage = $location.search().collectionPage;
+
     console.log("prevUrl: " + $scope.prevUrl);
     console.log("insect: " + $scope.insect);
     $scope.addCollection = "false";
@@ -1753,7 +1755,10 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     };
 
     $scope.collection = function () {
-      $scope.location.path("collection");
+      console.log("collectionPage: " + $scope.collectionPage);
+      $scope.location
+        .path("collection")
+        .search({ page: $scope.collectionPage });
     };
 
     $scope.new_search = function () {
@@ -2550,9 +2555,12 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       obj.insect = angular.copy(insect);
       obj.prevUrl = "#/collection";
       Search.set(obj);
-      $scope.location
-        .path("insect")
-        .search({ insect: insect, prevUrl: "#/collection" });
+      console.log("collectionPage:", $scope.collectionPage);
+      $scope.location.path("insect").search({
+        insect: insect,
+        prevUrl: "#/collection",
+        collectionPage: $scope.collectionPage,
+      });
     };
 
     $scope.startToAddCollectionItems = function () {

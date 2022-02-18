@@ -175,6 +175,7 @@ constructCollectionByCategory = async function (
   if (totalPages < visiblePages) {
     visiblePages = totalPages;
   }
+  console.log("page: ", page);
 
   // sort collection by category
   $localStorage.collection = $localStorage.collection.sort(function (a, b) {
@@ -215,6 +216,7 @@ constructCollectionByCategory = async function (
         startPage: page + 1,
         onPageClick: async function (event, page) {
           console.log("on page click:", page, " event: ", event);
+          $scope.collectionPage = page - 1;
           if (!$scope.firstPaginationLoad) {
             console.log("reconstructing collection by category");
             constructCollectionByCategory(
