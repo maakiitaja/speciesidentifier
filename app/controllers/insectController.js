@@ -300,20 +300,21 @@ exports.delete = function (req, res) {
     });
 };
 
-exports.search = function (req, res, next) {
+exports.search = async function (req, res, next) {
   console.log("search handler");
   var primaryColor = req.query.primaryColor;
   var secondaryColor = req.query.secondaryColor;
   var category = req.query.category;
   var legs = req.query.legs;
+  const page = req.query.page;
+  const itemsPerPage = req.query.itemsPerPage;
+
   // for case insensitive comparision
   if (req.query.name) {
     console.log("turning first letter into uppercase");
     req.query.name =
       req.query.name.charAt(0).toUpperCase() + req.query.name.slice(1);
   }
-  var name = req.query.name;
-  var language = req.query.language;
 
   console.log(
     "primaryColor: " +
@@ -324,43 +325,60 @@ exports.search = function (req, res, next) {
       req.query.legs
   );
   console.log("latinName: " + req.query.latinName);
-  var query = Insect.find();
-  if (req.query.category) {
-    query.where("category").equals(category);
-  }
-  if (req.query.primaryColor) {
-    query.where("primaryColor").equals(primaryColor);
-  }
-  if (req.query.secondaryColor) {
-    query.where("secondaryColor").equals(secondaryColor);
-  }
-  if (req.query.legs) {
-    query.where("legs").equals(legs);
-  }
-  if (req.query.name && req.query.language === "Latin") {
-    console.log("search by latin name");
-    query.where("latinName").equals(req.query.name);
-  }
 
-  if (req.query.name && req.query.language && req.query.language !== "Latin") {
-    console.log("search by specific language and name");
-    query.where("translations.language").equals(req.query.language);
-    query.where("translations.name").equals(req.query.name);
+  const filterSearch = function (req) {
+    var query = Insect.find();
+
+    if (req.query.category) {
+      query.where("category").equals(category);
+    }
+    if (req.query.primaryColor) {
+      query.where("primaryColor").equals(primaryColor);
+    }
+    if (req.query.secondaryColor) {
+      query.where("secondaryColor").equals(secondaryColor);
+    }
+    if (req.query.legs) {
+      query.where("legs").equals(legs);
+    }
+    if (req.query.name && req.query.language === "Latin") {
+      console.log("search by latin name");
+      query.where("latinName").equals(req.query.name);
+    }
+
+    if (
+      req.query.name &&
+      req.query.language &&
+      req.query.language !== "Latin"
+    ) {
+      console.log("search by specific language and name");
+      query.where("translations.language").equals(req.query.language);
+      query.where("translations.name").equals(req.query.name);
+    }
+
+    if (!req.query.language && req.query.name) {
+      console.log("search by name and all languages");
+      query.where("translations.name").equals(req.query.name);
+    }
+    return query;
+  };
+
+  const totalCount = await filterSearch(req).count();
+  console.log("total count: " + totalCount);
+  if (totalCount > 0) {
+    const query = filterSearch(req);
+    query.skip(page * itemsPerPage).limit(itemsPerPage);
+
+    query.exec(function (err, insects) {
+      if (err) throw err;
+      console.log(insects[0]);
+
+      return res.status(200).send({ insects: insects, totalCount: totalCount });
+    });
+  } else {
+    console.log("no search results");
+    return res.send([]);
   }
-
-  if (!req.query.language && req.query.name) {
-    console.log("search by name and all languages");
-    query.where("translations.name").equals(req.query.name);
-  }
-
-  console.log("name:", name, "language:", language);
-
-  query.exec(function (err, insects) {
-    if (err) throw err;
-    console.log(insects[0]);
-
-    return res.send(insects);
-  });
 };
 
 exports.loadInsectsByUser = function (req, res) {

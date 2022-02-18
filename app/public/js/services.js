@@ -137,11 +137,16 @@ insectIdentifierApp.factory("SearchService", [
   "$http",
   function ($http) {
     return {
-      search: function ($scope, $localStorage, query) {
+      search: function (
+        $scope,
+        query,
+        page,
+        itemsPerPage,
+        $localStorage,
+        selectFirstInsect
+      ) {
         return new Promise((resolve, reject) => {
           console.log("query: " + query);
-          // reset the pagination page
-          $scope.currentPage = 0;
 
           if (query == "" || typeof query == "undefined") {
             $scope.searchResults = "Please, provide search parameters";
@@ -162,12 +167,17 @@ insectIdentifierApp.factory("SearchService", [
                 category: query.category,
                 legs: query.legs,
                 name: query.name,
+                page: page,
+                itemsPerPage: itemsPerPage,
                 //language: query.language,
               },
-            }).success(function (data) {
-              console.log("receiving search results.");
+            }).success(function (response) {
+              const data = response.insects;
+              const totalCount = response.totalCount;
 
-              // for updating the enabled property of latinname in add observation page
+              console.log("receiving search results.");
+              console.log("$scope:", $scope, "$localStorage:", $localStorage);
+
               $scope.mainImageUrl = null;
 
               // in case coming from observation page, reset the hidden insect id just in case
@@ -195,34 +205,34 @@ insectIdentifierApp.factory("SearchService", [
                 // make a list of image urls
                 var len = data.length;
                 for (var i = 0; i < len; i++) {
-                  console.log("data[i].images[0]", data[i].images[0]);
+                  //console.log("data[i].images[0]", data[i].images[0]);
 
                   var replacedImagePath = encodeURIComponent(data[i].images[0]);
-                  console.log("replaced image value: ", replacedImagePath);
+                  //console.log("replaced image value: ", replacedImagePath);
 
                   data[i].images[0] = replacedImagePath;
                   imgs.push(replacedImagePath);
                 }
+                if (selectFirstInsect) {
+                  console.log("selecting first insect");
+                  $scope.insect = data[0];
+                  $scope.mainImageUrl = data[0].images[0];
+                }
 
-                $scope.insect = data[0];
                 $scope.insects = data;
                 console.log("determining style classes for search results");
                 // determine necessary style classes for taking care of hiding pagination etc.
-                responsiveSearch($scope);
+                responsiveSearch($scope, itemsPerPage, totalCount);
 
                 $localStorage.searchResults = data;
-                console.log(
-                  "JSON.stringify($localStorage.searchResults",
-                  JSON.stringify($localStorage.searchResults)
-                );
+                $localStorage.totalSearchCount = totalCount;
+                $localStorage.searchQuery = query;
 
-                $scope.setPagedInsects(data);
                 console.log("imgs:", imgs);
                 $scope.imgs = imgs;
                 console.log(
                   "search service, setting mainimage: " + data[0].images[0]
                 );
-                $scope.mainImageUrl = data[0].images[0].replace("\\", "/");
 
                 // in case coming from observation page
                 if ($scope.fromObservationPage == "1") {
@@ -243,7 +253,7 @@ insectIdentifierApp.factory("SearchService", [
 
               // Enable search button
               $scope.disableSearch = false;
-              resolve({ msg: "ok" });
+              resolve({ msg: "ok", totalCount: totalCount });
             });
           } /* end of search*/
         });

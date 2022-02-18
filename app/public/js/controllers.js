@@ -1462,6 +1462,7 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     $scope.prevUrl = $location.search().prevUrl;
     $scope.insect = $location.search().insect;
     $scope.collectionPage = $location.search().collectionPage;
+    $scope.searchPage = $location.search().searchPage;
 
     console.log("prevUrl: " + $scope.prevUrl);
     console.log("insect: " + $scope.insect);
@@ -1762,9 +1763,11 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
     };
 
     $scope.new_search = function () {
-      $scope.location
-        .path("search")
-        .search({ returningFromDetailPage: "1", insect: $scope.insect });
+      $scope.location.path("search").search({
+        returningFromDetailPage: "1",
+        insect: $scope.insect,
+        page: $scope.searchPage,
+      });
     };
   },
 ]);
@@ -2122,9 +2125,17 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $scope.showFileuploadSuccessMessage = "";
     // resizing the container search
     $scope.resize = {};
+    let page = 0;
+    const visiblePages = 10;
+    const itemsPerPage = 8;
     //util
     sortColors($scope);
     sortCategories($scope);
+
+    if ($location?.search()?.page) {
+      page = +$location.search().page;
+      console.log("page: ", page);
+    }
 
     if ($location?.search()?.signedIn === "true") {
       if (
@@ -2205,16 +2216,31 @@ insectIdentifierControllers.controller("SearchCtrl", [
     };
 
     $scope.search = async function (query) {
-      await SearchService.search($scope, $localStorage, query);
-      $scope.$apply();
-      // select the active insect thumb
-      if ($scope.insect) {
-        var thumbImg = document.getElementById(
-          $scope.insect.images[0] + "_thumb.jpg"
-        );
-        console.log(thumbImg);
-        thumbImg.classList.toggle("activeThumb");
-      }
+      console.log("$localStorage", $localStorage);
+      const selectFirstInsect = true;
+      const searchResults = await SearchService.search(
+        $scope,
+        query,
+        page,
+        itemsPerPage,
+        $localStorage,
+        selectFirstInsect
+      );
+      const totalCount = searchResults.totalCount;
+      console.log("total count: " + totalCount);
+      $scope.firstPaginationLoad = true;
+
+      setPaginationForSearchPage(
+        SearchService,
+        query,
+        $scope,
+        page,
+        itemsPerPage,
+        visiblePages,
+        $localStorage,
+        totalCount
+      );
+      selectActiveThumb($scope.insect);
     };
 
     $scope.setImage = function (insect) {
@@ -2235,7 +2261,7 @@ insectIdentifierControllers.controller("SearchCtrl", [
         console.log("toggling the previous image");
 
         var previousThumbImg = document.getElementById(
-          $scope.insect.images[0] + "_thumb.jpg"
+          $scope.insect?.images[0] + "_thumb.jpg"
         );
         if (previousThumbImg) {
           previousThumbImg.classList.toggle("activeThumb");
@@ -2253,37 +2279,11 @@ insectIdentifierControllers.controller("SearchCtrl", [
     };
 
     $scope.insectDetail = function () {
-      insectDetail($location, $scope);
-    };
-
-    /** Pagination functions **/
-
-    $scope.range = function (start) {
-      console.log("range called with start: " + start);
-      return range(start);
-    };
-
-    $scope.prevPage = function () {
-      prevPage($scope);
-    };
-
-    $scope.nextPage = function () {
-      nextPage($scope);
-    };
-
-    $scope.setPage = function () {
-      setPage($scope, this.n);
-    };
-
-    $scope.wait = function (seconds) {
-      return new Promise(function (resolve) {
-        console.log("in wait");
-        setTimeout(resolve, 1000 * seconds);
+      $location.path("insect").search({
+        insect: $scope.insect,
+        searchPage: $scope.page,
+        prevUrl: "#/list",
       });
-    };
-    $scope.setPagedInsects = function (insects) {
-      // call util function
-      setPagedInsects(insects, $scope);
     };
 
     // enable search button
@@ -2294,27 +2294,9 @@ insectIdentifierControllers.controller("SearchCtrl", [
     $scope.resize = {};
     $scope.resize.fromAddObservationsCtrl = false;
 
-    // Pagination
-    $scope.itemsPerPage = 8;
-    if ($scope.selectedInsect === undefined) {
-      console.log("resetting pagination page");
-      $scope.currentPage = 0;
-    }
-    $scope.pagedInsects = [];
-
     $scope.fromObservationPage = 0;
-    console.log(
-      "$location.search().fileuploadsuccess, ",
-      $location.search().fileuploadsuccess
-    );
-    if ($location.search().fileuploadsuccess === "1") {
-      $scope.$watch("translations", function (val) {
-        $scope.showFileuploadSuccessMessage =
-          $scope.translations.FILEUPLOADSUCCESS;
-        console.log("inside scope.watch for translations");
-        setDelay("showFileuploadSuccessMessage", 3000, $scope);
-      });
-    } else if ($location.search().returningFromDetailPage == "1") {
+
+    if ($location.search().returningFromDetailPage == "1") {
       console.log("returning from detail page");
       // guard for page reloads
       console.log(
@@ -2332,19 +2314,33 @@ insectIdentifierControllers.controller("SearchCtrl", [
       console.log("$scope.insect.images[0]", $scope.insect.images[0]);
 
       // for proper pagination to work
-      $scope.selectedInsect = $location.search().insect;
+      $scope.insect = $location.search().insect;
 
       $scope.searchResults = "showResults";
 
       // use localstorage to obtain the previous search results
       var insects = $localStorage.searchResults;
+      var totalCount = $localStorage.totalSearchCount;
+      var query = $localStorage.searchQuery;
       console.log("insects: ", insects);
       $scope.insects = insects;
-      $scope.setPagedInsects(insects);
-      console.log("$scope.pagedInsects: ", $scope.pagedInsects);
 
       // responsiveness
-      responsiveSearch($scope);
+      responsiveSearch($scope, itemsPerPage, totalCount);
+
+      $scope.firstPaginationLoad = true;
+      setPaginationForSearchPage(
+        SearchService,
+        query,
+        $scope,
+        page,
+        itemsPerPage,
+        visiblePages,
+        $localStorage,
+        totalCount
+      );
+      console.log("$scope.pagedInsects: ", $scope.pagedInsects);
+
       // main image
       var imgs = [];
       for (var i = 0; i < insects.length; i++) {
@@ -2363,11 +2359,11 @@ insectIdentifierControllers.controller("SearchCtrl", [
           $scope.insect.images[0] + "_thumb.jpg"
         );
         while (thumbImg === undefined || thumbImg === null) {
-          await $scope.wait(0.2);
+          await wait(0.2);
           thumbImg = document.getElementById(
             $scope.insect.images[0] + "_thumb.jpg"
           );
-          $scope.$apply();
+          //$scope.$apply();
         }
 
         console.log(thumbImg);

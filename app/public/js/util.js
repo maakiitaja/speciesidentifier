@@ -60,41 +60,6 @@ function updateRequired() {
   else $scope.latinNameRequired = "true";
 }
 
-function setPagedInsects(insects, $scope) {
-  $scope.nroOfPages = insects.length / $scope.itemsPerPage;
-  if (!isInt($scope.nroOfPages)) {
-    $scope.nroOfPages = Math.floor($scope.nroOfPages);
-    $scope.nroOfPages++;
-  }
-  console.log("nroofpages: " + $scope.nroOfPages);
-  // clear paged insects
-  $scope.pagedInsects = [];
-  // loop through nro of pages
-  for (var i = 0; i < $scope.nroOfPages; i++) {
-    // loop through nro of insects per page
-    console.log("util selectedInsect:", $scope.selectedInsect);
-    for (var j = 0; j < $scope.itemsPerPage; j++) {
-      if (j == 0) {
-        $scope.pagedInsects[i] = [];
-      }
-      if (insects[i * $scope.itemsPerPage + j] !== undefined) {
-        $scope.pagedInsects[i].push(insects[i * $scope.itemsPerPage + j]);
-      }
-      console.log("pagedinsects[i][j]: " + $scope.pagedInsects[i][j]);
-      // choose the pagination page corresponding to the selected insect
-      if (
-        $scope.selectedInsect !== undefined &&
-        $scope.pagedInsects[i][j] !== undefined &&
-        $scope.selectedInsect._id === $scope.pagedInsects[i][j]._id
-      ) {
-        console.log("util: changing pagination current page to: ", i + 1);
-        $scope.currentPage = i;
-      }
-    }
-    console.log("util $scope.pagedInsects: ", $scope.pagedInsects);
-  }
-}
-
 function getVw() {
   const vw = Math.max(
     document.documentElement.clientWidth || 0,
@@ -120,6 +85,89 @@ function getInsectIdsFromLocalCollection(collection) {
   }
   return ids;
 }
+
+selectActiveThumb = async function (selectedInsect) {
+  // select the active insect thumb
+  if (selectedInsect) {
+    var thumbImg = document.getElementById(
+      selectedInsect.images[0] + "_thumb.jpg"
+    );
+    if (!thumbImg) {
+      console.log("waiting for thumb image");
+      await wait(0.2);
+      thumbImg = document.getElementById(
+        selectedInsect.images[0] + "_thumb.jpg"
+      );
+    }
+    console.log(thumbImg);
+    thumbImg.classList.toggle("activeThumb");
+  }
+};
+
+setPaginationForSearchPage = async function (
+  SearchService,
+  query,
+  $scope,
+  page,
+  itemsPerPage,
+  visiblePages,
+  $localStorage,
+  totalCount
+) {
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  if (totalPages < visiblePages) {
+    visiblePages = totalPages;
+  }
+  console.log("totalPages", totalPages);
+  console.log("page: ", page);
+  if (totalPages > 0) {
+    // wait for pagination element to show
+    await wait(0.2);
+    $scope.$apply();
+    console.log("showing pagination element");
+    window.pagObj = $("#pagination")
+      .twbsPagination({
+        totalPages: totalPages,
+        visiblePages: visiblePages,
+        startPage: page + 1,
+        onPageClick: async function (event, page) {
+          console.log("on page click:", page, " event: ", event);
+          $scope.page = page - 1;
+          if (!$scope.firstPaginationLoad) {
+            console.log("searching from page: ", page);
+            const selectFirstInsect = true;
+            await SearchService.search(
+              $scope,
+              query,
+              page - 1,
+              itemsPerPage,
+              $localStorage,
+              selectFirstInsect
+            );
+            setPaginationForSearchPage(
+              SearchService,
+              query,
+              $scope,
+              page,
+              itemsPerPage,
+              visiblePages,
+              $localStorage,
+              totalCount
+            );
+            selectActiveThumb($scope.insect);
+
+            $scope.$apply();
+          } else {
+            console.log("changing first pagination load to false");
+            $scope.firstPaginationLoad = false;
+          }
+        },
+      })
+      .on("page", function (event, page) {
+        console.info(page + " (from event listening)");
+      });
+  }
+};
 
 getLocalInsectsMinified = function ($localStorage) {
   let collection = [];
@@ -627,7 +675,7 @@ function saveImagesToLocalStorage($scope, $localStorage) {
 //   return !angular.equals({}, $scope.currentUser);
 // }
 
-responsiveSearch = function ($scope) {
+responsiveSearch = function ($scope, itemsPerPage, totalCount) {
   // resize style classes
   console.log("util: responsive search start");
   $scope.resize.insectsLength = $scope.insects.length;
@@ -640,13 +688,13 @@ responsiveSearch = function ($scope) {
   } else {
     $scope.resize.largePictureOnly = false;
     $scope.resize.noInsectThumbs = false;
-    if ($scope.insects.length <= $scope.itemsPerPage) {
+    if (totalCount <= itemsPerPage) {
       $scope.resize.hidePagination = true;
     } else {
       $scope.resize.hidePagination = false;
     }
     if (getVw() >= 860) {
-      if ($scope.resize.hidePagination) {
+      if ($scope.hidePagination) {
         console.log("container insect thumbs high: true");
 
         $scope.resize.containerInsectThumbsHigh = true;

@@ -122,7 +122,7 @@
 				<ul class="insect-thumbs container-insect-thumbs"
 					ng-class="{noInsectThumbs: resize.noInsectThumbs, containerInsectThumbsHigh: resize.containerInsectThumbsHigh}"
 					id="insect-thumbs">
-					<li ng-repeat="_insect in pagedInsects[currentPage]" class="thumb-item">
+					<li ng-repeat="_insect in insects" class="thumb-item">
 						<img name="{{_insect.images[0]+'_thumb.jpg'}}" ng-src="{{_insect.images[0]+'_thumb.jpg'}}"
 							ng-click="setImage(_insect)" id="{{_insect.images[0]+'_thumb.jpg'}}"
 							alt={{_insect.latinName}} />
@@ -132,20 +132,9 @@
 				<!-- pagination-->
 				<table class="pagination-center" ng-class="{hidePagination: resize.hidePagination}">
 					<td>
-						<div>
-							<ul class="pagination" id="pagination">
-								<li ng-class="{disabled: currentPage == 0}">
-									<a href ng-click="prevPage()">« {{translations.PREVIOUS}}</a>
-								</li>
-								<li ng-repeat="n in range(pagedInsects.length)" ng-class="{active: n == currentPage}"
-									ng-click="setPage()">
-									<a href ng-bind="n + 1">1</a>
-								</li>
-								<li ng-class="{disabled: currentPage == pagedInsects.length - 1}">
-									<a href ng-click="nextPage()">{{translations.NEXT}} »</a>
-								</li>
-							</ul>
-						</div>
+						<nav aria-label="Page navigation">
+							<ul class="pagination" id="pagination"></ul>
+						</nav>
 					</td>
 				</table>
 
