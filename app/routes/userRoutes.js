@@ -6,7 +6,7 @@ module.exports = function (app, passport) {
   app.post(
     "/login",
     passport.authenticate("login", {
-      successRedirect: "/#/main", // redirect to the secure profile section
+      successRedirect: "/#/main?signedIn=true", // redirect to home
       failureRedirect: "/#/login-failure", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash messages
     })
@@ -46,7 +46,7 @@ module.exports = function (app, passport) {
     passport.authenticate("github", { failureRedirect: "/#/login-failure" }),
     function (req, res) {
       // Successful authentication, redirect home.
-      res.redirect("/#/main");
+      res.redirect("/#/main?signedIn=true");
     }
   );
 
@@ -55,7 +55,7 @@ module.exports = function (app, passport) {
     passport.authenticate("facebook", { failureRedirect: "/#/login-failure" }),
     function (req, res) {
       // Successful authentication, redirect home.
-      res.redirect("/#/main");
+      res.redirect("/#/main?signedIn=true");
     }
   );
 
@@ -64,7 +64,7 @@ module.exports = function (app, passport) {
     passport.authenticate("google", { failureRedirect: "/#/login-failure" }),
     function (req, res) {
       // Successful authentication, redirect home.
-      res.redirect("/#/main");
+      res.redirect("/#/main?signedIn=true");
     }
   );
 };

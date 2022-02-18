@@ -151,6 +151,7 @@ exports.insert = function (req, res) {
         });
       } else {
         console.log("updating insect");
+
         var update = {
           wiki: insect.wiki,
           category: insect.category,
@@ -165,6 +166,11 @@ exports.insert = function (req, res) {
         var conditions = { _id: insect._id };
 
         await Insect.updateOne(conditions, update);
+        // update all collections with the given insect
+        await Compendium.updateMany(
+          { insects: insect._id },
+          { $inc: { version: 1 } }
+        );
         console.log("insect updated");
         try {
           return res.redirect(
@@ -406,3 +412,8 @@ exports.addLatinName = function (req, res) {
     return res.redirect("/#/main");
   });
 };
+
+exports.findInsectsByUser = catchAsync(async (req, res, next) => {
+  console.log("findInsectsByUser start");
+  await Compendium.find({ _user: req.user.id });
+});

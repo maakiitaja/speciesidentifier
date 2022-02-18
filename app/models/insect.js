@@ -28,6 +28,12 @@ var InsectSchema = new Schema(
   }
 );
 
+InsectSchema.virtual("compendiums", {
+  ref: "Compendium",
+  localField: "_id",
+  foreignField: "insects",
+});
+
 InsectSchema.index({ primaryColor: 1 });
 InsectSchema.index({ category: 1 });
 InsectSchema.index({ secondaryColor: 1 });

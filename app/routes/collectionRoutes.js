@@ -10,6 +10,10 @@ router.get(
   collectionController.searchItem
 );
 
+router
+  .route("/create")
+  .post(authController.isLoggedIn, collectionController.create);
+
 router.route("/list").get(authController.isLoggedIn, collectionController.list);
 
 router
@@ -31,4 +35,13 @@ router
 router
   .route("/search")
   .get(authController.isLoggedIn, collectionController.search);
+
+router
+  .route("/remoteversion")
+  .get(authController.isLoggedIn, collectionController.remoteVersion);
+
+router
+  .route("/syncinfo")
+  .get(authController.isLoggedIn, collectionController.syncInfo);
+
 module.exports = router;

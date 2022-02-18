@@ -69,7 +69,7 @@ app.use("/", limiter);
 app.use(cookieParser()); // read cookies (needed for auth)
 
 //++++
-//app.use(bodyParser.json()); // to support JSON-encoded bodies
+app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "app/public")));
 app.use(express.static(path.join(__dirname, "app/bower_components")));

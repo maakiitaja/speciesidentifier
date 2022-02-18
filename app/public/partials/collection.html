@@ -1,30 +1,5 @@
 <section class="section-collection">
-	<modal id="new-local-items-no-remote-modal" ng-class="{modalActive: newLocalItemsNoRemoteModal == '1'}">
-		<div class=" popup">
-			<div class="popup__content">
-				<div class="popup__center">
-					<p class="popup-heading">New Item(s) in the local collection</p>
-					<p>
-						Found <strong>{{numberOfNewLocalItemsNoRemote}}</strong>
-						new item(s) in the local collection. Push changes (upload),
-						remove the new local items OR take no action (cancel)?
-					</p>
 
-					<div class="button-grid button-grid--3 margin-top-lg">
-						<button class="button button-blue"
-							ng-click="closeModal('new-local-items-no-remote-modal', 'push')">Push
-						</button>
-						<button class="button button-red"
-							ng-click="closeModal('new-local-items-no-remote-modal', 'remove')">Remove </button>
-						<button class="button button-grey"
-							ng-click="closeModal('new-local-items-no-remote-modal', 'cancel')">Resolve
-							later</button>
-					</div>
-				</div>
-			</div>
-			<div class="modal-background-own"></div>
-		</div>
-	</modal>
 	<modal id="new-remote-items-modal" ng-class="{modalActive: newRemoteItemsModal == '1'}">
 		<div class="popup">
 			<div class="popup__content">
@@ -394,12 +369,12 @@
 		</div>
 
 		<div ng-repeat="insects in localStorage.collectionByCategory">
-
 			<div ng-if="insects.length > 0">
 				<h3>{{translations[insects[0].category.toUpperCase()]}}</h3>
 
 				<ul class="insect-thumbs">
 					<li ng-repeat="insect in insects">
+
 						<div class="thumb-card" ng-click="viewDetail(insect)">
 							<div class="margin-top-md" ng-repeat="translation in insect.translations">
 								<p class="name-translation" ng-if="translation.language==lang">

@@ -120,6 +120,24 @@ function getInsectIdsFromLocalCollection(collection) {
   }
   return ids;
 }
+
+getLocalInsectsMinified = function ($localStorage) {
+  let collection = [];
+  $localStorage.collection.forEach(function (insect) {
+    let collectionItem = { _id: insect._id, updatedAt: insect.updatedAt };
+
+    collection.push(collectionItem);
+  });
+  let encodedCollection = null;
+  if (collection.length > 0) {
+    collection = JSON.stringify(collection);
+
+    encodedCollection = btoa(collection);
+  }
+
+  return encodedCollection;
+};
+
 const insectsByCategory = {
   Ant: [],
   Bee: [],

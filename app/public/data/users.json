@@ -3,7 +3,7 @@
     "_id": { "$oid": "620bfcc0e9f5a7300b9d6a02" },
     "role": "user",
     "username": "maurif",
-    "email": "mauri.flinckman@saunalahti.fi",
+    "email": "mauri@hello.fi",
     "__v": { "$numberInt": "0" }
   }
 ]
