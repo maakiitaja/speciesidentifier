@@ -259,7 +259,7 @@ constructCollectionByCategory = async function (
   // pagination
   if (totalCount > itemsPerPage) {
     $scope.hidePagination = false;
-    if (!$scope.firstPaginationLoad) return;
+    //if (!$scope.firstPaginationLoad) return;
     await wait(0.2);
     $scope.$apply();
 

@@ -673,6 +673,11 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     $scope.query.placeType = "anyType";
     $scope.dropdownCountry = "All";
     $scope.hideMap = true;
+    const itemsPerPage = 30;
+    let visiblePages = 10;
+    $scope.page = 0;
+    $scope.firstPaginationLoad = true;
+
     const displayAllOption = true;
     sortCountries($scope, displayAllOption);
     sortCategories($scope);
@@ -780,8 +785,9 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
       });
     };
 
-    $scope.searchObservations = function (query) {
+    $scope.searchObservations = function (query, page) {
       // show loading spinner
+      $scope.page = page;
       var spinnerEl = document.getElementById("spinner-search");
       spinnerEl.classList.toggle("spinner-loading");
       console.log("country: ", query.dropdownCountry);
@@ -853,8 +859,13 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
           latitude: query.latitude,
           longitude: query.longitude,
           radius: query.radius,
+          itemsPerPage: itemsPerPage,
+          page: $scope.page,
         },
-      }).success(async function (data) {
+      }).success(async function (response) {
+        const data = response.observations;
+        const totalCount = response.totalCount;
+
         if (data.length === 0) $scope.hideMap = true;
         else $scope.hideMap = false;
 
@@ -909,13 +920,55 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         // map locations
         await wait(0.2);
         displayMap(data);
-
+        $scope.setPagination(totalCount, query);
         // Hide spinner element
         spinnerEl.classList.toggle("spinner-loading");
         // Enable search button
         $scope.disableSearch = false;
         $scope.$apply();
       });
+    };
+
+    $scope.setPagination = async function (totalCount, query) {
+      const totalPages = Math.ceil(totalCount / itemsPerPage);
+      visiblePages = 10;
+      if (totalPages < visiblePages) {
+        visiblePages = totalPages;
+      }
+      console.log("totalPages: ", totalPages);
+      console.log("visiblePages: ", visiblePages);
+      console.log("$scope.page:", $scope.page);
+      // pagination
+      if (totalPages > 1) {
+        $scope.hidePagination = false;
+        //if (!$scope.firstPaginationLoad) return;
+        await wait(0.2);
+        $scope.$apply();
+
+        window.pagObj = $("#pagination")
+          .twbsPagination({
+            totalPages: totalPages,
+            visiblePages: visiblePages,
+            startPage: $scope.page + 1,
+            onPageClick: async function (event, page) {
+              console.log("on page click:", page, " event: ", event);
+              $scope.page = page - 1;
+              if (!$scope.firstPaginationLoad) {
+                await $scope.searchObservations(query, $scope.page);
+
+                $scope.$apply();
+              } else {
+                console.log("changing first pagination load to false");
+                $scope.firstPaginationLoad = false;
+              }
+            },
+          })
+          .on("page", function (event, page) {
+            console.info(page + " (from event listening)");
+          });
+      } else {
+        $scope.hidePagination = true;
+      }
     };
 
     // header
@@ -945,8 +998,8 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     resetHeader();
     highlightElement("manage-button");
 
-    const itemsPerPage = 5;
-    const visiblePages = 5;
+    const itemsPerPage = 10;
+    const visiblePages = 10;
     let page = 0;
     if ($location?.search()?.page) {
       console.log("page: ", $location.search().page);

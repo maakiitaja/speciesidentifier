@@ -2,114 +2,138 @@ var Insect = require("./../models/insect");
 var User = require("./../models/user");
 var Observation = require("./../models/observation");
 const catchAsync = require("./../utils/catchAsync");
-exports.browse = function (req, res) {
+exports.browse = async function (req, res) {
   console.log("observation browse");
-  var query = Observation.find();
+  const itemsPerPage = req.query.itemsPerPage;
+  const page = req.query.page;
 
   // initialization
+  const byPlaceAndTimeQuery = function (req) {
+    let query = Observation.find();
+    // params: date, country, location, place, organicfarm, name, language
+    console.log("checking for dates");
+    var startDate = req.query.startDate;
+    var endDate = req.query.endDate;
+    console.log("startdate: " + startDate + ", enddate: " + endDate);
+    console.log("checking for place");
+    var country = req.query.country;
+    var countryPart = req.query.countryPart;
 
-  // params: date, country, location, place, organicfarm, name, language
-  console.log("checking for dates");
-  var startDate = req.query.startDate;
-  var endDate = req.query.endDate;
-  console.log("startdate: " + startDate + ", enddate: " + endDate);
-  console.log("checking for place");
-  var country = req.query.country;
-  var countryPart = req.query.countryPart;
+    var place = req.query.place;
+    var organicFarm = req.query.organicFarm;
+    var nonOrganicFarm = req.query.nonOrganicFarm;
+    console.log(
+      "organicfarm: " + organicFarm + ", nonorganicfarm: " + nonOrganicFarm
+    );
+    console.log("checking for insect");
 
-  var place = req.query.place;
-  var organicFarm = req.query.organicFarm;
-  var nonOrganicFarm = req.query.nonOrganicFarm;
-  console.log(
-    "organicfarm: " + organicFarm + ", nonorganicfarm: " + nonOrganicFarm
-  );
-  console.log("checking for insect");
-  var name = req.query.name;
-  var language = req.query.language;
+    // place specific query
+    console.log("narrowing observation place search");
 
-  // place specific query
-  console.log("narrowing observation place search");
+    console.log("organicFarm == 'false'");
+    console.log(organicFarm == "false");
+    console.log("organicFarm == 'true'");
+    console.log(organicFarm == "true");
 
-  console.log("organicFarm == 'false'");
-  console.log(organicFarm == "false");
-  console.log("organicFarm == 'true'");
-  console.log(organicFarm == "true");
+    if (country && country !== "All") {
+      console.log("by country: " + country);
 
-  if (country && country !== "All") {
-    console.log("by country: " + country);
+      query.where("country").equals(country);
+    }
 
-    query.where("country").equals(country);
-  }
+    if (countryPart) {
+      console.log("by countryPart: " + countryPart);
+      query.where("countryPart").equals(countryPart);
+    }
 
-  if (countryPart) {
-    console.log("by countryPart: " + countryPart);
-    query.where("countryPart").equals(countryPart);
-  }
+    if (place) {
+      console.log("by place: " + place);
+      query.where("place").equals(place);
+    }
 
-  if (place) {
-    console.log("by place: " + place);
-    query.where("place").equals(place);
-  }
+    console.log("by placetype");
 
-  console.log("by placetype");
+    if (organicFarm == "true") {
+      console.log("organicfarm");
+      query.where("organicFarm").equals(true);
+    } else if (nonOrganicFarm == "true") {
+      console.log("nonorganicfarm");
+      query.where("organicFarm").equals(false);
+    }
 
-  if (organicFarm == "true") {
-    console.log("organicfarm");
-    query.where("organicFarm").equals(true);
-  } else if (nonOrganicFarm == "true") {
-    console.log("nonorganicfarm");
-    query.where("organicFarm").equals(false);
-  }
+    //time specific search
+    var startDate;
+    var endDate;
 
-  //time specific search
-  var startDate;
-  var endDate;
+    startDate = new Date(req.query.startDate);
+    endDate = new Date(req.query.endDate);
 
-  startDate = new Date(req.query.startDate);
-  endDate = new Date(req.query.endDate);
+    console.log("startDate: " + startDate + " and enddate: " + endDate);
 
-  console.log("startDate: " + startDate + " and enddate: " + endDate);
+    if (
+      startDate.getFullYear() == endDate.getFullYear() &&
+      startDate.getMonth() == endDate.getMonth() &&
+      startDate.getDate() == endDate.getDate()
+    ) {
+      console.log("startdate equals enddate.");
+      startDate.setDate(startDate.getDate() - 1);
+    }
 
-  if (
-    startDate.getFullYear() == endDate.getFullYear() &&
-    startDate.getMonth() == endDate.getMonth() &&
-    startDate.getDate() == endDate.getDate()
-  ) {
-    console.log("startdate equals enddate.");
-    startDate.setDate(startDate.getDate() - 1);
-  }
-
-  console.log(
-    "querying within a time range of: " + startDate + " - " + endDate
-  );
-  query.where({ date: { $gte: startDate, $lte: endDate } });
-  console.log(
-    "req.query.latitude: ",
-    req.query.latitude,
-    "req.query.longitude: ",
-    req.query.longitude
-  );
-  // by location
-  if (req.query.latitude && req.query.longitude && req.query.radius) {
-    const unit = "km";
-    const radius =
-      unit === "mi" ? req.query.radius / 3963.2 : req.query.radius / 6378.1;
-    query.where({
-      location: {
-        $geoWithin: {
-          $centerSphere: [[req.query.longitude, req.query.latitude], radius],
+    console.log(
+      "querying within a time range of: " + startDate + " - " + endDate
+    );
+    query.where({ date: { $gte: startDate, $lte: endDate } });
+    console.log(
+      "req.query.latitude: ",
+      req.query.latitude,
+      "req.query.longitude: ",
+      req.query.longitude
+    );
+    // by location
+    if (req.query.latitude && req.query.longitude && req.query.radius) {
+      const unit = "km";
+      const radius =
+        unit === "mi" ? req.query.radius / 3963.2 : req.query.radius / 6378.1;
+      query.where({
+        location: {
+          $geoWithin: {
+            $centerSphere: [[req.query.longitude, req.query.latitude], radius],
+          },
         },
-      },
-    });
+      });
+    }
+
+    return query;
+  };
+
+  let totalCount;
+  console.log("checking filterings");
+  var query;
+  // check for name and category
+  console.log(
+    "req.query.name: ",
+    req.query.name,
+    "req.query.category: ",
+    req.query.category
+  );
+  if (req.query.name === "" && req.query.category === "") {
+    console.log("No name or category");
+
+    // get total count
+    totalCount = await byPlaceAndTimeQuery(req).count();
+
+    query = byPlaceAndTimeQuery(req)
+      .skip(page * itemsPerPage)
+      .limit(itemsPerPage);
+  } else {
+    console.log("query includes category and/or name");
+    query = byPlaceAndTimeQuery(req);
   }
-
-  // name and language
-
+  console.log("totalCount:", totalCount);
   // perform first query without considering insect specific details
-  query = query.populate({
-    path: "insect",
-  });
-  query.exec(function (err, observations) {
+  console.log("performing first query");
+  //return res.send({ observations: [], totalCount: 0 });
+  query.populate({ path: "insect" }).exec(function (err, observations) {
     if (err) {
       console.log("place and time specific observation search throw err:", err);
       throw err;
@@ -117,10 +141,10 @@ exports.browse = function (req, res) {
     console.log("finished searching observations by place and time.");
     console.log;
     if (observations.length > 0) {
-      console.log("observations[0]:", observations);
       console.log("observations[0].insect", observations[0].insect);
     } else {
-      return res.send(null);
+      console.log("no observations");
+      return res.send({ observations: null, totalCount: 0 });
     }
 
     // search narrowed also by insect category
@@ -133,11 +157,23 @@ exports.browse = function (req, res) {
         return observation.insect.category === req.query.category;
       });
 
-      return res.send(observations);
-    } else if (name) {
-      console.log("search narrowed also by name: ", name);
+      // skip and limit
+      const totalCount = observations.length;
+      if (observations.length > itemsPerPage) {
+        console.log(
+          "skipping and limiting observations after filtering by category"
+        );
+        observations = observations.slice(
+          page * itemsPerPage,
+          page * itemsPerPage + itemsPerPage
+        );
+      }
+
+      return res.send({ observations: observations, totalCount: totalCount });
+    } else if (req.query.name) {
+      console.log("search narrowed also by name: ", req.query.name);
       console.log("language: ", req.query.language);
-      var firstObs = observations[0]._id.toString();
+      var name = req.query.name;
 
       // another query based on name { $and: [{ age: { $gt: 2 } }, { age: { $lte: 4 } }] }
       //
@@ -177,11 +213,22 @@ exports.browse = function (req, res) {
         });
         return foundTranslation;
       });
+      const totalCount = observations.length;
+      if (observations.length > itemsPerPage) {
+        console.log(
+          "skipping and limiting observations after filtering by name"
+        );
 
-      return res.send(observations);
+        observations = observations.slice(
+          page * itemsPerPage,
+          page * itemsPerPage + itemsPerPage
+        );
+      }
+
+      return res.send({ observations: observations, totalCount: totalCount });
     } else {
       console.log("returning results");
-      return res.send(observations);
+      return res.send({ observations: observations, totalCount: totalCount });
     }
   });
 };

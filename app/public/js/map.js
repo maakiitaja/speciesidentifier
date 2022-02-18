@@ -11,6 +11,9 @@ displayMap = function (observations) {
     // center: [-118.113491, 34.111745],
     zoom: 10,
     interactive: true,
+    zoomAnimation: false,
+    fadeAnimation: false,
+    inertia: false,
   });
 
   const bounds = new mapboxgl.LngLatBounds();
