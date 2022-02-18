@@ -413,12 +413,27 @@
 
 					var $this = $(this);
 					var data = $this.data("twbs-pagination");
+					console.log('data: ', data);
 					var options = typeof option === "object" ? option : {};
+					console.log('options: ', options);
+					// if (data && options) {
+					// 	console.log('data.options.totalPages', data.options.totalPages);
+					// 	console.log('options.totalPages:', options.totalPages);
+					// 	if (data.options.totalPages !== options.totalPages) {
+					// 		console.log('option values differ');
+					// 		data.options.totalPages = options.totalPages;
+					// 		console.log(data);
+					// 	}
+					// }
 
-					if (!data)
+					if (!data || (data && options && data.options.totalPages !== options.totalPages)) {
+						console.log('setting data')
 						$this.data("twbs-pagination", (data = new TwbsPagination(this, options)));
-					if (typeof option === "string")
+					}
+					if (typeof option === "string") {
+						console.log('typeof option is string')
 						methodReturn = data[option].apply(data, args);
+					}
 
 					return methodReturn === undefined ? $this : methodReturn;
 				};

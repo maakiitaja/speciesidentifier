@@ -118,25 +118,29 @@ setPaginationForSearchPage = async function (
   if (totalPages < visiblePages) {
     visiblePages = totalPages;
   }
+  console.log("visiblePages", visiblePages);
   console.log("totalPages", totalPages);
   console.log("page: ", page);
   if (totalPages > 0) {
-    // wait for pagination element to show
+    console.log("showing pagination element");
+    console.log("total pages: ", totalPages);
+    console.log("window.pagObj:", window.pagObj);
+    window.pagObj = undefined;
     await wait(0.2);
     $scope.$apply();
-    console.log("showing pagination element");
     window.pagObj = $("#pagination")
       .twbsPagination({
         totalPages: totalPages,
         visiblePages: visiblePages,
         startPage: page + 1,
+
         onPageClick: async function (event, page) {
           console.log("on page click:", page, " event: ", event);
           $scope.page = page - 1;
           if (!$scope.firstPaginationLoad) {
             console.log("searching from page: ", page);
             const selectFirstInsect = true;
-            await SearchService.search(
+            const response = await SearchService.search(
               $scope,
               query,
               page - 1,
@@ -144,6 +148,7 @@ setPaginationForSearchPage = async function (
               $localStorage,
               selectFirstInsect
             );
+            const totalCount = response.totalCount;
             setPaginationForSearchPage(
               SearchService,
               query,
@@ -160,6 +165,7 @@ setPaginationForSearchPage = async function (
           } else {
             console.log("changing first pagination load to false");
             $scope.firstPaginationLoad = false;
+            $scope.$apply();
           }
         },
       })

@@ -1809,6 +1809,10 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     $scope.addObservationFailure = "";
     $scope.addObservationSuccess = "";
 
+    const page = 0;
+    const itemsPerPage = 8;
+    const visiblePages = 10;
+
     // toggle selected insect image flag
     $scope.toggleSelectedInsectImage = true;
 
@@ -1905,10 +1909,6 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
       ds_sh(el, $scope);
     };
 
-    $scope.setPagedInsects = function (insects) {
-      setPagedInsects(insects, $scope);
-    };
-
     $scope.callb = function (el) {
       console.log("callb addobservation, el: ", el);
       var htmlEl = document.getElementById(el);
@@ -2001,16 +2001,31 @@ insectIdentifierControllers.controller("AddObservationsCtrl", [
     };
 
     $scope.search = async function (query) {
-      await SearchService.search($scope, $localStorage, query);
+      const selectFirstInsect = true;
+      const searchResults = await SearchService.search(
+        $scope,
+        query,
+        page,
+        itemsPerPage,
+        $localStorage,
+        selectFirstInsect
+      );
+      const totalCount = searchResults.totalCount;
+      console.log("total count: " + totalCount);
+      $scope.firstPaginationLoad = true;
       $scope.$apply();
-      // select the active insect thumb
-      if ($scope.insect) {
-        var thumbImg = document.getElementById(
-          $scope.insect.images[0] + "_thumb.jpg"
-        );
-        console.log(thumbImg);
-        thumbImg.classList.toggle("activeThumb");
-      }
+
+      setPaginationForSearchPage(
+        SearchService,
+        query,
+        $scope,
+        page,
+        itemsPerPage,
+        visiblePages,
+        $localStorage,
+        totalCount
+      );
+      selectActiveThumb($scope.insect);
     };
     $scope.checkLatinname = function (name) {
       console.log("checking latinname, ", name);
@@ -2216,7 +2231,6 @@ insectIdentifierControllers.controller("SearchCtrl", [
     };
 
     $scope.search = async function (query) {
-      console.log("$localStorage", $localStorage);
       const selectFirstInsect = true;
       const searchResults = await SearchService.search(
         $scope,
@@ -2355,22 +2369,7 @@ insectIdentifierControllers.controller("SearchCtrl", [
       $scope.imgs = imgs;
 
       if ($scope.insect) {
-        var thumbImg = document.getElementById(
-          $scope.insect.images[0] + "_thumb.jpg"
-        );
-        while (thumbImg === undefined || thumbImg === null) {
-          await wait(0.2);
-          thumbImg = document.getElementById(
-            $scope.insect.images[0] + "_thumb.jpg"
-          );
-          //$scope.$apply();
-        }
-
-        console.log(thumbImg);
-        // set the active thumb
-        thumbImg.classList.toggle("activeThumb");
-
-        $scope.$apply();
+        selectActiveThumb($scope.insect);
       }
     }
   },
