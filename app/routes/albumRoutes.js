@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/add", authController.isLoggedIn, albumController.add);
 router.get("/list", authController.isLoggedIn, albumController.list);
 router.get("/view", authController.isLoggedIn, albumController.view);
+router.get("/view-shared", albumController.viewShared);
 router.delete("/delete", authController.isLoggedIn, albumController.delete);
 
 module.exports = router;

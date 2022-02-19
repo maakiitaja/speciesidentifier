@@ -25,20 +25,84 @@ insectIdentifierControllers.controller("ViewAlbumCtrl", [
   "$cookies",
   function ($scope, $location, $http, $cookies) {
     console.log("album view ctrl");
-    if ($location.search()) {
-      const album = $location.search().album;
-      $http({
-        method: "GET",
-        url: "/albums/view",
-        params: { id: album._id },
-      })
-        .success(function (response) {
-          console.log("response:", response);
-          $scope.album = response.album;
-        })
-        .catch(function (error) {
-          console.log("error:", error);
+    let page = 0;
+    let visiblePages = 5;
+    const itemsPerPage = 2;
+    $scope.firstPaginationLoad = true;
+
+    $scope.searchAlbum = async function (page) {
+      $scope.album = $location.search().album;
+      let totalCount;
+
+      const sharedAlbumId = $location.search().sharedAlbumId;
+      let url = "/albums/view";
+      if (sharedAlbumId) url = "/albums/view-shared";
+      try {
+        const response = await $http({
+          method: "GET",
+          url: url,
+          params: {
+            albumId: sharedAlbumId ? sharedAlbumId : $scope.album._id,
+            page: page,
+            itemsPerPage: itemsPerPage,
+          },
         });
+        console.log("response: " + response);
+        $scope.insects = response.data.insects;
+        console.log("$scope.insects[0]: ", $scope.insects[0]);
+        totalCount = response.data.totalCount;
+      } catch (error) {
+        console.log("error:", error);
+        return;
+      }
+      $scope.$apply();
+      $scope.setPagination(page, totalCount);
+    };
+
+    $scope.setPagination = async function (page, totalCount) {
+      const totalPages = Math.ceil(totalCount / itemsPerPage);
+      let visiblePages = 5;
+      if (totalPages < visiblePages) {
+        visiblePages = totalPages;
+      }
+      console.log("totalPages: ", totalPages);
+      console.log("visiblePages: ", visiblePages);
+      console.log("page:", page);
+      // pagination
+      if (totalPages > 1) {
+        $scope.hidePagination = false;
+        //if (!$scope.firstPaginationLoad) return;
+        await wait(0.2);
+        $scope.$apply();
+
+        window.pagObj = $("#pagination")
+          .twbsPagination({
+            totalPages: totalPages,
+            visiblePages: visiblePages,
+            startPage: page + 1,
+            onPageClick: async function (event, page) {
+              console.log("on page click:", page, " event: ", event);
+              $scope.page = page - 1;
+              if (!$scope.firstPaginationLoad) {
+                await $scope.searchAlbum(page - 1);
+
+                $scope.$apply();
+              } else {
+                console.log("changing first pagination load to false");
+                $scope.firstPaginationLoad = false;
+              }
+            },
+          })
+          .on("page", function (event, page) {
+            console.info(page + " (from event listening)");
+          });
+      } else {
+        $scope.hidePagination = true;
+      }
+    };
+
+    if ($location.search().album) {
+      $scope.searchAlbum(page);
     }
   },
 ]);

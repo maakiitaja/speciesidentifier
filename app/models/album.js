@@ -11,6 +11,7 @@ var AlbumSchema = new Schema(
       type: String,
       required: [true, "Please provide cover image"],
     },
+    shared: { type: Boolean, default: false },
   },
   /* This is used to fix the “Unknown modifier: $pushAll” in mongodb >= v3.6. */
   { usePushEach: true }

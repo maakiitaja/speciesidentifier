@@ -1,4 +1,5 @@
 const Album = require("./../models/album");
+const Insect = require("./../models/insect");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
@@ -37,9 +38,48 @@ exports.list = catchAsync(async (req, res, next) => {
 
 exports.view = catchAsync(async (req, res, next) => {
   console.log("album view");
-  const album = await Album.findOne({ _id: req.query.id }).populate("insects");
-  console.log("album: ", album);
-  res.send({ message: true, album: album });
+  const album = await Album.findOne({ _id: req.query.albumId });
+
+  if (!album) {
+    return res.status(404).send({ message: "no album found", album: null });
+  }
+  const totalCount = album.insects.length;
+  console.log("totalCount:", totalCount);
+  const insectIds = album.insects.slice(
+    req.query.page * req.query.itemsPerPage,
+    req.query.page * req.query.itemsPerPage + req.query.itemsPerPage
+  );
+  console.log("insectids:", insectIds);
+  const insects = await Insect.find({ _id: { $in: insectIds } });
+  console.log("insects.length: ", insects.length);
+
+  res
+    .status(200)
+    .send({ message: true, insects: insects, totalCount: totalCount });
+});
+
+exports.viewShared = catchAsync(async (req, res, next) => {
+  console.log("album shared view");
+  const album = await Album.findOne({
+    _id: req.query.albumId,
+    shared: true,
+  });
+
+  console.log("album.insects.length: ", album.insects.length);
+  if (!album) {
+    return res.status(404).send({ message: false, album: null });
+  }
+  const totalCount = album.insects.length;
+  const insectIds = album.insects.slice(
+    req.query.page * req.query.itemsPerPage,
+    req.query.page * req.query.itemsPerPage + req.query.itemsPerPage
+  );
+  const insects = await Insect.find({ _id: { $in: insectIds } });
+  console.log("insects.length: ", insects.length);
+
+  res
+    .status(200)
+    .send({ message: true, insects: insects, totalCount: totalCount });
 });
 
 exports.delete = catchAsync(async (req, res, next) => {

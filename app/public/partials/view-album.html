@@ -3,7 +3,7 @@
 <div>
 
     <ul class="album-items">
-        <li ng-repeat="insect in album.insects">
+        <li ng-repeat="insect in insects">
             <div class="album-item-card">
                 <img ng-src="{{insect.images[0]}}" />
 
@@ -14,13 +14,19 @@
                         </p>
                     </div>
                     <p class="latinname-translation">
-                        {{insect.latinName}}
+                        <i>{{insect.latinName}}</i>
                     </p>
 
                 </div>
             </div>
         </li>
     </ul>
+
+    <div class="container-albumlist-pagination" ng-if="!hidePagination">
+        <nav aria-label="Page navigation">
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
 
 
 </div>
