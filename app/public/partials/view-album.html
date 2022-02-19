@@ -1,4 +1,6 @@
-<h1 id="albumList">{{translations.ALBUM}} - {{album.name}}</h1>
+<h1 ng-if="!sharedAlbum" id="albumList">{{translations.ALBUM}} - {{album.name}}</h1>
+<h1 ng-if="sharedAlbum" id="albumList">{{translations.SHAREDALBUM}} - {{album.name}}</h1>
+
 
 <div>
 

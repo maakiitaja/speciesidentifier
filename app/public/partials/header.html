@@ -21,7 +21,13 @@
 				<div class="menu-description inline">{{translations.COLLECTION}}</div>
 			</btn>
 
+		</div>
 
+		<!--shared albums-->
+		<div class="dropdown" id="shared-albums" ng-click="sharedAlbums()">
+			<btn class="dropbtn dropbtn-nonselected" id="sharedalbums-button">
+				<div class="menu-description inline">{{translations.SHAREDALBUMS}}</div>
+			</btn>
 		</div>
 
 		<!--manage-->
@@ -107,7 +113,7 @@
 					<a ng-click="browseObservation(currentUser)">{{translations.BROWSEOBSERVATIONS}}</a>
 					<a ng-if="currentUser" ng-click="viewAlbums()">{{translations.VIEWALBUMS}}</a>
 					<a ng-if="currentUser" ng-click="createAlbum()">{{translations.CREATEALBUM}}</a>
-
+					<a ng-click="sharedAlbums()">{{translations.SHAREDALBUMS}}</a>
 					<a ng-if="lang=='en'" ng-click="setLanguage('fi')">FI - Suomi</a>
 					<a ng-if="lang=='fi'" ng-click="setLanguage('en')">EN - English</a>
 				</div>
@@ -141,6 +147,7 @@
 				</li>
 				<li><a class="main-nav-link" ng-click="createAlbum()">{{translations.CREATEALBUM}}</a>
 				</li>
+				<li><a class="main-nav-link" ng-click="sharedAlbums()">{{translations.SHAREDALBUMS}}</a></li>
 				<li class="main-nav-link" ng-if="lang=='en'"><a ng-click="setLanguage('fi')">FI - Suomi</a></li>
 				<li class="main-nav-link" ng-if="lang=='fi'"><a ng-click="setLanguage('en')">EN - English</a></li>
 				<li class="main-nav-link" ng-if="currentUser"><a href="logout">{{translations.LOGOUT}}</a></li>

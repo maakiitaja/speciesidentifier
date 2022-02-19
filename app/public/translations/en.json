@@ -311,8 +311,12 @@
   "ALBUMLIST": "Albums",
   "NOALBUMFOUND": "No albums found. Start creating them from ",
   "ALBUM": "Album",
+  "SHAREDALBUM": "Shared album",
   "VIEWALBUM": "View",
   "DELETEALBUM": "Delete",
   "BACK": "Back",
-  "GENERAL": "General"
+  "GENERAL": "General",
+  "SHAREALBUM": "Share",
+  "UNSHAREALBUM": "Cancel sharing",
+  "SHAREDALBUMS": "Shared albums"
 }

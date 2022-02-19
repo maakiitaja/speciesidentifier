@@ -29,14 +29,20 @@ insectIdentifierControllers.controller("ViewAlbumCtrl", [
     let visiblePages = 5;
     const itemsPerPage = 2;
     $scope.firstPaginationLoad = true;
+    $scope.sharedAlbum = false;
 
     $scope.searchAlbum = async function (page) {
       $scope.album = $location.search().album;
       let totalCount;
 
       const sharedAlbumId = $location.search().sharedAlbumId;
+      console.log("sharedAlbumId", sharedAlbumId);
       let url = "/albums/view";
-      if (sharedAlbumId) url = "/albums/view-shared";
+      if (sharedAlbumId) {
+        url = "/albums/view-shared";
+        console.log("changing album url to shared");
+        $scope.sharedAlbum = true;
+      }
       try {
         const response = await $http({
           method: "GET",
@@ -53,6 +59,11 @@ insectIdentifierControllers.controller("ViewAlbumCtrl", [
         totalCount = response.data.totalCount;
       } catch (error) {
         console.log("error:", error);
+        console.log(error.status);
+        if (error.status === 404) {
+          alert("No shared album found.");
+          return;
+        }
         return;
       }
       $scope.$apply();
@@ -120,11 +131,16 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
     let page = 0;
     let visiblepages = 5;
     const itemsPerPage = 2;
+    $scope.sharedAlbums = false;
     $scope.firstPaginationLoad = true;
     let url = "/albums/list";
-
-    if ($location.search().sharedAlbums) {
-      url = "/albums/shared";
+    console.log(
+      "$location.search().sharedAlbums:",
+      $location.search().sharedAlbums
+    );
+    if ($location.search().sharedAlbums === 1) {
+      console.log("shared albums");
+      url = "/albums/shared-list";
       $scope.sharedAlbums = true;
     }
 
@@ -145,7 +161,12 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
           $scope.setPagination(totalCount, url, page);
         })
         .catch(function (error) {
-          console.log("error");
+          console.log("error", error);
+          console.log(error.status);
+          if (error.status === 404) {
+            alert("No shared albums found.");
+            return;
+          }
         });
     };
 
@@ -192,7 +213,42 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
     };
 
     $scope.viewAlbum = function (album) {
+      console.log("view album");
       $location.path("view-album").search({ album: album });
+    };
+
+    $scope.viewSharedAlbum = function (album) {
+      console.log("viewSharedAlbum");
+      $location
+        .path("view-album")
+        .search({ album: album, sharedAlbumId: album._id });
+    };
+
+    $scope.shareAlbum = async function (album, share) {
+      try {
+        const res = await $http({
+          url: "/albums/toggle-share",
+          params: { albumId: album._id, share: share },
+          method: "PATCH",
+        });
+        console.log(res.data.msg);
+        if (res.data.msg === true) {
+          const albumTmp = $scope.albumList.find((el) => el._id === album._id);
+          console.log("albumTmp", albumTmp);
+          albumTmp.shared = share;
+
+          $scope.$apply();
+          // if (share)
+          //   alert("Successfully shared album");
+          // else
+          //   alert('Successfully cancelled sharing')
+        } else {
+          alert("Couldn't share album");
+        }
+      } catch (err) {
+        console.log("err:", err);
+        alert("Failed to share album.");
+      }
     };
 
     $scope.deleteAlbum = function (album) {

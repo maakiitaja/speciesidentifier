@@ -315,8 +315,12 @@
   "ALBUMLIST": "Albumit",
   "NOALBUMFOUND": "Sinulla ei ole albumeja. Aloita luomaan albumeja ",
   "ALBUM": "Albumi",
+  "SHAREDALBUM": "Julkinen albumi",
   "VIEWALBUM": "Katsele",
   "DELETEALBUM": "Poista",
   "BACK": "Takaisin",
-  "GENERAL": "Yleinen"
+  "GENERAL": "Yleinen",
+  "SHAREALBUM": "Jaa",
+  "UNSHAREALBUM": "Peru jakaminen",
+  "SHAREDALBUMS": "Julkiset albumit"
 }

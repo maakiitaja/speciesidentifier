@@ -1,10 +1,21 @@
+@media only screen and (min-width: 1181px) {
+  #more {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  #manage,
+  #observation,
+  #smallest-screen,
+  #shared-albums {
+    display: none;
+  }
+}
+
 /* styles for browsers with larger than 1000px width */
 @media only screen and (min-width: 1000px) {
   .btn-mobile-nav-menu {
-    display: none;
-  }
-
-  #more {
     display: none;
   }
 
@@ -91,9 +102,9 @@
   }
 
   #manage,
-  #language,
   #observation,
-  #smallest-screen {
+  #smallest-screen,
+  #shared-albums {
     display: none;
   }
 
@@ -161,7 +172,8 @@
   #manage,
   #language,
   #observation,
-  #smallest-screen {
+  #smallest-screen,
+  #shared-albums {
     display: none;
   }
 
@@ -377,7 +389,8 @@
   #search div,
   #logout-div,
   #login-div,
-  #more {
+  #more,
+  #shared-albums {
     display: none;
   }
 }

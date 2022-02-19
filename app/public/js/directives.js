@@ -351,7 +351,15 @@ myApp.directive("header", function () {
           $scope.disableMobileNavigation();
           $scope.resetHeader();
 
-          $scope.location.path("album-list");
+          $scope.location.path("album-list").search({ sharedAlbums: 0 });
+        };
+
+        $scope.sharedAlbums = function () {
+          $scope.disableMobileNavigation();
+
+          $scope.resetHeader();
+
+          $scope.location.path("album-list").search({ sharedAlbums: 1 });
         };
 
         $scope.collection = function () {

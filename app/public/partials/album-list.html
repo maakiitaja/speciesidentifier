@@ -1,4 +1,5 @@
-<h1 id="albumList">{{translations.ALBUMLIST}}</h1>
+<h1 ng-if="!sharedAlbums" id="albumList">{{translations.ALBUMLIST}}</h1>
+<h1 ng-if="sharedAlbums" id="albumList">{{translations.SHAREDALBUMS}}</h1>
 
 <div class="centered">
     <ul class="album-thumbs">
@@ -27,11 +28,28 @@
                         {{album.name}}
                     </div>
 
-                    <button type="button" ng-click="viewAlbum(album)" class="button button-blue centered">
+                    <button ng-if="!sharedAlbums" type="button" ng-click="viewAlbum(album)"
+                        class="button button-blue centered">
+                        {{translations.VIEWALBUM}}
+                    </button>
+
+                    <button ng-if="sharedAlbums" type="button" ng-click="viewSharedAlbum(album)"
+                        class="button button-blue centered">
                         {{translations.VIEWALBUM}}
                     </button>
                     <br>
-                    <button type="button" ng-click="deleteAlbum(album)" class="button button-red centered">
+
+                    <button type="button" ng-if="!album.shared && !sharedAlbums" ng-click="shareAlbum(album, true)"
+                        class="button button-orange centered">
+                        {{translations.SHAREALBUM}}
+                    </button>
+                    <button type="button" ng-if="album.shared && !sharedAlbums" ng-click="shareAlbum(album, false)"
+                        class="button button-orange centered">
+                        {{translations.UNSHAREALBUM}}
+                    </button>
+                    <br>
+                    <button type="button" ng-click="deleteAlbum(album)" ng-if="!sharedAlbums"
+                        class="button button-red centered">
                         {{translations.DELETEALBUM}}
                     </button>
                 </div>
@@ -48,7 +66,7 @@
     </div>
 </div>
 
-<div class="container-empty-upload-list" ng-if="albumList.length === 0">
+<div class="container-empty-upload-list" ng-if="albumList.length === 0 && currentUser">
     <p class="start-adding-album">{{translations.NOALBUMFOUND}} <a
             ng-click="startAddingAlbum()">{{translations.HERE}}</a></p>
 </div>

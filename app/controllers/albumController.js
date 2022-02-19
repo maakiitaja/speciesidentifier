@@ -36,6 +36,40 @@ exports.list = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.sharedList = catchAsync(async (req, res, next) => {
+  console.log("album shared list");
+  let totalCount;
+  let albumList;
+  let album;
+  if (req.query.sharedAlbumId) {
+    album = await (
+      await Album.findOne({ _id: req.query.sharedAlbumId })
+    ).populate("insects");
+    if (!album) {
+      return res.status(404).send({ msg: 'Couldn"t find shared album.' });
+    }
+    totalCount = 1;
+    albumList = [album];
+  } else {
+    totalCount = await Album.find({ shared: true }).count();
+    console.log("totalCount: " + totalCount);
+    if (totalCount > 0) {
+      albumList = await Album.find({ shared: true })
+        .skip(req.query.page * req.query.itemsPerPage)
+        .limit(req.query.itemsPerPage)
+        .populate("insects");
+    } else {
+      return res.status(404).send({ msg: "No shared albums found." });
+    }
+    console.log("album list length:", albumList?.length);
+  }
+  return res.send({
+    msg: true,
+    albumList: albumList,
+    totalCount: totalCount,
+  });
+});
+
 exports.view = catchAsync(async (req, res, next) => {
   console.log("album view");
   const album = await Album.findOne({ _id: req.query.albumId });
@@ -53,7 +87,7 @@ exports.view = catchAsync(async (req, res, next) => {
   const insects = await Insect.find({ _id: { $in: insectIds } });
   console.log("insects.length: ", insects.length);
 
-  res
+  return res
     .status(200)
     .send({ message: true, insects: insects, totalCount: totalCount });
 });
@@ -65,10 +99,11 @@ exports.viewShared = catchAsync(async (req, res, next) => {
     shared: true,
   });
 
-  console.log("album.insects.length: ", album.insects.length);
   if (!album) {
     return res.status(404).send({ message: false, album: null });
   }
+  console.log("album.insects.length: ", album.insects.length);
+
   const totalCount = album.insects.length;
   const insectIds = album.insects.slice(
     req.query.page * req.query.itemsPerPage,
@@ -77,7 +112,7 @@ exports.viewShared = catchAsync(async (req, res, next) => {
   const insects = await Insect.find({ _id: { $in: insectIds } });
   console.log("insects.length: ", insects.length);
 
-  res
+  return res
     .status(200)
     .send({ message: true, insects: insects, totalCount: totalCount });
 });
@@ -90,8 +125,18 @@ exports.delete = catchAsync(async (req, res, next) => {
     return next(new AppError("No document found with that ID", 404));
   }
 
-  res.status(204).json({
+  return res.status(204).json({
     status: "success",
     data: null,
   });
+});
+
+exports.toggleShare = catchAsync(async (req, res, next) => {
+  console.log("ShareAlbum");
+  console.log("albumid:", req.query.albumId);
+  const album = await Album.updateOne(
+    { _id: req.query.albumId },
+    { $set: { shared: req.query.share } }
+  );
+  return res.status(200).send({ msg: true });
 });
