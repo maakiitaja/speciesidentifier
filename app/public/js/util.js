@@ -297,6 +297,38 @@ constructCollectionByCategory = async function (
   }
 };
 
+function setPagedInsects(insects, $scope) {
+  $scope.nroOfPages = Math.ceil(insects.length / $scope.itemsPerPage);
+
+  console.log("nroofpages: " + $scope.nroOfPages);
+  // clear paged insects
+  $scope.pagedInsects = [];
+  // loop through nro of pages
+  for (var i = 0; i < $scope.nroOfPages; i++) {
+    // loop through nro of insects per page
+    console.log("util selectedInsect:", $scope.selectedInsect);
+    for (var j = 0; j < $scope.itemsPerPage; j++) {
+      if (j == 0) {
+        $scope.pagedInsects[i] = [];
+      }
+      if (insects[i * $scope.itemsPerPage + j] !== undefined) {
+        $scope.pagedInsects[i].push(insects[i * $scope.itemsPerPage + j]);
+      }
+      console.log("pagedinsects[i][j]: " + $scope.pagedInsects[i][j]);
+      // choose the pagination page corresponding to the selected insect
+      if (
+        $scope.selectedInsect !== undefined &&
+        $scope.pagedInsects[i][j] !== undefined &&
+        $scope.selectedInsect._id === $scope.pagedInsects[i][j]._id
+      ) {
+        console.log("util: changing pagination current page to: ", i + 1);
+        $scope.currentPage = i;
+      }
+    }
+    console.log("util $scope.pagedInsects: ", $scope.pagedInsects);
+  }
+}
+
 constructUploadListByCategory = function (remoteItems, $cookies) {
   console.log("construct upload list by category");
 

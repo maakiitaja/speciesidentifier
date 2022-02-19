@@ -53,14 +53,80 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
   function ($scope, $location, $http, $cookies, $localStorage, $window) {
     console.log("album list ctrl");
     $scope.albumList = [];
-    $http({ method: "GET", url: "/albums/list" })
-      .success(function (response) {
-        console.log(response);
-        $scope.albumList = response.albumList;
+    let page = 0;
+    let visiblepages = 5;
+    const itemsPerPage = 2;
+    $scope.firstPaginationLoad = true;
+    let url = "/albums/list";
+
+    if ($location.search().sharedAlbums) {
+      url = "/albums/shared";
+      $scope.sharedAlbums = true;
+    }
+
+    $scope.searchAlbums = function (url, page) {
+      $http({
+        method: "GET",
+        url: url,
+        params: {
+          page: page,
+          itemsPerPage: itemsPerPage,
+          sharedAlbumId: $location.search().sharedAlbumId,
+        },
       })
-      .catch(function (error) {
-        console.log("error");
-      });
+        .success(function (response) {
+          console.log(response);
+          $scope.albumList = response.albumList;
+          const totalCount = response.totalCount;
+          $scope.setPagination(totalCount, url, page);
+        })
+        .catch(function (error) {
+          console.log("error");
+        });
+    };
+
+    $scope.setPagination = async function (totalCount, url, page) {
+      const totalPages = Math.ceil(totalCount / itemsPerPage);
+      let visiblePages = 5;
+      if (totalPages < visiblePages) {
+        visiblePages = totalPages;
+      }
+      console.log("totalPages: ", totalPages);
+      console.log("visiblePages: ", visiblePages);
+      console.log("page:", page);
+      // pagination
+      if (totalPages > 1) {
+        $scope.hidePagination = false;
+        //if (!$scope.firstPaginationLoad) return;
+        await wait(0.2);
+        $scope.$apply();
+
+        window.pagObj = $("#pagination")
+          .twbsPagination({
+            totalPages: totalPages,
+            visiblePages: visiblePages,
+            startPage: page + 1,
+            onPageClick: async function (event, page) {
+              console.log("on page click:", page, " event: ", event);
+              $scope.page = page - 1;
+              if (!$scope.firstPaginationLoad) {
+                await $scope.searchAlbums(url, page - 1);
+
+                $scope.$apply();
+              } else {
+                console.log("changing first pagination load to false");
+                $scope.firstPaginationLoad = false;
+              }
+            },
+          })
+          .on("page", function (event, page) {
+            console.info(page + " (from event listening)");
+          });
+      } else {
+        $scope.hidePagination = true;
+      }
+    };
+
     $scope.viewAlbum = function (album) {
       $location.path("view-album").search({ album: album });
     };
@@ -89,6 +155,8 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
     $scope.startAddingAlbum = function () {
       $window.location.href = "#/create-album";
     };
+    // perform inital search
+    $scope.searchAlbums(url, page);
   },
 ]);
 
@@ -106,6 +174,9 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
     console.log("in create album ctrl");
     sortCategories($scope);
     sortColors($scope);
+    $scope.currentPage = 0;
+    $scope.itemsPerPage = 6;
+
     if (
       $localStorage.collection === undefined ||
       $localStorage.collection.length === 0
@@ -268,7 +339,7 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
       imageParent.classList.remove("album-cover");
     };
 
-    $scope.search = async function (query) {
+    $scope.searchRemoteCollection = async function (query) {
       $scope.insects = [];
       const category = query.category;
       const primaryColor = query.primaryColor;
@@ -286,7 +357,10 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
 
       console.log("response: ", response);
 
-      console.log(response.data.insects);
+      console.log(
+        "response.data.insects.length:",
+        response.data.insects.length
+      );
       if (response.data.insects === undefined) {
         console.log("error");
         $scope.searchResults = "noResults";
@@ -307,8 +381,8 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
         return;
       }
       await wait(0.2);
-      $scope.itemsPerPage = 6;
-      const visiblePages = 2;
+
+      const visiblePages = 5;
       const totalPages = Math.ceil(
         ($scope.insects.length + 1) / $scope.itemsPerPage
       );
@@ -319,7 +393,7 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
 
       console.log("$scope.hidePagination:", $scope.hidePagination);
       setPagedInsects($scope.insects, $scope);
-      $scope.currentPage = 0;
+
       console.log("totalPages:", totalPages);
       console.log(
         "$scope.insects.length",
@@ -327,6 +401,7 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
         "$scope.itemsPerPage",
         $scope.itemsPerPage
       );
+
       // apply needs to be here in order for pagination to show
       $scope.$apply();
 
@@ -338,6 +413,7 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
             console.info(page + " (from options)");
             console.log("scope:", $scope);
             $scope.currentPage = page - 1;
+
             $scope.$apply();
             // update selected insects
             $scope.pagedInsects[$scope.currentPage].forEach(function (insect) {

@@ -3,7 +3,7 @@
 <div class="container" ng-if="!emptyCollection">
 
     <div class="flex-center">
-        <form ng-submit='search(query)'>
+        <form ng-submit='searchRemoteCollection(query)'>
             <ul id="flex-table" class="flex-table">
                 <li>
                     {{translations.CATEGORY}}:*
@@ -84,15 +84,7 @@
                                         {{tmp = insect.images[0]+'_thumb.jpg'}}
 
                                     </div>
-                                    <!-- <div class="album-image-container" ng-click="selectImage(insect)">
-                                        <div ng-if="selectedInsects.includes(insect._id)" class="album-thumb-overlay">
-                                            &nbsp;
-                                        </div>
-                                        <img draggable="true" ondragstart="drag(event)" class="scale-sm"
-                                            id="{{insect.images[0]+'_thumb.jpg'}}"
-                                            ng-src="{{insect.images[0]+'_thumb.jpg'}}" />
 
-                                    </div> -->
                                     <div class="album-item-image-container">
                                         <img draggable="true" ondragstart="drag(event)" class="scale-sm"
                                             id="{{insect.images[0]+'_thumb.jpg'}}"

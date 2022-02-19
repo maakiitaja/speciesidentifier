@@ -40,6 +40,12 @@
             </div>
         </li>
     </ul>
+
+    <div class="container-albumlist-pagination" ng-if="!hidePagination">
+        <nav aria-label="Page navigation">
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
 </div>
 
 <div class="container-empty-upload-list" ng-if="albumList.length === 0">

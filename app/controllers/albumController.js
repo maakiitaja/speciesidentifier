@@ -20,9 +20,19 @@ exports.add = catchAsync(async (req, res, next) => {
 
 exports.list = catchAsync(async (req, res, next) => {
   console.log("album list");
-  const albumList = await Album.find({ _user: req.user.id });
-  console.log("album list:", albumList);
-  res.send({ message: true, albumList: albumList });
+  const totalCount = await Album.find({ _user: req.user.id }).count();
+  let albumList;
+  if (totalCount > 0) {
+    albumList = await Album.find({ _user: req.user.id })
+      .skip(req.query.page * req.query.itemsPerPage)
+      .limit(req.query.itemsPerPage);
+  }
+  console.log("album list length:", albumList?.length);
+  return res.send({
+    message: true,
+    albumList: albumList,
+    totalCount: totalCount,
+  });
 });
 
 exports.view = catchAsync(async (req, res, next) => {
