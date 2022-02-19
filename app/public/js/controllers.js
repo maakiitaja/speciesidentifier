@@ -138,7 +138,10 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
       "$location.search().sharedAlbums:",
       $location.search().sharedAlbums
     );
-    if ($location.search().sharedAlbums === 1) {
+    if (
+      $location.search().sharedAlbums === 1 ||
+      $location.search().sharedAlbums === "1"
+    ) {
       console.log("shared albums");
       url = "/albums/shared-list";
       $scope.sharedAlbums = true;
@@ -238,8 +241,9 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
           albumTmp.shared = share;
 
           $scope.$apply();
-          // if (share)
-          //   alert("Successfully shared album");
+          if (share) {
+            alert("Successfully shared album.");
+          }
           // else
           //   alert('Successfully cancelled sharing')
         } else {
