@@ -318,5 +318,6 @@
   "GENERAL": "General",
   "SHAREALBUM": "Share",
   "UNSHAREALBUM": "Cancel sharing",
-  "SHAREDALBUMS": "Shared albums"
+  "SHAREDALBUMS": "Shared albums",
+  "DISABLESYNCIMAGES": "Disable local collection's images storage"
 }

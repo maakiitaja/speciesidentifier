@@ -1695,6 +1695,8 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       $scope.messageCollectionAddOfflineFailure = "";
     };
 
+    $scope.windowLocalStorage = window.localStorage;
+
     $scope.initMessages();
     $scope.messageDelayTime = 2500;
 
@@ -1794,6 +1796,20 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       }
     };
 
+    $scope.saveImagesToLocalStorage = async function ($scope, $localStorage) {
+      try {
+        const disableImageStorage = $localStorage.disableSyncImages;
+        if (disableImageStorage) {
+          console.log("skipping local image storage.");
+          return;
+        }
+        const res = await saveImagesToLocalStorage($scope, $localStorage);
+      } catch (err) {
+        console.log("err: ", err);
+        alert("localstorage quota exceeded, disabling local storage.");
+      }
+    };
+
     $scope.removeFromCollection = function (insect) {
       // check authentication status before going to the Server
       var currentUser = $cookies.get("current.user");
@@ -1875,25 +1891,30 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
 
       if (removeInd !== -1) {
         success = true;
-        collection.splice(removeInd, 1);
+        removeInsectFromLocalStorage($localStorage, "collection", insect);
+        //collection.splice(removeInd, 1);
         // remove the insect's images from local collection
         $scope.insect.images.forEach(function (image) {
           console.log('emptying local collection"s insect image:', image);
-          $localStorage[image] = null;
-          $localStorage[image + "_thumb.jpg"] = null;
+          removeValueFromLocalStorage($localStorage, image);
+          removeValueFromLocalStorage($localStorage, image + "_thumb.jpg");
         });
       }
 
       if (success) {
+        console.log("successfully removed insect from local collection");
         $scope.messageRemovedSuccess =
           $scope.translations.REMOVEDINSECTFROMLOCALCOLLECTION;
+
         setDelay("messageRemovedSuccess", $scope.messageDelayTime, $scope);
         // update the state
         $scope.inCollection = 0;
       } else {
-        setDelay("messageRemovedFailure", $scope.messageDelayTime, $scope);
+        console.log("failed to remove insect from local collection");
         $scope.messageRemovedFailure =
           $scope.translations.FAILEDTOREMOVEINSECTFROMLOCALCOLLECTION;
+
+        setDelay("messageRemovedFailure", $scope.messageDelayTime, $scope);
       }
 
       return success;
@@ -1904,32 +1925,62 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       toggleLoadingSpinner($scope);
 
       var duplicate = false;
-      var collection = $localStorage.collection;
+      //var collection = $localStorage.collection;
+      var collection = window.localStorage.getItem("collection");
 
       // 1. save to the localstorage
       if (collection) {
         console.log("category: " + $scope.insect.category);
         // check for duplicate
-        const ind = collection.findIndex((insect) => {
+
+        const ind = JSON.parse(collection).findIndex((insect) => {
           if (insect._id === $scope.insect._id) return true;
         });
 
         if (ind === -1) {
-          collection.push($scope.insect);
+          console.log("$scope.insect:", $scope.insect);
+          pushToLocalStorage($localStorage, "collection", $scope.insect);
 
-          await saveImagesToLocalStorage($scope, $localStorage);
+          try {
+            await $scope.saveImagesToLocalStorage($scope, $localStorage);
+          } catch (err) {
+            console.log("err ", err);
+            alert("localstorage quota exceeded");
+          }
         } else {
           console.log("found duplicate");
           duplicate = true;
         }
       } else {
-        $localStorage.collection = [];
+        // $localStorage.collection = [];
         $localStorage.remoteCollectionVersion = 0;
-
-        $localStorage.collection.push($scope.insect);
+        setLocalStorageItem("collection", JSON.stringify([$scope.insect]));
+        // window.localStorage.setItem(
+        //   "collection",
+        //   JSON.stringify([$scope.insect])
+        // );
+        console.log("localStorage:", window.localStorage);
+        // console.log(
+        //   JSON.parse(window.localStorage.getItem("collection")).push(
+        //     $scope.insect
+        //   )
+        // );
+        // window.localStorage.setItem(
+        //   "collection",
+        //   JSON.stringify(
+        //     JSON.parse(window.localStorage.getItem("collection")).push(
+        //       $scope.insect
+        //     )
+        //   )
+        // );
+        //$localStorage.collection.push($scope.insect);
         console.log("initialized localstorage");
-
-        await saveImagesToLocalStorage($scope, $localStorage);
+        try {
+          await $scope.saveImagesToLocalStorage($scope, $localStorage);
+        } catch (err) {
+          console.log("err ", err);
+          alert("Exceeded local storage quota, disabling local storage.");
+        }
       }
 
       // 2. save to the server
@@ -2390,6 +2441,15 @@ insectIdentifierControllers.controller("SearchCtrl", [
     // Update the main header
     resetHeader();
     highlightElement("search-header");
+    console.log(
+      "$localstorage estimated size: ",
+      JSON.stringify($localStorage).length
+    );
+
+    console.log(
+      "window.localstorage estimated size: ",
+      JSON.stringify(window.localStorage).length
+    );
     $scope.showFileuploadSuccessMessage = "";
     // resizing the container search
     $scope.resize = {};
@@ -2445,16 +2505,16 @@ insectIdentifierControllers.controller("SearchCtrl", [
         }
       }
 
-      const localInsects = getLocalInsectsMinified($localStorage);
-      //console.log("localInsects", localInsects);
+      let localInsects = getLocalInsectsMinified($localStorage);
+      console.log("localInsects", localInsects);
+
       let response = null;
-      if (localInsects) {
-        response = await $http({
-          url: "/collections/syncinfo",
-          params: { localInsects: localInsects },
-          method: "GET",
-        });
-      }
+
+      response = await $http({
+        url: "/collections/syncinfo",
+        params: { localInsects: localInsects },
+        method: "GET",
+      });
 
       if (response?.status === 200) {
         // determine local collection's changes
@@ -2462,16 +2522,18 @@ insectIdentifierControllers.controller("SearchCtrl", [
         const newRemoteInsects = response.data.newRemoteInsects;
         const updatedRemoteInsects = response.data.updatedRemoteInsects;
 
-        $localStorage.newLocalItemsNotSynced = newLocalInsectsIds.length;
-        $localStorage.newRemoteItemsNotSynced = newRemoteInsects.length;
+        $localStorage.newLocalItemsNotSynced = newLocalInsectsIds?.length;
+        $localStorage.newRemoteItemsNotSynced = newRemoteInsects?.length;
         $localStorage.updatedRemoteInsectsNotSynced =
-          updatedRemoteInsects.length;
+          updatedRemoteInsects?.length;
       } else {
         console.log('couldn"t determine local collection"s changes');
         $localStorage.newLocalItemsNotSynced = 0;
         $localStorage.newRemoteItemsNotSynced = 0;
         $localStorage.updatedRemoteInsectsNotSynced = 0;
       }
+
+      console.log("local storage.collection:", $localStorage.collection);
     }
 
     $scope.callb = function (el) {
@@ -2754,7 +2816,11 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     if ($localStorage.offline === undefined) {
       $localStorage.offline = false;
     }
-    $scope.checkbox = { offline: $localStorage.offline };
+    console.log("disableSyncImages:", $localStorage.disableSyncImages);
+    $scope.checkbox = {
+      offline: $localStorage.offline,
+      disableSyncImages: $localStorage.disableSyncImages,
+    };
     $scope.remotePolicy = "pull-remote";
     $scope.localPolicy = "push-local";
     $scope.newRemoteDisabled = true;
@@ -2763,7 +2829,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $scope.currentTotal = 0;
     $scope.temp = 0;
 
-    const itemsPerPage = 2;
+    const itemsPerPage = 10;
     const visiblePages = 5;
     let page = 0;
     if ($location?.search()?.page) {
@@ -2780,11 +2846,21 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     };
 
     $scope.localStorage = $localStorage;
-    $scope.tmp = "";
     $scope.location = $location;
 
     $scope.lang = $cookies.get("lang");
     $scope.initMessages();
+
+    $scope.windowLocalStorage = window.localStorage;
+
+    $scope.disableSyncImages = function () {
+      console.log("disablesyncImages:", $localStorage.disableSyncImages);
+      const toggleVal = !$localStorage.disableSyncImages;
+      console.log("toggleVal:", toggleVal);
+      setLocalStorageItem($localStorage, "disableSyncImages", toggleVal);
+      $localStorage.disableSyncImages = toggleVal;
+      $scope.checkbox.disableSyncImages = $localStorage.disableSyncImages;
+    };
 
     $scope.viewOffline = function () {
       console.log("connected : " + !$scope.checkbox.offline);
@@ -3096,19 +3172,19 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
     $scope.removeItemsFromLocal = function (localIds) {
       console.log("remove items from local");
-      var insectsByCategory = $localStorage.collection;
-      var insectsByCategoryTmp = JSON.parse(JSON.stringify(insectsByCategory));
+      var collection = $localStorage.collection;
+      var collectionTmp = JSON.parse(JSON.stringify(collection));
 
       // 1. remove from insectsByCategory
       localIds.forEach(function (localId) {
         console.log("id: ", localId);
-        insectsByCategoryTmp = insectsByCategoryTmp.filter(
+        collectionTmp = collectionTmp.filter(
           (insect) => insect._id !== localId
         );
       });
 
       // update the collection
-      $localStorage.collection = insectsByCategoryTmp;
+      $localStorage.collection = collectionTmp;
 
       // 2 images
       // remove the insect's images
@@ -3122,7 +3198,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         });
       });
 
-      $localStorage.collection = insectsByCategoryTmp;
+      $localStorage.collection = collectionTmp;
       console.log("collection after", $localStorage.collection);
 
       if ($localStorage.newLocalItemsNotSynced > 0) {
@@ -3169,22 +3245,39 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
     $scope.pullNewItemsFromRemote = function (newRemoteInsects) {
       console.log("pull new items from remote");
-      var insectsByCategory = $localStorage.collection;
+      var collection = $localStorage.collection;
       newRemoteInsects.forEach(function (newRemoteInsect) {
         console.log("iterating over data");
-        const localInd = insectsByCategory.findIndex((insect) => {
-          if (insect._id === newRemoteInsect._id) return true;
-        });
+        let localInd = -1;
+        if (collection) {
+          localInd = collection.findIndex((insect) => {
+            if (insect._id === newRemoteInsect._id) return true;
+          });
+        }
         if (localInd === -1) {
           console.log(
             "adding to local collection item from remote collection with insect id: ",
             newRemoteInsect._id
           );
-          insectsByCategory.push(newRemoteInsect);
+          console.log("localstorage.collection:", collection);
+          if ($localStorage.collection?.length > 0) {
+            console.log("setting new item");
+            pushToLocalStorage($localStorage, "collection", newRemoteInsect);
+          } else {
+            console.log("setting first item");
+            console.log("newRemoteInsect:", JSON.stringify(newRemoteInsect));
+            setLocalStorageItem(
+              $localStorage,
+              "collection",
+              JSON.stringify([newRemoteInsect])
+            );
+          }
+
+          //insectsByCategory.push(newRemoteInsect);
           // add the image of the item to the local collection
           $scope.insect = newRemoteInsect;
 
-          $scope.saveImagesToLocalStorage($scope, $localStorage);
+          //$scope.saveImagesToLocalStorage($scope, $localStorage);
           $localStorage.remoteCollectionVersion += newRemoteInsects.length;
           if ($localStorage.newRemoteItemsNotSynced > 0) {
             $localStorage.newRemoteItemsNotSynced -= newRemoteInsects.length;
@@ -3192,6 +3285,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         } else {
           console.log("found a duplicate remote item in local collection");
         }
+
+        // TODO sort collection
       });
     };
 
@@ -3231,7 +3326,17 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     };
 
     $scope.saveImagesToLocalStorage = async function ($scope, $localStorage) {
-      const res = await saveImagesToLocalStorage($scope, $localStorage);
+      try {
+        const disableImageStorage = $localStorage.disableSyncImages;
+        if (disableImageStorage) {
+          console.log("skipping local image storage.");
+          return;
+        }
+        const res = await saveImagesToLocalStorage($scope, $localStorage);
+      } catch (err) {
+        console.log("err: ", err);
+        alert("localstorage quota exceeded, disabling local storage.");
+      }
     };
 
     $scope.findLocalInsects = function (remoteIds) {
@@ -3306,6 +3411,20 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       }
       console.log("skipping collection synchronization");
 
+      $scope.collectionEmpty = collection.length === 0;
+      $scope.firstPaginationLoad = true;
+      constructCollectionByCategory(
+        $localStorage,
+        $cookies,
+        $scope,
+        page,
+        itemsPerPage,
+        visiblePages
+      );
+
+      console.log("checking hide pagination");
+      if ($scope.hidePagination) $scope.$apply();
+
       return;
     }
     toggleLoadingSpinner($scope);
@@ -3350,7 +3469,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     if (collectionsOutdated) {
       console.log("collectionsOutdated");
       const localInsects = getLocalInsectsMinified($localStorage);
-      console.log("localInsect:", localInsects);
+      console.log("localInsects:", localInsects);
       const syncResponse = await $http({
         url: "/collections/syncinfo",
         params: { localInsects: localInsects },

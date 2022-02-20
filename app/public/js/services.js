@@ -176,7 +176,7 @@ insectIdentifierApp.factory("SearchService", [
               const totalCount = response.totalCount;
 
               console.log("receiving search results.");
-              console.log("$scope:", $scope, "$localStorage:", $localStorage);
+              console.log("$scope:", $scope);
 
               $scope.mainImageUrl = null;
 
@@ -186,10 +186,10 @@ insectIdentifierApp.factory("SearchService", [
               }
 
               console.log(
-                "search results:" + data + " with length: " + data.length
+                "search results:" + data + " with length: " + data?.length
               );
               //console.log(JSON.stringify(data));
-              if (data.length == 0) {
+              if (data === undefined || data.length == 0) {
                 $scope.searchResults = "noResults";
                 $scope.insect = null;
               } else {

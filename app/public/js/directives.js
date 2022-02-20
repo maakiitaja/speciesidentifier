@@ -368,6 +368,7 @@ myApp.directive("header", function () {
           $scope.resetHeader();
           $scope.highlightElement("collection-button");
 
+          $location.url($location.path());
           $scope.location.path("collection");
         };
         $scope.search = function () {
@@ -375,7 +376,7 @@ myApp.directive("header", function () {
 
           $scope.resetHeader();
           $scope.highlightElement("search-header");
-
+          $location.url($location.path());
           $scope.location.path("search");
         };
         $scope.upload = function () {

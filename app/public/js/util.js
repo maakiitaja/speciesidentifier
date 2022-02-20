@@ -187,6 +187,8 @@ getLocalInsectsMinified = function ($localStorage) {
     collection = JSON.stringify(collection);
 
     encodedCollection = btoa(collection);
+  } else {
+    encodedCollection = btoa("[]");
   }
 
   return encodedCollection;
@@ -231,10 +233,22 @@ constructCollectionByCategory = async function (
   }
   console.log("page: ", page);
 
+  // window.localStorage.setItem(
+  //   "collection",
+  //   JSON.stringify(
+  //     JSON.parse(window.localStorage.getItem("collection")).sort(function (
+  //       a,
+  //       b
+  //     ) {
+  //       return a.category < b.category ? -1 : 1;
+  //     })
+  //   )
+  // );
   // sort collection by category
-  $localStorage.collection = $localStorage.collection.sort(function (a, b) {
-    return a.category < b.category ? -1 : 1;
-  });
+  // let src = { collection: $localStorage.collection };
+  // src = src.collection.sort(function (a, b) {
+  //   return a.category < b.category ? -1 : 1;
+  // });
 
   // take a slice of the collection
   const displayedItems = $localStorage.collection.slice(
@@ -242,7 +256,7 @@ constructCollectionByCategory = async function (
     page * itemsPerPage + itemsPerPage
   );
 
-  console.log("displayed items:", displayedItems);
+  console.log("displayed items length:", displayedItems.length);
 
   // construct final displayed items by category
   if (displayedItems?.length > 0) {
@@ -329,6 +343,118 @@ function setPagedInsects(insects, $scope) {
   }
 }
 
+removeValueFromLocalStorage = function ($localStorage, key) {
+  window.localStorage.removeItem(key);
+  $localStorage[key] = undefined;
+};
+
+removeInsectFromLocalStorage = function ($localStorage, key, insect) {
+  try {
+    var collection = window.localStorage.getItem(key);
+    // console.log("localStorage.key:", item);
+
+    // console.log("parse localStorage.key:", JSON.parse(item));
+    let newArray = JSON.parse(collection);
+    console.log("newArray:", newArray);
+    const ind = newArray.findIndex((el) => {
+      if (el._id === insect._id) return true;
+    });
+    if (ind !== -1) {
+      newArray.splice(ind, 1);
+      console.log("newArray: ", newArray);
+    } else {
+      alert('Local collection removal error: couldn"t find insect');
+      return;
+    }
+
+    window.localStorage.setItem(key, JSON.stringify(newArray));
+    //console.log("localStorage", localStorage);
+
+    $localStorage[key] = JSON.parse(window.localStorage.getItem(key));
+  } catch (err) {
+    console.log("err: ", err);
+  }
+};
+
+pushToLocalStorage = function ($localStorage, key, value) {
+  try {
+    var item = window.localStorage.getItem(key);
+    // console.log("localStorage.key:", item);
+
+    // console.log("parse localStorage.key:", JSON.parse(item));
+    let newArray = [];
+    if (Array.isArray(JSON.parse(item))) {
+      console.log("item is array");
+      //console.log(...JSON.parse(item));
+      newArray.push(...JSON.parse(item));
+      newArray.push(value);
+    } else newArray = JSON.parse(value);
+
+    // console.log("after pushing:", newArray);
+    // console.log("stringifying result:", JSON.stringify(newArray));
+
+    window.localStorage.setItem(key, JSON.stringify(newArray));
+    //console.log("localStorage", localStorage);
+
+    $localStorage[key] = JSON.parse(window.localStorage.getItem(key));
+    //console.log("$localStorage", $localStorage);
+  } catch (e) {
+    if (isQuotaExceeded(e)) {
+      console.log("local storage quota exceeded. e:", e);
+      window.localStorage.setItem("disableSyncImages", true);
+      $localStorage["disableSyncImages"] = true;
+      alert("Exceeded local storage quota, disabling local storage");
+      return false;
+    }
+  }
+  return true;
+};
+
+setLocalStorageItem = function ($localStorage, key, value, kind) {
+  try {
+    const localStorage = window.localStorage;
+
+    localStorage.setItem(key, value);
+    if (kind === "image") {
+      console.log("NOT storing to $localstorage");
+    } else {
+      console.log("storing to $localstorage");
+      $localStorage[key] = localStorage.getItem(key);
+    }
+  } catch (e) {
+    if (isQuotaExceeded(e)) {
+      console.log("local storage quota exceeded. e:", e);
+      window.localStorage.setItem("disableSyncImages", true);
+      $localStorage["disableSyncImages"] = true;
+      return false;
+    }
+  }
+  return true;
+};
+
+function isQuotaExceeded(e) {
+  var quotaExceeded = false;
+  if (e) {
+    if (e.code) {
+      switch (e.code) {
+        case 22:
+          quotaExceeded = true;
+          break;
+        case 1014:
+          // Firefox
+          if (e.name === "NS_ERROR_DOM_QUOTA_REACHED") {
+            quotaExceeded = true;
+          }
+          break;
+      }
+    } else if (e.number === -2147024882) {
+      // Internet Explorer 8
+      quotaExceeded = true;
+    }
+  }
+  return quotaExceeded;
+}
+
 constructUploadListByCategory = function (remoteItems, $cookies) {
   console.log("construct upload list by category");
 
@@ -358,6 +484,7 @@ insectsByCategoryByLang = function ($cookies) {
 
 setDelay = function (el, ms, $scope) {
   console.log("in set delay, el:", el);
+
   const timeoutF = function (elName, $scope) {
     console.log("setdelay: calling callb, elName:", elName);
     $scope.callb(elName);
@@ -518,15 +645,17 @@ function getBase64FromImage(id, name, $localStorage, $scope) {
 
           var dataURL = canvas.toDataURL("image/png");
 
-          //alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
-
-          // set to localstorage
-          //name = name.replace(/^ ', "");
-
           console.log("saving image with name: " + name + " to localstorage");
           // TODO catch max size reached
-          $localStorage[name] = dataURL;
-          resolve({ msg: true });
+          const success = setLocalStorageItem(
+            $localStorage,
+            name,
+            dataURL,
+            "image"
+          );
+          //$localStorage[name] = dataURL;
+          if (success) resolve({ msg: true });
+          else reject({ msg: false });
         };
       } catch (e) {
         console.log("image elememnt not found for id: ", id);
@@ -631,7 +760,7 @@ function saveImagesToLocalStorage($scope, $localStorage) {
         ).then(function (result) {
           console.log(
             "promise returnining after getBase64Fromimage, result.msg",
-            result.msg
+            result?.msg
           );
           //return result;
           if (result !== undefined && result.msg) {
@@ -656,7 +785,7 @@ function saveImagesToLocalStorage($scope, $localStorage) {
         ).then(function (result) {
           console.log(
             "promise returnining after getBase64Fromimage, result.msg",
-            result.msg
+            result?.msg
           );
           //return result;
           if (result !== undefined && result.msg) {
@@ -703,15 +832,6 @@ function saveImagesToLocalStorage($scope, $localStorage) {
       });
   });
 }
-
-// function userAuthenticated($scope) {
-//   console.log($scope.currentUser);
-//   if ($scope.currentUser === '""') {
-//     console.log("initializing currentuser");
-//     $scope.currentUser = {};
-//   }
-//   return !angular.equals({}, $scope.currentUser);
-// }
 
 responsiveSearch = function ($scope, itemsPerPage, totalCount) {
   // resize style classes

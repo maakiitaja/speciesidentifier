@@ -1410,7 +1410,8 @@ input.accordion {
   display: none;
 }
 input[type="checkbox"] + label:hover,
-label.main .offline-label:hover {
+label.main .offline-label:hover,
+label.main .disablesyncimages-label:hover {
   background-color: #89baad;
 }
 
@@ -1427,6 +1428,7 @@ input[type="checkbox"]:checked + label:hover {
 }
 
 input + label.offline:hover,
+input + label.disable-local-images:hover,
 label.main {
   color: #333;
 }
@@ -1575,7 +1577,8 @@ hr.updated-insect {
 }
 
 /* Hide the default checkbox */
-input[type="checkbox"].offline {
+input[type="checkbox"].offline,
+input[type="checkbox"].disable-local-images {
   visibility: hidden;
 }
 
@@ -1641,7 +1644,8 @@ input[type="checkbox"].offline {
   position: relative;
 }
 
-.offline-label {
+.offline-label,
+.disablesyncimages-label {
   position: absolute;
   left: 38px;
   top: -2px;

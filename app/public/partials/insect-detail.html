@@ -26,8 +26,8 @@
 				<div>
 					<img ng-if="connected==1" ng-src="{{img}}" id="{{img}}" ng-repeat="img in insect.images"
 						ng-class="{active: mainImageUrl==img}" class="insect-detail" />
-					<img ng-if="connected==0" ng-src="{{localStorage[img]}}" ng-repeat="img in insect.images"
-						ng-class="{active: mainImageUrl==img}" class="insect-detail" />
+					<img ng-if="connected==0" ng-src="{{windowLocalStorage.getItem(img)}}"
+						ng-repeat="img in insect.images" ng-class="{active: mainImageUrl==img}" class="insect-detail" />
 				</div>
 
 			</td>
@@ -56,8 +56,8 @@
 			<li ng-repeat="img in insect.images">
 				<img ng-if="connected==1" ng-src="{{img+'_thumb.jpg'}}" id="{{img+'_thumb.jpg'}}"
 					ng-click="setImage(img)" alt={{insect.latinName}} />
-				<img ng-if="connected==0" ng-src="{{localStorage[img+'_thumb.jpg']}}" id="{{img+'_thumb.jpg'}}"
-					ng-click="setImage(img)" alt={{insect.latinName}} />
+				<img ng-if="connected==0" ng-src="{{windowLocalStorage.getItem(img+'_thumb.jpg')}}"
+					id="{{img+'_thumb.jpg'}}" ng-click="setImage(img)" alt={{insect.latinName}} />
 			</li>
 		</ul>
 
