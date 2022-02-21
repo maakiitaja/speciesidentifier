@@ -214,7 +214,7 @@ const insectsByCategoryFi = {
   General: [],
 };
 
-constructCollectionByCategory = async function (
+constructCollectionByCategory = function (
   $localStorage,
   $cookies,
   $scope,
@@ -232,83 +232,86 @@ constructCollectionByCategory = async function (
     visiblePages = totalPages;
   }
   console.log("page: ", page);
+  $scope.$watch("translations", async function () {
+    console.log("scope watch translations");
 
-  // window.localStorage.setItem(
-  //   "collection",
-  //   JSON.stringify(
-  //     JSON.parse(window.localStorage.getItem("collection")).sort(function (
-  //       a,
-  //       b
-  //     ) {
-  //       return a.category < b.category ? -1 : 1;
-  //     })
-  //   )
-  // );
-  // sort collection by category
-  // let src = { collection: $localStorage.collection };
-  // src = src.collection.sort(function (a, b) {
-  //   return a.category < b.category ? -1 : 1;
-  // });
+    Array.prototype.alphaSort = function (translations) {
+      function compare(a, b) {
+        if (translations[a.category] < translations[b.category]) return -1;
+        if (translations[a.category] > translations[b.category]) return 1;
+        return 0;
+      }
+      console.log("in alphasort");
+      console.log("translations", translations);
+      this.sort(compare);
+    };
+    // sort collection by category
+    const copy = JSON.parse(JSON.stringify($localStorage.collection));
+    console.log("copy: ", copy);
+    copy.alphaSort($scope.translations);
+    console.log("copy: ", copy);
+    $localStorage.collection = copy;
 
-  // take a slice of the collection
-  const displayedItems = $localStorage.collection.slice(
-    page * itemsPerPage,
-    page * itemsPerPage + itemsPerPage
-  );
+    // take a slice of the collection
+    const displayedItems = $localStorage.collection.slice(
+      page * itemsPerPage,
+      page * itemsPerPage + itemsPerPage
+    );
 
-  console.log("displayed items length:", displayedItems.length);
+    console.log("displayed items length:", displayedItems.length);
 
-  // construct final displayed items by category
-  if (displayedItems?.length > 0) {
-    displayedItems.forEach(function (item) {
-      const category = item.category;
-      dst[category].push(item);
-    });
-  }
-
-  // assign dst
-  console.log("dst:", dst);
-  $localStorage.collectionByCategory = dst;
-
-  // pagination
-  if (totalCount > itemsPerPage) {
-    $scope.hidePagination = false;
-    //if (!$scope.firstPaginationLoad) return;
-    await wait(0.2);
-    $scope.$apply();
-
-    window.pagObj = $("#pagination")
-      .twbsPagination({
-        totalPages: totalPages,
-        visiblePages: visiblePages,
-        startPage: page + 1,
-        onPageClick: async function (event, page) {
-          console.log("on page click:", page, " event: ", event);
-          $scope.collectionPage = page - 1;
-          if (!$scope.firstPaginationLoad) {
-            console.log("reconstructing collection by category");
-            constructCollectionByCategory(
-              $localStorage,
-              $cookies,
-              $scope,
-              page - 1,
-              itemsPerPage,
-              visiblePages
-            );
-            await wait(0.2);
-            $scope.$apply();
-          } else {
-            console.log("changing first pagination load to false");
-            $scope.firstPaginationLoad = false;
-          }
-        },
-      })
-      .on("page", function (event, page) {
-        console.info(page + " (from event listening)");
+    // construct final displayed items by category
+    if (displayedItems?.length > 0) {
+      displayedItems.forEach(function (item) {
+        const category = item.category;
+        dst[category].push(item);
       });
-  } else {
-    $scope.hidePagination = true;
-  }
+    }
+
+    // assign dst
+    console.log("dst:", dst);
+    $localStorage.collectionByCategory = dst;
+
+    // pagination
+    if (totalCount > itemsPerPage) {
+      $scope.hidePagination = false;
+      //if (!$scope.firstPaginationLoad) return;
+      await wait(0.2);
+      $scope.$apply();
+
+      window.pagObj = $("#pagination")
+        .twbsPagination({
+          totalPages: totalPages,
+          visiblePages: visiblePages,
+          startPage: page + 1,
+          onPageClick: async function (event, page) {
+            console.log("on page click:", page, " event: ", event);
+            $scope.collectionPage = page - 1;
+            if (!$scope.firstPaginationLoad) {
+              console.log("reconstructing collection by category");
+              constructCollectionByCategory(
+                $localStorage,
+                $cookies,
+                $scope,
+                page - 1,
+                itemsPerPage,
+                visiblePages
+              );
+              await wait(0.2);
+              $scope.$apply();
+            } else {
+              console.log("changing first pagination load to false");
+              $scope.firstPaginationLoad = false;
+            }
+          },
+        })
+        .on("page", function (event, page) {
+          console.info(page + " (from event listening)");
+        });
+    } else {
+      $scope.hidePagination = true;
+    }
+  });
 };
 
 function setPagedInsects(insects, $scope) {
@@ -388,11 +391,17 @@ pushToLocalStorage = function ($localStorage, key, value) {
       //console.log(...JSON.parse(item));
       newArray.push(...JSON.parse(item));
       newArray.push(value);
-    } else newArray = JSON.parse(value);
+    } else {
+      console.log("item not array");
+      console.log("value:", value);
+
+      newArray.push(value);
+      console.log("newArray:", newArray);
+    }
 
     // console.log("after pushing:", newArray);
     // console.log("stringifying result:", JSON.stringify(newArray));
-
+    console.log("saving to localstorage");
     window.localStorage.setItem(key, JSON.stringify(newArray));
     //console.log("localStorage", localStorage);
 
@@ -401,7 +410,7 @@ pushToLocalStorage = function ($localStorage, key, value) {
   } catch (e) {
     if (isQuotaExceeded(e)) {
       console.log("local storage quota exceeded. e:", e);
-      window.localStorage.setItem("disableSyncImages", true);
+      //window.localStorage.setItem("disableSyncImages", true);
       $localStorage["disableSyncImages"] = true;
       alert("Exceeded local storage quota, disabling local storage");
       return false;
@@ -424,7 +433,7 @@ setLocalStorageItem = function ($localStorage, key, value, kind) {
   } catch (e) {
     if (isQuotaExceeded(e)) {
       console.log("local storage quota exceeded. e:", e);
-      window.localStorage.setItem("disableSyncImages", true);
+      //window.localStorage.setItem("disableSyncImages", true);
       $localStorage["disableSyncImages"] = true;
       return false;
     }
@@ -653,7 +662,7 @@ function getBase64FromImage(id, name, $localStorage, $scope) {
             dataURL,
             "image"
           );
-          //$localStorage[name] = dataURL;
+
           if (success) resolve({ msg: true });
           else reject({ msg: false });
         };
@@ -893,13 +902,13 @@ sortCategories = function ($scope) {
 
     categoryArr.push(
       ["", ""],
-      [translations.ANT, "Ant"],
-      [translations.BEETLE, "Beetle"],
-      [translations.BEE, "Bee"],
-      [translations.BUTTERFLY, "Butterfly"],
-      [translations.SPIDER, "Spider"],
-      [translations.CENTIPEDE, "Centipede"],
-      [translations.GENERAL, "General"]
+      [translations.Ant, "Ant"],
+      [translations.Beetle, "Beetle"],
+      [translations.Bee, "Bee"],
+      [translations.Butterfly, "Butterfly"],
+      [translations.Spider, "Spider"],
+      [translations.Centipede, "Centipede"],
+      [translations.General, "General"]
     );
     $scope.categories = categoryArr.sort();
   });

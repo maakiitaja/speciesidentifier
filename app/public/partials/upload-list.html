@@ -7,7 +7,7 @@
 
 <div ng-repeat="insects in uploadList" class="centered">
 	<div ng-if="insects.length > 0">
-		<h3>{{translations[insects[0].category.toUpperCase()]}}:</h3>
+		<h3>{{translations[insects[0].category]}}:</h3>
 
 		<ul class="insect-thumbs">
 			<li ng-repeat="insect in insects">

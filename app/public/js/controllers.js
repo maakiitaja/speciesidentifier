@@ -1954,26 +1954,8 @@ insectIdentifierControllers.controller("InsectDetailCtrl", [
       } else {
         // $localStorage.collection = [];
         $localStorage.remoteCollectionVersion = 0;
-        setLocalStorageItem("collection", JSON.stringify([$scope.insect]));
-        // window.localStorage.setItem(
-        //   "collection",
-        //   JSON.stringify([$scope.insect])
-        // );
-        console.log("localStorage:", window.localStorage);
-        // console.log(
-        //   JSON.parse(window.localStorage.getItem("collection")).push(
-        //     $scope.insect
-        //   )
-        // );
-        // window.localStorage.setItem(
-        //   "collection",
-        //   JSON.stringify(
-        //     JSON.parse(window.localStorage.getItem("collection")).push(
-        //       $scope.insect
-        //     )
-        //   )
-        // );
-        //$localStorage.collection.push($scope.insect);
+        pushToLocalStorage($localStorage, "collection", $scope.insect);
+
         console.log("initialized localstorage");
         try {
           await $scope.saveImagesToLocalStorage($scope, $localStorage);
@@ -2799,6 +2781,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
   "$localStorage",
   "$cookies",
   "ModalService",
+
   async function (
     $scope,
     Search,
@@ -3394,7 +3377,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $scope,
         page,
         itemsPerPage,
-        visiblePages
+        visiblePages,
+        $scope.translations
       );
       return;
     } else {
@@ -3419,7 +3403,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $scope,
         page,
         itemsPerPage,
-        visiblePages
+        visiblePages,
+        $scope.translations
       );
 
       console.log("checking hide pagination");
@@ -3601,7 +3586,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       $scope,
       page,
       itemsPerPage,
-      visiblePages
+      visiblePages,
+      $scope.translations
     );
     toggleLoadingSpinner($scope);
     console.log("checking hide pagination");
@@ -3623,7 +3609,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $scope,
         page,
         itemsPerPage,
-        visiblePages
+        visiblePages,
+        $scope.translations
       );
       $scope.hideUpdateButton = true;
 
@@ -3653,7 +3640,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           $scope,
           page,
           itemsPerPage,
-          visiblePages
+          visiblePages,
+          $scope.translations
         );
       } else {
         console.log("check selection value");
@@ -3682,7 +3670,8 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           $scope,
           page,
           itemsPerPage,
-          visiblePages
+          visiblePages,
+          $scope.translations
         );
       } else if (localPolicy === "push-local") {
         console.log("pushing new local items");
