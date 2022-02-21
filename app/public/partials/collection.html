@@ -85,11 +85,11 @@
 		<div class="sync-container">
 
 			<!--new remote items -->
-			<div ng-if="newRemoteInsects.length > 0">
+			<div ng-if="newRemoteInsectsShown.length > 0">
 				<h3 style="text-align: center">New remote items:</h3>
 
 				<div class="flex-table flex-table-column-gap-md">
-					<div class="new-remote-insect" ng-repeat="newRemoteInsect in newRemoteInsects">
+					<div class="new-remote-insect" ng-repeat="newRemoteInsect in newRemoteInsectsShown">
 						<div class="thumb-card no-margin-right">
 							<div class="margin-top-md" ng-repeat="translation in newRemoteInsect.translations">
 								<p class="name-translation" ng-if="translation.language==lang">
@@ -110,9 +110,8 @@
 
 					<form ng-submit="remoteSync(remotePolicy)">
 						<div class="container-new-remote-inputs">
-							<button type="button" class="button button-blue"
-								ng-class="{hideDisplayMoreRemoteButton: hideDisplayMoreRemoteButton}"
-								ng-click="displayMoreRemote()">{{translations.DISPLAYMORE}}
+							<button type="button" ng-if="newRemoteInsectsShown.length < newRemoteInsects.length"
+								class="button button-green" ng-click="displayMoreRemote()">{{translations.DISPLAYMORE}}
 							</button>
 
 							<div class="form__radio-group">
@@ -150,11 +149,11 @@
 
 
 			<!--new local items -->
-			<div ng-if="newLocalInsects.length > 0">
+			<div ng-if="newLocalInsectsShown.length > 0">
 				<h3 style="text-align: center">New local items:</h3>
 
 				<div class="flex-table flex-table-column-gap-md">
-					<div class="new-local-insect" ng-repeat="newLocalInsect in newLocalInsects">
+					<div class="new-local-insect" ng-repeat="newLocalInsect in newLocalInsectsShown">
 						<div class="thumb-card no-margin-right">
 							<div class="margin-top-md" ng-repeat="translation in newLocalInsect.translations">
 								<p class="name-translation" ng-if="translation.language==lang">
@@ -174,6 +173,10 @@
 				<div class="margin-top-lg">
 					<form ng-submit="localSync(localPolicy)">
 						<div class="container-new-local-inputs">
+
+							<button type="button" ng-if="newLocalInsectsShown.length < newLocalInsects.length"
+								class="button button-green" ng-click="displayMoreLocal()">{{translations.DISPLAYMORE}}
+							</button>
 
 							<div class="form__radio-group">
 								<input type="radio" class="form__radio-input" id="delete-local" name="localpolicygroup"
@@ -211,7 +214,7 @@
 			<div class="updated-container" ng-if="conflictObj.length > 0">
 				<h3>Updated Insects: </h3>
 
-				<div class="conflict-insects-container" ng-repeat="conflictItem in conflictObj">
+				<div class="conflict-insects-container" ng-repeat="conflictItem in conflictObjShown">
 
 					<div class="flex-table flex-table-column-gap-md">
 
@@ -315,6 +318,10 @@
 						</div>
 					</div>
 				</div>
+
+				<button type="button" ng-if="conflictObjShown.length < conflictObj.length" class="button button-green"
+					ng-click="displayMoreUpdate()">{{translations.DISPLAYMORE}}
+				</button>
 
 				<div>
 					<button class="button button-green margin-top-lg" ng-class="{hideUpdateButton: hideUpdateButton}"

@@ -214,13 +214,14 @@ const insectsByCategoryFi = {
   General: [],
 };
 
-constructCollectionByCategory = function (
+constructCollectionByCategory = async function (
   $localStorage,
   $cookies,
   $scope,
   page,
   itemsPerPage,
-  visiblePages
+  visiblePages,
+  initialSyncDone
 ) {
   console.log("construct local collection by category");
 
@@ -232,7 +233,8 @@ constructCollectionByCategory = function (
     visiblePages = totalPages;
   }
   console.log("page: ", page);
-  $scope.$watch("translations", async function () {
+
+  $scope.$watch("translations", async function (val) {
     console.log("scope watch translations");
 
     Array.prototype.alphaSort = function (translations) {
@@ -275,7 +277,7 @@ constructCollectionByCategory = function (
     // pagination
     if (totalCount > itemsPerPage) {
       $scope.hidePagination = false;
-      //if (!$scope.firstPaginationLoad) return;
+
       await wait(0.2);
       $scope.$apply();
 
@@ -312,6 +314,9 @@ constructCollectionByCategory = function (
       $scope.hidePagination = true;
     }
   });
+  if (initialSyncDone) {
+    $scope.$apply();
+  }
 };
 
 function setPagedInsects(insects, $scope) {
