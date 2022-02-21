@@ -147,7 +147,8 @@
 }
 
 /* alert box */
-.container-alert {
+.container-alert,
+.container-uploadlist-search {
   margin: auto 20px;
 }
 
@@ -661,6 +662,7 @@ tbody.observation-table-body tr:nth-child(even) {
 .table-observation {
   margin: 0 auto;
 }
+
 .container-search {
   row-gap: 10px;
   column-gap: 50px;
@@ -1811,6 +1813,13 @@ input[type="radio"] + label span.radio-content:hover {
 
 .dropbtn-select img {
   height: 24px;
+}
+
+.input-search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .input-container {

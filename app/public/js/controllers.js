@@ -1201,6 +1201,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     const itemsPerPage = 10;
     const visiblePages = 10;
     let page = 0;
+    sortCategories($scope);
     if ($location?.search()?.page) {
       console.log("page: ", $location.search().page);
       page = +$location.search().page;
@@ -1224,13 +1225,40 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       $scope.$apply();
     };
 
-    $scope.getUploadList = async function (page, itemsPerPage, visiblePages) {
+    $scope.categoryChange = async function () {
+      console.log("category change with category:", $scope.categoryModel);
+      const { totalPages, visPages, totalCount } = await $scope.getUploadList(
+        0,
+        itemsPerPage,
+        visiblePages,
+        $scope.categoryModel
+      );
+      $scope.firstPaginationLoad = true;
+      $scope.$apply();
+      $scope.setPagination(
+        totalPages,
+        visPages,
+        totalCount,
+        itemsPerPage,
+        $scope.categoryModel
+      );
+    };
+
+    $scope.getUploadList = async function (
+      page,
+      itemsPerPage,
+      visiblePages,
+      category,
+      name
+    ) {
       const response = await $http({
         url: "/insects/upload-list",
         method: "GET",
         params: {
           page: page,
           itemsPerPage: itemsPerPage,
+          category: category,
+          name: name,
         },
       });
       console.log("response:", response);
@@ -1272,6 +1300,52 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       };
     };
 
+    const { totalPages, visPages, totalCount } = await $scope.getUploadList(
+      page,
+      itemsPerPage,
+      visiblePages
+    );
+    $scope.firstPaginationLoad = true;
+    // apply needs to be here in order for pagination to show
+    $scope.$apply();
+
+    $scope.setPagination = function (
+      totalPages,
+      visPages,
+      totalCount,
+      itemsPerPage,
+      category
+    ) {
+      console.log("totalPages: " + totalPages, "visiblePages:", visPages);
+
+      if (totalCount > itemsPerPage) {
+        console.log("setting pagination");
+        window.pagObj = $("#pagination")
+          .twbsPagination({
+            totalPages: totalPages,
+            visiblePages: visPages,
+            startPage: page + 1,
+            onPageClick: async function (event, page) {
+              console.log("on page click:", page, " event: ", event);
+              if (!$scope.firstPaginationLoad) {
+                await $scope.getUploadList(
+                  page - 1,
+                  itemsPerPage,
+                  visPages,
+                  category
+                );
+                $scope.$apply();
+              } else {
+                $scope.firstPaginationLoad = false;
+              }
+            },
+          })
+          .on("page", function (event, page) {
+            console.info(page + " (from event listening)");
+          });
+      }
+    };
+
     $scope.upload = function (insect) {
       if (insect === undefined) {
         $scope.location.path("insect/upload");
@@ -1285,36 +1359,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       }
     };
 
-    const { totalPages, visPages, totalCount } = await $scope.getUploadList(
-      page,
-      itemsPerPage,
-      visiblePages
-    );
-    $scope.firstPaginationLoad = true;
-    // apply needs to be here in order for pagination to show
-    $scope.$apply();
-
-    console.log("totalPages: " + totalPages, "visiblePages:", visPages);
-    if (totalCount > itemsPerPage) {
-      window.pagObj = $("#pagination")
-        .twbsPagination({
-          totalPages: totalPages,
-          visiblePages: visPages,
-          startPage: page + 1,
-          onPageClick: async function (event, page) {
-            console.log("on page click:", page, " event: ", event);
-            if (!$scope.firstPaginationLoad) {
-              await $scope.getUploadList(page - 1, itemsPerPage, visPages);
-              $scope.$apply();
-            } else {
-              $scope.firstPaginationLoad = false;
-            }
-          },
-        })
-        .on("page", function (event, page) {
-          console.info(page + " (from event listening)");
-        });
-    }
+    $scope.setPagination(totalPages, visPages, totalCount, itemsPerPage);
   },
 ]);
 

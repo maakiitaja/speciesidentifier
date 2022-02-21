@@ -501,7 +501,7 @@ function isQuotaExceeded(e) {
 constructUploadListByCategory = function (remoteItems, $cookies) {
   console.log("construct upload list by category");
 
-  const dst = insectsByCategoryByLang($cookies);
+  const dst = insectsByCategoryByLang();
 
   remoteItems.forEach(function (item) {
     const category = item.category;

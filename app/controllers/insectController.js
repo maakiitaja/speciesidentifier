@@ -48,13 +48,28 @@ var upload = multer({
 ]);
 
 exports.uploadList = catchAsync(async (req, res, next) => {
-  console.log("userId: " + req.user.id);
-  const totalCount = await Insect.find({ userId: req.user.id }).count();
+  console.log("start of uploadList");
+
+  const createQuery = function (req) {
+    let query = Insect.find();
+    query.where("userId").equals(req.user.id);
+    if (req.query.category) {
+      console.log("narrowing by category: " + req.query.category);
+      query.where("category").equals(req.query.category);
+    }
+    if (req.query.name) {
+      console.log("narrowing by name: " + req.query.name);
+      query.where("translations.name").equals(req.query.name);
+    }
+    return query;
+  };
+
+  const totalCount = await createQuery(req).count();
   console.log("totalCount: " + totalCount);
   if (totalCount === 0) {
     return res.send({ data: undefined, totalCount: 0 });
   }
-  const insects = await Insect.find({ userId: req.user.id })
+  const insects = await createQuery(req)
     .sort("category")
     .skip(req.query.page * req.query.itemsPerPage)
     .limit(req.query.itemsPerPage);
