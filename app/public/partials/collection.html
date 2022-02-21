@@ -97,7 +97,7 @@
 								</p>
 							</div>
 							<p class="latinname-translation">
-								{{newRemoteInsect.latinName}}
+								<i>{{newRemoteInsect.latinName}}</i>
 							</p>
 
 							<img id="{{newRemoteInsect.images[0]+'_thumb.jpg'}}"
@@ -107,8 +107,13 @@
 
 				</div>
 				<div class="margin-top-lg">
+
 					<form ng-submit="remoteSync(remotePolicy)">
 						<div class="container-new-remote-inputs">
+							<button type="button" class="button button-blue"
+								ng-class="{hideDisplayMoreRemoteButton: hideDisplayMoreRemoteButton}"
+								ng-click="displayMoreRemote()">{{translations.DISPLAYMORE}}
+							</button>
 
 							<div class="form__radio-group">
 								<input type="radio" class="form__radio-input" id="delete-remote"
@@ -157,7 +162,7 @@
 								</p>
 							</div>
 							<p class="latinname-translation">
-								{{newLocalInsect.latinName}}
+								<i>{{newLocalInsect.latinName}}</i>
 							</p>
 
 							<img id="{{newLocalInsect.images[0]+'_thumb.jpg'}}"
@@ -222,7 +227,7 @@
 									</p>
 								</div>
 								<p class="latinname-translation">
-									{{conflictItem.outdatedInsect.latinName}}
+									<i>{{conflictItem.outdatedInsect.latinName}}</i>
 								</p>
 
 								<img id="{{conflictItem.outdatedInsect.images[0]+'_thumb.jpg'}}"
@@ -243,7 +248,7 @@
 									</p>
 								</div>
 								<p class="latinname-translation">
-									{{conflictItem.updatedInsect.latinName}}
+									<i>{{conflictItem.updatedInsect.latinName}}</i>
 								</p>
 
 								<img id="{{conflictItem.updatedInsect.images[0]+'_thumb.jpg'}}"

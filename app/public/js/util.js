@@ -412,11 +412,39 @@ pushToLocalStorage = function ($localStorage, key, value) {
       console.log("local storage quota exceeded. e:", e);
       //window.localStorage.setItem("disableSyncImages", true);
       $localStorage["disableSyncImages"] = true;
-      alert("Exceeded local storage quota, disabling local storage");
+      alert(
+        "Exceeded local storage quota, disabling local storage and freeing space."
+      );
+      freeLocalStorageSpace($localStorage, 1);
       return false;
     }
   }
   return true;
+};
+
+freeLocalStorageSpace = function ($localStorage, nroOfPictures) {
+  if (!nroOfPictures) nroOfPictures = 1;
+
+  console.log("start of freeLocalStorageSpace");
+  console.log(
+    "window.localstorage estimated size before freeing: ",
+    JSON.stringify(window.localStorage).length
+  );
+  for (let i = 0; i < nroOfPictures; i++) {
+    for (let j = 0; j < $localStorage.collection.length; j++) {
+      if ($localStorage.collection[j].images[0] !== undefined) {
+        const localImg = $localStorage.collection[j].images[0];
+        console.log("freeing up image from local collection: ", localImg);
+        window.localStorage[localImg] = undefined;
+        break;
+      }
+    }
+  }
+
+  console.log(
+    "window.localstorage estimated size after freeing space: ",
+    JSON.stringify(window.localStorage).length
+  );
 };
 
 setLocalStorageItem = function ($localStorage, key, value, kind) {
@@ -433,7 +461,8 @@ setLocalStorageItem = function ($localStorage, key, value, kind) {
   } catch (e) {
     if (isQuotaExceeded(e)) {
       console.log("local storage quota exceeded. e:", e);
-      //window.localStorage.setItem("disableSyncImages", true);
+      //freeLocalStorageSpace($localStorage, 1);
+
       $localStorage["disableSyncImages"] = true;
       return false;
     }
