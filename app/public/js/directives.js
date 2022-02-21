@@ -67,20 +67,6 @@ myApp.directive("customOnChange", function () {
   };
 });
 
-myApp.directive("insectNameOwn", function ($http, $q) {
-  return {
-    require: "ngModel",
-    link: function (scope, element, attrs, ngModel) {
-      ngModel.$asyncValidators.insectNameOwn = async function (
-        modelValue,
-        viewValue
-      ) {
-        console.log("viewvalue: ", viewValue);
-      };
-    },
-  };
-});
-
 myApp.directive("latinName", function ($http, $q) {
   return {
     require: "ngModel",

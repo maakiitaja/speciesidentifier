@@ -13,7 +13,8 @@
 		</svg>
 		<div>
 			<label for="name">{{translations.NAME}}:</label>
-			<input type="text" class="form-control-own" name="name" id="name" ng-model="name">
+			<input type="text" class="form-control-own" ng-change="insectnameChange()" ng-model="name" name="name"
+				id="name">
 
 		</div>
 		<div>

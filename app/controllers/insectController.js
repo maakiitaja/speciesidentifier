@@ -50,6 +50,13 @@ var upload = multer({
 exports.uploadList = catchAsync(async (req, res, next) => {
   console.log("start of uploadList");
 
+  // for case insensitive comparision
+  if (req.query.name) {
+    console.log("turning first letter into uppercase");
+    req.query.name =
+      req.query.name.charAt(0).toUpperCase() + req.query.name.slice(1);
+  }
+
   const createQuery = function (req) {
     let query = Insect.find();
     query.where("userId").equals(req.user.id);

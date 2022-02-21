@@ -1201,6 +1201,9 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     const itemsPerPage = 10;
     const visiblePages = 10;
     let page = 0;
+    const bounceTime = 500;
+
+    let debounceTimer = undefined;
     sortCategories($scope);
     if ($location?.search()?.page) {
       console.log("page: ", $location.search().page);
@@ -1225,13 +1228,33 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       $scope.$apply();
     };
 
+    $scope.insectnameChange = function () {
+      console.log("namechange");
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(
+        async function ($scope, $http) {
+          console.log("bouncef end.");
+          $scope.updateUploadView();
+        },
+        bounceTime,
+        $scope,
+        $http
+      );
+    };
+
     $scope.categoryChange = async function () {
       console.log("category change with category:", $scope.categoryModel);
+      $scope.updateUploadView();
+    };
+
+    $scope.updateUploadView = async function (initialSearch) {
       const { totalPages, visPages, totalCount } = await $scope.getUploadList(
         0,
         itemsPerPage,
         visiblePages,
-        $scope.categoryModel
+        $scope.categoryModel,
+        $scope.name,
+        initialSearch
       );
       $scope.firstPaginationLoad = true;
       $scope.$apply();
@@ -1249,7 +1272,8 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       itemsPerPage,
       visiblePages,
       category,
-      name
+      name,
+      initialSearch
     ) {
       const response = await $http({
         url: "/insects/upload-list",
@@ -1265,9 +1289,12 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       if (response?.data?.totalCount > 0) {
         console.log("1st insect: " + JSON.stringify(response.data.data[0]));
       } else {
-        console.log("no insects created by current user");
-        $scope.dataLength = 0;
+        if (initialSearch) {
+          $scope.dataLength = 0;
+          console.log("no insects created by current user");
+        }
         $scope.hidePagination = true;
+        $scope.uploadList = undefined;
         return {};
       }
 
@@ -1303,7 +1330,10 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     const { totalPages, visPages, totalCount } = await $scope.getUploadList(
       page,
       itemsPerPage,
-      visiblePages
+      visiblePages,
+      undefined,
+      undefined,
+      true
     );
     $scope.firstPaginationLoad = true;
     // apply needs to be here in order for pagination to show
