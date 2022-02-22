@@ -1232,13 +1232,12 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       console.log("namechange");
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(
-        async function ($scope, $http) {
+        async function ($scope) {
           console.log("bouncef end.");
           $scope.updateUploadView();
         },
         bounceTime,
-        $scope,
-        $http
+        $scope
       );
     };
 
@@ -2890,10 +2889,15 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $scope.newRemotePage = 1;
     $scope.newLocalPage = 1;
     $scope.updatedPage = 1;
+    let debounceTimer = undefined;
+    const bounceTime = 500;
 
     const itemsPerPage = 10;
     const visiblePages = 5;
     let page = 0;
+
+    sortCategories($scope);
+
     if ($location?.search()?.page) {
       console.log("page: ", $location.search().page);
       page = +$location.search().page;
@@ -2914,6 +2918,46 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     $scope.initMessages();
 
     $scope.windowLocalStorage = window.localStorage;
+
+    $scope.nameChange = function () {
+      console.log("name change");
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(
+        async function ($scope) {
+          console.log("bouncef end.");
+          $scope.firstPaginationLoad = true;
+          constructCollectionByCategory(
+            $localStorage,
+            $cookies,
+            $scope,
+            0,
+            itemsPerPage,
+            visiblePages,
+            true,
+            $scope.categoryModel,
+            $scope.name
+          );
+        },
+        bounceTime,
+        $scope
+      );
+    };
+
+    $scope.categoryChange = function () {
+      console.log("categoryChange");
+      $scope.firstPaginationLoad = true;
+      constructCollectionByCategory(
+        $localStorage,
+        $cookies,
+        $scope,
+        0,
+        itemsPerPage,
+        visiblePages,
+        false,
+        $scope.categoryModel,
+        $scope.name
+      );
+    };
 
     $scope.disableSyncImages = function () {
       console.log("disablesyncImages:", $localStorage.disableSyncImages);
@@ -3764,8 +3808,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           $scope,
           page,
           itemsPerPage,
-          visiblePages,
-          $scope.translations
+          visiblePages
         );
       } else if (localPolicy === "push-local") {
         console.log("pushing new local items");

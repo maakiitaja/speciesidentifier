@@ -148,7 +148,8 @@
 
 /* alert box */
 .container-alert,
-.container-uploadlist-search {
+.container-uploadlist-search,
+.container-collection-search {
   margin: auto 20px;
 }
 

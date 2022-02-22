@@ -357,6 +357,34 @@
 		<!-- main collection -->
 		<h1>{{translations.COLLECTIONPAGE}}</h1>
 
+		<!-- search -->
+		<div class="container-collection-search">
+			<div class="input-search-container">
+				<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24"
+					stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+				</svg>
+				<div>
+					<label for="name">{{translations.NAME}}:</label>
+					<input type="text" class="form-control-own" ng-change="nameChange()" ng-model="name" name="name"
+						id="name">
+
+				</div>
+				<div>
+					<label for="category">{{translations.CATEGORY}}:</label>
+					<select class="form-control-own" name="category" ng-model="categoryModel"
+						ng-change="categoryChange()">
+						<option ng-repeat="category in categories" value="{{category[1]}}">
+							{{category[0]}}
+						</option>
+					</select>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- checkboxes -->
 		<div ng-if="!collectionEmpty">
 			<label class="main">
 				<span class="offline-label">{{translations.OFFLINE}}</span>
@@ -376,7 +404,7 @@
 
 		</div>
 
-		<!--messages updated insects-->
+		<!--messages skipping sync-->
 		<div class="container-alert margin-top-lg">
 			<div id="skippingCollectionSynchronization" ng-if='skippingCollectionSynchronization != ""'
 				class="alert alert-success is-paused fade-out">
