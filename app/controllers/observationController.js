@@ -2,6 +2,7 @@ var Insect = require("./../models/insect");
 var User = require("./../models/user");
 var Observation = require("./../models/observation");
 const catchAsync = require("./../utils/catchAsync");
+
 exports.browse = async function (req, res) {
   console.log("observation browse");
   const itemsPerPage = req.query.itemsPerPage;
@@ -206,7 +207,7 @@ exports.browse = async function (req, res) {
           return false;
         }
         observation.insect.translations.forEach((translation) => {
-          if (translation.name === name) {
+          if (translation.name.includes(name)) {
             console.log("found translation");
             foundTranslation = true;
           }

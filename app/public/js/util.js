@@ -241,7 +241,7 @@ constructCollectionByCategory = async function (
         if (category && name) {
           name = name.charAt(0).toUpperCase() + name.slice(1);
           for (let i = 0; i < insect.translations.length; i++) {
-            if (insect.translations[i].name === name) {
+            if (insect.translations[i].name.includes(name)) {
               result = insect;
             }
           }
@@ -253,7 +253,7 @@ constructCollectionByCategory = async function (
         } else if (name) {
           name = name.charAt(0).toUpperCase() + name.slice(1);
           for (let i = 0; i < insect.translations.length; i++) {
-            if (insect.translations[i].name === name) {
+            if (insect.translations[i].name.includes(name)) {
               result = insect;
             }
           }
@@ -508,9 +508,9 @@ setLocalStorageItem = function ($localStorage, key, value, kind) {
     if (isQuotaExceeded(e)) {
       console.log("local storage quota exceeded. e:", e);
       freeLocalStorageSpace($localStorage, 1);
-      alert(
-        "Exceeded local storage quota, disabling local storage image saving and freeing space."
-      );
+      // alert(
+      //   "Exceeded local storage quota, disabling local storage image saving and freeing space."
+      // );
       $localStorage["disableSyncImages"] = true;
       return false;
     }

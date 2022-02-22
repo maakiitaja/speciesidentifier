@@ -66,7 +66,9 @@ exports.uploadList = catchAsync(async (req, res, next) => {
     }
     if (req.query.name) {
       console.log("narrowing by name: " + req.query.name);
-      query.where("translations.name").equals(req.query.name);
+      query
+        .where("translations.name")
+        .equals({ $regex: ".*" + req.query.name + ".*" });
     }
     return query;
   };
@@ -380,7 +382,9 @@ exports.search = async function (req, res, next) {
 
     if (!req.query.language && req.query.name) {
       console.log("search by name and all languages");
-      query.where("translations.name").equals(req.query.name);
+      query
+        .where("translations.name")
+        .equals({ $regex: ".*" + req.query.name + ".*" });
     }
     return query;
   };
