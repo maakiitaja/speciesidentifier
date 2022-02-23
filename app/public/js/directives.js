@@ -337,7 +337,7 @@ myApp.directive("header", function () {
 
           console.log("header currentuser: " + $scope.currentUser);
           let username = $scope.currentUser.username;
-          if (username.length > 20) {
+          if (username?.length > 20) {
             username = username.slice(0, 9) + "...";
             $scope.currentUser.username = username;
           }
