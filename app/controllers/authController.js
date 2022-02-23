@@ -126,7 +126,7 @@ exports.isLoggedIn = async function (req, res, next) {
   // if github (or other 3rd party) login, check token expiration
   console.log("Checking token expiration", req.user);
 
-  if (req.user.githubId) {
+  if (req.user?.githubId) {
     console.log("found github jwt token");
     try {
       let decoded;

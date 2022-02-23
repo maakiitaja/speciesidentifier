@@ -3598,7 +3598,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         console.log("newRemoteInsects:", newRemoteInsects);
         console.log("updatedRemoteInsects:", updatedRemoteInsects);
       }
-
+      $scope.nroOfNewRemoteInsects = newRemoteInsects?.length;
       // 1. new remote items
       if (newRemoteInsects?.length > 0) {
         //await waitForModalToBeLoaded("new-remote-items-modal");
@@ -3611,7 +3611,6 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         ) {
           await wait(0.5);
           $scope.$apply();
-          console.log("waited for 0.5s");
         }
 
         if ($scope.modalPressed === "pull") {
@@ -3667,7 +3666,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
       // 3. updated insects
       if (updatedRemoteInsects?.length > 0) {
-        $scope.numberOfUpdatedItems = updatedRemoteInsects.length;
+        $scope.numberOfUpdatedRemoteItems = updatedRemoteInsects.length;
         // conflictobj , images array is of form {image: string, added: boolean}
         console.log(
           "constructing conflict object between local and remote items"
