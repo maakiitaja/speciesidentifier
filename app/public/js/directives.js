@@ -245,6 +245,11 @@ function Directive(ModalService) {
           console.log("setting newLocalItemsModal to true");
           scope.newLocalItemsModal = 1;
         }
+
+        if (id === "session-expiration-modal") {
+          console.log("setting sessionExpiration to true");
+          scope.sessionExpiration = 1;
+        }
         $("body").addClass("modal-open-own");
       }
 
@@ -259,6 +264,9 @@ function Directive(ModalService) {
         }
         if (id === "new-local-items-modal") {
           scope.newLocalItemsModal = 0;
+        }
+        if (id === "session-expiration-modal") {
+          scope.sessionExpiration = 0;
         }
         $("body").removeClass("modal-open-own");
       }
@@ -282,6 +290,7 @@ myApp.directive("header", function () {
       "$route",
       "$localStorage",
       "$rootScope",
+      "ModalService",
       function (
         $scope,
         $filter,
@@ -292,7 +301,8 @@ myApp.directive("header", function () {
         $location,
         $route,
         $localStorage,
-        $rootScope
+        $rootScope,
+        ModalService
       ) {
         // initialize current user for header menu item highlighing to work when reloading a page
         //$scope.currentUser = {};
@@ -314,7 +324,56 @@ myApp.directive("header", function () {
           var tmp = JSON.parse(JSON.stringify(data));
           console.log("tmp: " + tmp);
 
+          $scope.openModal = function (id) {
+            console.log("ModalService: ", ModalService);
+            ModalService.Open(id);
+          };
+
+          $scope.closeModal = function (id, buttonId) {
+            console.log("buttonId:", buttonId, "id:", id);
+            $scope.modalPressed = buttonId;
+            ModalService.Close(id);
+          };
+
           console.log("header currentuser: " + $scope.currentUser);
+          const githubjwt = $cookies.get("githubjwt");
+          console.log("githubjwt: " + githubjwt);
+          if (data && githubjwt) {
+            console.log("setting expiration timer");
+            const decoded = jwtDecode(githubjwt);
+            const exp = decoded.exp * 1000;
+            const now = Date.now();
+            console.log("decoded.iat:" + new Date(decoded.iat * 1000));
+            console.log("decoded.exp:" + new Date(decoded.exp * 1000));
+            setTimeout(async function () {
+              console.log("opening modal");
+              $scope.openModal("session-expiration-modal");
+              $scope.remainingTime = Math.round(exp / 1000 - now / 1000 - 5);
+              while (
+                $scope.modalPressed === undefined ||
+                $scope.modalPressed === null
+              ) {
+                await wait(1);
+                if ($scope.remainingTime > 0) {
+                  $scope.remainingTime = $scope.remainingTime - 1;
+                }
+                $scope.$apply();
+              }
+
+              if ($scope.modalPressed === "continue") {
+                console.log("continuing");
+              }
+              if ($scope.modalPressed === "logout") {
+                console.log("logging out");
+
+                const els = angular
+                  .element(document.getElementById("logout-div"))
+                  .find("a")[0];
+                console.log("els: ", els);
+                els.click();
+              }
+            }, exp - now - 25 * 1000);
+          }
         });
 
         $scope.openMobileNav = function () {

@@ -65,6 +65,13 @@ const limiter = rateLimit({
 });
 app.use("/", limiter);
 
+const uploadLimiter = rateLimit({
+  max: 10,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+app.use("/insects/insert", uploadLimiter);
+
 // set up our express application
 app.use(cookieParser()); // read cookies (needed for auth)
 
@@ -88,7 +95,7 @@ app.set("json spaces", 40);
 // required for passport
 app.use(
   session({
-    secret: "ilovescotchscotchyscotchscotch",
+    secret: process.env.SESSIONSECRET,
     cookie: { secure: false },
     resave: false,
     saveUninitialized: false,

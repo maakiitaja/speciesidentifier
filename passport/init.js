@@ -36,7 +36,7 @@ module.exports = function (passport) {
           rolling: true,
           saveUninitialized: true,
           resave: false,
-          httpOnly: true,
+          httpOnly: false,
         };
         console.log("encodedToken", encodedToken);
         const decoded = await promisify(jwt.verify)(

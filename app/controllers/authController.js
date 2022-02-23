@@ -139,11 +139,15 @@ exports.isLoggedIn = async function (req, res, next) {
       } else {
         // not authenticated because cookie was not sent
         console.log("req not authenticated");
+
+        return res.send("not authenticated");
       }
     } catch (err) {
       console.log("err:", err);
       // not authenticated
       console.log("req not authenticated");
+      req.logout();
+      return res.send("not authenticated");
     }
   }
 

@@ -53,6 +53,34 @@ insectIdentifierServices.factory("Search", function () {
   };
 });
 
+insectIdentifierServices.factory(
+  "redirectInterceptor",
+  function ($q, $location, $window) {
+    return {
+      response: function (response) {
+        if (
+          typeof response.data === "string" &&
+          response.data === "not authenticated"
+        ) {
+          console.log("LOGIN!!");
+          //console.log(response.data);
+          $window.location.href = "/#/login.html";
+          return $q.reject(response);
+        } else {
+          return response;
+        }
+      },
+    };
+  }
+);
+
+insectIdentifierServices.config([
+  "$httpProvider",
+  function ($httpProvider) {
+    $httpProvider.interceptors.push("redirectInterceptor");
+  },
+]);
+
 insectIdentifierServices.factory("TranslationService", [
   "$resource",
   "Search",

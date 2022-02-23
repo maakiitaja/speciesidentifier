@@ -8,6 +8,7 @@ var insectIdentifierControllers = angular.module(
   "insectIdentifierControllers",
   ["ngCookies"]
 );
+
 insectIdentifierControllers.controller("FileUploadErrorCtrl", [
   "$scope",
   "$location",

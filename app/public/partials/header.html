@@ -258,4 +258,27 @@
 
 	</nav>
 
+	<modal id="session-expiration-modal" ng-class="{modalActive: sessionExpiration == '1'}">
+		<div class="popup">
+			<div class="popup__content">
+				<div class="popup__center">
+					<p class="popup-heading">Session expiration warning</p>
+					<p>
+						Your session will expire in {{remainingTime}} second(s). Do you want to continue logged in?
+					</p>
+					<div class="button-grid button-grid--2 margin-top-lg">
+						<button class="button button-green"
+							ng-click="closeModal('session-expiration-modal', 'continue')">Continue
+						</button>
+						<button class="button button-blue"
+							ng-click="closeModal('session-expiration-modal', 'logout')">Logout
+						</button>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-background-own"></div>
+		</div>
+	</modal>
+
 </header>
