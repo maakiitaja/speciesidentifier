@@ -146,12 +146,12 @@ exports.remoteVersion = catchAsync(async (req, res, next) => {
 // returns new remote items, new local items and updated remote items
 exports.syncInfo = catchAsync(async (req, res, next) => {
   console.log("sync info start");
-  console.log("body:", req.body);
+
   let localInsects = req.query.localInsects;
-  console.log("localInsects:", localInsects);
+  //console.log("localInsects:", localInsects);
 
   localInsects = JSON.parse(Buffer.from(localInsects, "base64"));
-  console.log("decoded localInsects:", localInsects);
+  //console.log("decoded localInsects:", localInsects);
 
   let localInsectsIds = localInsects.map((el) => el._id);
   if (localInsectsIds === undefined || localInsects === null) {
@@ -166,10 +166,10 @@ exports.syncInfo = catchAsync(async (req, res, next) => {
   });
 
   const remoteInsects = remoteCollection.insects;
-  console.log("remoteCollection:", remoteCollection);
+  //console.log("remoteCollection:", remoteCollection);
 
   let remoteInsectsIds = remoteInsects.map((el) => el._id.toString());
-  console.log("remoteInsectsIds:", remoteInsectsIds);
+  //console.log("remoteInsectsIds:", remoteInsectsIds);
   console.log("remoteInsects.length: ", remoteInsects.length);
 
   if (!remoteInsects || remoteInsects.length === 0) {
@@ -191,12 +191,12 @@ exports.syncInfo = catchAsync(async (req, res, next) => {
     const localInsect = localInsects.find(
       (el) => el._id === remoteInsect._id.toString()
     );
-    console.log("localInsect:", localInsect);
+    //console.log("localInsect:", localInsect);
     if (localInsect) {
-      console.log("remoteInsect.updatedAt ", remoteInsect.updatedAt.toString());
+      //console.log("remoteInsect.updatedAt ", remoteInsect.updatedAt.toString());
       const remoteDate = new Date(remoteInsect.updatedAt);
       const localDate = new Date(localInsect.updatedAt);
-      console.log("localDate:", localDate, " remoteDate: ", remoteDate);
+      //console.log("localDate:", localDate, " remoteDate: ", remoteDate);
       if (remoteDate > localDate) {
         console.log("pushing to updated remote insects");
         updatedRemoteInsectsTmp.push(remoteInsect);

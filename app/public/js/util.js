@@ -92,7 +92,7 @@ selectActiveThumb = async function (selectedInsect) {
     var thumbImg = document.getElementById(
       selectedInsect.images[0] + "_thumb.jpg"
     );
-    if (!thumbImg) {
+    if (thumbImg === undefined || thumbImg === null) {
       console.log("waiting for thumb image");
       await wait(0.2);
       thumbImg = document.getElementById(
@@ -121,7 +121,7 @@ setPaginationForSearchPage = async function (
   console.log("visiblePages", visiblePages);
   console.log("totalPages", totalPages);
   console.log("page: ", page);
-  if (totalPages > 0) {
+  if (totalPages > 1) {
     console.log("showing pagination element");
     console.log("total pages: ", totalPages);
     console.log("window.pagObj:", window.pagObj);
@@ -438,10 +438,10 @@ pushToLocalStorage = function ($localStorage, key, value) {
       newArray.push(value);
     } else {
       console.log("item not array");
-      console.log("value:", value);
+      //console.log("value:", value);
 
       newArray.push(value);
-      console.log("newArray:", newArray);
+      //console.log("newArray:", newArray);
     }
 
     // console.log("after pushing:", newArray);
@@ -499,7 +499,7 @@ setLocalStorageItem = function ($localStorage, key, value, kind) {
 
     localStorage.setItem(key, value);
     if (kind === "image") {
-      console.log("NOT storing to $localstorage");
+      console.log("NOT storing image to angular $localstorage");
     } else {
       console.log("storing to $localstorage");
       $localStorage[key] = localStorage.getItem(key);

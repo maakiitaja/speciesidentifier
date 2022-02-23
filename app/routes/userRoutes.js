@@ -46,6 +46,10 @@ module.exports = function (app, passport) {
     passport.authenticate("github", { failureRedirect: "/#/login-failure" }),
     function (req, res) {
       // Successful authentication, redirect home.
+      console.log("req.user: ", req.user);
+      if (req.user) {
+        res.cookie("githubjwt", req.user.token, req.user.cookieOptions);
+      }
       res.redirect("/#/main?signedIn=true");
     }
   );

@@ -3,11 +3,19 @@ var User = require("../app/models/user");
 var GitHubStrategy = require("passport-github").Strategy;
 var FacebookStrategy = require("passport-facebook").Strategy;
 //var GoogleStrategy = require("passport-google-oauth").Strategy;
+const { promisify } = require("util");
+const jwt = require("jsonwebtoken");
 
 module.exports = function (passport) {
   // Setting up Passport Strategies for Login
   //login(passport);
   login(passport);
+
+  const signToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+  };
 
   passport.use(
     new GitHubStrategy(
@@ -18,6 +26,25 @@ module.exports = function (passport) {
       },
       async function (accessToken, refreshToken, profile, cb) {
         let user;
+        console.log("accessToken", accessToken);
+        console.log("refreshToken", refreshToken);
+        const encodedToken = signToken(accessToken);
+        const cookieOptions = {
+          expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+          ),
+          rolling: true,
+          saveUninitialized: true,
+          resave: false,
+          httpOnly: true,
+        };
+        console.log("encodedToken", encodedToken);
+        const decoded = await promisify(jwt.verify)(
+          encodedToken,
+          process.env.JWT_SECRET
+        );
+        console.log("decoded token:", decoded);
+
         try {
           user = await User.findOne({ githubId: profile.id });
           if (!user) {
@@ -33,6 +60,10 @@ module.exports = function (passport) {
         }
         console.log("user: ", user);
         user.username = profile.username;
+
+        // set up token
+        user.token = encodedToken;
+        user.cookieOptions = cookieOptions;
 
         return cb(null, user);
       }

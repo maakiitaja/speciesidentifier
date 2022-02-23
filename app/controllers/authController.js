@@ -3,6 +3,8 @@ const AppError = require("./../utils/appError");
 const catchAsync = require("./../utils/catchAsync");
 const Email = require("../utils/email");
 const crypto = require("crypto");
+const { promisify } = require("util");
+const jwt = require("jsonwebtoken");
 
 // credits: https://github.com/jonasschmedtmann/complete-node-bootcamp
 exports.forgotPassword = catchAsync(async (req, res, next) => {
@@ -120,7 +122,31 @@ exports.resetPasswordPost = catchAsync(async (req, res, next) => {
 
 // route middleware to make sure a user is logged in
 
-exports.isLoggedIn = function (req, res, next) {
+exports.isLoggedIn = async function (req, res, next) {
+  // if github (or other 3rd party) login, check token expiration
+  console.log("Checking token expiration", req.user);
+
+  if (req.user.githubId) {
+    console.log("found github jwt token");
+    try {
+      let decoded;
+      if (req.cookies.githubjwt) {
+        decoded = await promisify(jwt.verify)(
+          req.cookies.githubjwt,
+          process.env.JWT_SECRET
+        );
+        console.log("decoded:", decoded);
+      } else {
+        // not authenticated because cookie was not sent
+        console.log("req not authenticated");
+      }
+    } catch (err) {
+      console.log("err:", err);
+      // not authenticated
+      console.log("req not authenticated");
+    }
+  }
+
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated()) return next();
 

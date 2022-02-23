@@ -2506,7 +2506,7 @@ insectIdentifierControllers.controller("SearchCtrl", [
       "window.localstorage estimated size: ",
       JSON.stringify(window.localStorage).length
     );
-    $scope.showFileuploadSuccessMessage = "";
+    $scope.localStorage = $localStorage;
     // resizing the container search
     $scope.resize = {};
     let page = 0;
@@ -2562,7 +2562,8 @@ insectIdentifierControllers.controller("SearchCtrl", [
       }
 
       let localInsects = getLocalInsectsMinified($localStorage);
-      console.log("localInsects", localInsects);
+
+      console.log("localInsects.length", localInsects.length);
 
       let response = null;
 

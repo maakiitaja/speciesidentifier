@@ -5,7 +5,11 @@
 
 	</div>
 	<h1 ng-if="fromObservationPage != 1">{{translations.SEARCHPAGE}}</h1>
-
+	<div class="container-offline" ng-if="localStorage.offline">
+		<div class="container-tag">
+			<div class="offline-mode">{{translations.OFFLINEMODE}}</div>
+		</div>
+	</div>
 	<form ng-submit='search(query)'>
 		<div class="flex-center">
 			<ul id="flex-table" class="flex-table">
