@@ -498,6 +498,7 @@ div.active {
 .hideLocalButton,
 .hidePagination,
 .hideSpinner,
+.hideSearch,
 .hideDisplayMoreRemoteButton {
   display: none !important;
 }

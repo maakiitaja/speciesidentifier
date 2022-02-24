@@ -1198,14 +1198,14 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     // menu
     resetHeader();
     highlightElement("manage-button");
-
+    sortCategories($scope);
     const itemsPerPage = 10;
     const visiblePages = 10;
     let page = 0;
     const bounceTime = 500;
 
     let debounceTimer = undefined;
-    sortCategories($scope);
+
     if ($location?.search()?.page) {
       console.log("page: ", $location.search().page);
       page = +$location.search().page;
@@ -1230,7 +1230,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     };
 
     $scope.insectnameChange = function () {
-      console.log("namechange");
+      console.log("namechange with name:", $scope.name);
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(
         async function ($scope) {
@@ -1313,7 +1313,6 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       );
 
       $scope.uploadList = uploadList;
-      $scope.dataLength = response.totalCount;
 
       // hide/show pagination
       if (response.data.totalCount > itemsPerPage) {
@@ -2910,7 +2909,10 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       $scope.messageUpdate = "";
       $scope.messageNewRemoteSuccess = "";
       $scope.messageNewLocalSuccess = "";
+      $scope.messageNewLocalFailure = "";
       $scope.skippingCollectionSynchronization = "";
+      $scope.noInternetConnection = "";
+      $scope.messageNewRemoteFailure = "";
     };
 
     $scope.localStorage = $localStorage;
@@ -2921,24 +2923,173 @@ insectIdentifierControllers.controller("CollectionCtrl", [
 
     $scope.windowLocalStorage = window.localStorage;
 
+    $scope.constructCollectionByCategory = function (
+      $localStorage,
+      $cookies,
+      page,
+      itemsPerPage,
+      visiblePages,
+      category,
+      name
+    ) {
+      console.log("construct local collection by category");
+
+      console.log("page: ", page);
+      console.log("category: ", category);
+      console.log("name: ", name);
+      // filter
+      const resInsects = [];
+      if (category || name) {
+        $localStorage.collection.forEach(function (insect) {
+          let result;
+
+          if (category && name) {
+            name = name.charAt(0).toUpperCase() + name.slice(1);
+            for (let i = 0; i < insect.translations.length; i++) {
+              if (insect.translations[i].name.includes(name)) {
+                result = insect;
+              }
+            }
+            if (!(result !== undefined && insect.category === category)) {
+              result = undefined;
+            }
+          } else if (category && insect.category === category) {
+            console.log("filtering by category");
+            result = insect;
+          } else if (name) {
+            console.log("filtering by name only");
+            name = name.charAt(0).toUpperCase() + name.slice(1);
+            for (let i = 0; i < insect.translations.length; i++) {
+              if (insect.translations[i].name.includes(name)) {
+                result = insect;
+                break;
+              }
+            }
+          }
+          if (result) resInsects.push(result);
+        });
+      }
+      let copy;
+      if ((name || category) && resInsects.length === 0) {
+        copy = [];
+      } else if (resInsects.length > 0) {
+        copy = resInsects;
+      } else {
+        copy = JSON.parse(JSON.stringify($localStorage.collection));
+      }
+
+      const totalCount = copy.length;
+
+      Array.prototype.alphaSort = function (translations) {
+        function compare(a, b) {
+          if (translations[a.category] < translations[b.category]) return -1;
+          if (translations[a.category] > translations[b.category]) return 1;
+          return 0;
+        }
+        console.log("in alphasort");
+
+        this.sort(compare);
+      };
+
+      // sort collection by category
+      copy.alphaSort($scope.translations);
+
+      // take a slice of the collection
+      copy = copy.slice(
+        page * itemsPerPage,
+        page * itemsPerPage + itemsPerPage
+      );
+
+      console.log("displayed items length:", copy.length);
+      const dst = insectsByCategoryByLang($cookies);
+      // construct final displayed items by category
+      if (copy?.length > 0) {
+        copy.forEach(function (item) {
+          const category = item.category;
+          dst[category].push(item);
+        });
+      }
+
+      // assign dst
+      console.log("dst:", dst);
+      $localStorage.collectionByCategory = dst;
+
+      const totalPages = Math.ceil(totalCount / itemsPerPage);
+      if (totalPages < visiblePages) {
+        visiblePages = totalPages;
+      }
+      console.log("totalPages: ", totalPages);
+      console.log("visiblePages: ", visiblePages);
+
+      return {
+        totalPages_: totalPages,
+        visiblePages_: visiblePages,
+      };
+    };
+
+    $scope.setLocalCollectionPagination = async function (
+      totalPages,
+      visiblePages,
+      page
+    ) {
+      if (totalPages > 1) {
+        console.log("showing pagination");
+        $scope.hidePagination = false;
+        console.log("page: ", page);
+        await wait(0.2);
+        $scope.$apply();
+
+        window.pagObj = $("#pagination")
+          .twbsPagination({
+            totalPages: totalPages,
+            visiblePages: visiblePages,
+            startPage: page + 1,
+            onPageClick: async function (event, page) {
+              console.log("on page click:", page, " event: ", event);
+
+              if (!$scope.firstPaginationLoad) {
+                if ($scope.lastPage === page) {
+                  console.log(
+                    "the same page has been clicked twice, aborting..."
+                  );
+                  return;
+                }
+                $scope.lastPage = page;
+                console.log("reconstructing collection by category");
+                await $scope.constructCollectionByCategory(
+                  $localStorage,
+                  $cookies,
+                  page - 1,
+                  itemsPerPage,
+                  visiblePages,
+                  $scope.categoryModel,
+                  $scope.name
+                );
+
+                $scope.$apply();
+              } else {
+                console.log("changing first pagination load to false");
+                $scope.firstPaginationLoad = false;
+                $scope.lastPage = page;
+              }
+            },
+          })
+          .on("page", function (event, page) {
+            console.info(page + " (from event listening)");
+          });
+      } else {
+        console.log("hiding pagination");
+        $scope.hidePagination = true;
+      }
+    };
+
     $scope.nameChange = function () {
       console.log("name change");
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(
         async function ($scope) {
           console.log("bouncef end.");
-          $scope.firstPaginationLoad = true;
-          constructCollectionByCategory(
-            $localStorage,
-            $cookies,
-            $scope,
-            0,
-            itemsPerPage,
-            visiblePages,
-            true,
-            $scope.categoryModel,
-            $scope.name
-          );
+          $scope.updateView(0, true);
         },
         bounceTime,
         $scope
@@ -2946,19 +3097,30 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     };
 
     $scope.categoryChange = function () {
-      console.log("categoryChange");
-      $scope.firstPaginationLoad = true;
-      constructCollectionByCategory(
-        $localStorage,
-        $cookies,
-        $scope,
-        0,
-        itemsPerPage,
-        visiblePages,
-        false,
-        $scope.categoryModel,
-        $scope.name
-      );
+      console.log("categoryChange with category: " + $scope.categoryModel);
+      $scope.updateView(0, true);
+    };
+
+    $scope.updateView = async function (pageParam, firstPaginationLoad) {
+      $scope.firstPaginationLoad = firstPaginationLoad;
+      console.log("category:", $scope.categoryModel);
+
+      const { totalPages_, visiblePages_ } =
+        $scope.constructCollectionByCategory(
+          $localStorage,
+          $cookies,
+          pageParam,
+          itemsPerPage,
+          visiblePages,
+          $scope.categoryModel,
+          $scope.name
+        );
+
+      console.log("totalpages:", totalPages_);
+
+      $scope.setLocalCollectionPagination(totalPages_, visiblePages_, page);
+      await wait(0.2);
+      $scope.$apply();
     };
 
     $scope.disableSyncImages = function () {
@@ -3140,10 +3302,19 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       return resultObj;
     };
 
-    $scope.deleteNewRemoteItems = function (removeRemoteIds) {
+    $scope.deleteNewRemoteItems = async function (removeRemoteIds) {
       console.log("delete new remote items");
       console.log("removed local ids: ", removeRemoteIds);
-
+      if (
+        !(await $scope.checkInternetConnection(
+          false,
+          0,
+          itemsPerPage,
+          visiblePages
+        ))
+      ) {
+        return false;
+      }
       $http({
         url: "/collections/removemany",
         method: "DELETE",
@@ -3314,10 +3485,21 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       }
     };
 
-    $scope.pushNewItemsFromLocalCollection = function (syncIds) {
+    $scope.pushNewItemsFromLocalCollection = async function (syncIds) {
       console.log(
         "choosing to push new items from local to the remote collection"
       );
+
+      if (
+        !(await $scope.checkInternetConnection(
+          false,
+          0,
+          itemsPerPage,
+          visiblePages
+        ))
+      ) {
+        return false;
+      }
       $http({
         url: "/collections/insertmany",
         params: { insectIds: syncIds },
@@ -3385,7 +3567,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           // add the image of the item to the local collection
           $scope.insect = newRemoteInsect;
 
-          $scope.saveImagesToLocalStorage($scope, $localStorage);
+          //$scope.saveImagesToLocalStorage($scope, $localStorage);
           $localStorage.remoteCollectionVersion += newRemoteInsects.length;
           if ($localStorage.newRemoteItemsNotSynced > 0) {
             $localStorage.newRemoteItemsNotSynced -= newRemoteInsects.length;
@@ -3476,6 +3658,43 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       $scope.$apply();
     };
 
+    $scope.initCollectionByCategory = function () {
+      console.log("initCollectionByCategory");
+      $scope.collectionEmpty = collection.length === 0;
+      $scope.firstPaginationLoad = true;
+      $scope.$watch("translations", function (newval, oldval) {
+        if (newval) {
+          console.log("updating view");
+
+          $scope.updateView(0, true);
+
+          toggleLoadingSpinner($scope);
+        }
+      });
+    };
+
+    $scope.checkInternetConnection = async function (
+      constructCollection,
+      page,
+      itemsPerPage,
+      visiblePages
+    ) {
+      // check internet connection
+      await isOnline($scope);
+      console.log("success of online:", $scope.success);
+      if (!$scope.success) {
+        $scope.noInternetConnection = $scope.translations.NOINTERNETCONNECTION;
+        $scope.$apply();
+        if (constructCollection) $scope.initCollectionByCategory();
+
+        return false;
+      } else {
+        $scope.noInternetConnection = "";
+        $scope.$apply();
+        return true;
+      }
+    };
+
     if ($localStorage.collection === undefined) {
       console.log("initializing localstorage");
 
@@ -3484,6 +3703,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     }
 
     /** START OF SYNCHRONIZATION **/
+    toggleLoadingSpinner($scope);
 
     var collection = $localStorage.collection;
     console.log(
@@ -3492,25 +3712,16 @@ insectIdentifierControllers.controller("CollectionCtrl", [
     );
     var isUserAuthenticated = $cookies.get("current.user");
     console.log("isUserAuthenticated: ", isUserAuthenticated);
+    // check authentication status
     if (isUserAuthenticated !== undefined && !isUserAuthenticated) {
-      // check whether collection is empty
-      $scope.collectionEmpty = collection.length === 0;
-      console.log("collection empty: ", $scope.collectionEmpty);
-      constructCollectionByCategory(
-        $localStorage,
-        $cookies,
-        $scope,
-        page,
-        itemsPerPage,
-        visiblePages
-      );
+      console.log("user not authenticated");
+      $scope.initCollectionByCategory();
       return;
     } else {
       console.log("$scope.currentUser: ", $scope.currentUser);
     }
 
     // skip synchronization if the user is in offline mode and signed in
-
     if ($localStorage.offline === true) {
       if (isUserAuthenticated) {
         $scope.skippingCollectionSynchronization =
@@ -3518,25 +3729,25 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         setDelay("skippingCollectionSynchronization", 3000, $scope);
       }
       console.log("skipping collection synchronization");
-
-      $scope.collectionEmpty = collection.length === 0;
-      $scope.firstPaginationLoad = true;
-      constructCollectionByCategory(
-        $localStorage,
-        $cookies,
-        $scope,
-        page,
-        itemsPerPage,
-        visiblePages
-      );
-
-      console.log("checking hide pagination");
-      if ($scope.hidePagination) $scope.$apply();
+      $scope.initCollectionByCategory();
 
       return;
     }
-    toggleLoadingSpinner($scope);
 
+    // check network connection
+    if (
+      !(await $scope.checkInternetConnection(
+        true,
+        page,
+        itemsPerPage,
+        visiblePages
+      ))
+    ) {
+      console.log("no network connection");
+      return;
+    }
+
+    // get remote collection version
     const response = await $http({
       url: "/collections/remoteversion",
       method: "GET",
@@ -3618,7 +3829,9 @@ insectIdentifierControllers.controller("CollectionCtrl", [
           $scope.pullNewItemsFromRemote(newRemoteInsects);
         } else if ($scope.modalPressed === "remove") {
           console.log("deleting new remote items");
-          $scope.deleteNewRemoteItems(newRemoteInsects.map((el) => el._id));
+          await $scope.deleteNewRemoteItems(
+            newRemoteInsects.map((el) => el._id)
+          );
         } else {
           console.log("canceling new remote item syncing");
           $scope.newRemoteInsects = newRemoteInsects;
@@ -3647,7 +3860,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         }
 
         if ($scope.modalPressed === "push") {
-          $scope.pushNewItemsFromLocalCollection(newLocalInsectsIds);
+          await $scope.pushNewItemsFromLocalCollection(newLocalInsectsIds);
         } else if ($scope.modalPressed === "remove") {
           $scope.removeItemsFromLocal(newLocalInsectsIds);
         } else {
@@ -3713,24 +3926,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       console.log("nothing to synchronize");
     }
 
-    $scope.collectionEmpty = collection.length === 0;
-    $scope.firstPaginationLoad = true;
-    const initialSyncDone = true;
-    constructCollectionByCategory(
-      $localStorage,
-      $cookies,
-      $scope,
-      page,
-      itemsPerPage,
-      visiblePages,
-      initialSyncDone
-    );
-    toggleLoadingSpinner($scope);
-    console.log("checking hide pagination");
-    if ($scope.hidePagination) {
-      console.log("hiding pagination");
-      $scope.$apply();
-    }
+    $scope.initCollectionByCategory();
 
     $scope.updateInsects = function () {
       console.log(
@@ -3742,15 +3938,7 @@ insectIdentifierControllers.controller("CollectionCtrl", [
         $scope.updatedInsectsObj.updatedInsects,
         $scope.updatedInsectsObj.updatedIds
       );
-      constructCollectionByCategory(
-        $localStorage,
-        $cookies,
-        $scope,
-        page,
-        itemsPerPage,
-        visiblePages,
-        $scope.translations
-      );
+
       $scope.hideUpdateButton = true;
 
       $scope.messageUpdate = "Successfully updated the local collection.";
@@ -3759,67 +3947,64 @@ insectIdentifierControllers.controller("CollectionCtrl", [
       toggleLoadingSpinner($scope);
     };
 
-    $scope.remoteSync = function (remotePolicy) {
+    $scope.remoteSync = async function (remotePolicy) {
       console.log("starting remote sync");
       console.log(remotePolicy);
       toggleLoadingSpinner($scope);
+      let success = true;
       if (remotePolicy === "delete-remote") {
         console.log("deleting new remote items");
         const newRemoteIds = $scope.newRemoteInsects.map(
           (remoteInsect) => remoteInsect._id
         );
-        $scope.deleteNewRemoteItems(newRemoteIds);
+        success = await $scope.deleteNewRemoteItems(newRemoteIds);
+        $scope.$apply();
       } else if (remotePolicy === "pull-remote") {
         console.log("pulling new remote items");
         $scope.pullNewItemsFromRemote($scope.newRemoteInsects);
         $scope.collectionEmpty = $localStorage.collection.length === 0;
-        constructCollectionByCategory(
-          $localStorage,
-          $cookies,
-          $scope,
-          page,
-          itemsPerPage,
-          visiblePages,
-          $scope.translations
-        );
+        $scope.updateView(0, false);
       } else {
         console.log("check selection value");
       }
       toggleLoadingSpinner($scope);
-      $scope.messageNewRemoteSuccess =
-        "Successfully synchronized remote collection";
+      if (success) {
+        $scope.messageNewRemoteSuccess =
+          "Successfully synchronized remote collection";
+      } else {
+        $scope.messageNewRemoteFailure = "Remote collection sync failed.";
+      }
       $scope.hideRemoteButton = true;
     };
 
-    $scope.localSync = function (localPolicy) {
+    $scope.localSync = async function (localPolicy) {
       console.log("starting local sync");
       console.log(localPolicy);
       toggleLoadingSpinner($scope);
       const newLocalIds = $scope.newLocalInsects.map(
         (localInsect) => localInsect._id
       );
+      let success = true;
       if (localPolicy === "delete-local") {
         console.log("deleting new local items");
         console.log("newinsectids: ", newLocalIds);
         $scope.removeItemsFromLocal(newLocalIds);
         $scope.collectionEmpty = $localStorage.collection.length === 0;
-        constructCollectionByCategory(
-          $localStorage,
-          $cookies,
-          $scope,
-          page,
-          itemsPerPage,
-          visiblePages
-        );
+        $scope.updateView(0, false);
       } else if (localPolicy === "push-local") {
         console.log("pushing new local items");
-        $scope.pushNewItemsFromLocalCollection(newLocalIds);
+        success = await $scope.pushNewItemsFromLocalCollection(newLocalIds);
+        $scope.$apply();
       } else {
         console.log("check selection value");
       }
       toggleLoadingSpinner($scope);
-      $scope.messageNewLocalSuccess =
-        "Successfully synchronized local collection";
+      if (success) {
+        $scope.messageNewLocalSuccess =
+          "Successfully synchronized local collection";
+      } else {
+        $scope.messageNewLocalFailure = "Local collection sync failed";
+      }
       $scope.hideLocalButton = true;
     };
 

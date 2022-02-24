@@ -328,5 +328,6 @@
   "SHAREDALBUMS": "Julkiset albumit",
   "DISABLESYNCIMAGES": "Älä tallenna kokoelman kuvia paikallisesti",
   "REMOVEDINSECTFROMLOCALCOLLECTION": "Hyönteisen poistaminen kokoelmasta onnistui.",
-  "DISPLAYMORE": "Näytä lisää"
+  "DISPLAYMORE": "Näytä lisää",
+  "NOINTERNETCONNECTION": "Ei verkkoyhteyttä"
 }

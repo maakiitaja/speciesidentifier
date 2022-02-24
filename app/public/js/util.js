@@ -1,3 +1,23 @@
+async function isOnline($scope) {
+  console.log("isonline start");
+  try {
+    await $.ajax({
+      type: "HEAD",
+      url: "https://d.newsweek.com/en/full/1069187/rtx6b7g5.jpg",
+      error: function () {
+        console.log("error on head request");
+        $scope.success = false;
+      },
+      success: function () {
+        console.log("success on head request");
+        $scope.success = true;
+      },
+    });
+  } catch (err) {
+    console.log("err:", err);
+  }
+}
+
 function toggleElements(hideElem, showElem) {
   document.getElementById(hideElem).visibility = "hidden";
   document.getElementById(showElem).visibility = "visible";
@@ -136,9 +156,20 @@ setPaginationForSearchPage = async function (
 
         onPageClick: async function (event, page) {
           console.log("on page click:", page, " event: ", event);
-          $scope.page = page - 1;
+
           if (!$scope.firstPaginationLoad) {
-            console.log("searching from page: ", page);
+            console.log(
+              "searching from page: ",
+              page,
+              "lastpage: ",
+              $scope.lastPage
+            );
+            if ($scope.lastPage === page) {
+              console.log("pages are same. aborting...");
+              return;
+            }
+            $scope.lastPage = page;
+
             const selectFirstInsect = true;
             const response = await SearchService.search(
               $scope,
@@ -165,6 +196,7 @@ setPaginationForSearchPage = async function (
           } else {
             console.log("changing first pagination load to false");
             $scope.firstPaginationLoad = false;
+            $scope.lastPage = page;
             $scope.$apply();
           }
         },
@@ -212,151 +244,6 @@ const insectsByCategoryFi = {
   Butterfly: [],
   Centipede: [],
   General: [],
-};
-
-constructCollectionByCategory = async function (
-  $localStorage,
-  $cookies,
-  $scope,
-  page,
-  itemsPerPage,
-  visiblePages,
-  initialSyncDone,
-  category,
-  name
-) {
-  console.log("construct local collection by category");
-
-  console.log("page: ", page);
-
-  $scope.$watch("translations", async function (val) {
-    console.log("scope watch translations");
-
-    // filter
-    const resInsects = [];
-    if (category || name) {
-      $localStorage.collection.forEach(function (insect) {
-        let result;
-
-        if (category && name) {
-          name = name.charAt(0).toUpperCase() + name.slice(1);
-          for (let i = 0; i < insect.translations.length; i++) {
-            if (insect.translations[i].name.includes(name)) {
-              result = insect;
-            }
-          }
-          if (!(result !== undefined && insect.category === category)) {
-            result = undefined;
-          }
-        } else if (category && insect.category === category) {
-          result = insect;
-        } else if (name) {
-          name = name.charAt(0).toUpperCase() + name.slice(1);
-          for (let i = 0; i < insect.translations.length; i++) {
-            if (insect.translations[i].name.includes(name)) {
-              result = insect;
-            }
-          }
-        }
-        if (result) resInsects.push(result);
-      });
-    }
-    let copy;
-    if ((name || category) && resInsects.length === 0) {
-      copy = [];
-    } else if (resInsects.length > 0) {
-      copy = resInsects;
-    } else {
-      copy = JSON.parse(JSON.stringify($localStorage.collection));
-    }
-
-    const totalCount = copy.length;
-
-    Array.prototype.alphaSort = function (translations) {
-      function compare(a, b) {
-        if (translations[a.category] < translations[b.category]) return -1;
-        if (translations[a.category] > translations[b.category]) return 1;
-        return 0;
-      }
-      console.log("in alphasort");
-      console.log("translations", translations);
-      this.sort(compare);
-    };
-
-    // sort collection by category
-    copy.alphaSort($scope.translations);
-
-    // take a slice of the collection
-    copy = copy.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
-
-    console.log("displayed items length:", copy.length);
-    const dst = insectsByCategoryByLang($cookies);
-    // construct final displayed items by category
-    if (copy?.length > 0) {
-      copy.forEach(function (item) {
-        const category = item.category;
-        dst[category].push(item);
-      });
-    }
-
-    // assign dst
-    console.log("dst:", dst);
-    $localStorage.collectionByCategory = dst;
-
-    // pagination
-
-    const totalPages = Math.ceil(totalCount / itemsPerPage);
-    if (totalPages < visiblePages) {
-      visiblePages = totalPages;
-    }
-
-    if (totalPages > 1) {
-      console.log("showing pagination");
-      $scope.hidePagination = false;
-
-      await wait(0.2);
-      $scope.$apply();
-
-      window.pagObj = $("#pagination")
-        .twbsPagination({
-          totalPages: totalPages,
-          visiblePages: visiblePages,
-          startPage: page + 1,
-          onPageClick: async function (event, page) {
-            console.log("on page click:", page, " event: ", event);
-            $scope.collectionPage = page - 1;
-            if (!$scope.firstPaginationLoad) {
-              console.log("reconstructing collection by category");
-              constructCollectionByCategory(
-                $localStorage,
-                $cookies,
-                $scope,
-                page - 1,
-                itemsPerPage,
-                visiblePages,
-                true,
-                category,
-                name
-              );
-              await wait(0.2);
-              $scope.$apply();
-            } else {
-              console.log("changing first pagination load to false");
-              $scope.firstPaginationLoad = false;
-            }
-          },
-        })
-        .on("page", function (event, page) {
-          console.info(page + " (from event listening)");
-        });
-    } else {
-      console.log("hiding pagination");
-      $scope.hidePagination = true;
-    }
-  });
-  if (initialSyncDone) {
-    $scope.$apply();
-  }
 };
 
 function setPagedInsects(insects, $scope) {
@@ -761,6 +648,7 @@ function toggleLoadingSpinner($scope, id) {
   var spinnerEl = document.getElementById(id);
   $scope.displaySpinner = !$scope.displaySpinner;
   if (spinnerEl) {
+    console.log("toggling spinner");
     spinnerEl.classList.toggle("spinner-loading");
   } else {
     console.log("couldn't toggle loading spinner");

@@ -21,7 +21,7 @@ module.exports = function (passport) {
   passport.deserializeUser(function (id, done) {
     console.log("in config deserializeUser");
     User.findById(id, function (err, user) {
-      user.password = undefined;
+      if (user) user.password = undefined;
       done(err, user);
     });
   });

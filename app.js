@@ -5,6 +5,7 @@ var express = require("express");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 var app = express();
+const cors = require("cors");
 var AppError = require("./app/utils/appError");
 const mongoSanitize = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
@@ -48,6 +49,12 @@ mongoose
     useNewUrlParser: true,
   })
   .then(() => console.log("DB connection successful!"));
+
+app.use(
+  cors({
+    origin: process.env.HOST,
+  })
+);
 
 require("./app/config/passport")(passport); // pass passport for configuration
 

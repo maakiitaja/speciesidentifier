@@ -1,5 +1,5 @@
 .spinner-loading {
-  visibility: hidden;
+  display: none !important;
 }
 
 .lds-spinner {

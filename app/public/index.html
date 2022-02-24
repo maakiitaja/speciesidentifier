@@ -408,6 +408,7 @@
 
 				$.fn.twbsPagination = function (option) {
 					console.log("twbsPagination");
+
 					var args = Array.prototype.slice.call(arguments, 1);
 					var methodReturn;
 
@@ -416,7 +417,11 @@
 
 					var options = typeof option === "object" ? option : {};
 
-					if (!data || (data && options && data.options.totalPages !== options.totalPages)) {
+					console.log('options:', options);
+					console.log('data.options:', data?.options);
+
+					if (!data || (data && options && (data.options.totalPages !== options.totalPages
+						|| data.options.startPage === options.startPage))) {
 						console.log('setting data')
 						$this.data("twbs-pagination", (data = new TwbsPagination(this, options)));
 					}

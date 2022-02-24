@@ -145,6 +145,12 @@
 						class="alert alert-success is-paused fade-out">
 						{{messageNewRemoteSuccess}}</div>
 				</div>
+				<div class="container-danger margin-top-lg">
+					<div id="messageNewRemoteFailure" ng-if='messageNewRemoteFailure != ""'
+						class="alert alert-success is-paused fade-out">
+						{{messageNewRemoteFailure}}</div>
+				</div>
+
 			</div>
 
 
@@ -202,12 +208,18 @@
 					</form>
 				</div>
 
-				<!--messages new remote items-->
+				<!--messages new local items-->
 				<div class="container-alert margin-top-lg">
 					<div id="messageNewLocalSuccess" ng-if='messageNewLocalSuccess != ""'
 						class="alert alert-success is-paused fade-out">
 						{{messageNewLocalSuccess}}</div>
 				</div>
+				<div class="container-alert margin-top-lg">
+					<div id="messageNewLocalFailure" ng-if='messageNewLocalFailure != ""'
+						class="alert alert-danger is-paused fade-out">
+						{{messageNewLocalFailure}}</div>
+				</div>
+
 			</div>
 
 			<!-- updated insects-->
@@ -358,7 +370,7 @@
 		<h1>{{translations.COLLECTIONPAGE}}</h1>
 
 		<!-- search -->
-		<div class="container-collection-search margin-bottom-lg">
+		<div class="container-collection-search margin-bottom-lg" ng-class="{hideSearch: collectionEmpty}">
 			<div class="input-search-container">
 				<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24"
 					stroke="currentColor">
@@ -410,6 +422,14 @@
 				class="alert alert-success is-paused fade-out">
 				{{skippingCollectionSynchronization}}</div>
 		</div>
+
+		<div class="container-alert margin-top-lg">
+			<div id="noInternetConnection" ng-if='noInternetConnection != ""'
+				class="alert alert-danger is-paused fade-out">
+				{{noInternetConnection}}</div>
+		</div>
+
+		<!-- local collection-->
 
 		<div ng-repeat="insects in localStorage.collectionByCategory">
 			<div ng-if="insects.length > 0">

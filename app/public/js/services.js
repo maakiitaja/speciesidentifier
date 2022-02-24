@@ -74,10 +74,38 @@ insectIdentifierServices.factory(
   }
 );
 
+insectIdentifierServices.factory(testInterceptor);
+
+var testInterceptor = function ($q) {
+  return {
+    request: function (config) {
+      console.log("request started...");
+    },
+    // requestError: function (rejection) {
+    //   console.log(rejection);
+    //   // Contains the data about the error on the request and return the promise rejection.
+    //   return $q.reject(rejection);
+    // },
+    // response: function (result) {
+    //   console.log("data for " + result.data.name + " received");
+    //   //If some manipulation of result is required before assigning to scope.
+    //   result["testKey"] = "testValue";
+    //   console.log("request completed");
+    //   return result;
+    // },
+    // responseError: function (response) {
+    //   console.log("response error started...");
+    //   //Check different response status and do the necessary actions 400, 401, 403,401, or 500 eror
+    //   return $q.reject(response);
+    // },
+  };
+};
+
 insectIdentifierServices.config([
   "$httpProvider",
   function ($httpProvider) {
     $httpProvider.interceptors.push("redirectInterceptor");
+    //$httpProvider.interceptors.push(testInterceptor);
   },
 ]);
 
