@@ -156,7 +156,7 @@ setPaginationForSearchPage = async function (
 
         onPageClick: async function (event, page) {
           console.log("on page click:", page, " event: ", event);
-
+          $scope.page = page - 1;
           if (!$scope.firstPaginationLoad) {
             console.log(
               "searching from page: ",
@@ -179,17 +179,7 @@ setPaginationForSearchPage = async function (
               $localStorage,
               selectFirstInsect
             );
-            const totalCount = response.totalCount;
-            setPaginationForSearchPage(
-              SearchService,
-              query,
-              $scope,
-              page,
-              itemsPerPage,
-              visiblePages,
-              $localStorage,
-              totalCount
-            );
+
             selectActiveThumb($scope.insect);
 
             $scope.$apply();
@@ -863,6 +853,9 @@ sortColors = function ($scope) {
 
 sortCategories = function ($scope) {
   $scope.$watch("translations", function (translations) {
+    if (translations === undefined) {
+      return;
+    }
     const categoryArr = [];
 
     categoryArr.push(
@@ -883,6 +876,9 @@ sortCountries = function ($scope, displayAllOption, $cookies) {
   $scope.$watch("translations", async function (translations) {
     const countryArr = [];
     console.log("translations: ", translations);
+    if (translations === undefined) {
+      return;
+    }
 
     countryArr.push(
       [translations.FINLAND, "FINLAND"],

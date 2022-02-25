@@ -197,8 +197,15 @@ exports.insert = function (req, res) {
         );
         console.log("insect updated");
         try {
+          console.log("category:", req.body.categoryModel);
+          console.log("name: ", req.body.name);
           return res.redirect(
-            "/#/insect/uploadList?fileuploadsuccess=1&page=" + req.body.page
+            "/#/insect/uploadList?fileuploadsuccess=1&page=" +
+              req.body.page +
+              "&category=" +
+              req.body.categoryModel +
+              "&name=" +
+              req.body.name
           );
         } catch (err) {
           console.log("error in redirect");

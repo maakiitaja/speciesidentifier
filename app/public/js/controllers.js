@@ -1211,6 +1211,16 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       page = +$location.search().page;
     }
 
+    if ($location?.search()?.category) {
+      console.log("category: ", $location.search().category);
+      $scope.categoryModel = $location.search().category;
+    }
+
+    if ($location?.search()?.name) {
+      console.log("name: ", $location.search().name);
+      $scope.name = $location.search().name;
+    }
+
     if ($location?.search()?.fileuploadsuccess === "1") {
       $scope.$watch("translations", function (val) {
         $scope.fileuploadMessage = $scope.translations.FILEUPLOADSUCCESS;
@@ -1248,8 +1258,9 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     };
 
     $scope.updateUploadView = async function (initialSearch) {
+      page = 0;
       const { totalPages, visPages, totalCount } = await $scope.getUploadList(
-        0,
+        page,
         itemsPerPage,
         visiblePages,
         $scope.categoryModel,
@@ -1258,13 +1269,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       );
       $scope.firstPaginationLoad = true;
       $scope.$apply();
-      $scope.setPagination(
-        totalPages,
-        visPages,
-        totalCount,
-        itemsPerPage,
-        $scope.categoryModel
-      );
+      $scope.setPagination(totalPages, visPages, totalCount, itemsPerPage);
     };
 
     $scope.getUploadList = async function (
@@ -1330,8 +1335,8 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       page,
       itemsPerPage,
       visiblePages,
-      undefined,
-      undefined,
+      $scope.categoryModel,
+      $scope.name,
       true
     );
     $scope.firstPaginationLoad = true;
@@ -1342,10 +1347,11 @@ insectIdentifierControllers.controller("UploadListCtrl", [
       totalPages,
       visPages,
       totalCount,
-      itemsPerPage,
-      category
+      itemsPerPage
     ) {
       console.log("totalPages: " + totalPages, "visiblePages:", visPages);
+      console.log("category:", $scope.categoryModel);
+      console.log("name:", $scope.name);
 
       if (totalCount > itemsPerPage) {
         console.log("setting pagination");
@@ -1356,16 +1362,28 @@ insectIdentifierControllers.controller("UploadListCtrl", [
             startPage: page + 1,
             onPageClick: async function (event, page) {
               console.log("on page click:", page, " event: ", event);
+
+              console.log("lastpage:", $scope.lastPage);
+
               if (!$scope.firstPaginationLoad) {
+                if ($scope.lastPage === page) {
+                  console.log("lastpage is the same, aborting...");
+                  return;
+                }
+                console.log("category:", $scope.categoryModel);
+                console.log("name:", $scope.name);
+
                 await $scope.getUploadList(
                   page - 1,
                   itemsPerPage,
                   visPages,
-                  category
+                  $scope.categoryModel,
+                  $scope.name
                 );
                 $scope.$apply();
               } else {
                 $scope.firstPaginationLoad = false;
+                $scope.lastPage = page;
               }
             },
           })
@@ -1376,6 +1394,7 @@ insectIdentifierControllers.controller("UploadListCtrl", [
     };
 
     $scope.upload = function (insect) {
+      $location.url($location.path());
       if (insect === undefined) {
         $scope.location.path("insect/upload");
       } else {
@@ -1384,6 +1403,8 @@ insectIdentifierControllers.controller("UploadListCtrl", [
           insect: insect,
           fromUploadListPage: "1",
           page: $scope.page,
+          category: $scope.categoryModel,
+          name: $scope.name,
         });
       }
     };
@@ -1414,9 +1435,23 @@ insectIdentifierControllers.controller("UploadInsectCtrl", [
       $scope.page = $location.search().page;
     }
 
+    if ($location?.search()?.category) {
+      console.log("category: ", $location.search().category);
+      $scope.categoryModel = $location.search().category;
+    }
+
+    if ($location?.search()?.name) {
+      console.log("name: ", $location.search().name);
+      $scope.name = $location.search().name;
+    }
+
     $scope.returnToUploadList = function () {
       console.log("page: ", $scope.page);
-      $location.path("insect/uploadList").search({ page: $scope.page });
+      $location.path("insect/uploadList").search({
+        page: $scope.page,
+        category: $scope.categoryModel,
+        name: $scope.name,
+      });
     };
 
     $scope.deleteInsect = function () {
@@ -2604,6 +2639,7 @@ insectIdentifierControllers.controller("SearchCtrl", [
 
     $scope.search = async function (query) {
       const selectFirstInsect = true;
+      page = 0;
       const searchResults = await SearchService.search(
         $scope,
         query,
