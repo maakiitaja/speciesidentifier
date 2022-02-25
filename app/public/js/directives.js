@@ -449,6 +449,7 @@ myApp.directive("header", function () {
           $scope.resetHeader();
           $scope.highlightElement("manage-button");
 
+          $location.url($location.path());
           $scope.location.path("insect/upload");
         };
 

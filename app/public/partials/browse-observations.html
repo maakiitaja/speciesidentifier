@@ -196,7 +196,18 @@
 
 	<br>
 	<br>
+
+	<div class="checkbox-display-map-container">
+		<label class="main">
+			<span class="displayMap-label">{{translations.DISPLAYMAP}}</span>
+			<input ng-model="checkbox.displayMap" ng-click="viewDisplayMap()" class="displayMap" id="displayMap"
+				type="checkbox" />
+			<span class="tickmark"></span>
+		</label>
+
+	</div>
 	<div class="centered">
+
 		<button type="submit" name="search" ng-disabled="disableSearch"
 			class="button button-green centered">{{translations.SEARCH}}</button>
 		<div class="lds-center">

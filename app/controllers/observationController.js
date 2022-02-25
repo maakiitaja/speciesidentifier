@@ -5,8 +5,8 @@ const catchAsync = require("./../utils/catchAsync");
 
 exports.browse = async function (req, res) {
   console.log("observation browse");
-  const itemsPerPage = req.query.itemsPerPage;
-  const page = req.query.page;
+  const itemsPerPage = +req.query.itemsPerPage;
+  const page = +req.query.page;
 
   // initialization
   const byPlaceAndTimeQuery = function (req) {
@@ -117,7 +117,10 @@ exports.browse = async function (req, res) {
     "req.query.category: ",
     req.query.category
   );
-  if (req.query.name === "" && req.query.category === "") {
+  if (
+    (req.query.name === "" || req.query.name === undefined) &&
+    (req.query.category === "" || req.query.category === undefined)
+  ) {
     console.log("No name or category");
 
     // get total count
@@ -219,12 +222,17 @@ exports.browse = async function (req, res) {
         console.log(
           "skipping and limiting observations after filtering by name"
         );
-
+        console.log("page:", page);
+        console.log("itemsPerPage:", itemsPerPage);
+        console.log("observations.length before: " + observations.length);
         observations = observations.slice(
           page * itemsPerPage,
           page * itemsPerPage + itemsPerPage
         );
+        console.log("observations.length after: " + observations.length);
       }
+      console.log("observations.length: " + observations.length);
+      console.log("totalcount:", totalCount);
 
       return res.send({ observations: observations, totalCount: totalCount });
     } else {

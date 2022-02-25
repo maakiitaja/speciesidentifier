@@ -174,13 +174,14 @@
 
 		</div>
 		<div ng-if="isUpload==0" class="flex-table flex-table-column-gap-md flex-table-row-gap-md">
-			<button id="returnToUploadList" type="button" ng-click="returnToUploadList()" class="button button-green"
-				value="{{translations.UPLOADLIST}}">&larr; {{translations.RETURNTOUPLOADLIST}}</button>
+
 			<button id="updateSubmit" ng-click="submit()" type="submit" class="button button-blue"
 				value="{{translations.SAVE}}"
 				ng-disabled="disableUpload || myForm.$pending">{{translations.SAVE}}</button>
 			<button id="deleteInsect" type="button" ng-click="deleteInsect()" class="button button-red"
 				value="{{translations.DELETE}}">{{translations.DELETE}}</button>
+			<button id="returnToUploadList" type="button" ng-click="returnToUploadList()" class="button button-green"
+				value="{{translations.UPLOADLIST}}">&rarr; {{translations.RETURNTOUPLOADLIST}}</button>
 
 		</div>
 

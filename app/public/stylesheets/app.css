@@ -108,7 +108,8 @@
 .container-tag,
 .by-name-container,
 .update-image-state,
-.radio-container {
+.radio-container,
+.checkbox-display-map-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1444,7 +1445,7 @@ input[type="checkbox"]:checked + label:hover {
 
 input + label.offline:hover,
 input + label.disable-local-images:hover,
-label.main {
+input + label.displayMap:hover label.main {
   color: #333;
 }
 
@@ -1593,7 +1594,8 @@ hr.updated-insect {
 
 /* Hide the default checkbox */
 input[type="checkbox"].offline,
-input[type="checkbox"].disable-local-images {
+input[type="checkbox"].disable-local-images,
+input[type="checkbox"].displayMap {
   visibility: hidden;
 }
 

@@ -329,5 +329,6 @@
   "DISABLESYNCIMAGES": "Älä tallenna kokoelman kuvia paikallisesti",
   "REMOVEDINSECTFROMLOCALCOLLECTION": "Hyönteisen poistaminen kokoelmasta onnistui.",
   "DISPLAYMORE": "Näytä lisää",
-  "NOINTERNETCONNECTION": "Ei verkkoyhteyttä"
+  "NOINTERNETCONNECTION": "Ei verkkoyhteyttä",
+  "DISPLAYMAP": "Näytä kartta"
 }

@@ -874,10 +874,11 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
     $scope.query.placeType = "anyType";
     $scope.dropdownCountry = "All";
     $scope.hideMap = true;
-    const itemsPerPage = 30;
+    const itemsPerPage = 4;
     let visiblePages = 10;
     $scope.page = 0;
     $scope.firstPaginationLoad = true;
+    $scope.checkbox = { displayMap: true };
 
     const displayAllOption = true;
     sortCountries($scope, displayAllOption);
@@ -918,6 +919,10 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         init_close($scope.translations.CLOSE);
       }
     });
+
+    $scope.viewDisplayMap = function () {
+      $scope.checkbox.viewDisplayMap = !$scope.checkbox.viewDisplayMap;
+    };
 
     $scope.updateDropbtnContent = function (content, value) {
       const dropBtnContent = document.getElementById("dropbtn-content-select");
@@ -1068,7 +1073,7 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
         const totalCount = response.totalCount;
 
         if (data.length === 0) $scope.hideMap = true;
-        else $scope.hideMap = false;
+        else if ($scope.checkbox.displayMap) $scope.hideMap = false;
 
         $scope.observations = data;
         console.log("hidemap: ", $scope.hideMap);
@@ -1120,7 +1125,9 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
 
         // map locations
         await wait(0.2);
-        displayMap(data);
+        if ($scope.checkbox.displayMap) {
+          displayMap(data);
+        }
         $scope.setPagination(totalCount, query);
         // Hide spinner element
         spinnerEl.classList.toggle("spinner-loading");
@@ -1155,12 +1162,18 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
               console.log("on page click:", page, " event: ", event);
               $scope.page = page - 1;
               if (!$scope.firstPaginationLoad) {
+                if ($scope.lastPage === page) {
+                  console.log("same page clicked. aborting...");
+                  return;
+                }
+                $scope.lastPage = page;
                 await $scope.searchObservations(query, $scope.page);
 
                 $scope.$apply();
               } else {
                 console.log("changing first pagination load to false");
                 $scope.firstPaginationLoad = false;
+                $scope.lastPage = page;
               }
             },
           })

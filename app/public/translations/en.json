@@ -329,5 +329,6 @@
   "SHAREDALBUMS": "Shared albums",
   "DISABLESYNCIMAGES": "Disable local collection's images storage",
   "DISPLAYMORE": "Display more",
-  "NOINTERNETCONNECTION": "No network connection"
+  "NOINTERNETCONNECTION": "No network connection",
+  "DISPLAYMAP": "Display map"
 }
