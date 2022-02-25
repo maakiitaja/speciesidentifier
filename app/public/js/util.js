@@ -829,6 +829,8 @@ responsiveSearch = function ($scope, itemsPerPage, totalCount) {
 
 sortColors = function ($scope) {
   $scope.$watch("translations", function (translations) {
+    if (!translations) return;
+
     const colorArr = [];
 
     colorArr.push(

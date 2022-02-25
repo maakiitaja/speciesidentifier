@@ -336,9 +336,8 @@ exports.search = async function (req, res, next) {
   var primaryColor = req.query.primaryColor;
   var secondaryColor = req.query.secondaryColor;
   var category = req.query.category;
-  var legs = req.query.legs;
-  const page = req.query.page;
-  const itemsPerPage = req.query.itemsPerPage;
+  const page = +req.query.page;
+  const itemsPerPage = +req.query.itemsPerPage;
 
   // for case insensitive comparision
   if (req.query.name) {
@@ -351,9 +350,7 @@ exports.search = async function (req, res, next) {
     "primaryColor: " +
       req.query.primaryColor +
       " ,secondaryColor: " +
-      req.query.secondaryColor +
-      ", legs:" +
-      req.query.legs
+      req.query.secondaryColor
   );
   console.log("latinName: " + req.query.latinName);
 
@@ -369,9 +366,7 @@ exports.search = async function (req, res, next) {
     if (req.query.secondaryColor) {
       query.where("secondaryColor").equals(secondaryColor);
     }
-    if (req.query.legs) {
-      query.where("legs").equals(legs);
-    }
+
     if (req.query.name && req.query.language === "Latin") {
       console.log("search by latin name");
       query.where("latinName").equals(req.query.name);

@@ -24,9 +24,11 @@ exports.list = catchAsync(async (req, res, next) => {
   const totalCount = await Album.find({ _user: req.user.id }).count();
   let albumList;
   if (totalCount > 0) {
+    const page = +req.query.page;
+    const itemsPerPage = +req.query.itemsPerPage;
     albumList = await Album.find({ _user: req.user.id })
-      .skip(req.query.page * req.query.itemsPerPage)
-      .limit(req.query.itemsPerPage);
+      .skip(page * itemsPerPage)
+      .limit(itemsPerPage);
   }
   console.log("album list length:", albumList?.length);
   return res.send({
@@ -53,10 +55,12 @@ exports.sharedList = catchAsync(async (req, res, next) => {
   } else {
     totalCount = await Album.find({ shared: true }).count();
     console.log("totalCount: " + totalCount);
+    const page = +req.query.page;
+    const itemsPerPage = +req.query.itemsPerPage;
     if (totalCount > 0) {
       albumList = await Album.find({ shared: true })
-        .skip(req.query.page * req.query.itemsPerPage)
-        .limit(req.query.itemsPerPage)
+        .skip(page * itemsPerPage)
+        .limit(itemsPerPage)
         .populate("insects");
     } else {
       return res.status(404).send({ msg: "No shared albums found." });
@@ -79,9 +83,12 @@ exports.view = catchAsync(async (req, res, next) => {
   }
   const totalCount = album.insects.length;
   console.log("totalCount:", totalCount);
+  const page = +req.query.page;
+  const itemsPerPage = +req.query.itemsPerPage;
+
   const insectIds = album.insects.slice(
-    req.query.page * req.query.itemsPerPage,
-    req.query.page * req.query.itemsPerPage + req.query.itemsPerPage
+    page * itemsPerPage,
+    page * itemsPerPage + itemsPerPage
   );
   console.log("insectids:", insectIds);
   const insects = await Insect.find({ _id: { $in: insectIds } });
@@ -103,11 +110,13 @@ exports.viewShared = catchAsync(async (req, res, next) => {
     return res.status(404).send({ message: false, album: null });
   }
   console.log("album.insects.length: ", album.insects.length);
+  const page = +req.query.page;
+  const itemsPerPage = +req.query.itemsPerPage;
 
   const totalCount = album.insects.length;
   const insectIds = album.insects.slice(
-    req.query.page * req.query.itemsPerPage,
-    req.query.page * req.query.itemsPerPage + req.query.itemsPerPage
+    page * itemsPerPage,
+    page * itemsPerPage + itemsPerPage
   );
   const insects = await Insect.find({ _id: { $in: insectIds } });
   console.log("insects.length: ", insects.length);

@@ -83,7 +83,7 @@ insectIdentifierControllers.controller("ViewAlbumCtrl", [
       // pagination
       if (totalPages > 1) {
         $scope.hidePagination = false;
-        //if (!$scope.firstPaginationLoad) return;
+
         await wait(0.2);
         $scope.$apply();
 
@@ -96,12 +96,18 @@ insectIdentifierControllers.controller("ViewAlbumCtrl", [
               console.log("on page click:", page, " event: ", event);
               $scope.page = page - 1;
               if (!$scope.firstPaginationLoad) {
+                if ($scope.lastPage === page) {
+                  console.log("same page clicked. aborting.");
+                  return;
+                }
+                $scope.lastPage = page;
                 await $scope.searchAlbum(page - 1);
 
                 $scope.$apply();
               } else {
                 console.log("changing first pagination load to false");
                 $scope.firstPaginationLoad = false;
+                $scope.lastPage = page;
               }
             },
           })
@@ -160,7 +166,7 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
       })
         .success(function (response) {
           console.log(response);
-          $scope.albumList = response.albumList;
+          $scope.albumList = response.albumList ? response.albumList : [];
           const totalCount = response.totalCount;
           $scope.setPagination(totalCount, url, page);
         })
@@ -199,12 +205,18 @@ insectIdentifierControllers.controller("AlbumListCtrl", [
               console.log("on page click:", page, " event: ", event);
               $scope.page = page - 1;
               if (!$scope.firstPaginationLoad) {
+                if ($scope.lastPage === page) {
+                  console.log("same page was clicked twice, aborting...");
+                  return;
+                }
+                $scope.lastPage = page;
                 await $scope.searchAlbums(url, page - 1);
 
                 $scope.$apply();
               } else {
                 console.log("changing first pagination load to false");
                 $scope.firstPaginationLoad = false;
+                $scope.lastPage = page;
               }
             },
           })
@@ -519,6 +531,36 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
       console.log("$scope.hidePagination:", $scope.hidePagination);
       setPagedInsects($scope.insects, $scope);
 
+      // apply needs to be here in order for pagination to show
+      $scope.$apply();
+      $scope.firstPaginationLoad = true;
+      $scope.setPagination(totalPages, visiblePages);
+      $scope.highlightActiveInsects(0);
+    };
+
+    $scope.highlightActiveInsects = async function (currentPage) {
+      console.log("in highlight insects");
+
+      // update selected insects
+      $scope.pagedInsects[currentPage].forEach(function (insect) {
+        //console.log("insect: ", insect);
+        console.log("selected insects: ", $scope.selectedInsects);
+        const insectFound = $scope.selectedInsects.includes(insect._id);
+        if (insectFound) {
+          console.log("insect found");
+
+          var thumbImg = document.getElementById(
+            insect.images[0] + "_thumb.jpg"
+          );
+          //console.log("thumbimg:", thumbImg);
+          if (thumbImg) {
+            thumbImg.classList.toggle("activeThumb");
+          }
+        }
+      });
+    };
+
+    $scope.setPagination = function (totalPages, visiblePages) {
       console.log("totalPages:", totalPages);
       console.log(
         "$scope.insects.length",
@@ -526,10 +568,9 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
         "$scope.itemsPerPage",
         $scope.itemsPerPage
       );
-
-      // apply needs to be here in order for pagination to show
-      $scope.$apply();
-
+      if (totalPages <= 1) {
+        return;
+      }
       window.pagObj = $("#pagination")
         .twbsPagination({
           totalPages: totalPages,
@@ -538,24 +579,19 @@ insectIdentifierControllers.controller("CreateAlbumCtrl", [
             console.info(page + " (from options)");
             console.log("scope:", $scope);
             $scope.currentPage = page - 1;
-
-            $scope.$apply();
-            // update selected insects
-            $scope.pagedInsects[$scope.currentPage].forEach(function (insect) {
-              console.log("insect: ", insect);
-              console.log("selected insects: ", $scope.selectedInsects);
-              const insectFound = $scope.selectedInsects.includes(insect._id);
-              if (insectFound) {
-                console.log("insect found");
-                var thumbImg = document.getElementById(
-                  insect.images[0] + "_thumb.jpg"
-                );
-                console.log("thumbimg:", thumbImg);
-                if (thumbImg) {
-                  thumbImg.classList.toggle("activeThumb");
-                }
+            if ($scope.firstPaginationLoad) {
+              if ($scope.lastPage === page) {
+                console.log("clicked same page twice, aborting...");
+                return;
               }
-            });
+              $scope.lastPage = page;
+              $scope.$apply();
+              $scope.highlightActiveInsects($scope.currentPage);
+            } else {
+              $scope.firstPaginationLoad = false;
+              $scope.lastPage = page;
+              console.log("setting first pagination load to true");
+            }
           },
         })
         .on("page", function (event, page) {
@@ -1149,7 +1185,6 @@ insectIdentifierControllers.controller("BrowseObservationsCtrl", [
       // pagination
       if (totalPages > 1) {
         $scope.hidePagination = false;
-        //if (!$scope.firstPaginationLoad) return;
         await wait(0.2);
         $scope.$apply();
 
