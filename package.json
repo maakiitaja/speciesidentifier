@@ -63,7 +63,7 @@
     "passport-facebook": "^3.0.0",
     "passport-github": "^1.1.0",
     "pug": "^3.0.2",
-    "sharp": "^0.30.0",
+    "sharp": "^0.30.5",
     "validator": "^13.7.0"
   },
   "engines": {
